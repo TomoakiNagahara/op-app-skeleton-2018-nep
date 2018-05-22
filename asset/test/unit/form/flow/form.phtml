@@ -1,8 +1,8 @@
 <?php
 /**
- * unit-test:/unit/form/index.phtml
+ * unit-test:/unit/form/flow/index.phtml
  *
- * @creation  2018-05-16
+ * @creation  2018-05-23
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
@@ -11,9 +11,10 @@
 /* @var $form \OP\UNIT\Form */
 ?>
 <section id="testcase">
-	<?php $form->Start(['action'=>'?']) ?>
+	<h2>Please input form</h2>
+	<?php $form->Start(['action'=>'?confirm']) ?>
 		<table>
-		<?php foreach( ['text','textarea','select','multiple','radio','checkbox','cookie','session','file'] as $name ): ?>
+		<?php foreach( $form->Config()['input'] as $name => $input ): ?>
 			<tr class="<?= $form->Validate($name) === false ? 'red':'' ?>">
 				<th><?php $form->Label($name) ?></th><td><b> : </b></td>
 				<td><?php $form->Input($name) ?></td>
@@ -40,8 +41,16 @@
 </section>
 <style>
 
+#testcase table tr td:nth-child(4) {
+	padding-left: 0.5em;
+}
+
 #testcase table tr td:nth-child(4) > span {
 	display: block;
+}
+
+#testcase table tr td:nth-child(4) > span:nth-child(2) {
+	display: none;
 }
 
 </style>

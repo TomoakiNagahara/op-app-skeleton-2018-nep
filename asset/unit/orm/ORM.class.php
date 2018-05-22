@@ -36,6 +36,50 @@ class ORM
 	 */
 	private $_form;
 
+	/** Generate "Record" object.
+	 *
+	 * @param	 string				 $qql
+	 * @return	\OP\UNIT\ORM\Record	 $record
+	 */
+	function _Record($qql, $create)
+	{
+		//	Force single column record.
+		$option['limit'] = 1;
+
+		//	$select is select configuration array.
+		$namespace = get_class($this->DB());
+		$namespace = strtoupper($namespace);
+		$classpath = "\\$namespace\QQL";
+
+		//	Generate config from QQL.
+		$select = $classpath::Parse($qql, $option, $this->DB());
+
+		//	Fetch table struct.
+		$database = $select['database'] ?? $this->DB()->Config()['database'];
+		$table    = $select['table'];
+		$table    = trim($table, '`');
+		$query    = \OP\UNIT\SQL\Show::Column($this->DB(), $database, $table);
+		$struct   = $this->DB()->Query( $query );
+
+		//	Create or Fetch.
+		if( $create ){
+			foreach( $struct as $column ){
+				$result[$column['field']] = '';
+			}
+		}else{
+			//	Fetch record.
+			$result = $classpath::Select($select, $this->DB());
+		}
+
+		/* @var $record ORM\Record */
+		$record = new ORM\Record( $struct, $result );
+		$record->Database( $database );
+		$record->Table(    $table    );
+
+		//	Return "Record" Object.
+		return $record;
+	}
+
 	/** Get/Set Unit of Database.
 	 *
 	 * @param	 array		 $DB
@@ -54,11 +98,6 @@ class ORM
 		return $_DB;
 	}
 
-	function Form()
-	{
-
-	}
-
 	/** Connect to database.
 	 *
 	 * @param	 array	 $config
@@ -74,35 +113,9 @@ class ORM
 	 * @param	 string		 $table_name
 	 * @return	 ORM\Record	 $record
 	 */
-	function Create($qql)
+	function Create($table)
 	{
-		//	$select is select configuration array.
-		$namespace = get_class($this->DB());
-		$namespace = strtoupper($namespace);
-		$classname = "\\$namespace\QQL";
-		$select = $classname::Parse($qql, [], $this->DB());
-
-		//	...
-		$database = $select['database'] ?? $this->DB()->Config()['database'];
-		$table    = $select['table'];
-		$table    = trim($table, '`');
-
-		//	...
-		$query  = \OP\UNIT\SQL\Show::Column($this->DB(), $database, $table);
-		$struct = $this->DB()->Query( $query );
-
-		/* @var $record ORM\Record */
-		$record = new ORM\Record($struct);
-		$record->Database( $database );
-		$record->Table(    $table    );
-
-		//	...
-		foreach( $struct as $column ){
-			$record->Set( $column['field'], '' );
-		}
-
-		//	...
-		return $record;
+		return self::_Record($table, true);
 	}
 
 	/** Find single record.
@@ -112,34 +125,7 @@ class ORM
 	 */
 	function Find($qql)
 	{
-		//	Force single column record.
-		$option['limit'] = 1;
-
-		//	$select is select configuration array.
-		$namespace = get_class($this->DB());
-		$namespace = strtoupper($namespace);
-		$classpath = "\\$namespace\QQL";
-
-		//	Generate config from QQL.
-		$select = $classpath::Parse($qql, $option, $this->DB());
-
-		//	Fetch record.
-		$result = $classpath::Select($select, $this->DB());
-
-		//	Fetch table struct.
-		$database = $select['database'] ?? $this->DB()->Config()['database'];
-		$table    = $select['table'];
-		$table    = trim($table, '`');
-		$query    = \OP\UNIT\SQL\Show::Column($this->DB(), $database, $table);
-		$struct   = $this->DB()->Query( $query );
-
-		/* @var $record ORM\Record */
-		$record = new ORM\Record( $struct, $result );
-		$record->Database( $database );
-		$record->Table(    $table    );
-
-		//	Return "Record" Object.
-		return $record;
+		return self::_Record($qql, false);
 	}
 
 	/** Find multiple records.
@@ -184,7 +170,7 @@ class ORM
 
 		//	...
 		if(!$record->Changed()){
-			return null;
+			return true;
 		}
 
 		//	...
@@ -204,7 +190,7 @@ class ORM
 			$config['limit'] = 1;
 
 			//	...
-			$pval  = $this->_Update($config) ? true: false;
+			$pval = $this->_Update($config) ? true: false;
 		}else{
 			//	Insert
 			unset($config['set'][$pkey]);
@@ -217,17 +203,9 @@ class ORM
 
 			//	...
 			if( $form = $record->Form() ){
-				$vals = $form->Values();
-				$conf = $form->Config();
-
-				//	...
-			//	$conf['name'] = ORM\Config::FormName($config['database'], $config['table'], $pval);
-			//	$form->Config($conf);
+				$form->Clear();
 			}
 		}
-
-		//	...
-		$form->Clear();
 
 		//	...
 		return $pval;

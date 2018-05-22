@@ -8,10 +8,15 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
+body.body .blue,
 body.body .success {
 	color: blue;
 }
 
+body.body .red,
+body.body fail,
+body.body failed,
+body.body failure,
 body.body .error {
 	color: red;
 }

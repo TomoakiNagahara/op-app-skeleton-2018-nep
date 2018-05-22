@@ -43,18 +43,27 @@ class App
 
 	/** Get SmartURL arguments.
 	 *
-	 * @return array $args
+	 * @return	 array	 $args
 	 */
 	static function Args()
 	{
 		return self::$_ROUTER_::Get()['args'];
 	}
 
+	/** Template
+	 *
+	 * @param	 string	 $path
+	 * @param	 string	 $args
+	 */
 	static function Template($path, $args=null)
 	{
 		self::$_TEMPLATE_::Run($path, $args);
 	}
 
+	/** Layout
+	 *
+	 * @param	 string	 $name
+	 */
 	static function Layout($name=null)
 	{
 		//	...
@@ -89,9 +98,9 @@ class App
 
 	/** Get/Set title.
 	 *
-	 * @param  string $title
-	 * @param  string $separator
-	 * @return string $title
+	 * @param	 string	 $title
+	 * @param	 string	 $separator
+	 * @return	 string	 $title
 	 */
 	static function Title($title=null, $separator=' | ')
 	{

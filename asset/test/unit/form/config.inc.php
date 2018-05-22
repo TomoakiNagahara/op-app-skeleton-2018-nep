@@ -10,7 +10,7 @@
  */
 //	...
 $form = [];
-$form['name'] = 'testcase';
+$form['name']	 = 'testcase';
 
 //	...
 $name  = 'text';
@@ -18,6 +18,8 @@ $input = [];
 $input['label']	 = 'Text';
 $input['name']	 = $name;
 $input['type']	 = 'text';
+$input['rule']	 = 'required, number';
+$input['placeholder'] = 'Required and Number only';
 $form['input'][$name] = $input;
 
 //	...
@@ -26,6 +28,8 @@ $input = [];
 $input['label']	 = 'Textarea';
 $input['name']	 = $name;
 $input['type']	 = 'textarea';
+$input['rule']	 = 'english';
+$input['placeholder'] = 'Alphabet and Number only';
 $form['input'][$name] = $input;
 
 //	...
@@ -72,7 +76,8 @@ $input['label']	 = 'Cookie';
 $input['name']	 = $name;
 $input['type']	 = 'checkbox';
 $input['cookie'] = true;
-$input['option'] = ['agree'=>'Save to cookie. (Cross over sessions)'];
+$input['option'] = ['cookie'=>'Save to cookie. (Cross over sessions)'];
+$input['rule']	 = 'required';
 $form['input'][$name] = $input;
 
 //	...
@@ -82,7 +87,8 @@ $input['label']	 = 'Session';
 $input['name']	 = $name;
 $input['type']	 = 'checkbox';
 $input['session']= false;
-$input['option'] = ['agree'=>'Does not save value. (Do not save to session)'];
+$input['option'] = ['session'=>'Does not save value. (Do not save to session)'];
+$input['rule']	 = 'required';
 $form['input'][$name] = $input;
 
 //	...

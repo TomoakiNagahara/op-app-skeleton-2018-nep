@@ -250,26 +250,6 @@ class Record
 	 */
 	function Form()
 	{
-		/* @var $form IF_FORM */
-		/*
-		$form = \Unit::Instance('Form');
-
-		//	...
-		$config = Config::Form(
-			$this->Database(),
-			$this->Table(),
-			$this->Column(),
-			$this->Array()
-		);
-
-		//	...
-		$form->Config($config);
-
-		//	...
-		return $form;
-		*/
-
-
 		/* @var $_form IF_FORM */
 		static $_form;
 
@@ -327,7 +307,7 @@ class Record
 	 */
 	function isFound()
 	{
-		return $this->_record ? true: false;
+		return $this->Get( $this->Pkey() ) ? true: false;
 	}
 
 	/** Validation result.

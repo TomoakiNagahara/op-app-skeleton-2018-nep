@@ -86,10 +86,11 @@ class Validate
 
 	/** Regular Expression
 	 *
-	 * @see    https://msdn.microsoft.com/ja-jp/library/20bw873z.aspx
-	 * @param  string $value
-	 * @param  string $which
-	 * @return boolean|string $result
+	 * @see		 https://msdn.microsoft.com/ja-jp/library/20bw873z.aspx
+	 * @see		 https://fossies.org/linux/www/php-7.2.5.tar.xz/php-7.2.5/ext/mbstring/oniguruma/doc/UNICODE_PROPERTIES
+	 * @param	 string $value
+	 * @param	 string $which
+	 * @return	 boolean|string $result
 	 */
 	static private function _RegExp($value, $which)
 	{
@@ -128,16 +129,18 @@ class Validate
 				$eval = '/([^\p{Katakana}]+)/';
 				break;
 
-			case 'hankaku': // hankaku katakana
-				$eval = '/([^ァ-ヴー・]+)/';
+			case 'hankaku': // hankaku
+				$eval = '/([^ｱ-ﾝ_0-9a-zA-Z]+)/';
 				break;
 
-			case 'zenkakau(alphabet)':
-				$eval = '/([^ァ-ヴー・]+)/';
+			case 'zenkaku':
+				$eval = '/([\x09\x0a\x0d\x20-\x7E]+)/';
 				break;
 
 			case 'cjkv': // China, Japan, Korea, Vietnam
-				$eval = '/([^\p{Ideographic}]+)/';
+			case 'han':
+			case 'chinese':
+				$eval = '/([^\p{Han}]+)/';
 				break;
 
 			case 'chinese':
@@ -241,7 +244,7 @@ class Validate
 
 		//	...
 		foreach( $configs as $key => $config ){
-			if(!$io = self::Evaluation($config, ifset($values[$key]), $errors[$key], $values) ){
+			if(!$io = self::Evaluation($config, $values[$key] ?? null, $errors[$key], $values) ){
 				$failed = true;
 			}
 		}
@@ -252,27 +255,28 @@ class Validate
 
 	/** Evaluate each value.
 	 *
-	 * @param  string  $config
+	 * @param  string  $rule
 	 * @param  array   $value
 	 * @param  array   $error
-	 * @param  array   $errors
+	 * @param  array   $values
 	 * @return boolean $fail
 	 */
-	static function Evaluation($config, $value, &$error, $values=null)
+	static function Evaluation($rule, $value, &$error, $values=null)
 	{
 		//	...
-		$config = Escape($config);
+		$rule  = Escape($rule);
+		$value = Escape($value);
 
 		//	...
 		$failed = null;
 
 		//	...
-		if( is_string($config) ){
-			$config = self::_ParseString($config);
+		if( is_string($rule) ){
+			$rule = self::_ParseString($rule);
 		}
 
 		//	...
-		foreach( $config as $key => $eval ){
+		foreach( $rule as $key => $eval ){
 			switch( $key ){
 				case '':
 					break;
@@ -284,16 +288,22 @@ class Validate
 					}
 					break;
 
+				case 'number':
+					$error[$key] = !is_numeric($value);
+					break;
+
 				case 'integer':
 				case 'ascii':
 				case 'english':
 				case 'alphabet':
 				case 'alphanumeric':
+				case 'han':
 				case 'kana':
 				case 'hiragana':
 				case 'katakana':
 				case 'hankaku':
 				case 'zenkaku':
+				case 'chinese':
 					if( $regexp = self::_RegExp($value, $key) ){
 						$regexp = $regexp[1];
 					}
@@ -316,7 +326,12 @@ class Validate
 					break;
 
 				case 'short':
-					$error[$key] = (mb_strlen($value) < $eval) ? $eval - mb_strlen($value): false;
+					$len = mb_strlen($value);
+					if( $len === 0 ){
+						$error[$key] = false;
+					}else{
+						$error[$key] = ($len < $eval) ? $eval - mb_strlen($value): false;
+					}
 					break;
 
 				case 'long':
@@ -327,7 +342,9 @@ class Validate
 				case 'max':
 				case 'positive':
 				case 'negative':
-					if( ! is_numeric($value) ){
+					if( strlen($value) === 0 ){
+						$io = false;
+					}else if( ! is_numeric($value) ){
 						$io = true;
 						$key= 'numeric';
 					}else if( $key === 'min' ){
@@ -335,9 +352,9 @@ class Validate
 					}else if( $key === 'max' ){
 						$io = ($value > $eval) ? ($value - $eval): false;
 					}else if( $key === 'positive' ){
-						$io = $value < 0 ? true: false;
+						$io = $value <= 0 ? true: false;
 					}else if( $key === 'negative' ){
-						$io = $value > 0 ? true: false;
+						$io = $value >= 0 ? true: false;
 					}
 					$error[$key] = $io;
 					break;

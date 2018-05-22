@@ -1,0 +1,30 @@
+<?php
+/**
+ * unit-test:/unit/form/flow/conversion.phtml
+ *
+ * @creation  2018-05-23
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+/* @var $form \OP\UNIT\Form */
+?>
+<section id="testcase">
+	<h2>Conversion</h2>
+	<p>This is conversion page. Please paste conversion script.</p>
+</section>
+<style>
+
+#testcase p {
+	border:  1px solid black;
+	margin:  1em;
+	padding: 1em;
+}
+
+</style>
+<script>
+setTimeout(function(){
+	location.href = './?thanks=1';
+}, 0);
+</script>

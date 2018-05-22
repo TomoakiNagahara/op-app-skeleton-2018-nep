@@ -32,9 +32,6 @@ if( $ai = ifset($_GET['ai']) ){
 $result = $record->Validate() ? $orm->Save($record): null;
 
 //	...
-
-
-//	...
 D('ai', $ai);
 D('result', $result);
 D('Found', $record->isFound());
@@ -43,6 +40,10 @@ D('Validate', $record->isValid(), $record->Validate());
 //	Generate form object.
 $form = $record->Form();
 ?>
+
+<p class="<?= $record->isFound() ? 'blue':'red' ?>">Found record</p>
+<p class="<?= $record->isValid() ? 'blue':'red' ?>">Validate</p>
+<p class="<?= $result            ? 'blue':'red' ?>">Result</p>
 
 <?php $form->Start() ?>
 <table>
