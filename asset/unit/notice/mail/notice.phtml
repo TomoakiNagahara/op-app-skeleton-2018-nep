@@ -1,0 +1,70 @@
+<?php
+/**
+ * core:/Template/Developer/Sendmail.phtml
+ *
+ * @creation  2016-11-30
+ * @version   1.0
+ * @package   core
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright 2016 (C) Tomoaki Nagahara All right reserved.
+ */
+
+//	Use functions.
+include_once(__DIR__.'/notice.inc.php');
+
+//	Timestamp
+$time_app	 = Time::Datetime();
+$time_std	 = date('Y-m-d H:i:s');
+$time_gmt	 = gmdate('Y-m-d H:i:s');
+$timestamp = $time_std;
+
+//	GMT
+if( $time_std !== $time_gmt ){
+	$timestamp .= "<i>(GMT: $time_gmt)</i>";
+}
+
+//	Frozen time
+if( $time_std !== $time_app ){
+	$timestamp .= ", <b>App: $time_app</b>";
+}
+
+//	Information of Visitor.
+$ip			 = ifset($_SERVER['REMOTE_ADDR']    );
+$host		 = gethostbyaddr($ip);
+$visitor	 = "$host ($ip)";
+$ua			 = ifset($_SERVER['HTTP_USER_AGENT']);
+$referer	 = ifset($_SERVER['HTTP_REFERER']   );
+
+//	Information of Server.
+$scheme		 = ifset($_SERVER['HTTPS']) ? 'https':'http';
+$host		 = ifset($_SERVER['HTTP_HOST']      );
+$url		 = ifset($_SERVER['REQUEST_URI']    );
+$url		 = $scheme .'://'. $host . $url;
+?>
+<div style="font-size:9pt;">
+	<div style="font-size:120%;">
+		<?php if( $messages = explode("\n", $notice['message']."\n") ): ?>
+			<?php for($i=0; $i<count($messages); $i++): ?>
+				<?php if( $i === 0 ): ?>
+					<p style="font-weight:bold;"><?= $messages[$i] ?></p>
+				<?php elseif($messages[$i]): ?>
+					<p style="font-style:italic;"><?= $messages[$i] ?></p>
+				<?php endif; ?>
+			<?php endfor; ?>
+		<?php endif; ?>
+	</div>
+	<table>
+		<tr><th> Timestamp	 </th><td> <?= $timestamp ?> <td></tr>
+		<tr>
+			<th> Visitor	 </th>
+			<td>
+				<?= $visitor ?><br/>
+				<?= $ua ?>
+			<td>
+		</tr>
+		<tr><th> URL		 </th><td> <?= $url ?>		 <td></tr>
+		<tr><th> Referer	 </th><td> <?= $referer ?>	 <td></tr>
+	</table>
+	<hr/>
+	<?php _backtrace(ifset($notice['backtrace'], [])) ?>
+</div>

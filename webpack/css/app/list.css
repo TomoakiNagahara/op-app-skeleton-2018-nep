@@ -1,0 +1,14 @@
+/**
+ * app-webpack-css:/webpack/css/list.css
+ *
+ * @creation  2018-04-17
+ * @version   1.0
+ * @package   app-webpack-css
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body ul,
+body.body ol {
+	padding-left: 1.5em;
+}

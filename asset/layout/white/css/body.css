@@ -1,0 +1,33 @@
+/**
+ * layout-white:/app/layout/white/css/body.css
+ *
+ * @creation  2017-09-06
+ * @version   1.0
+ * @package   layout-white
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body {
+	margin:  0;
+	padding: 0;
+	background-color: white;
+	color: black;
+}
+
+body.body div.content-area {
+	margin: 1em;
+}
+
+#head-area,
+#foot-area {
+	padding: 0 0.5em;
+	width: 100vw;
+	height: 20px;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+#body-area {
+	min-height: calc(100vh - 65px);
+}

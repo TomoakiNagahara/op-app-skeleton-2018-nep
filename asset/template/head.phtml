@@ -1,0 +1,29 @@
+<?php
+/**
+ * app-skeleton-2018-nep:/asset/template/head.php
+ *
+ * @creation  2018-04-12
+ * @version   1.0
+ * @package   app-skeleton
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$layout = App::Layout();
+?>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="icon"			 type="image/x-icon" href="<?= ConvertURL("app:/img/icon.png") ?>" />
+<link rel="apple-touch-icon" type="image/png"	 href="<?= ConvertURL("app:/img/icon.png") ?>" />
+<link rel="apple-touch-icon-precomposed"
+							 type="image/png"	 href="<?= ConvertURL("app:/img/icon.png") ?>" />
+
+<!-- JavaScript -->
+<script type="text/javascript" src="<?= ConvertURL("app:/webpack/js/?layout={$layout}") ?>"></script>
+
+<!-- Stylesheet -->
+<link rel="stylesheet" type="text/css" href="<?= ConvertURL("app:/webpack/css/?layout={$layout}") ?>" />
+
+<!-- title -->
+<title><?= App::Title() ?></title>

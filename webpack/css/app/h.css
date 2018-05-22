@@ -1,0 +1,33 @@
+/**
+ * app-webpack-css:/webpack/css/h.css
+ *
+ * @creation  2018-04-17
+ * @version   1.0
+ * @package   app-webpack-css
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body h1 {
+	font-size: 150%;
+}
+
+body.body h2 {
+	font-size: 150%;
+}
+
+body.body h3 {
+	font-size: 125%;
+}
+
+body.body h4 {
+	font-size: 125%;
+}
+
+body.body h5 {
+	font-size: 100%;
+}
+
+body.body h6 {
+	font-size: 100%;
+}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head>
+		<title>The onepiece-framework bootstrap was failed.</title>
+	</head>
+	<body>
+		<header>
+			onepiece-framework
+		</header>
+		<hr/>
+		<h1>The onepiece-framework bootstrap was failed.</h1>
+		<ol>
+			<?php
+			while( $notice = Notice::Get() ){
+				//	...
+				echo '<li>';
+				echo $notice['message'];
+
+				//	...
+				echo '<ol>';
+				foreach( $notice['backtrace'] as $backtrace ){
+					$file = ifset($backtrace['file']);
+					$line = ifset($backtrace['line']);
+					$func = ifset($backtrace['function']);
+					$clss = ifset($backtrace['class']);
+					$type = ifset($backtrace['type']);
+					$args = ifset($backtrace['args']);
+					$join = [];
+					$argument = null;
+
+					//	...
+					switch( $type ){
+						case '::':
+						case '->':
+							$order = $clss.$type.$func;
+							break;
+						default:
+							$order = $func;
+					}
+
+					//	...
+					if( $args === null ){
+						$argument = 'null';
+					}else{
+						foreach( $args as $arg ){
+							switch( $type = gettype($arg) ){
+								case 'string':
+									$join[] = "\"$arg\"";
+									break;
+
+								case 'array':
+									$count  = count($arg);
+									$join[] = "array($count)";
+									break;
+
+								default:
+									$join[] = $type;
+							}
+						}
+						$argument = join(', ', $join);
+					}
+
+					//	...
+					echo "<li>{$file} #{$line} {$order}($argument)</li>";
+				}
+				echo '</ol>';
+
+				//	...
+				echo "</li>";
+			}
+			?>
+		</ol>
+		<hr/>
+		<footer>
+			Copyright 2009 onepiece-framework all right reserved
+		</footer>
+	</body>
+</html>

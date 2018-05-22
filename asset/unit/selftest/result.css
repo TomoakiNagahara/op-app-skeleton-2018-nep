@@ -1,0 +1,46 @@
+/**
+ * unit-selftest:/result.css
+ *
+ * @creation  2018-05-09
+ * @version   1.0
+ * @package   unit-selftest
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+#selftest-result {
+	border:  1px solid black;
+	margin:  1em 0;
+	padding: 1em 0.5em;
+}
+
+#selftest-result .error .name {
+	font-weight: bold;
+}
+
+#selftest-result .error .name:after {
+	margin: 0.2em;
+	content: ":";
+}
+
+#selftest-result .error > .error.exist:after {
+	content: "EXIST";
+}
+
+#selftest-result .error > .error.password:after {
+	content: "PASSWORD";
+}
+
+#selftest-result .current {
+	font-style: italic;
+}
+
+#selftest-result .current:after {
+	margin-left:  0.2em;
+	margin-right: 0.4em;
+	content: "→";
+}
+
+#selftest-result .modify {
+
+}

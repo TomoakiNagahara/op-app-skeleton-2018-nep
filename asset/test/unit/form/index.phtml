@@ -1,0 +1,34 @@
+<?php
+/**
+ * unit-test:/unit/form/index.phtml
+ *
+ * @creation  2018-05-16
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<?php $form->Start(['action'=>'?']) ?>
+	<table>
+	<?php foreach( ['text','textarea','select','multiple','radio','checkbox','cookie','session','file'] as $name ): ?>
+		<tr>
+			<th><?php $form->Label($name) ?></th><td><b> : </b></td>
+			<td><?php $form->Input($name) ?></td>
+			<td><?php $form->Error($name) ?></td>
+		</tr>
+	<?php endforeach; ?>
+		<tr>
+			<td colspan=4 style="text-align:center;">
+				<button> Submit!! </button>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=4 style="text-align:center;">
+				<button onclick="location.href='?clear=1'; return false;">
+					Clear to form
+				</button>
+			</td>
+		</tr>
+	</table>
+<?php $form->Finish() ?>

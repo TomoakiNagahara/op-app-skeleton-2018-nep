@@ -1,0 +1,70 @@
+##
+# app-skeleton-2018-nep:/.htaccess
+#
+# @creation  2018-03-27
+# @version   1.0
+# @package   app-skeleton
+# @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+# @copyright Tomoaki Nagahara All right reserved.
+#
+
+##
+# Apache's settings.
+#
+
+DirectoryIndex index.php index.html
+ErrorDocument  404 https://onepiece-framework.com/reference/bootstrap/app
+
+##
+# PHP's settings.
+#
+
+php_flag  short_open_tag  On
+php_flag  display_errors  On
+php_flag  log_errors      Off
+
+##
+# onepiece-framework's execute option.
+#
+
+Options +FollowSymLinks +ExecCGI -Indexes
+
+##
+# Dispatch settings.
+#
+
+<IfModule mod_rewrite.c>
+	# Rewrite to On from Off for rewrite is started.
+	RewriteEngine Off
+
+	# This is base directory (It is app root.)
+	RewriteBase /
+
+	# If file does not exists.
+	RewriteCond  %{REQUEST_FILENAME} !-f
+
+	# Dispatched to app.php.
+	RewriteRule ^(.*)$ asset/app.php [L]
+
+	# If the file exists.
+	RewriteCond  %{REQUEST_FILENAME} -f
+
+	# Dispatched only this extension.
+	RewriteRule (app.php|\.php|\.html|\.phtml)[/-0-9a-zA-Z'"]*$ asset/app.php [L]
+</IfModule>
+
+##
+# If do not installed mod_rewrite.
+#
+
+<IfModule !mod_rewrite.c>
+	RedirectMatch 301 .* https://onepiece-framework.com/reference/bootstrap/rewrite
+</IfModule>
+
+##
+# Deny access this files.
+#
+
+<Files ~ "\.(dat|log|csv|sql)$">
+	deny from all
+</Files>

@@ -1,0 +1,31 @@
+/**
+ * unit-dump:/mark.css
+ *
+ * @creation  2017-07-29
+ * @version   1.0
+ * @package   unit-dump
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+div.OP_MARK {
+	font-size: 9pt;
+}
+
+div.OP_MARK > span {
+	font-size: inherit;
+}
+
+div.OP_MARK > span.line {
+	margin-left:  0.25em;
+	margin-right: 0.25em;
+}
+
+div.OP_MARK > span.line:before {
+	content: '#';
+}
+
+div.OP_MARK > span.line:after {
+	margin: 0.25em;
+	content: '-';
+}

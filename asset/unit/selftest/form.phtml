@@ -1,0 +1,86 @@
+<?php
+/**
+ * unit-selftest:/form.php
+ *
+ * @creation  2017-12-10
+ * @version   1.0
+ * @package   unit-selftest
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<section id="UNIT_SELFTEST">
+	<form action="" method="post">
+		<div class="table">
+			<div>
+				<div>
+					Product
+				</div>
+				<div>
+					<select name="driver">
+						<option>mysql</option>
+					</select>
+				</div>
+			</div>
+			<div>
+				<div>
+					Host
+				</div>
+				<div>
+					<input type="text" name="host" value="localhost" />
+				</div>
+			</div>
+			<div>
+				<div>
+					Port
+				</div>
+				<div>
+					<input type="text" name="port" value="3306" />
+				</div>
+			</div>
+			<div>
+				<div>
+					User
+				</div>
+				<div>
+					<input type="text" name="user" value="root" />
+				</div>
+			</div>
+			<div>
+				<div>
+					Password
+				</div>
+				<div>
+					<input type="password" name="password" value="" />
+				</div>
+			</div>
+			<div>
+				<div>
+					Charset
+				</div>
+				<div>
+					<input type="text" name="charset" value="utf8" />
+				</div>
+			</div>
+			<? if( $failed = \OP\UNIT\SELFTEST\Inspector::Failed() ): ?>
+			<div>
+				<div>
+				</div>
+				<div class="not">
+					<label>
+						<input type="checkbox" name="build" value="1" />
+						Build
+					</label>
+				</div>
+			</div>
+			<? endif; ?>
+			<div>
+				<div>
+				</div>
+				<div class="not">
+					<button> Submit </button>
+				</div>
+			</div>
+		</div>
+	</form>
+</section>

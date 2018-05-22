@@ -1,0 +1,17 @@
+/**
+ * app-webpack-css:/webpack/css/color.css
+ *
+ * @creation  2018-04-12
+ * @version   1.0
+ * @package   app-webpack-css
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body .success {
+	color: blue;
+}
+
+body.body .error {
+	color: red;
+}
