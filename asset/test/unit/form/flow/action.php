@@ -24,6 +24,9 @@ if( $_GET['clear'] ?? false ){
 }
 
 //	...
+$values = $form->Values();
+
+//	...
 if( $valid !== true ){
 	$file = 'form.phtml';
 }else{
@@ -46,7 +49,7 @@ if( $_GET['thanks'] ?? false ){
 }
 
 //	...
-App::Template($file, ['form'=>$form]);
+App::Template($file, ['form'=>$form, 'values'=>$values]);
 
 //	...
 D( $form->Values(), $form->Test(), $form->Debug() );
