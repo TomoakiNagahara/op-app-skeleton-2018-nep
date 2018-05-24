@@ -509,7 +509,7 @@ class Form
 	 *
 	 * @param string $name
 	 */
-	function Error($name, $format='<span class="error">$Name is $key error.</span>')
+	function Error($name, $format='<span class="error">$label is $rule error.</span>')
 	{
 		//	...
 		$config = $this->Config();
@@ -526,16 +526,14 @@ class Form
 
 			//	...
 			$input = $config['input'][$name];
+			$label = $input['label'] ?? $name;
 
 			//	...
 			print str_replace(
-				['$Name','$name','$Rule','$rule','$value'],
-				[ucfirst($name),$name,ucfirst($rule),$rule,$var],
+				['$label','$Name','$name','$Rule','$rule','$value'],
+				[$label, ucfirst($name), $name, ucfirst($rule), $rule, $var],
 				isset($input['error']) ? Decode($input['error']) : $format
 			);
-
-			//	...
-			$this->Debug("$name is validation error. ($rule, $var)");
 		}
 	}
 
@@ -649,28 +647,30 @@ class Form
 			return;
 		}
 
-		//	...
-		if(!$this->_errors ){
+		//	Check if validate.
+		if( $this->_errors ){
+			//	Already validation.
+		}else{
 			//	...
 			$config = $this->Config();
 			$values = $this->Values();
 
-			//	...
+			//	Each inputs.
 			foreach( $config['input'] as $name => $input ){
-				//	...
+				//	Get validation rule.
 				$rule = $input['rule'] ?? [];
 
-				//	...
+				//	Do validation.
 				$_result[$name] = \OP\UNIT\Validate::Evaluation($rule, $values[$name] ?? null, $this->_errors[$name], $values);
 			}
 		}
 
-		//	...
+		//	Individual result.
 		if( $name ){
 			return $_result[$name];
 		}
 
-		//	...
+		//	Overall result
 		return array_search(false, $_result, true) === false ? true: false;
 	}
 
@@ -732,7 +732,7 @@ class Form
 		if( $message ){
 			$_store[Hasha1($message)] = $message;
 		}else{
-			return $_store;
+			D($_store, $this->_errors);
 		}
 	}
 }
