@@ -14,6 +14,7 @@ include('connect.php');
 
 //	QQL
 D($db->quick(" t_test ",['limit'=>1]));
+D($db->quick(" t_test.ai = MAX(ai) ",['limit'=>1]));
 D($db->quick(" t_test.deleted = null ",['limit'=>1]));
 D($db->quick(" ai <- t_test.deleted = null ",['limit'=>1]));
 D($db->quick(" ai, id <- t_test.deleted = null ",['limit'=>1]));
