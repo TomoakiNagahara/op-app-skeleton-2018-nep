@@ -49,6 +49,13 @@ class Show
 				$name = $temp['Field'];
 				foreach( $temp as $key => $val ){
 					//	...
+					if( $key === 'Collation' or $key === 'Default' ){
+						if( $val === null ){
+							continue;
+						}
+					}
+
+					//	...
 					$key = lcfirst($key);
 
 					//	...
@@ -64,6 +71,13 @@ class Show
 						//	...
 						$result[$name]['type']   = $type;
 						$result[$name]['length'] = $length;
+
+						//	...
+						if( strpos($val, 'unsigned') ){
+							$result[$name]['unsigned '] = true;
+						}
+
+						//	...
 						continue;
 					}
 
