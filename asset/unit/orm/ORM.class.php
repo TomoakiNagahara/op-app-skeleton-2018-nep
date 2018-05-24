@@ -32,16 +32,52 @@ class ORM
 
 	/** IF_FORM
 	 *
-	 * @var \IF_FORM
+	 * @var \OP\UNIT\Form
 	 */
 	private $_form;
+
+	/** Insert
+	 *
+	 * @param	 array	 $config
+	 * @return	 integer $ai
+	 */
+	private function _Insert($config)
+	{
+		//	...
+		$query = \OP\UNIT\SQL\Insert::Get($config, $this->DB());
+
+		//	...
+		return $this->DB()->Query($query, 'insert');
+	}
+
+	/** Update
+	 *
+	 * @param	 array	 $config
+	 * @return	 integer $count
+	 */
+	private function _Update($config)
+	{
+		//	...
+		$query = \OP\UNIT\SQL\Update::Get($config, $this->DB());
+
+		//	...
+		return $this->DB()->Query($query, 'update');
+	}
+
+	/** Delete
+	 *
+	 */
+	private function _Delete()
+	{
+
+	}
 
 	/** Generate "Record" object.
 	 *
 	 * @param	 string				 $qql
 	 * @return	\OP\UNIT\ORM\Record	 $record
 	 */
-	function _Record($qql, $create)
+	private function _Record($qql, $create)
 	{
 		//	Force single column record.
 		$option['limit'] = 1;
@@ -150,27 +186,22 @@ class ORM
 	 * @param  ORM\Record $record
 	 * @return mixed
 	 */
-	function Save($record, $validate=[])
+	function Save($record)
 	{
 		//	...
 		if( $form = $record->Form() ){
 			//	...
 			if(!$form->Token() ){
-				return null;
+				return;
 			}
 
 			//	...
-			if(!$record->Validate() ){
-				return null;
+			if(!$form->Validate() ){
+				return;
 			}
 
 			//	...
 			$record->Sets( $form->Values() );
-		}
-
-		//	...
-		if(!$record->Changed()){
-			return true;
 		}
 
 		//	...
@@ -184,17 +215,23 @@ class ORM
 		$pval = $record->Get($pkey);
 
 		//	...
+		unset($config['set'][$pkey]);
+
+		//	...
+		if( empty($config['set']) ){
+			return;
+		}
+
+		//	...
 		if( $pval ){
 			//	Update
 			$config['where'][$pkey] = $pval;
 			$config['limit'] = 1;
 
 			//	...
-			$pval = $this->_Update($config) ? true: false;
+			$pval = $this->_Update($config) !== false ? true: false;
 		}else{
 			//	Insert
-			unset($config['set'][$pkey]);
-
 			//	Get new insert id.
 			$pval = $this->_Insert($config);
 
@@ -211,30 +248,10 @@ class ORM
 		return $pval;
 	}
 
-	function _Insert($config)
-	{
-		//	...
-		$query = \OP\UNIT\SQL\Insert::Get($config, $this->DB());
-
-		//	...
-		return $this->DB()->Query($query, 'insert');
-	}
-
-	function _Select()
-	{
-
-	}
-
-	function _Update($config)
-	{
-		//	...
-		$query = \OP\UNIT\SQL\Update::Get($config, $this->DB());
-
-		//	...
-		return $this->DB()->Query($query, 'update');
-	}
-
-	function _Delete()
+	/** Delete record.
+	 *
+	 */
+	function Delete()
 	{
 
 	}

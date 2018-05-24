@@ -35,7 +35,7 @@ class Config
 	 * @param	 array	 $column
 	 * @return	 string	 $type
 	 */
-	static function _Type($column)
+	static private function _Type($column)
 	{
 		//	...
 		if( $column['key'] === 'pri' ){
@@ -64,6 +64,53 @@ class Config
 		return $type;
 	}
 
+	/** Generate validation rule.
+	 *
+	 * @param	 array	 $column
+	 * @return	 string	 $rule
+	 */
+	static private function _Rule( array $column )
+	{
+		//	...
+		$rule = [];
+
+		//	Required
+		if(!$column['null'] and $column['extra'] !== 'auto_increment' ){
+			//	...
+			if( $column['type'] === 'timestamp' ){
+				//	...
+			}else{
+				$rule[] = 'required';
+			}
+		}
+
+		//	...
+		switch( $type = $column['type'] ){
+			case 'int':
+				$rule[] = 'integer';
+				break;
+
+			case 'float':
+				$rule[] = 'number';
+				break;
+
+			case 'char':
+			case 'varchar':
+				$rule[] = "long({$column['length']})";
+				break;
+
+			default:
+		}
+
+		//	...
+		if( $column['unsigned '] ?? null ){
+			$rule[] = 'positive';
+		}
+
+		//	...
+		return join(', ', $rule);
+	}
+
 	/** Generate form config.
 	 *
 	 * @param  string $database
@@ -79,8 +126,12 @@ class Config
 		//	...
 		foreach( $columns as $column ){
 			//	...
+			if(!$type = self::_Type($column) ){
+				continue;
+			}
+
+			//	...
 			$name = $column['field'];
-			$type = self::_Type($column);
 
 			//	...
 			if( $column['key'] === 'pri' ){
@@ -93,12 +144,13 @@ class Config
 			$input['type']  = $type;
 			$input['value'] = $record[$name];
 			$input['label'] = $type === 'hidden' ? '': $name;
+			$input['rule']  = self::_Rule($column);
 		//	$input['session'] = false;
 			$config['input'][$name] = $input;
 		}
 
 		//	...
-		$config['name'] = self::FormName($database, $table, $record[$pkey] ?? 0);
+		$config['name'] = self::GetFormName($database, $table, $record[$pkey] ?? null);
 
 		//	...
 		return $config;
@@ -111,52 +163,8 @@ class Config
 	 * @param  string $pval
 	 * @return string $hash
 	 */
-	static function FormName($database, $table, $pval)
+	static function GetFormName( string $database, string $table, string $pval )
 	{
 		return Hasha1($database.' '.$table.' '.$pval);
-	}
-
-	/** Generate validate configuration.
-	 *
-	 */
-	static function Validate($struct)
-	{
-		//	...
-		$validate = [];
-
-		//	...
-		foreach( $struct as $column ){
-			//	...
-			$join = [];
-
-			//	...
-			if(!$column['null'] and $column['extra'] !== 'auto_increment' ){
-				$join[] = 'required';
-			}
-
-			//	...
-			switch( $type = $column['type'] ){
-				case 'int':
-					$join[] = 'integer';
-					break;
-
-				case 'char':
-				case 'varchar':
-					$join[] = "long({$column['length']})";
-					break;
-
-				case 'timestamp':
-					$join = [];
-					break;
-
-				default:
-			}
-
-			//	...
-			$validate[$column['field']] = join(', ', $join);
-		}
-
-		//	...
-		return $validate;
 	}
 }

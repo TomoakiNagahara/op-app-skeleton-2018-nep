@@ -60,12 +60,6 @@ class Record
 	 */
 	private $_change;
 
-	/** Validation errors.
-	 *
-	 * @var array
-	 */
-	private $_validate;
-
 	/** Validation result.
 	 *
 	 * @var boolean
@@ -129,16 +123,16 @@ class Record
 	function __set($name, $value)
 	{
 		//	...
-		$type = gettype($value);
-
-		//	...
-		if(!isset($this->_change[$name]) ){
-			//	...
-		}else
-
-		//	...
-		if( $this->_change[$name] === $value ){
+		if( $value === null ){
 			return;
+		}
+
+		//	Already changed.
+		if( isset($this->_change[$name]) ){
+			//	Return if the values are the same.
+			if( $this->_change[$name] === $value ){
+				return;
+			}
 		}
 
 		//	$this->_record is origin.
@@ -248,7 +242,7 @@ class Record
 	 * @param unknown $record
 	 * @return \OP\UNIT\Form
 	 */
-	function Form()
+	function &Form()
 	{
 		/* @var $_form IF_FORM */
 		static $_form;
@@ -275,27 +269,15 @@ class Record
 
 	/** Validation
 	 *
+	 * @return boolean
 	 */
 	function Validate()
 	{
 		//	...
-		if( $this->_isValid !== null ){
-			return $this->_validate;
+		if( $this->_isValid === null ){
+			//	...
+			$this->_isValid = $this->Form()->Validate();
 		}
-
-		//	...
-		if(!\Unit::Load('validate')){
-			return false;
-		}
-
-		//	...
-		$rules  = Config::Validate($this->_columns);
-
-		//	...
-		$values = $this->Form()->Values();
-
-		//	...
-		$this->_isValid = \OP\UNIT\Validate::Evaluations($rules, $values, $this->_validate);
 
 		//	...
 		return $this->_isValid;
@@ -316,7 +298,7 @@ class Record
 	 */
 	function isValid()
 	{
-		return $this->_isValid;
+		return $this->Validate();
 	}
 
 	/** Get value.
@@ -371,5 +353,20 @@ class Record
 
 		//	...
 		return $result;
+	}
+
+	/** For developers
+	 *
+	 */
+	function Debug()
+	{
+		$info['database']= $this->_database;
+		$info['table']	 = $this->_table;
+		$info['record']	 = $this->_record;
+		$info['column']	 = $this->_columns;
+		$info['change']	 = $this->_change;
+		$info['found']	 = $this->isFound();
+		$info['valid']	 = $this->isValid();
+		D($info);
 	}
 }
