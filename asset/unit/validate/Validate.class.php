@@ -96,7 +96,7 @@ class Validate
 	{
 		switch( $which ){
 			case 'integer':
-				$eval = '/([^0-9]+)/';
+				$eval = '/([^-0-9]+)/';
 				break;
 
 			case 'ascii':
@@ -289,7 +289,11 @@ class Validate
 					break;
 
 				case 'number':
-					$error[$key] = !is_numeric($value);
+					if( $len = mb_strlen($value) ){
+						$error[$key] = !is_numeric($value);
+					}else{
+						$error[$key] = false;
+					}
 					break;
 
 				case 'integer':
