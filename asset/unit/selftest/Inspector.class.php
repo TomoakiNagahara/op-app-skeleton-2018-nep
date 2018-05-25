@@ -127,7 +127,7 @@ class Inspector
 						$define['field'] = $column_name;
 
 						//	...
-						switch( $type = $define['type'] ){
+						switch( $type = $define['type'] ?? null ){
 							case 'text':
 								unset($define['length']);
 								break;
@@ -327,7 +327,7 @@ class Inspector
 			$key = $user_name.'@'.$host;
 
 			//	...
-			$result = &self::$_result[$dsn]['user'][$user_name];
+			$result = &self::$_result[$dsn]['users'][$user_name];
 
 			//	Check user exist.
 			if( $result['exist'] = isset($lists[$key]) ){
@@ -336,14 +336,89 @@ class Inspector
 				$password = $DB->Query($sql, 'password');
 
 				//	Check password match.
-				$result['password'] = ($lists[$key]['password'] === $password);
+				if(!$result['password'] = ($lists[$key]['password'] === $password) ){
+					$result['modify']   = $user['password'];
+				}
 			}
 
-			//	Result
+			//	Check passowrd.
 			if(!$result['result'] = ( $result['exist'] and $result['password'] ) ){
 				self::$_failure = true;
 			}
+
+			//	Privilege
+			if(!self::Privilege($DB, $host, $user_name, $configs, $result) ){
+				self::$_failure = true;
+				$result['result'] = false;
+			}
 		}
+	}
+
+	/** Check privilege.
+	 *
+	 * @param	\OP\UNIT\DB	 $DB
+	 * @param	 string		 $host
+	 * @param	 string		 $user
+	 * @param	 array		 $configs
+	 * @param	 array		 $result
+	 */
+	static function Privilege($DB, $host, $user, $configs, &$result)
+	{
+		//	...
+		if( $result['exist'] === false ){
+			return;
+		}
+
+		//	...
+		if(!$sql  = \OP\UNIT\SQL\Show::Grant($DB, $host, $user) ){
+			return;
+		}
+
+		//	...
+		$grants = $DB->Query($sql, 'show');
+
+		//	...
+		foreach( $configs['users'][$user]['privilege'] as $database => $tables ){
+			foreach( $tables as $table => $privileges ){
+				//	...
+				if(!isset($grants[$user][$host][$database][$table]) ){
+					$result['privileges'] = false;
+					continue;
+				}
+
+				//	...
+				foreach( $privileges as $privilege => $columns ){
+					//	...
+					if( is_string($privilege) ){
+						foreach( explode(',', $privilege) as $key ){
+							$temp[trim($key)] = $columns;
+						}
+
+						//	...
+						$privilege = $temp;
+					}
+
+					//	...
+					foreach( $privilege as $key => $field ){
+						//	...
+						if( isset($grants[$user][$host][$database][$table][$key]) ){
+							continue;
+						}
+
+						//	...
+						$result['privileges'] = false;
+					}
+				}
+			}
+		}
+
+		//	...
+		if( empty($result['privileges']) ){
+			$result['privileges'] = true;
+		}
+
+		//	...
+		return $result['privileges'] === true ? true: false;
 	}
 
 	/** Check each user connection.
