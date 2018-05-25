@@ -11,3 +11,7 @@
 body.body .indent {
 	padding-left: 1em;
 }
+
+body.body hr {
+	margin: 0.5em 0;
+}
