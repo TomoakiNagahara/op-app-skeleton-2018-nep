@@ -37,7 +37,7 @@ class Configer
 		return self::$_config;
 	}
 
-	static function Host($host=null, $product=null, $port=null)
+	static function DSN($host=null, $product=null, $port=null)
 	{
 		static $_host = 'localhost', $_product = 'mysql', $_port = '3306';
 
@@ -75,8 +75,8 @@ class Configer
 		//	...
 		if( $user ){
 			$_user = $user;
-			$host  = self::Host();
-			self::$_config[$host]['users'][$_user]['name'] = $_user;
+			$dsn   = self::Dsn();
+			self::$_config[$dsn]['users'][$_user]['name'] = $_user;
 		}
 
 		//	...
@@ -86,23 +86,32 @@ class Configer
 
 		if( $charset ){
 			$_charset = $charset;
-			self::$_config[$host]['users'][$_user]['charset'] = $_charset;
+			self::$_config[$dsn]['users'][$_user]['charset'] = $_charset;
 		}
 
 		//	...
 		return $_user;
 	}
 
-	static function Password($password=null, $hash=false)
+	static function Privilege($user, $database, $table='*', $privilege='INSERT, SELECT, UPDATE, DELETE', $column='*')
+	{
+		//	...
+		$dsn = self::Dsn();
+
+		//	...
+		self::$_config[$dsn]['users'][$user]['privilege'][$database][$table][$privilege] = $column;
+	}
+
+	static function Password($password=null)
 	{
 		static $_password;
 		if( $password ){
-			$_password = $hash ? Hasha1($password, 16): $password;
+			$_password = $password;
 
 			//	...
-			$host = self::Host();
+			$dsn  = self::Dsn();
 			$user = self::User();
-			self::$_config[$host]['users'][$user]['password'] = $_password;
+			self::$_config[$dsn]['users'][$user]['password'] = $_password;
 		}
 		return $_password;
 	}
@@ -112,10 +121,10 @@ class Configer
 		static $_database;
 		if( $database ){
 			$_database = $database;
-			$host      = self::Host();
+			$dsn       = self::Dsn();
 			$collation = self::_Collate($charset);
-			self::$_config[$host]['databases'][$database]['name']      = $_database;
-			self::$_config[$host]['databases'][$database]['collation'] = $collation;
+			self::$_config[$dsn]['databases'][$database]['name']      = $_database;
+			self::$_config[$dsn]['databases'][$database]['collation'] = $collation;
 		}
 		return $_database;
 	}
@@ -125,12 +134,12 @@ class Configer
 		static $_table;
 		if( $table ){
 			$_table    = $table;
-			$host      = self::Host();
+			$dsn       = self::Dsn();
 			$database  = self::Database();
 			$collation = self::_Collate($charset);
-			self::$_config[$host]['databases'][$database]['tables'][$table]['name']      = $_table;
-			self::$_config[$host]['databases'][$database]['tables'][$table]['collation'] = $collation;
-			self::$_config[$host]['databases'][$database]['tables'][$table]['comment']   = $comment;
+			self::$_config[$dsn]['databases'][$database]['tables'][$table]['name']      = $_table;
+			self::$_config[$dsn]['databases'][$database]['tables'][$table]['collation'] = $collation;
+			self::$_config[$dsn]['databases'][$database]['tables'][$table]['comment']   = $comment;
 		}
 		return $_table;
 	}
@@ -138,7 +147,7 @@ class Configer
 	static function Column($name, $type, $length, $null, $default, $comment)
 	{
 		//	...
-		$host     = self::Host();
+		$dsn      = self::Dsn();
 		$database = self::Database();
 		$table    = self::Table();
 
@@ -161,15 +170,23 @@ class Configer
 		}
 
 		//	...
-		self::$_config[$host]['databases'][$database]['tables'][$table]['columns'][$name] = $column;
+		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$name] = $column;
 	}
 
 	static function Index($name, $type, $column, $comment)
 	{
 		//	...
-		$host     = self::Host();
+		$dsn      = self::Dsn();
 		$database = self::Database();
 		$table    = self::Table();
+
+		//	...
+		foreach( explode(',', $column) as $field ){
+			if( empty(self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][trim($field)]) ){
+				\Notice::Set("Set index was failed. Has not been set this column. ($database, $table, $column)");
+				return;
+			}
+		}
 
 		//	...
 		$index['name']    = $name;
@@ -182,35 +199,39 @@ class Configer
 			case 'ai':
 			case 'pri':
 			case 'pkey':
-				self::$_config[$host]['databases'][$database]['tables'][$table]['columns'][$column]['key']   = 'pri';
-				self::$_config[$host]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
+				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['key']   = 'pri';
+				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
 				break;
 		}
 
 		//	...
-		self::$_config[$host]['databases'][$database]['tables'][$table]['indexes'][$name] = $index;
+		self::$_config[$dsn]['databases'][$database]['tables'][$table]['indexes'][$name] = $index;
 	}
 
-	static function Charset($table=null, $charset=null)
+	static function Charset($field, $charset)
 	{
-		if( $table and $charset ){
-			self::Collate($table, $charset);
-		}
-		return self::Collate();
+		self::Collate($field, $charset);
 	}
 
-	static function Collate($field=null, $collate=null)
+	static function Collate($field, $collate)
 	{
-		if( $field and $collate ){
-			$host     = self::Host();
-			$database = self::Database();
-			$table    = self::Table();
-			$collate  = self::_Collate($collate);
-			list($charset) = explode('_', $collate);
-			self::$_config[$host]['databases'][$database]['tables'][$table]['columns'][$field]['charset']   = $charset;
-			self::$_config[$host]['databases'][$database]['tables'][$table]['columns'][$field]['collate']   = $collate;
-			self::$_config[$host]['databases'][$database]['tables'][$table]['columns'][$field]['collation'] = $collate;
+		//	...
+		$dsn      = self::Dsn();
+		$database = self::Database();
+		$table    = self::Table();
+		$collate  = self::_Collate($collate);
+		list($charset) = explode('_', $collate);
+
+		//	...
+		if( empty(self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]) ){
+			\Notice::Set("Set collate is failed. Has not been set this column. ($database, $table, $field)");
+			return;
 		}
+
+		//	...
+		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]['charset']   = $charset;
+		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]['collate']   = $collate;
+		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]['collation'] = $collate;
 	}
 
 	static private function _Collate($collate)

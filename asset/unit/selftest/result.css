@@ -31,16 +31,44 @@
 	content: "PASSWORD";
 }
 
+#selftest-result .error > .error.privilege:after {
+	content: "PRIVILEGE";
+}
+
 #selftest-result .current {
-	font-style: italic;
+	margin-left: 0.5em;
+	_font-style: italic;
+	_font-weight: bold;
 }
 
 #selftest-result .current:after {
 	margin-left:  0.2em;
 	margin-right: 0.4em;
+}
+
+#selftest-result .arrow:after {
+	margin: 0.5em;
 	content: "→";
 }
 
 #selftest-result .modify {
+}
 
+
+#selftest-result .empty:after,
+#selftest-result .empty:before {
+	margin:  0;
+	padding: 0;
+	content: '"';
+} 
+
+#selftest-result .user .modify:before {
+	margin-left:  0.3em;
+	margin-right: 0.1em;
+	content: "("
+}
+
+#selftest-result .user .modify:after {
+	margin-left:  0.1em;
+	content: ")"
 }

@@ -38,7 +38,7 @@
 			item.innerText = 'Users';
 			list.appendChild(item);
 			root.appendChild(list);
-		__user(list, json[dsn]['user']);
+		__user(list, json[dsn]['users']);
 
 		//	...
 		var list = document.createElement('ul');
@@ -59,6 +59,7 @@
 	function __user( root, json){
 		//	...
 		var list = document.createElement('ol');
+			list.classList.add('user');
 			root.appendChild(list);
 
 		//	...
@@ -68,12 +69,14 @@
 			var color  = result ? 'success':'error';
 
 			//	...
-			var name = document.createElement('span');
-			var error= document.createElement('span');
-			var item = document.createElement('li');
+			var name   = document.createElement('span');
+			var error  = document.createElement('span');
+			var modify = document.createElement('span');
+			var item   = document.createElement('li');
 				item.classList = color;
 				item.appendChild(name);
 				item.appendChild(error);
+				item.appendChild(modify);
 				list.appendChild(item);
 
 			//	...
@@ -82,8 +85,15 @@
 
 			//	...
 			error.classList.add('error');
-			if(!json[user]['exist']    ){ error.classList.add('exist')    }
-			if(!json[user]['password'] ){ error.classList.add('password') }
+			if(!json[user]['exist']    ){ error.classList.add('exist')    }else
+			if(!json[user]['password'] ){ error.classList.add('password') }else
+			if(!json[user]['privilege']){ error.classList.add('privilege')}
+
+			//	...
+			if( json[user]['modify'] ){
+				modify.innerText = json[user]['modify'];
+				modify.classList.add('modify');
+			}
 		}
 	}
 
@@ -159,23 +169,26 @@
 
 				//	...
 				for(var column in json[database][table] ){
-					var result =  json[database][table][column]['result'];
-					var color  = result ? 'success':'error';
+					//	...
+					var result = json[database][table][column]['result'];
+					var color  = result ? 'success' : 'error';
 					var item = document.createElement('li');
 						item.innerText = column;
 						item.classList.add(color);
-						list.appendChild(item);
-
-					if( result === false ){
-						continue;
-					}
-
-					//	...
-					__details(item, json[database][table][column]);
+						if( !result ){
+							item.classList.add('bold');
+						}
+					list.appendChild(item);
 
 					//	...
-					if( item.querySelector('.error') ){
-						continue;
+					var result = __details(list, json[database][table][column]);
+
+					//	...
+					if( result ){
+						item.classList.add('success');
+					}else{
+						item.classList.add('error');
+						item.classList.add('bold');
 					}
 
 					//	...
@@ -183,7 +196,7 @@
 				}
 			}
 		}
-	}
+	};
 
 	//	...
 	function __details(root, json){
@@ -198,38 +211,61 @@
 			}
 
 			//	...
-			var result = json[name]['result'];
-
-			//	...
-			if( result === true ){
+			if( json[detail]['result'] ){
 				continue;
 			}
 
 			//	...
-			var color  = result ? 'success':'error';
-			var item   = document.createElement('li');
-				item.classList.add(color);
-				list.appendChild(item);
+			result = false;
 
 			//	...
-			var label   = document.createElement('span');
-			var current = document.createElement('span');
-			var modify  = document.createElement('span');
+			var span = document.createElement('span');
+				span.innerText = detail;
+				span.classList.add('bold');
+
+			var item = document.createElement('li');
+				item.classList.add('error');
 
 			//	...
-			label   . classList.add('name');
-			current . classList.add('current');
-			modify  . classList.add('modify');
+			item.appendChild(span);
+			list.appendChild(item);
 
 			//	...
-			label  .innerText = name;
-			current.innerText = json[name]['detail']['current'];
-			modify .innerText = json[name]['detail']['modify'];
-
-			//	...
-			item.appendChild(label);
-			item.appendChild(current);
-			item.appendChild(modify);
+			__detail(item, json[detail]['detail']);
 		}
-	}
+
+		//	...
+		return result;
+	};
+
+	//	...
+	function __detail(item, json){
+		//	...
+		var current = document.createElement('span');
+		var arrow   = document.createElement('span');
+		var modify  = document.createElement('span');
+
+		//	...
+		current.innerText = json.current;
+		modify .innerText = json.modify;
+
+		//	...
+		item   .classList.add('name');
+		current.classList.add('current');
+		arrow  .classList.add('arrow');
+		modify .classList.add('modify');
+
+		//	...
+		if( json.current.length === 0 ){
+			current.classList.add('empty');
+		}
+		if( json.modify .length === 0 ){
+			modify .classList.add('empty');
+		}
+
+		//	...
+		item.appendChild(current);
+		item.appendChild(arrow);
+		item.appendChild(modify);
+	};
 })();
