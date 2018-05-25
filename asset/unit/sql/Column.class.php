@@ -82,6 +82,11 @@ class Column
 		$common = self::Field($config, $DB);
 		$index  = self::Index($config, $DB);
 
+		//	"PRIMARY KEY" can not been change.
+		if( $verb === 'MODIFY' and strpos($index, 'PRIMARY KEY') === 0 ){
+			$index = null;
+		}
+
 		//	...
 		if( $verb === 'MODIFY' ){
 			$index = null;
@@ -220,6 +225,6 @@ class Column
 		$key = Index::Type($config['type'], $config['key']);
 
 		//	...
-		return " $key($field)";
+		return "$key($field)";
 	}
 }

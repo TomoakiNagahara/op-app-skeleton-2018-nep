@@ -32,6 +32,10 @@ class Grant
 
 	/** Grant to Privilege.
 	 *
+	 * <pre>
+	 * Has not been support to privilege to each column yet.
+	 * </pre>
+	 *
 	 * @param array $config
 	 * @param array $DB
 	 */
@@ -50,7 +54,7 @@ class Grant
 		//	...
 		foreach( ['database','table'] as $key ){
 			if( isset($config[$key]) ){
-				${$key} = $DB->Quote($config[$key]);
+				${$key} = $config[$key] === '*' ? '*': $DB->Quote($config[$key]);
 			}else{
 				\Notice::Set("Has not been set $key.");
 				return false;
@@ -90,7 +94,11 @@ class Grant
 			return false;
 		}
 
-		//	...
+		/*
+		 REVOKE ALL PRIVILEGES ON `testcase`.`t_test` FROM 'testcase'@'localhost';
+		 GRANT SELECT (`ai`, `id`), UPDATE (`ai`) ON `testcase`.`t_test` TO 'testcase'@'localhost';
+		 */
+		//		GRANT SELECT,INSERT ON  `database`.*      TO  'user'@'host';
 		return "GRANT {$privileges} ON {$database}.{$table} TO {$user}@{$host}";
 	}
 }

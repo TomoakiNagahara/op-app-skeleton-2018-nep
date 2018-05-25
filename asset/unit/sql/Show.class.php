@@ -108,4 +108,18 @@ class Show
 		}
 		return $sql;
 	}
+
+	/** Show user grant.
+	 *
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $user
+	 * @param	 string		 $host
+	 * @return	 string		 $query
+	 */
+	static function Grant($DB, $host, $user)
+	{
+		$user = $DB->GetPDO()->Quote($user);
+		$host = $DB->GetPDO()->Quote($host);
+		return "SHOW GRANTS FOR {$user}@{$host}";
+	}
 }
