@@ -14,17 +14,17 @@ $dir = ConvertURL('testcase:/');
 //	...
 $list = App::Session('testcase-menu') ?? $list = ['core'=>[],'unit'=>[]];
 
-//	...
+//	Search directory recursively.
 $args = App::Args();
 $target = &$list;
 while( $arg = array_shift($args) ){
-	//	...
+	//	Build recursively.
 	$target = &$target[$arg];
 	$join[] = $arg;
 	$path = join('/',$join);
 
-	//	...
-	if( $handle = opendir($path) ){
+	//	Search files in the directory.
+	if( is_dir($path) and $handle = opendir($path) ){
 		while( false !== ($file = readdir($handle)) ){
 			if( $file === '.' or $file === '..' or $file === 'action.php' ){
 				continue;
