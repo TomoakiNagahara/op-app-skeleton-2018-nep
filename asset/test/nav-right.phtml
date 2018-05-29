@@ -8,6 +8,13 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+
+//	...
+if(!$menu = ($_GET['menu'] ?? 1) ){
+	echo '<!-- menu is hidden -->'.PHP_EOL;
+	return;
+}
+
 //	...
 $dir = ConvertURL('testcase:/');
 
@@ -35,7 +42,7 @@ while( $arg = array_shift($args) ){
 			$file = $temp[0];
 
 			//	...
-			if( $temp[1] and $temp[1] !== 'php' ){
+			if( isset($temp[1]) and $temp[1] !== 'php' ){
 				continue;
 			}
 
@@ -58,17 +65,9 @@ function _list($list, $dir){
 	echo '</ul>';
 }
 ?>
-<menu class="testcase">
+<nav id="testcase-nav-right">
 	<ul>
 		<li><a href="<?= $root = ConvertURL('testcase:/') ?>">testcase</a></li>
 		<?php _list($list, $root); ?>
 	</ul>
-</menu>
-<style>
-menu.testcase {
-	border:  1px solid black;
-	margin:  0 1em 1em 1em;
-	padding: 0.5em 1em;
-	float:right;
-}
-</style>
+</nav>

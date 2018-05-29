@@ -1,30 +1,13 @@
 <?php
 /**
- * unit-test:/unit/database/selftest.php
+ * unit-test:/unit/database/selftest/testcase@t_test.inc.php
  *
- * @creation  2018-05-11
+ * @creation  2018-05-29
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-/* @var $db \OP\UNIT\Database */
-include('connect.php');
-
-//	...
-if(!Unit::Load('selftest') ){
-	return;
-}
-
-//	...
-OP\UNIT\SELFTEST\Configer::Host('localhost', 'mysql', '3306');
-
-//	...
-OP\UNIT\SELFTEST\Configer::User('testcase', 'password', false, 'utf8');
-
-//	...
-OP\UNIT\SELFTEST\Configer::Database('testcase');
-
 //	...
 OP\UNIT\SELFTEST\Configer::Table('t_test');
 
@@ -48,31 +31,3 @@ OP\UNIT\SELFTEST\Configer::Index( 'search',   'index', 'tag, weight', 'search in
 
 //	...
 OP\UNIT\SELFTEST\Configer::Collate('id', 'ascii');
-
-//	...
-\OP\UNIT\SELFTEST\Inspector::Auto( OP\UNIT\SELFTEST\Configer::Get() );
-
-//	...
-$build  = \OP\UNIT\SELFTEST\Inspector::Build();
-$failed = \OP\UNIT\SELFTEST\Inspector::Failed();
-
-//	...
-while( $message = \OP\UNIT\SELFTEST\Inspector::Error() ){
-	printf('<p class="testcase selftest bold error">%s</p>', $message);
-}
-
-//	...
-if( $failed !== false ){
-	\OP\UNIT\SELFTEST\Inspector::Form();
-}
-
-//	...
-\OP\UNIT\SELFTEST\Inspector::Result();
-
-// ...
-if( ifset($_GET['debug']) ){
-	\OP\UNIT\SELFTEST\Inspector::Debug();
-}
-
-//	...
-D($build, $failed);
