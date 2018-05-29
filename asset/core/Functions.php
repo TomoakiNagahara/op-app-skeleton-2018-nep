@@ -159,15 +159,47 @@ function D()
 	OP\UNIT\Dump::Mark(func_get_args());
 }
 
-/** Decode single string.
+/** Decode
  *
- * @param  string $string
+ * @param  mixed  $value
  * @param  string $charset
  * @return string $var
  */
-function Decode($string, $charset=null)
+function Decode($value, $charset=null)
 {
-	$charset = Env::Charset();
+	//	...
+	if(!$charset ){
+		$charset = Env::Charset();
+	}
+
+	//	...
+	switch( $type = gettype($value) ){
+		//	...
+		case 'string':
+			$value = DecodeString($value, $charset);
+			break;
+
+		//	...
+		case 'array':
+			$result = [];
+			foreach( $value as $key => $val ){
+				$key = is_string($key) ? DecodeString($key, $charset): $key;
+				$val = Decode($val, $charset);
+				$result[$key] = $val;
+			}
+			$value = $result;
+			break;
+
+		//	...
+		default:
+	}
+
+	//	...
+	return $value;
+}
+
+function DecodeString($string, $charset)
+{
 	return html_entity_decode($string, ENT_QUOTES, $charset);
 }
 
