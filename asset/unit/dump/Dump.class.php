@@ -61,17 +61,6 @@ class Dump
 		}
 	}
 
-	/** Convert to json from array.
-	 *
-	 * @param array $obj
-	 */
-	static function _toJson($obj)
-	{
-		$json = json_encode($obj);
-		$json = htmlentities($json, ENT_NOQUOTES, 'utf-8');
-		return $json;
-	}
-
 	/** Mark
 	 *
 	 */
@@ -174,11 +163,11 @@ class Dump
 		}
 
 		//	...
-		print '<div class="OP_MARK">'.self::_toJson($mark).'</div>'.PHP_EOL;
+		Json($mark, 'OP_MARK');
 
 		//	...
 		foreach( $later as $value ){
-			print '<div class="OP_DUMP">'.self::_toJson($value).'</div>'.PHP_EOL;
+			Json($value, 'OP_DUMP');
 		}
 	}
 
