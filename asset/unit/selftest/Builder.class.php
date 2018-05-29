@@ -39,10 +39,8 @@ class Builder
 	static function Auto($configs, $results, $DB)
 	{
 		//	...
-		$prod = $DB->Driver();
-		$host = $DB->Host();
-		$port = $DB->Port();
-		$dsn  = "{$prod}://{$host}:{$port}";
+		$config	 = $DB->Config();
+		$dsn	 = "{$config['prod']}://{$config['host']}:{$config['port']}";
 
 		//	...
 		if(!$config = ifset($configs[$dsn]) ){
@@ -265,7 +263,7 @@ class Builder
 	static function User($configs, $results, $DB)
 	{
 		//	...
-		$host = $DB->Host();
+		$host = $DB->Config()['host'];
 
 		//	...
 		foreach( $results as $user => $result ){

@@ -205,13 +205,16 @@
 		root.appendChild(list);
 
 		//	...
+		var result = true;
+
+		//	...
 		for(var name in json){
 			if( name === 'result' ){
 				continue;
 			}
 
 			//	...
-			if( json[detail]['result'] ){
+			if( json[name]['result'] ){
 				continue;
 			}
 
@@ -220,7 +223,7 @@
 
 			//	...
 			var span = document.createElement('span');
-				span.innerText = detail;
+				span.innerText = name;
 				span.classList.add('bold');
 
 			var item = document.createElement('li');
@@ -231,7 +234,7 @@
 			list.appendChild(item);
 
 			//	...
-			__detail(item, json[detail]['detail']);
+			__detail(item, json[name]['detail']);
 		}
 
 		//	...
