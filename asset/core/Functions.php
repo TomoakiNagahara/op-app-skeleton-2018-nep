@@ -306,3 +306,23 @@ function ifset(&$check, $alternate=null)
 {
 	return isset($check) ? $check : $alternate;
 }
+
+/** Output secure JSON.
+ *
+ * @param	 array	 $json
+ * @param	 string	 $attr
+ */
+function Json($json, $attr)
+{
+	//	Decode
+	$json = Decode($json);
+
+	//	Convert to json.
+	$json = json_encode($json);
+
+	//	...
+	$json = htmlentities($json, ENT_NOQUOTES, 'utf-8');
+
+	//	Print
+	printf('<div class="%s">%s</div>'.PHP_EOL, $attr, $json);
+}
