@@ -109,6 +109,11 @@ class Template
 	{
 		try {
 			//	...
+			if( $file_path === null ){
+				return;
+			}
+
+			//	...
 			if(!$file_path){
 				\Notice::Set("Has not been set file path. ($file_path)");
 				return;
