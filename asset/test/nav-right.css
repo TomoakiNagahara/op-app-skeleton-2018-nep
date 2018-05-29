@@ -1,0 +1,31 @@
+/**
+ * unit-test:/menu.css
+ *
+ * @creation  2018-05-28
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+#testcase-nav-right {
+	border:  1px solid black;
+	margin:  0 1em 1em 1em;
+	padding: 0.5em 1em;
+	float:right;
+}
+
+#testcase-nav-right span:nth-child(1):before {
+	content: "[";
+	padding: 0 0.5em;
+}
+
+#testcase-nav-right span:after {
+	content: "|";
+	padding: 0 0.5em;
+}
+
+#testcase-nav-right span:last-child:after {
+	content: "]";
+	padding: 0 0.5em;
+}

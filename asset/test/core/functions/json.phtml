@@ -1,0 +1,22 @@
+<?php
+/**
+ * unit-test:/core/functions/json.phtml
+ *
+ * @creation  2018-05-29
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$navi['label'] = 'Dump(ON)';
+$navi['url']   = '?dump=1';
+$navies[] = $navi;
+
+//	...
+$navi['label'] = 'Dump(OFF)';
+$navi['url']   = '?dump=0';
+$navies[] = $navi;
+
+//	...
+__navigation($navies);

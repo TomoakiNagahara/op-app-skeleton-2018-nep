@@ -1,0 +1,40 @@
+/**
+ * unit-test:/index.css
+ *
+ * @creation  2018-05-31
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+#testcase > h1 {
+	font-size: 100%;
+	margin-bottom: 0.5em;
+	padding-bottom:0.25em;
+	border-bottom: 2px solid #aaa;
+}
+
+#testcase > nav {
+	_border: 1px solid black;
+	margin: 0.5em 0;
+}
+
+#testcase > nav span {
+	_border: 1px solid black;
+}
+
+#testcase > nav span:first-child:before {
+	content: "[";
+	margin-right: 0.5em;
+}
+
+#testcase > nav span:after {
+	content: "|";
+	margin: 0 0.5em;
+}
+
+#testcase > nav span:last-child:after {
+	content: "]";
+	margin-left: 0.5em;
+}
