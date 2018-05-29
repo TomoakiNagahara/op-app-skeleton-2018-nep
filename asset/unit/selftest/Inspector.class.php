@@ -378,7 +378,7 @@ class Inspector
 		$grants = $DB->Query($sql, 'show');
 
 		//	...
-		foreach( $configs['users'][$user]['privilege'] as $database => $tables ){
+		foreach( $configs['users'][$user]['privilege'] ?? [] as $database => $tables ){
 			foreach( $tables as $table => $privileges ){
 				//	...
 				if(!isset($grants[$user][$host][$database][$table]) ){
@@ -658,9 +658,6 @@ class Inspector
 
 			//	...
 			if(!$io ){
-				if( $field === 'timestamp' ){
-					D($io, $table, $field, $key, $fact, $column);
-				}
 				$success = false;
 				self::$_failure = true;
 				$_result['columns'][$database][$table][$field][$key]['detail']['current'] = ifset($fact[$key]);
