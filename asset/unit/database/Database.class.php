@@ -132,7 +132,7 @@ class Database implements \IF_DATABASE
 		}
 
 		//	...
-		return true;
+		return $this->_PDO ? true: false;
 	}
 
 	function Count($config)
