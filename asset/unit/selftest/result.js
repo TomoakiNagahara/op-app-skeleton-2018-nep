@@ -186,13 +186,13 @@
 					//	...
 					if( result ){
 						item.classList.add('success');
+
+						//	Remove list tag.
+						list.removeChild(item);
 					}else{
 						item.classList.add('error');
 						item.classList.add('bold');
 					}
-
-					//	...
-					list.removeChild(item);
 				}
 			}
 		}
@@ -259,10 +259,10 @@
 		modify .classList.add('modify');
 
 		//	...
-		if( json.current.length === 0 ){
+		if(!json.current ){
 			current.classList.add('empty');
 		}
-		if( json.modify .length === 0 ){
+		if(!json.modify ){
 			modify .classList.add('empty');
 		}
 
