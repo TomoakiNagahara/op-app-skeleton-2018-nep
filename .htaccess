@@ -35,10 +35,10 @@ Options +FollowSymLinks +ExecCGI -Indexes
 
 <IfModule mod_rewrite.c>
 	# Rewrite to On from Off for rewrite is started.
-	RewriteEngine Off
+	RewriteEngine On
 
 	# This is base directory (It is app root.)
-	RewriteBase /
+	RewriteBase /op/7/app-skeleton-2018-nep/
 
 	# If file does not exists.
 	RewriteCond  %{REQUEST_FILENAME} !-f
