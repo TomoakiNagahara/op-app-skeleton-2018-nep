@@ -96,6 +96,29 @@ class App
 		return self::$_LAYOUT_::Name();
 	}
 
+	/** WebPack
+	 *
+	 * @param	 string	 $path
+	 */
+	static function WebPack($path)
+	{
+		//	...
+		if(!class_exists('OP\UNIT\WebPack') ){
+			if(!Unit::Load('webpack') ){
+				return;
+			}
+		}
+
+		//	...
+		$path = ConvertPath($path);
+
+		//	...
+		list($path, $ext) = explode('.', $path);
+
+		//	...
+		\OP\UNIT\WebPack::Set($ext, $path);
+	}
+
 	/** Get/Set title.
 	 *
 	 * @param	 string	 $title
