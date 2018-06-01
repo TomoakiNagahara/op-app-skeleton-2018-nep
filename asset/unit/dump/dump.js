@@ -53,6 +53,12 @@ if( $OP === undefined ){
 		temp.appendChild(tags.td);
 
 		//	...
+		var match = index.match(/\s/);
+		if( match ){
+			console.log('The index key of associative array included space character.', match);
+		}
+
+		//	...
 		tags.th.innerText = index;
 		tags.th.addEventListener('click', click, false);
 
