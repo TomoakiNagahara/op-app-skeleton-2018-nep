@@ -74,7 +74,7 @@ class Show
 
 						//	...
 						if( strpos($val, 'unsigned') ){
-							$result[$name]['unsigned '] = true;
+							$result[$name]['unsigned'] = true;
 						}
 
 						//	...
