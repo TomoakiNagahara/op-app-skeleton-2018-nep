@@ -108,6 +108,7 @@ class Column
 		//	...
 		$field   = ifset($config['field']  );
 		$type    = ifset($config['type']   );
+		$unsigned= ifset($config['unsigned']);
 		$length  = ifset($config['length'] );
 		$default = ifset($config['default']);
 		$extra   = ifset($config['extra']  );
@@ -175,6 +176,10 @@ class Column
 				break;
 
 			default:
+				//	Why use regx?
+				if( strpos($type, 'UNSIGNED') ){
+					//	break
+				}else
 				if( preg_match('/[^A-Z]/', $type) ){
 					\Notice::Set("Has not been support this type. ($type)");
 				}
@@ -183,6 +188,11 @@ class Column
 		//	...
 		if( $length ){
 			$type = "$type($length)";
+		}
+
+		//	...
+		if( $unsigned ){
+			$type .= " UNSIGNED";
 		}
 
 		//	...
