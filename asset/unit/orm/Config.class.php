@@ -85,9 +85,35 @@ class Config
 		}
 
 		//	...
-		switch( $type = $column['type'] ){
+		switch( $type = strtolower($column['type']) ){
+			case 'tinyint':
+				$is_int = true;
+				$min = empty($column['unsigned']) ? -128 :   0;
+				$max = empty($column['unsigned']) ?  127 : 255;
+				break;
+
+			case 'smallint':
+				$is_int = true;
+				$min = empty($column['unsigned']) ? -32768 :     0;
+				$max = empty($column['unsigned']) ?  32767 : 65535;
+				break;
+
+			case 'mediumint':
+				$is_int = true;
+				$min = empty($column['unsigned']) ? -8388608 :        0;
+				$max = empty($column['unsigned']) ?  8388607 : 16777215;
+				break;
+
 			case 'int':
-				$rule[] = 'integer';
+				$is_int = true;
+				$min = empty($column['unsigned']) ? -2147483648 :          0;
+				$max = empty($column['unsigned']) ?  2147483647 : 4294967295;
+				break;
+
+			case 'bigint':
+				$is_int = true;
+				$min = empty($column['unsigned']) ? -9223372036854775808 :                    0;
+				$max = empty($column['unsigned']) ?  9223372036854775807 : 18446744073709551615;
 				break;
 
 			case 'float':
@@ -103,7 +129,15 @@ class Config
 		}
 
 		//	...
-		if( $column['unsigned '] ?? null ){
+		if( $is_int ?? false ){
+			$is_int = false;
+			$rule[] = 'integer';
+			$rule[] = "min($min)";
+			$rule[] = "max($max)";
+		}
+
+		//	...
+		if( $column['unsigned'] ?? null ){
 			$rule[] = 'positive';
 		}
 
