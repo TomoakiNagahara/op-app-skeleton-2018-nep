@@ -20,5 +20,7 @@ return [
 	__DIR__.'/list',
 	__DIR__.'/code',
 	__DIR__.'/form',
+	__DIR__.'/table',
 	__DIR__.'/other',
+	__DIR__.'/debug',
 ];
