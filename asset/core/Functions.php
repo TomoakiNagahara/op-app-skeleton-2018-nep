@@ -326,3 +326,47 @@ function Json($json, $attr)
 	//	Print
 	printf('<div class="%s">%s</div>'.PHP_EOL, $attr, $json);
 }
+
+/** Display HTML.
+ *
+ * <pre>
+ * Html('message', 'span #id .class');
+ * </pre>
+ *
+ * @param	 string		 $string
+ * @param	 string		 $config
+ */
+function Html($string, $attr=null)
+{
+	//	...
+	if( $attr ){
+		//	...
+		foreach( explode(' ', $attr) as $str ){
+			if( $str[0] === '#' ){
+				if( isset($id) ){
+					D("Already set ID. (already:#$id, current:$str)");
+				}else{
+					$id = substr($str, 1);
+				}
+			}else
+			if( $str[0] === '.' ){
+				$class[] = substr($str, 1);
+			}else{
+				if( isset($tag) ){
+					D("Already set TAG. (already:$tag, current:$str)");
+				}else{
+					$tag = $str;
+				}
+			}
+		}
+
+		//	...
+		$attr = isset($id)    ? " id=\"$id\" "     : ' ';
+		$attr.= isset($class) ? 'class="'.join(' ', $class).'"' : '';
+	}else{
+		$tag = 'div';
+	}
+
+	//	...
+	printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
+}
