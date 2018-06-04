@@ -1,0 +1,34 @@
+/**
+ * app-webpack-css:/webpack/css/app/pager.php
+ *
+ * @creation  2018-06-04
+ * @version   1.0
+ * @package   app-webpack-css
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body .pager {
+
+}
+
+body.body .pager span:not(:last-child):after {
+	content:"";
+}
+
+body.body .pager span:first-child a:after {
+	content:"<<";
+}
+
+body.body .pager span:last-child a:after {
+	content:">>";
+}
+
+body.body .pager span.page {
+	padding: 0.2em;
+}
+
+body.body .pager span.page.current {
+	border: 1px solid #c0c0c0;
+	background-color: #f0f0f0;
+}

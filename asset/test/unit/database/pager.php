@@ -49,13 +49,17 @@ $config['offset'] = $offset;
 D( $db->Select($config) );
 
 //	...
+print '<div class="pager">'.PHP_EOL;
+printf('<span class="page"><a href="?%s"></a></span>'.PHP_EOL, http_build_query(array_merge($_GET, ['page'=>1])) );
 for( $i=1; $i<=$max; $i++ ){
 	if( $i === $page ){
-		printf('<span>%s</span>', $i);
+		printf('<span class="page current">%s</span>'.PHP_EOL, $i);
 	}else{
-		printf('<a href="?page=%s">%s</a>', $i, $i);
+		printf('<span class="page"><a href="?page=%s">%s</a></span>'.PHP_EOL, $i, $i);
 	}
 }
+printf('<span class="page"><a href="?%s"></a></span>'.PHP_EOL, http_build_query(array_merge($_GET, ['page'=>$max])) );
+print '</div>'.PHP_EOL;
 
 //	...
 D('total record number', $count);
