@@ -22,5 +22,6 @@ return [
 	__DIR__.'/form',
 	__DIR__.'/table',
 	__DIR__.'/other',
+	__DIR__.'/pager',
 	__DIR__.'/debug',
 ];
