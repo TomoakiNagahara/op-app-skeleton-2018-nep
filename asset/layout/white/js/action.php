@@ -1,6 +1,6 @@
 <?php
 /**
- * layout-white:/app/layout/white/js/action.php
+ * layout-white:/js/action.php
  *
  * @creation  2018-04-12
  * @version   1.0

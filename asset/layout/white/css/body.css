@@ -1,5 +1,5 @@
 /**
- * layout-white:/app/layout/white/css/body.css
+ * layout-white:/css/body.css
  *
  * @creation  2017-09-06
  * @version   1.0
@@ -9,10 +9,7 @@
  */
 
 body.body {
-	margin:  0;
-	padding: 0;
-	background-color: white;
-	color: black;
+
 }
 
 body.body div.content-area {

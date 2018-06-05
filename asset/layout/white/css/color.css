@@ -1,11 +1,14 @@
-<?php
 /**
- * layout-white:/index.php
+ * layout-white:/css/color.css
  *
- * @creation  2016-11-22
+ * @creation  
  * @version   1.0
  * @package   layout-white
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-include('html.phtml');
+
+body.body {
+	background-color: white;
+	color: black;
+}
