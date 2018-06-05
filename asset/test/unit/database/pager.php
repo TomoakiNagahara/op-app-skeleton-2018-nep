@@ -12,6 +12,11 @@
 include('connect.php');
 
 //	...
+if(!$db->isConnect() ){
+	return;
+}
+
+//	...
 $config = [];
 $config['table'] = 't_orm';
 $config['where']['ai']['evalu'] = '>';
@@ -20,13 +25,8 @@ $count = $db->Count($config);
 
 //	...
 $ppr  = 10;
-$page = (int)($_GET['page'] ?? 1);
+$page = ifset($_GET['page'], 1);
 $max  = ceil($count / $ppr);
-
-//	...
-if( $page < 1 ){
-	$page = 1;
-}
 
 //	...
 if( $page > $max ){
@@ -34,8 +34,18 @@ if( $page > $max ){
 }
 
 //	...
+if( $page < 1 ){
+	$page = 1;
+}
+
+//	...
+$offset = ($page -1) * $ppr;
+
+//	...
 $config['limit']  = $ppr;
-$config['offset'] = ($page -1) * $ppr;
+$config['offset'] = $offset;
+
+//	...
 D( $db->Select($config) );
 
 //	...
