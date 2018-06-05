@@ -10,7 +10,7 @@
  */
 
 //	...
-if(!$menu = ($_GET['menu'] ?? 1) ){
+if(!$menu = ifset($_GET['menu'], 1) ){
 	echo '<!-- menu is hidden -->'.PHP_EOL;
 	return;
 }

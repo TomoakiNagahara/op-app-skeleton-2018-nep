@@ -16,12 +16,10 @@
 }
 
 #testcase > nav {
-	_border: 1px solid black;
 	margin: 0.5em 0;
 }
 
 #testcase > nav span {
-	_border: 1px solid black;
 }
 
 #testcase > nav span:first-child:before {
@@ -31,7 +29,8 @@
 
 #testcase > nav span:after {
 	content: "|";
-	margin: 0 0.5em;
+	margin-left:  0.3em;
+	margin-right: 0.2em;
 }
 
 #testcase > nav span:last-child:after {
