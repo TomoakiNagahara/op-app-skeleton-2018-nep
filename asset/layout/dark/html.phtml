@@ -1,0 +1,41 @@
+<?php
+/**
+ * layout-dark:/html.phtml
+ *
+ * @creation  2018-06-05
+ * @version   1.0
+ * @package   layout-dark
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<!doctype html>
+<html lang="<?= Env::Lang() ?>">
+	<head>
+		<?php App::Template('head.phtml') ?>
+	</head>
+	<body id="body" class="body">
+		<div id="head-area">
+			<?= App::Template('header.phtml') ?>
+			<?= App::Template('menu/top.phtml') ?>
+		</div>
+		<div id="body-area">
+			<div>
+				<!-- left menu -->
+				<?= App::Template('menu/left.phtml') ?>
+			</div>
+			<div id="content-area" class="content-area">
+				<?= $content ?>
+			</div>
+			<div>
+				<!-- right menu -->
+				<?= App::Template('menu/right.phtml') ?>
+			</div>
+		</div>
+		<div id="foot-area">
+			<?php App::Template('menu/bottom.phtml') ?>
+			<?php App::Template('footer.phtml') ?>
+		</div>
+		<?= App::Template('google-analytics.phtml') ?>
+	</body>
+</html>

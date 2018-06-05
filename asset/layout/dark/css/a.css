@@ -1,0 +1,21 @@
+/**
+ * layout-dark:/css/a.css
+ *
+ * @creation  2018-06-05
+ * @version   1.0
+ * @package   layout-dark
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body a {
+	color: #3f9fff;
+}
+
+body.body a:visited {
+	color: #f0f0f0;
+}
+
+body.body a:hover {
+	color: #60cff0;
+}
