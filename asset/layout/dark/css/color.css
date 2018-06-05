@@ -1,0 +1,65 @@
+/**
+ * layout-dark:/css/color.css
+ *
+ * @creation  2018-06-05
+ * @version   1.0
+ * @package   layout-dark
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body {
+	color: #FBFAF9;
+	background-color: #3C3936;
+}
+
+body.body .red {
+	color: #DE4D4B;
+}
+
+body.body .orange {
+	color: #E7873A;
+}
+
+body.body .yellow {
+	color: #F1BA4B;
+}
+
+body.body .green {
+	color: #79B756;
+}
+
+body.body .blue {
+	color: #367BF6;
+}
+
+body.body .purple {
+	color: #8A4492;
+}
+
+body.body .pink {
+	color: #E35D9C;
+}
+
+body.body .gray {
+	color: #8C8C8C;
+}
+
+body.body .black {
+	color: #505050;
+}
+
+body.body .white {
+	color: #FBFAF9;
+}
+
+body.body input:not([type="radio"]),
+body.body input:not([type="checkbox"]),
+body.body textarea {
+	background-color: #74716E;
+}
+
+body.body select,
+body.body option {
+	background-color: #6D6B68;
+}
