@@ -62,6 +62,15 @@ class Database implements \IF_DATABASE
 		$this->_SQL = \Unit::Instance('SQL');
 	}
 
+	/** If is connect.
+	 *
+	 * @return	 boolean
+	 */
+	function isConnect()
+	{
+		return $this->_PDO ? true: false;
+	}
+
 	/** Wrapper method.
 	 *
 	 * @return \PDO
@@ -82,8 +91,8 @@ class Database implements \IF_DATABASE
 
 	/** Return connection configuration.
 	 *
-	 * @see    IF_DATABASE::Config()
-	 * @return array $config
+	 * @see		\IF_DATABASE::Config()
+	 * @return	 array $config
 	 */
 	function Config()
 	{
@@ -135,7 +144,13 @@ class Database implements \IF_DATABASE
 		return $this->_PDO ? true: false;
 	}
 
-	function Count($config)
+	/** Do SQL.
+	 *
+	 * @param	 array	 $config
+	 * @param	 string	 $function
+	 * @return	 mixed
+	 */
+	function SQL($config, $function)
 	{
 		//	...
 		if(!$this->_SQL ){
@@ -143,66 +158,36 @@ class Database implements \IF_DATABASE
 		}
 
 		//	...
-		$query = $this->_SQL->Count($config, $this);
+		$query = $this->_SQL->$function($config, $this);
 
 		//	...
-		return $this->Query($query, __FUNCTION__);
+		return $this->Query($query, $function);
+	}
+
+	function Count($config)
+	{
+		$count = $this->SQL($config, __FUNCTION__);
+		return empty($count) ? 0: (int)$count;
 	}
 
 	function Select($config)
 	{
-		//	...
-		if(!$this->_SQL ){
-			return [];
-		}
-
-		//	...
-		$query = $this->_SQL->Select($config, $this);
-
-		//	...
-		return $this->Query($query, __FUNCTION__);
+		return $this->SQL($config, __FUNCTION__);
 	}
 
 	function Insert($config)
 	{
-		//	...
-		if(!$this->_SQL ){
-			return false;
-		}
-
-		//	...
-		$query = $this->_SQL->Insert($config, $this);
-
-		//	...
-		return $this->Query($query, __FUNCTION__);
+		return $this->SQL($config, __FUNCTION__);
 	}
 
 	function Update($config)
 	{
-		//	...
-		if(!$this->_SQL ){
-			return false;
-		}
-
-		//	...
-		$query = $this->_SQL->Update($config, $this);
-
-		//	...
-		return $this->Query($query, __FUNCTION__);
+		return $this->SQL($config, __FUNCTION__);
 	}
 
 	function Delete($config)
 	{
-		//	...
-		if(!$this->_SQL ){
-			return false;
-		}
-
-		//	...
-		$query = $this->_SQL->Delete($config, $this);
-
-		//	...
-		return $this->Query($query, __FUNCTION__);
+		return $this->SQL($config, __FUNCTION__);
 	}
 
 	function Quick($qql, $options=[])
