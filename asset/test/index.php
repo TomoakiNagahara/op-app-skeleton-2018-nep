@@ -36,4 +36,8 @@ if( file_exists( $file = join('/', $args).'.php') ){
 }
 
 //	...
+App::Title('TEST CASE');
+
+//	...
 App::Template('index.phtml',['file'=>$file]);
+

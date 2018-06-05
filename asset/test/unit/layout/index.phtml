@@ -1,0 +1,19 @@
+<?php
+/**
+ * unit-test:/unit/layout/index.phtml
+ *
+ * @creation  2018-06-05
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+foreach( ['red','orange','yellow','green','blue','purple','pink','gray','white','black','success','error'] as $class ){
+	Html($class, ".{$class}");
+}
+?>
+<section class="important">
+	<h1>Important</h1>
+	<p>This is test.</p>
+</section>
