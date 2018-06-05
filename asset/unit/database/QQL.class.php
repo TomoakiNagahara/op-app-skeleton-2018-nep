@@ -103,6 +103,36 @@ class QQL
 		return $result;
 	}
 
+	static private function _ParseField($field, $_db)
+	{
+		//	...
+		if( strpos($field, ',') ){
+			//	Many fields.
+			foreach( explode(',', $field) as $temp ){
+				$join[] = self::_ParseFieldFunc($temp, $_db);
+			}
+		}else{
+			//	Single field.
+			$join[] = self::_ParseFieldFunc($field, $_db);
+		}
+
+		//	...
+		return join(',', $join);
+	}
+
+	static private function _ParseFieldFunc($field, $_db)
+	{
+		//	...
+		if( preg_match('|([_a-z0-9]+)\(([_a-z0-9]+)\)|i', $field, $match) ){
+			$field = $match[1] .'('. $_db->Quote($match[2]) .')';
+		}else{
+			$field = $_db->Quote($field);
+		}
+
+		//	...
+		return $field;
+	}
+
 	/** Convert to SQL from QQL.
 	 *
 	 * @param   string      $qql
@@ -113,38 +143,20 @@ class QQL
 	static function Parse($qql, $opt, $_db)
 	{
 		$field  = '*';
-		$dbname = '';
-		$table  = '';
-		$where  = '';
-		$limit  = '';
-		$order  = '';
-		$offset = '';
+		$dbname = null;
+		$table  = null;
+		$where  = null;
+		$limit  = null;
+		$order  = null;
+		$offset = null;
+		$group  = null;
 
 		//	field
 		if( $pos = strpos($qql, '<-') ){
 			list($field, $qql) = explode('<-', $qql);
-			if( strpos($field, ',') ){
-				//	Many fields.
-				$fields = explode(',', $field);
-				$join   = [];
-				foreach( $fields as $temp ){
-					$join[] = $_db->Quote($temp);
-				}
-				$field = join(',', $join);
-			}else
-			if( $st = strpos($field, '(') and
-				$en = strpos($field, ')') ){
-				//	func(field) --> FUNC('field')
-				$func  = substr($field, 0, $st);				// func( field ) --> func
-				$field = substr($field, $st +1, $en - $st -1);	// func( field ) --> " field "
-				$field = trim($field);							// " field "     --> "field"
-				$field = $_db->Quote($field);					// field         --> 'field'
-				$func  = strtoupper($func);						// func          --> FUNC
-				$field = "$func($field)";						//               --> func('field')
-			}else{
-				//	Single field.
-				$field = $_db->Quote($field);
-			}
+			$field = self::_ParseField($field, $_db);
+		}else{
+			$field = '*';
 		}
 
 		//	...
@@ -194,6 +206,8 @@ class QQL
 				}else{
 					$value = $_db->PDO()->quote($value);
 				}
+
+				//	...
 				$which = $_db->Quote($which);
 				$where = "WHERE {$which} {$evalu} {$value}";
 			}else{
@@ -226,7 +240,8 @@ class QQL
 			'where'    => $where,
 			'order'    => $order,
 			'limit'    => $limit,
-			'offset'   => $offset
+			'offset'   => $offset,
+			'group'    => $group,
 		];
 	}
 
@@ -239,12 +254,12 @@ class QQL
 	static function Select($select, $_db)
 	{
 		//	...
-		foreach( ['database','table','field','where','order','limit','offset'] as $key ){
+		foreach( ['database','table','field','where','order','limit','offset', 'group'] as $key ){
 			${$key} = $select[$key];
 		}
 
 		//	...
-		$query = "SELECT $field FROM $database $table $where $order $limit $offset";
+		$query = "SELECT $field FROM $database $table $where $group $order $limit $offset";
 
 		//	"LIMIT 1" --> 1
 		$limit = (int)substr($limit, strpos($limit, ' ')+1);
