@@ -302,17 +302,18 @@ class Form
 		//	...
 		if( $io === '' ){
 			//	Last time token.
-			$token = $this->_session['token'] ?? false;
+			$token = (int)$this->_session['token'] ?? false;
 
 			//	Regenerate session id.
 			session_regenerate_id();
 
 			//	Regenerate new token.
-			$this->_session['token'] = random_int(1000, 9999); // Hasha1(microtime());
+		//	$this->_session['token'] = Hasha1(microtime());
+			$this->_session['token'] = random_int(1000, 9999);
 
 			//	Confirmation of request token.
 			if( $token ){
-				$io = ($token === self::_Request('token'));
+				$io = ($token === (int)self::_Request('token'));
 			}else{
 				$io = null;
 			}
