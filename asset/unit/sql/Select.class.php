@@ -140,7 +140,7 @@ class Select
 	static function Password($password, $DB)
 	{
 		//	...
-		$password = $DB->GetPDO()->Quote($password);
+		$password = $DB->PDO()->Quote($password);
 		return "SELECT PASSWORD({$password})";
 	}
 }

@@ -49,12 +49,12 @@ class User
 		}
 
 		//	...
-		$host = $DB->GetPDO()->Quote($host);
-		$user = $DB->GetPDO()->Quote($user);
+		$host = $DB->PDO()->Quote($host);
+		$user = $DB->PDO()->Quote($user);
 
 		//	...
 		if( $password = ifset($config['password']) ){
-			$identified = "BY " . $DB->GetPDO()->Quote($password);
+			$identified = "BY " . $DB->PDO()->Quote($password);
 		}else{
 			$identified = 'WITH mysql_native_password';
 		}
@@ -77,9 +77,9 @@ class User
 		}
 
 		//	...
-		$host	 = $DB->GetPDO()->Quote($host);
-		$user	 = $DB->GetPDO()->Quote($user);
-		$password= $DB->GetPDO()->Quote($password);
+		$host	 = $DB->PDO()->Quote($host);
+		$user	 = $DB->PDO()->Quote($user);
+		$password= $DB->PDO()->Quote($password);
 
 		//		SET PASSWORD FOR  'user'@'host'  = '***';
 		return "SET PASSWORD FOR {$user}@{$host} = PASSWORD({$password})";

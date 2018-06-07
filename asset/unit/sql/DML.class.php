@@ -81,7 +81,7 @@ class DML
 		//	...
 		foreach( $args['set'] as $column => $value ){
 			$column	 = $db->Quote($column);
-			$value	 = $db->GetPDO()->quote($value);
+			$value	 = $db->PDO()->quote( is_string($value) ? $value : join(',',$value) );
 			$join[] = "{$column} = {$value}";
 		}
 
@@ -126,7 +126,7 @@ class DML
 
 			//	...
 			$column	 = $db->Quote($column);
-			$value	 = $db->GetPDO()->quote($value);
+			$value	 = $db->PDO()->quote($value);
 
 			//	...
 			switch( $evalu = strtoupper($evalu) ){
@@ -139,8 +139,8 @@ class DML
 					//	'1 TO 10' --> 1 TO 100
 					$value = substr($value, 1, -1);
 					list($st, $en) = explode('TO', $value);
-					$st = $db->GetPDO()->quote(trim($st));
-					$en = $db->GetPDO()->quote(trim($en));
+					$st = $db->PDO()->quote(trim($st));
+					$en = $db->PDO()->quote(trim($en));
 					$join[] = "{$column} {$evalu} {$st} AND {$en}";
 					break;
 
@@ -161,7 +161,7 @@ class DML
 					$in = [];
 					foreach( $value as $temp ){
 						if( strlen($temp) ){
-							$in[] = $db->GetPDO()->quote(trim($temp));
+							$in[] = $db->PDO()->quote(trim($temp));
 						}
 					}
 

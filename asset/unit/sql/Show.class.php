@@ -118,8 +118,8 @@ class Show
 	 */
 	static function Grant($DB, $host, $user)
 	{
-		$user = $DB->GetPDO()->Quote($user);
-		$host = $DB->GetPDO()->Quote($host);
+		$user = $DB->PDO()->Quote($user);
+		$host = $DB->PDO()->Quote($host);
 		return "SHOW GRANTS FOR {$user}@{$host}";
 	}
 }
