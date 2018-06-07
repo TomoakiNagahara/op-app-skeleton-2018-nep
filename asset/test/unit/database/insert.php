@@ -14,8 +14,8 @@ include('connect.php');
 
 //	New record configuration.
 $config = [];
-$config['table'] = 't_test';
-$config['set']['id'] = Hasha1( Time::Get() );
+$config['table'] = 't_orm';
+//$config['set']['required'] = Hasha1( Time::Get() );
 $config['set']['created'] = Time::GMT();
 
 //	Insert new record.

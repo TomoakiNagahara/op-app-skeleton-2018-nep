@@ -14,7 +14,7 @@ include('connect.php');
 
 //	New record configuration.
 $config = [];
-$config['table'] = 't_test';
+$config['table'] = 't_orm';
 $config['limit'] = 1;
 $config['order'] = 'timestamp desc';
 $config['where']['deleted'] = null;
