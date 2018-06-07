@@ -151,7 +151,10 @@
 
 	//	...
 	document.addEventListener('DOMContentLoaded', function(){
+		//	...
 		var divs = document.querySelectorAll('div.OP_NOTICE');
+
+		//	...
 		for(var i=0; i<divs.length; i++){
 			$OP.Notice(divs[i], i);
 		}
