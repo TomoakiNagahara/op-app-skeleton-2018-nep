@@ -44,11 +44,11 @@ class Config
 
 		//	...
 		switch( $column['type'] ){
-			case 'set':
-				$type = 'radio';
+			case 'enum':
+				$type = $column['null'] ? 'select':'radio';
 				break;
 
-			case 'enum':
+			case 'set':
 				$type = 'checkbox';
 				break;
 
@@ -180,15 +180,24 @@ class Config
 			}
 
 			//	...
+			if(!isset($record[$name]) ){
+				$value = null;
+			}else if( $type === 'checkbox' ){
+				$value = explode(',', ','.$record[$name]);
+			}else{
+				$value = $record[$name];
+			}
+
+			//	...
 			$input = [];
 			$input['name']  = $name;
 			$input['type']  = $type;
-			$input['value'] = $record[$name] ?? null;
+			$input['value'] = $value;
 			$input['label'] = $type === 'hidden' ? '': $name;
 			$input['rule']  = self::_Rule($column);
 		//	$input['session'] = false;
-			if( $type === 'radio' or $type === 'checkbox' ){
-				$join = [];
+			if( $type === 'radio' or $type === 'checkbox' or $type === 'select' ){
+				$join = $type === 'select' ? [null]:[];
 				foreach( explode(',', $column['length']) as $temp ){
 					$join[] = trim($temp, "'");
 				}
