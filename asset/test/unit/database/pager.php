@@ -19,8 +19,8 @@ if(!$db->isConnect() ){
 //	...
 $config = [];
 $config['table'] = 't_orm';
-$config['where']['ai']['evalu'] = '>';
-$config['where']['ai']['value'] = '1';
+$config['where']['ai']['evalu'] = '!=';
+$config['where']['ai']['value'] = null;
 $count = $db->Count($config);
 
 //	...

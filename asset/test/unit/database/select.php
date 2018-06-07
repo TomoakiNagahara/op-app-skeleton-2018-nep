@@ -14,14 +14,14 @@ include('connect.php');
 
 //	Count records.
 $config = [];
-$config['table'] = 't_test';
+$config['table'] = 't_orm';
 $config['limit'] = 10;
 $config['where']['deleted'] = null;
 $count = $db->Count($config);
 
 //	Select records.
 $config = [];
-$config['table'] = 't_test';
+$config['table'] = 't_orm';
 $config['limit'] = 10;
 $config['where']['ai']['value'] = null;
 $config['where']['ai']['evalu'] = '!';
