@@ -183,7 +183,7 @@ class Config
 			$input = [];
 			$input['name']  = $name;
 			$input['type']  = $type;
-			$input['value'] = $record[$name];
+			$input['value'] = $record[$name] ?? null;
 			$input['label'] = $type === 'hidden' ? '': $name;
 			$input['rule']  = self::_Rule($column);
 		//	$input['session'] = false;
@@ -198,7 +198,14 @@ class Config
 		}
 
 		//	...
-		$config['name'] = self::GetFormName($database, $table, $record[$pkey] ?? null);
+		if( isset($record[$pkey]) ){
+			$pval = $record[$pkey];
+		}else{
+			$pval = 0;
+		}
+
+		//	...
+		$config['name'] = self::GetFormName($database, $table, $pval);
 
 		//	...
 		return $config;
@@ -211,7 +218,7 @@ class Config
 	 * @param  string $pval
 	 * @return string $hash
 	 */
-	static function GetFormName( string $database, string $table, string $pval )
+	static private function GetFormName( string $database, string $table, string $pval )
 	{
 		return Hasha1($database.' '.$table.' '.$pval);
 	}

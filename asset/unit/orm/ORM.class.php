@@ -97,11 +97,20 @@ class ORM
 		$query    = \OP\UNIT\SQL\Show::Column($this->DB(), $database, $table);
 		$struct   = $this->DB()->Query( $query );
 
+		//	...
+		if(!$struct ){
+			$result = null;
+		//	return;
+		}
+
 		//	Create or Fetch.
 		if( $create ){
+			/*
 			foreach( $struct as $column ){
 				$result[$column['field']] = '';
 			}
+			*/
+			$result = [];
 		}else{
 			//	Fetch record.
 			$result = $classpath::Select($select, $this->DB());

@@ -107,8 +107,11 @@ class Record
 		}else{
 			$value = null;
 
-			//	This field name has not been exists.
-			\Notice::Set("This field name has not been exists. ($name)");
+			//	Call from ORM->Save(), Nessarry pkey value.
+			if( $name !== $this->Pkey() ){
+				//	This field name has not been exists.
+				\Notice::Set("This field name has not been exists. ($name)");
+			}
 		}
 
 		//	...
@@ -152,6 +155,33 @@ class Record
 
 		//	$this->_change is update values.
 		$this->_change[$name] = $value;
+	}
+
+	/** Is ready.
+	 *
+	 * @return boolean
+	 */
+	function isReady()
+	{
+		return $this->_columns ? true: false;
+	}
+
+	/** Is found record.
+	 *
+	 * @return boolean
+	 */
+	function isFound()
+	{
+		return $this->_record ? true: false;
+	}
+
+	/** Validation result.
+	 *
+	 * @return boolean
+	 */
+	function isValid()
+	{
+		return $this->Validate();
 	}
 
 	/** Get/Set database name
@@ -286,32 +316,6 @@ class Record
 
 		//	...
 		return $this->_isValid;
-	}
-
-	/** Is ready record.
-	 *
-	 */
-	function isReady()
-	{
-		return $this->_columns ? true: false;
-	}
-
-	/** Is found record.
-	 *
-	 * @return boolean
-	 */
-	function isFound()
-	{
-		return $this->_record ? true: false;
-	}
-
-	/** Validation result.
-	 *
-	 * @return boolean
-	 */
-	function isValid()
-	{
-		return $this->Validate();
 	}
 
 	/** Get value.
