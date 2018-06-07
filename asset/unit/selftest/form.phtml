@@ -11,7 +11,7 @@
 ?>
 <section id="UNIT_SELFTEST">
 	<form action="" method="post">
-		<div class="table">
+		<div role="table">
 			<div>
 				<div>
 					Product
@@ -65,19 +65,17 @@
 			<? if( $failed = \OP\UNIT\SELFTEST\Inspector::Failed() ): ?>
 			<div>
 				<div>
+
 				</div>
-				<div class="not">
-					<label>
-						<input type="checkbox" name="build" value="1" />
-						Build
-					</label>
+				<div>
+					<input type="checkbox" name="build" value="1" />Build
 				</div>
 			</div>
 			<? endif; ?>
 			<div>
 				<div>
 				</div>
-				<div class="not">
+				<div>
 					<button> Submit </button>
 				</div>
 			</div>

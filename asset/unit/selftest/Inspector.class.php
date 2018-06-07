@@ -42,12 +42,6 @@ class Inspector
 	 */
 	static private $_config;
 
-	/** Store debug information.
-	 *
-	 * @var array
-	 */
-	static private $_debug = [];
-
 	/** Store error messages.
 	 *
 	 * @var array
@@ -64,7 +58,7 @@ class Inspector
 	 *
 	 * @var array
 	 */
-	static private $_result;
+	static private $_result = [];
 
 	/** Get configuration array.
 	 *
@@ -176,7 +170,7 @@ class Inspector
 
 	/** Generate DB object from the Form.
 	 *
-	 * @return \IF_DATABASE $DB
+	 * @return	\OP\UNIT\Database	 $DB
 	 */
 	static function _DB()
 	{
@@ -186,7 +180,7 @@ class Inspector
 		}
 
 		//	...
-		if(!$request = Escape(ifset($_POST)) ){
+		if(!$request = Escape($_POST) ){
 			self::Error("Has not been submitted the Form.");
 			return;
 		}
@@ -215,17 +209,10 @@ class Inspector
 	static function _DSN()
 	{
 		//	...
-		$DB = self::_DB();
+		$config = self::_DB()->Config();
 
 		//	...
-		$conf = $DB->Config();
-		$prod = $conf['prod'];
-		$host = $conf['host'];
-		$port = $conf['port'];
-		$dsn  = "{$prod}://{$host}:{$port}";
-
-		//	...
-		return $dsn;
+		return "{$config['prod']}://{$config['host']}:{$config['port']}";
 	}
 
 	/** Automatically do inspection and building.
@@ -248,7 +235,7 @@ class Inspector
 		self::Inspection($config, $DB);
 
 		//	...
-		if( self::$_failure and ifset($_POST['build']) ){
+		if( self::$_failure and $_POST['build'] ?? false ){
 			//	...
 			Builder::Auto($config, self::$_result, $DB);
 
@@ -262,11 +249,6 @@ class Inspector
 		}
 
 		//	...
-		if( isset($DB) ){
-			self::$_debug['queries'] = $DB->Queries();
-		}
-
-		//	...
 		if( self::$_failure === null ){
 			self::$_failure  =  false;
 		}
@@ -274,8 +256,8 @@ class Inspector
 
 	/** Inspection.
 	 *
-	 * @param   array       $args
-	 * @param  \IF_DATABASE $DB
+	 * @param   array      $args
+	 * @param  \OP\UNIT\DB $DB
 	 */
 	static function Inspection($config, $DB)
 	{
@@ -302,8 +284,8 @@ class Inspector
 
 	/** Check connection of users.
 	 *
-	 * @param   array       $config
-	 * @param  \IF_DATABASE $DB
+	 * @param   array      $config
+	 * @param  \OP\UNIT\DB $DB
 	 */
 	static function Users($configs, $DB)
 	{
@@ -423,8 +405,8 @@ class Inspector
 
 	/** Check each user connection.
 	 *
-	 * @param   array       $config
-	 * @param  \IF_DATABASE $DB
+	 * @param  array          $config
+	 * @return \OP\UNIT\DB\DB $DB
 	 */
 	static function Connect($config)
 	{
@@ -449,8 +431,8 @@ class Inspector
 
 	/** Inspect structures.
 	 *
-	 * @param   array       $config
-	 * @param  \IF_DATABASE $DB
+	 * @param  array      $config
+	 * @param \OP\UNIT\DB $DB
 	 */
 	static function Structures($config, $DB)
 	{
@@ -463,9 +445,9 @@ class Inspector
 
 	/** Inspect databases.
 	 *
-	 * @param  \IF_DATABASE $DB
-	 * @param   array       $databases
-	 * @param  &array       $_result
+	 * @param \OP\UNIT\DB $DB
+	 * @param  array      $databases
+	 * @param &array      $_result
 	 */
 	static function Databases($DB, $databases, &$_result)
 	{
@@ -509,11 +491,11 @@ class Inspector
 
 	/** Inspect each table.
 	 *
-	 * @param  \IF_DATABASE $DB
-	 * @param   string      $database
-	 * @param   string      $table
-	 * @param  &array       $_result
-	 * @return  boolean     $result
+	 * @param  \OP\UNIT\DB $DB
+	 * @param   string     $database
+	 * @param   string     $table
+	 * @param  &array      $_result
+	 * @return  boolean    $result
 	 */
 	static function Tables($DB, $database, $tables, &$_result)
 	{
@@ -553,12 +535,12 @@ class Inspector
 
 	/** Inspect each fields.
 	 *
-	 * @param  \IF_DATABASE $DB
-	 * @param   string      $database
-	 * @param   string      $table
-	 * @param   array       $columns
-	 * @param  &array       $_result
-	 * @return  boolean     $result
+	 * @param  \OP\UNIT\DB $DB
+	 * @param   string     $database
+	 * @param   string     $table
+	 * @param   array      $columns
+	 * @param  &array      $_result
+	 * @return  boolean    $result
 	 */
 	static function Fields($DB, $database, $table, $columns, &$_result)
 	{
@@ -589,14 +571,14 @@ class Inspector
 
 	/** Inspect each columns.
 	 *
-	 * @param  \IF_DATABASE $DB
-	 * @param   string      $database
-	 * @param   string      $table
-	 * @param   string      $field
-	 * @param   array       $column
-	 * @param   array       $fact
-	 * @param  &array       $_result
-	 * @return  boolean     $result
+	 * @param  \OP\UNIT\DB $DB
+	 * @param   string     $database
+	 * @param   string     $table
+	 * @param   string     $field
+	 * @param   array      $column
+	 * @param   array      $fact
+	 * @param  &array      $_result
+	 * @return  boolean    $result
 	 */
 	static function Columns($DB, $database, $table, $field, $column, $fact, &$_result)
 	{
@@ -685,12 +667,12 @@ class Inspector
 
 	/** Inspect index each table.
 	 *
-	 * @param  \IF_DATABASE $DB
-	 * @param   string      $database
-	 * @param   string      $table
-	 * @param   array       $indexes
-	 * @param  &array       $_result
-	 * @return  boolean     $result
+	 * @param  \OP\UNIT\DB $DB
+	 * @param   string     $database
+	 * @param   string     $table
+	 * @param   array      $indexes
+	 * @param  &array      $_result
+	 * @return  boolean    $result
 	 */
 	static function Indexes($DB, $database, $table, $indexes, &$_result)
 	{
@@ -706,13 +688,7 @@ class Inspector
 	 */
 	static function Form()
 	{
-		\App::Template(__DIR__.'/form.phtml');
-		echo '<style>';
-		\App::Template(__DIR__.'/form.css');
-		echo '</style>';
-		echo '<script>';
-		\App::Template(__DIR__.'/form.js');
-		echo '</script>';
+		\OP\UNIT\NEWWORLD\Template::Run(__DIR__.'/form.phtml');
 	}
 
 	/** Return one stacked error.
@@ -724,9 +700,10 @@ class Inspector
 	 *   D($error);
 	 * }
 	 * ```
+	 *
 	 * </pre>
 	 *
-	 * @param string $message
+	 * @param unknown $message
 	 */
 	static function Error($message=null)
 	{
@@ -764,33 +741,25 @@ class Inspector
 		return self::$_failure;
 	}
 
-	/** Display inspection result.
+	/** Get inspection result.
 	 *
+	 * @return array
 	 */
 	static function Result()
 	{
 		//	...
-		if( empty(self::$_result) ){
-			return;
-		}
+		Json(self::$_result, '#OP_SELFTEST');
 
 		//	...
-		echo '<div id="selftest-result">';
-		echo json_encode(self::$_result);
-		echo '</div>';
-		echo '<script>';
-		echo \App::Template(__DIR__.'/result.js');
-		echo '</script>';
-		echo '<style>';
-		echo \App::Template(__DIR__.'/result.css');
-		echo '</style>';
+		\App::WebPack(__DIR__.'/result.js');
+		\App::WebPack(__DIR__.'/result.css');
 	}
 
-	/** Debug
+	/** For developers
 	 *
 	 */
 	static function Debug()
 	{
-		D(__METHOD__, self::$_debug, self::$_result);
+		D( __METHOD__, self::_DB()->Queries(), self::$_result);
 	}
 }

@@ -32,9 +32,9 @@ class Builder
 
 	/** Automatically.
 	 *
-	 * @param   array       $config
-	 * @param   array       $result
-	 * @param  \IF_DATABASE $DB
+	 * @param array $config
+	 * @param array $result
+	 * @param \OP\UNIT\DB $DB
 	 */
 	static function Auto($configs, $results, $DB)
 	{
@@ -73,9 +73,9 @@ class Builder
 
 	/** Build database.
 	 *
-	 * @param   array       $config
-	 * @param   array       $result
-	 * @param  \IF_DATABASE $DB
+	 * @param   array      $config
+	 * @param   array      $result
+	 * @param  \OP\UNIT\DB $DB
 	 * @throws \Exception
 	 * @return  null
 	 */
@@ -123,9 +123,9 @@ class Builder
 
 	/** Build tabel.
 	 *
-	 * @param   array       $config
-	 * @param   array       $result
-	 * @param  \IF_DATABASE $DB
+	 * @param   array      $config
+	 * @param   array      $result
+	 * @param  \OP\UNIT\DB $DB
 	 * @return  null
 	 */
 	static function Table($configs, $result, $DB)
@@ -150,9 +150,9 @@ class Builder
 
 	/** Build new field.
 	 *
-	 * @param   array       $config
-	 * @param   array       $result
-	 * @param  \IF_DATABASE $DB
+	 * @param array $config
+	 * @param array $result
+	 * @param \OP\UNIT\DB $DB
 	 */
 	static function Field($config, &$result, $_db)
 	{
@@ -228,9 +228,9 @@ class Builder
 
 	/** Build index.
 	 *
-	 * @param   array       $config
-	 * @param   array       $result
-	 * @param  \IF_DATABASE $DB
+	 * @param array $config
+	 * @param array $result
+	 * @param \OP\UNIT\DB $DB
 	 */
 	static function Index($config, &$result, $DB)
 	{
@@ -265,9 +265,9 @@ class Builder
 
 	/** Build user.
 	 *
-	 * @param   array       $configs
-	 * @param   array       $results
-	 * @param  \IF_DATABASE $DB
+	 * @param array $configs
+	 * @param array $results
+	 * @param \OP\UNIT\DB $DB
 	 */
 	static function User($configs, $results, $DB)
 	{

@@ -7,10 +7,14 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-(function(){
+//	...
+setTimeout(function(){
 	//	...
-	var text = document.querySelector('#selftest-result').innerText;
-	document.querySelector('#selftest-result').innerText = '';
+	var area = document.querySelector('#OP_SELFTEST');
+	var text = area.innerText;
+
+	//	...
+	area.innerText = '';
 
 	//	...
 	var json = JSON.parse(text);
@@ -21,7 +25,7 @@
 		div.appendChild(roots);
 
 	//	...
-	document.querySelector('#selftest-result').appendChild(div);
+	area.appendChild(div);
 
 	//	...
 	for(var dsn in json ){
@@ -255,4 +259,4 @@
 		column.appendChild(modify);
 		item.appendChild(column);
 	};
-})();
+}, 0);
