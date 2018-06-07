@@ -18,8 +18,6 @@
 	font-weight: bold;
 }
 
-/*************************************/
-
 #selftest-result .user .modify:before {
 	margin-left:  0.3em;
 	margin-right: 0.1em;
@@ -31,25 +29,9 @@
 	content: ")"
 }
 
-#selftest-result .error > .error.exist:after {
-	content: "EXIST";
-}
-
-#selftest-result .error > .error.password:after {
-	content: "PASSWORD";
-}
-
-#selftest-result .error > .error.privilege:after {
-	content: "PRIVILEGE";
-}
-
-/*************************************/
-
 #selftest-result .field.missing:after {
 	content: " → MISSING";
 }
-
-/*************************************/
 
 #selftest-result .column .current {
 	margin-left: 0.5em;
@@ -66,20 +48,68 @@
 	margin-right: 0.4em;
 }
 
+#selftest-result .column .modify {
+
+}
+
 #selftest-result .column .arrow:after {
 	margin: 0.5em;
 	content: "→";
 }
 
-#selftest-result .column .modify {
+#OP_SELFTEST .error .name {
+	font-weight: bold;
+}
+
+#OP_SELFTEST .error .name:after {
+	margin: 0.2em;
+	content: ":";
+}
+
+#OP_SELFTEST .error > .error.exist:after {
+	content: "EXIST";
+}
+
+#OP_SELFTEST .error > .error.password:after {
+	content: "PASSWORD";
+}
+
+#OP_SELFTEST .error > .error.privilege:after {
+	content: "PRIVILEGE";
+}
+
+#OP_SELFTEST .current {
+	margin-left: 0.5em;
+}
+
+#OP_SELFTEST .current:after {
+	margin-left:  0.2em;
+	margin-right: 0.4em;
+}
+
+#OP_SELFTEST .arrow:after {
+	margin: 0.5em;
+	content: "→";
+}
+
+#OP_SELFTEST .modify {
 
 }
 
-#selftest-result .empty:after,
-#selftest-result .empty:before {
+#OP_SELFTEST .empty:after,
+#OP_SELFTEST .empty:before {
 	margin:  0;
 	padding: 0;
 	content: '"';
-} 
+}
 
-/*************************************/
+#OP_SELFTEST .user .modify:before {
+	margin-left:  0.3em;
+	margin-right: 0.1em;
+	content: "("
+}
+
+#OP_SELFTEST .user .modify:after {
+	margin-left:  0.1em;
+	content: ")"
+}

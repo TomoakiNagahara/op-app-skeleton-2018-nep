@@ -105,11 +105,10 @@ class Configer
 	 *
 	 * @param	 string		 $user
 	 * @param	 string		 $password
-	 * @param	 string		 $hash
 	 * @param	 string		 $charset
 	 * @return	 string		 $user
 	 */
-	static function User($user=null, $password=null, $hash=null, $charset=null)
+	static function User($user=null, $password=null, $charset=null)
 	{
 		//	...
 		static $_user, $_charset='utf8';
@@ -123,7 +122,7 @@ class Configer
 
 		//	...
 		if( $password ){
-			self::Password($password, $hash);
+			self::Password($password);
 		}
 
 		if( $charset ){
