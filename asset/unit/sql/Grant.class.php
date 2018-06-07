@@ -44,7 +44,7 @@ class Grant
 		//	...
 		foreach( ['host','user'] as $key ){
 			if( isset($config[$key]) ){
-				${$key} = $DB->GetPDO()->Quote($config[$key]);
+				${$key} = $DB->PDO()->Quote($config[$key]);
 			}else{
 				\Notice::Set("Has not been set $key.");
 				return false;

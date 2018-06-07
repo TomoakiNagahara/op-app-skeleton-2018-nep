@@ -119,8 +119,8 @@ class Column
 
 		//	Escape
 		$field   = $DB->Quote($field);
-		$comment = $DB->GetPDO()->Quote($comment);
-		$default = $default === null ? null: "DEFAULT ".$DB->GetPDO()->Quote($default);
+		$comment = $DB->PDO()->Quote($comment);
+		$default = $default === null ? null: "DEFAULT ".$DB->PDO()->Quote($default);
 
 		//	extra is use to auto increment only.
 		switch( $extra = strtoupper($extra) ){
@@ -155,7 +155,7 @@ class Column
 				if( $type !== 'INT' ){
 					$join = [];
 					foreach( explode(',', $length) as $value ){
-						$join[] = $DB->GetPDO()->quote( trim($value) );
+						$join[] = $DB->PDO()->quote( trim($value) );
 					}
 					$length = join(',', $join);
 				}
