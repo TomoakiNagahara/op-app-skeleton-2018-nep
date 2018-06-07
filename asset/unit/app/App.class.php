@@ -116,13 +116,13 @@ class App
 		}
 
 		//	...
-		$path = ConvertPath($path);
-
-		//	...
 		list($path, $ext) = explode('.', $path);
 
 		//	...
-		\OP\UNIT\WebPack::Set($ext, $path);
+		$path = ConvertPath($path);
+
+		//	...
+		OP\UNIT\WebPack::Set($ext, $path);
 	}
 
 	/** Get/Set title.

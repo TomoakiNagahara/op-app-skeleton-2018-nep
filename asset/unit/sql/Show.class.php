@@ -94,7 +94,7 @@ class Show
 
 	/** Show user list.
 	 *
-	 * @param	\IF_DATABASE $DB
+	 * @param	\OP\UNIT\Database $DB
 	 */
 	static function User($DB)
 	{
@@ -111,7 +111,7 @@ class Show
 
 	/** Show user grant.
 	 *
-	 * @param	\IF_DATABASE $DB
+	 * @param	\OP\UNIT\Database $DB
 	 * @param	 string		 $user
 	 * @param	 string		 $host
 	 * @return	 string		 $query

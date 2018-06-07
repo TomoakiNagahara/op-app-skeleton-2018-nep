@@ -41,9 +41,7 @@ class Notice
 			case 'text/html':
 				//	Escape is done with self::Shutdown().
 				//	$notice = Escape($notice);
-				echo '<div class="OP_NOTICE">';
-				echo htmlentities( json_encode($notice), ENT_NOQUOTES, \Env::Charset(), true );
-				echo '</div>'."\r\n";
+				Json($notice, 'OP_NOTICE');
 				break;
 
 			case 'text/css':
