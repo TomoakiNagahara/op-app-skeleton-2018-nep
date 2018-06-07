@@ -14,7 +14,7 @@ body.body {
 }
 
 body.body .red {
-	color: #DE4D4B;
+	color: #fE4D4B;
 }
 
 body.body .orange {
@@ -30,11 +30,11 @@ body.body .green {
 }
 
 body.body .blue {
-	color: #367BF6;
+	color: #368BFf;
 }
 
 body.body .purple {
-	color: #8A4492;
+	color: #9f5faf;
 }
 
 body.body .pink {
@@ -51,6 +51,14 @@ body.body .black {
 
 body.body .white {
 	color: #FBFAF9;
+}
+
+body.body .success {
+	color: #368BFf;
+}
+
+body.body .error {
+	color: #fE4D4B;
 }
 
 body.body input:not([type="radio"]),
