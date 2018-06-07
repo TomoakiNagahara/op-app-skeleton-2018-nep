@@ -22,8 +22,9 @@ OP\UNIT\SELFTEST\Configer::Column(  'positive',       'int', 'Positive integer. 
 OP\UNIT\SELFTEST\Configer::Column( 'multibyte',      'text',                       'Free text.');
 OP\UNIT\SELFTEST\Configer::Column(     'ascii',      'text',            'Ascii character only.');
 
-OP\UNIT\SELFTEST\Configer::Column(     'flags',       'set',    'Any flags.', ['length'=>'a,b']);
-OP\UNIT\SELFTEST\Configer::Column(     'valid',      'enum', 'valid record.', ['length'=>'y,n']);
+OP\UNIT\SELFTEST\Configer::Column(    'select',      'enum',    'null is select.', ['length'=>'y,n','null'=>true] );
+OP\UNIT\SELFTEST\Configer::Column(     'radio',      'enum', 'not null is radio.', ['length'=>'y,n','null'=>false]);
+OP\UNIT\SELFTEST\Configer::Column(  'checkbox',       'set',      'multi select.', ['length'=>'a,b,c']);
 
 OP\UNIT\SELFTEST\Configer::Column(   'created',  'datetime',           'Created GMT date time.');
 OP\UNIT\SELFTEST\Configer::Column(   'updated',  'datetime',           'Updated GMT date time.');
