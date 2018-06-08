@@ -8,7 +8,7 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-//	...
+/* @var $db \OP\UNIT\Dataase */
 include('connect.php');
 
 /* @var $orm \OP\UNIT\ORM */
@@ -53,6 +53,11 @@ $valid = $record->isValid();
 
 //	...
 App::Template('orm.phtml',['form'=>$form, 'result'=>$result, 'found'=>$found, 'valid'=>$valid]);
+
+//	...
+if( $_GET['debug'] ?? false ){
+	D( $db->Queries() );
+}
 
 //	...
 foreach( $db->Quick('t_orm','order=timestamp desc, limit=10') as $temp ){
