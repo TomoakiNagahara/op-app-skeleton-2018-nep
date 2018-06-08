@@ -384,32 +384,22 @@ function Html($string, $attr=null)
 {
 	//	...
 	if( $attr ){
-		//	...
-		foreach( explode(' ', $attr) as $str ){
-			if( $str[0] === '#' ){
-				if( isset($id) ){
-					D("Already set ID. (already:#$id, current:$str)");
-				}else{
-					$id = substr($str, 1);
-				}
-			}else
-			if( $str[0] === '.' ){
-				$class[] = substr($str, 1);
-			}else{
-				if( isset($tag) ){
-					D("Already set TAG. (already:$tag, current:$str)");
-				}else{
-					$tag = $str;
-				}
-			}
-		}
+		$attr = Attribute($attr);
+	}
 
-		//	...
-		$attr = isset($id)    ? " id=\"$id\" "     : ' ';
-		$attr.= isset($class) ? 'class="'.join(' ', $class).'"' : '';
-	}else{
+	//	...
+	foreach( ['tag','id','class'] as $key ){
+		${$key} = $attr[$key] ?? null;
+	}
+
+	//	...
+	if( empty($tag) ){
 		$tag = 'div';
 	}
+
+	//	...
+	$attr = $id    ? " id='$id'"      :'';
+	$attr.= $class ? " class='$class'":'';
 
 	//	...
 	printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
