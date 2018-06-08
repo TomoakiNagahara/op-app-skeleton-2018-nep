@@ -367,8 +367,8 @@ function Json($json, $attr)
 	//	...
 	$json = htmlentities($json, ENT_NOQUOTES, 'utf-8');
 
-	//	Print
-	printf('<div class="%s">%s</div>'.PHP_EOL, $attr, $json);
+	//	...
+	Html($json, 'div.'.$attr);
 }
 
 /** Display HTML.
