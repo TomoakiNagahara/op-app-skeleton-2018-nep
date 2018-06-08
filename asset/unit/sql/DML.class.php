@@ -80,8 +80,21 @@ class DML
 
 		//	...
 		foreach( $args['set'] as $column => $value ){
+			//	...
 			$column	 = $db->Quote($column);
-			$value	 = $db->PDO()->quote( is_string($value) ? $value : join(',',$value) );
+
+			//	...
+			if( is_null($value) ){
+				//	...
+				$value = 'NULL';
+			}else{
+				//	...
+				if( is_array($value) ){
+					$value = join(',',$value);
+				}
+				//	...
+				$value = $db->PDO()->quote($value);
+			}
 			$join[] = "{$column} = {$value}";
 		}
 
