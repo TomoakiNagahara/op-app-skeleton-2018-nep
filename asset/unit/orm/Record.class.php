@@ -153,6 +153,15 @@ class Record
 			return;
 		}
 
+		//	If null is okey.
+		if( $this->_columns[$name]['null'] ){
+			//	If value is empty string.
+			if( is_string($value) and strlen($value) === 0 ){
+				//	Database into null.
+				$value = null;
+			}
+		}
+
 		//	$this->_change is update values.
 		$this->_change[$name] = $value;
 	}
