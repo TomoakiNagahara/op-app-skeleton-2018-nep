@@ -307,6 +307,50 @@ function ifset(&$check, $alternate=null)
 	return isset($check) ? $check : $alternate;
 }
 
+/** Parse html tag attribute from string to array.
+ *
+ * @param  string $attr
+ * @return array  $result
+ */
+function Attribute(string $attr)
+{
+	//	...
+	$key = 'tag';
+
+	//	...
+	for($i=0, $len=strlen($attr); $i<$len; $i++){
+		//	...
+		switch( $attr[$i] ){
+			case '.':
+				$key = 'class';
+				if(!empty($result[$key]) ){
+					$result[$key] .= ' ';
+				}
+				continue 2;
+
+			case '#':
+				$key = 'id';
+				continue 2;
+
+			case ' ':
+				continue 2;
+
+			default:
+		}
+
+		//	...
+		if( empty($result[$key]) ){
+			$result[$key] = '';
+		}
+
+		//	...
+		$result[$key] .= $attr[$i];
+	}
+
+	//	...
+	return $result;
+}
+
 /** Output secure JSON.
  *
  * @param	 array	 $json
