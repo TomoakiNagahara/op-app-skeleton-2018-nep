@@ -30,12 +30,6 @@ class ORM
 	 */
 	use \OP_CORE;
 
-	/** IF_FORM
-	 *
-	 * @var \OP\UNIT\Form
-	 */
-	private $_form;
-
 	/** Insert
 	 *
 	 * @param	 array	 $config

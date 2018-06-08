@@ -181,10 +181,13 @@ class Config
 
 			//	...
 			if(!isset($record[$name]) ){
+				//	Has not been set.
 				$value = null;
 			}else if( $type === 'checkbox' ){
+				//	String to array.
 				$value = explode(',', ','.$record[$name]);
 			}else{
+				//	From saved database value.
 				$value = $record[$name];
 			}
 
@@ -195,7 +198,7 @@ class Config
 			$input['value'] = $value;
 			$input['label'] = $type === 'hidden' ? '': $name;
 			$input['rule']  = self::_Rule($column);
-		//	$input['session'] = false;
+			$input['session'] = false;
 			if( $type === 'radio' or $type === 'checkbox' or $type === 'select' ){
 				$join = $type === 'select' ? [null]:[];
 				foreach( explode(',', $column['length']) as $temp ){
