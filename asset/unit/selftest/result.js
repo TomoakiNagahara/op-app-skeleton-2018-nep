@@ -205,6 +205,10 @@ setTimeout(function(){
 		for(var database in json ){
 			for(var table in json[database] ){
 				for(var field in json[database][table] ){
+					//	...
+					var list = document.createElement('ol');
+
+					//	...
 					for(var column in json[database][table][field] ){
 						//	...
 						if( json[database][table][field][column].result ){
@@ -215,9 +219,10 @@ setTimeout(function(){
 						var item = root	.querySelector('[data-database="'+database+'"]')
 										.querySelector('[data-table="'+table+'"]')
 										.querySelector('[data-field="'+field+'"]');
+						item.appendChild(list);
 
 						//	...
-						__column(item, json[database][table][field][column]);
+						__column(list, column, json[database][table][field][column]);
 					}
 				}
 			}
@@ -225,38 +230,40 @@ setTimeout(function(){
 	};
 
 	//	...
-	function __column(item, json){
+	function __column(list, column, json){
+
 		//	...
-		var column  = document.createElement('span');
+		var item    = document.createElement('li');
+			item.classList.add('error');
+		var name    = document.createElement('name');
+			name.innerText = column;
+
+		//	...
 		var current = document.createElement('span');
 		var arrow   = document.createElement('span');
 		var modify  = document.createElement('span');
+
+		current.classList.add('current');
+		arrow  .classList.add('arrow');
+		modify .classList.add('modify');
+
+		//	...
+		item.appendChild(name);
+		item.appendChild(current);
+		item.appendChild(arrow);
+		item.appendChild(modify);
+		list.appendChild(item);
 
 		//	...
 		current.innerText = json.current;
 		modify .innerText = json.modify;
 
 		//	...
-		item   .classList.remove('success');
-		item   .classList.remove('missing');
-		item   .classList.add('error');
-		column .classList.add('column');
-		current.classList.add('current');
-		arrow  .classList.add('arrow');
-		modify .classList.add('modify');
-
-		//	...
-		if( json.current.length ){
+		if( json.current === null || json.current.length ){
 			current.classList.add('empty');
 		}
-		if( json.modify.length ){
+		if( json.modify  === null || json.modify.length ){
 			modify .classList.add('empty');
 		}
-
-		//	...
-		column.appendChild(current);
-		column.appendChild(arrow);
-		column.appendChild(modify);
-		item.appendChild(column);
 	};
 }, 0);

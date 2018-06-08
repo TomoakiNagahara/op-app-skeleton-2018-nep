@@ -588,6 +588,9 @@ class Inspector
 		//	...
 		foreach( ['type','length','unsigned','null','default','extra',/*'key','privileges',*/'comment','collation'] as $key ){
 			//	...
+			$io = true;
+
+			//	...
 			switch( $key ){
 				case 'unsigned':
 					if( isset($fact[$key]) or isset($column[$key]) ){
@@ -595,8 +598,6 @@ class Inspector
 					}else{
 						continue;
 					}
-
-
 					break;
 
 				//	...
