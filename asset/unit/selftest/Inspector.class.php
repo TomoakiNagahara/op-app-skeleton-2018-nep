@@ -647,6 +647,9 @@ class Inspector
 				//	...
 				case 'length':
 					switch( $column['type'] ){
+						case 'float':
+							continue 2;
+
 						case 'set':
 						case 'enum':
 							$join = [];

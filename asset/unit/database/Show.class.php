@@ -59,26 +59,30 @@ class Show
 					$key = lcfirst($key);
 
 					//	...
-					if( $key === 'type' and $st = strpos($val, '(') and $en = strpos($val, ')') ){
-						$type   = substr($val, 0, $st);
-						$length = substr($val, $st+1, $en - $st -1 );
-
-						//	...
-						if( is_numeric($length) ){
-							$length = (int)$length;
-						}
-
-						//	...
-						$result[$name]['type']   = $type;
-						$result[$name]['length'] = $length;
-
-						//	...
-						if( strpos($val, 'unsigned') ){
+					if( $key === 'type' ){
+						//	Parse --> type unsigned --> type, unsigned
+						if( $pos = strpos($val, 'unsigned') ){
+							$val = substr($val, 0, $pos-1);
 							$result[$name]['unsigned'] = true;
 						}
 
-						//	...
-						continue;
+						//	Parse --> type(length) --> type, length
+						if( $st = strpos($val, '(') and $en = strpos($val, ')') ){
+							$type   = substr($val, 0, $st);
+							$length = substr($val, $st+1, $en - $st -1 );
+
+							//	...
+							if( is_numeric($length) ){
+								$length = (int)$length;
+							}
+
+							//	...
+							$result[$name]['type']   = $type;
+							$result[$name]['length'] = $length;
+
+							//	...
+							continue;
+						}
 					}
 
 					//	...
