@@ -1,0 +1,27 @@
+<?php
+/**
+ * unit-test:/unit/database/scaffold/form.phtml
+ *
+ * @creation  2018-06-10
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<?php $form->Start() ?>
+<table>
+	<?php foreach( ['prod','host','port','user','password','charset'] as $name ): ?>
+	<tr>
+		<th><?php $form->Label($name) ?></th>
+		<td><?php $form->Input($name) ?></td>
+		<td><?php $form->Error($name) ?></td>
+	</tr>
+	<?php endforeach; ?>
+	<tr>
+		<td colspan="2" class="text center">
+			<button> Submit </button>
+		</td>
+	</tr>
+</table>
+<?php $form->Finish() ?>

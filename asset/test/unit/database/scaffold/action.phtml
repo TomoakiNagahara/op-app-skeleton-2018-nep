@@ -1,0 +1,16 @@
+<?php
+/**
+ * unit-test:/unit/database/scaffold/action.phtml
+ *
+ * @creation  2018-06-10
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+/* @var $db \OP\UNIT\Database */
+if( $db->isConnect() ){
+	App::Template('form.phtml', ['form'=>$form]);
+}else{
+	App::Template('form.phtml', ['form'=>$form]);
+}

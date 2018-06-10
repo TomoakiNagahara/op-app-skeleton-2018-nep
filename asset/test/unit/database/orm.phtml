@@ -16,7 +16,7 @@
 
 <?php $form->Start() ?>
 <table class="testcase">
-	<?php foreach( ['required','number','integer','positive','ascii','multibyte','select','radio','checkbox'] as $name ): ?>
+	<?php foreach( ['required','number','integer','positive','ascii','multibyte','select','radio','checkbox','date','datetime'] as $name ): ?>
 	<tr>
 		<th><?= $form->Label($name) ?></th>
 		<td><?= $form->Input($name) ?></td>
