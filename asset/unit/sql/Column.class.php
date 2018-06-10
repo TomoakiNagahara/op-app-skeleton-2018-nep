@@ -283,11 +283,15 @@ class Column
 				$length = 20;
 				break;
 
+			case 'float':
+				$length = 0;
+				break;
+
 			default:
 		}
 
 		//	...
-		if( $unsigned ){
+		if( $unsigned and $length ){
 			$length--;
 		}
 

@@ -17,7 +17,7 @@ OP\UNIT\SELFTEST\Configer::Column(        'ai',       'int',           'Auto inc
 OP\UNIT\SELFTEST\Configer::Column(  'required',   'varchar',                        'Required.', ['length'=>10, 'null'=>false]);
 OP\UNIT\SELFTEST\Configer::Column(    'number',     'float',                      'Any number.');
 OP\UNIT\SELFTEST\Configer::Column(   'integer',       'int',        'Integer only. (not float)');
-OP\UNIT\SELFTEST\Configer::Column(  'positive',       'int', 'Positive integer. (not negative)', ['unsigned'=>1]);
+OP\UNIT\SELFTEST\Configer::Column(  'positive',     'float', 'Positive integer. (not negative)', ['unsigned'=>1]);
 
 OP\UNIT\SELFTEST\Configer::Column( 'multibyte',      'text',                       'Free text.');
 OP\UNIT\SELFTEST\Configer::Column(     'ascii',      'text',            'Ascii character only.');
