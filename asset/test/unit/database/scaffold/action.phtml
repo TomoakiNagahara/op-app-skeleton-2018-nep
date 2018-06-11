@@ -10,7 +10,8 @@
  */
 /* @var $db \OP\UNIT\Database */
 if( $db->isConnect() ){
-	D( $db-> );
+	$form->Config(include('selector.form.php'));
+	App::Template('selector.phtml', ['form'=>$form]);
 }else{
-	App::Template('form.phtml', ['form'=>$form]);
+	App::Template('login.phtml', ['form'=>$form]);
 }

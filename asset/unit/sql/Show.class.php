@@ -33,10 +33,9 @@ class Show
 
 	/** Show database list.
 	 *
-	 * @param	\IF_DATABASE $DB
 	 * @return	 string		 $sql
 	 */
-	static function Database($db)
+	static function Database()
 	{
 		return 'SHOW DATABASES';
 	}

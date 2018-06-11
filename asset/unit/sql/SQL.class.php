@@ -91,7 +91,18 @@ class SQL
 	 */
 	function Show($args=null, $DB)
 	{
-		return SQL\Show::Get($args, $DB);
+		//	...
+		if( isset($args['user']) ){
+			return SQL\Show::User($args, $DB);
+		}
+
+		//	...
+		if( isset($args['database']) ){
+			return SQL\Show::Table($DB, $args['database']);
+		}
+
+		//	...
+		return SQL\Show::Database();
 	}
 
 	/** Generate update sql statement.

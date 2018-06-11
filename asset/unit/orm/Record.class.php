@@ -155,8 +155,11 @@ class Record
 
 		//	If null is okey.
 		if( $this->_columns[$name]['null'] ){
-			//	If value is empty string.
-			if( is_string($value) and strlen($value) === 0 ){
+			//	If value is empty.
+			if( (is_string($value) and strlen($value) === 0)
+					or
+				(is_array($value)  and count($value)   <= 1)
+			){
 				//	Database into null.
 				$value = null;
 			}

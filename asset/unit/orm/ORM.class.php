@@ -92,10 +92,12 @@ class ORM
 		$struct   = $this->DB()->Query( $query );
 
 		//	...
+		/*
 		if(!$struct ){
 			$result = null;
 		//	return;
 		}
+		*/
 
 		//	Create or Fetch.
 		if( $create ){

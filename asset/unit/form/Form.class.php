@@ -99,14 +99,6 @@ class Form
 		$this->_form = Escape($form);
 
 		//	...
-		if( \Env::isAdmin() ){
-			if(!FORM\Test::Config($this->_form) ){
-				D( FORM\Test::Error() );
-				return;
-			}
-		}
-
-		//	...
 		$this->_session = $this->Session($form_name);
 
 		//	...
@@ -118,6 +110,11 @@ class Form
 	 */
 	private function _InitInput()
 	{
+		//	...
+		if( empty($this->_form['input']) ){
+			$this->_form['input'] = [];
+		}
+
 		//	...
 		$form_name = $this->_form['name'];
 
@@ -211,26 +208,22 @@ class Form
 		}
 
 		//	...
-		foreach( $input['values'] as $key => &$values ){
+		foreach( $input['values'] as $index => &$values ){
 			//	...
 			$check = false;
 			$value = null;
 
 			//	...
-			if( is_string($key) ){
-				$value = $key;
-			}
-
-			//	...
-			if(!is_array($values) ){
-				$label = $values;
-				$value = $value ?? $values;
-				$values = [];
+			if( is_string($values) ){
+				$label =  $values;
+				$value =  $index;
 			}else{
-				$label = $values['label'] ?? $value;
+				$label = $values['value'] ?? $value;
+				$value = $values['label'] ?? $values;
 			}
 
 			//	...
+			$values = [];
 			$values['label'] = $label;
 			$values['value'] = $value;
 			$values['check'] = $check;
@@ -293,6 +286,13 @@ class Form
 
 			//	...
 			$this->_InitInput();
+
+			//	...
+			if( \Env::isAdmin() ){
+				if(!FORM\Test::Config($this->_form) ){
+					D( FORM\Test::Error() );
+				}
+			}
 		}
 
 		//	...
