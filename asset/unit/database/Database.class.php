@@ -62,6 +62,38 @@ class Database implements \IF_DATABASE
 		$this->_SQL = \Unit::Instance('SQL');
 	}
 
+	/** Generate PDO options.
+	 *
+	 * @return	 array	 $options
+	 */
+	private function _Options()
+	{
+		//	...
+		$options = [];
+
+		//	...
+		switch( $prod = strtolower($this->_config['prod']) ){
+			case 'mysql':
+				//	...
+				if(!defined('\PDO::MYSQL_ATTR_INIT_COMMAND') ){
+					throw new \Exception("Please install MySQL driver for PHP.");
+				}
+
+				//	Character set. (指定字符代码, 指定字符代碼)
+				$options[\PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES ".$this->_config['charset'];
+
+				//	Multi statement. (多个指令, 多個指令)
+				$options[\PDO::MYSQL_ATTR_MULTI_STATEMENTS] = false;
+
+				//	Persistent connect. (持续连接, 持續連接)
+				$options[\PDO::ATTR_PERSISTENT] = false;
+			break;
+		}
+
+		//	...
+		return $options;
+	}
+
 	/** If is connect.
 	 *
 	 * @return	 boolean
@@ -69,15 +101,6 @@ class Database implements \IF_DATABASE
 	function isConnect()
 	{
 		return $this->_PDO ? true: false;
-	}
-
-	/** Wrapper method.
-	 *
-	 * @return \PDO
-	 */
-	function GetPDO()
-	{
-		return $this->PDO();
 	}
 
 	/** Return instantiated PDO instance. (So-called singleton)
@@ -92,7 +115,7 @@ class Database implements \IF_DATABASE
 	/** Return connection configuration.
 	 *
 	 * @see		\IF_DATABASE::Config()
-	 * @return	 array $config
+	 * @return	 array		 $config
 	 */
 	function Config()
 	{
@@ -101,19 +124,38 @@ class Database implements \IF_DATABASE
 
 	/** Connect database server.
 	 *
-	 * @param  array   $config
-	 * @return boolean $io
+	 * <pre>
+	 * //	Configuration.
+	 * $config = [];
+	 * $conifg['prod']     = 'mysql';
+	 * $conifg['host']     = 'localhost';
+	 * $conifg['port']     = '3306';
+	 * $conifg['user']     = 'username';
+	 * $conifg['password'] = 'password';
+	 * $conifg['charset']  = 'utf8';
+	 *
+	 * //	Execute.
+	 * $io = $db->Connect($config);
+	 * </pre>
+	 *
+	 * @param	 array		 $config
+	 * @return	 boolean	 $io
 	 */
 	function Connect($config)
 	{
 		//	...
-		foreach( ['driver','prod','host','port','user','password','database'] as $key ){
-			$this->_config[$key] = ${$key} = ifset($config[$key]);
+		if( empty($config['prod']) and isset($config['driver']) ){
+			$config['prod'] = $config['driver'];
 		}
 
 		//	...
-		if(!$prod ){
-			$this->_config['prod'] = $prod = $driver;
+		if( empty($config['charset']) ){
+			$config['charset'] = 'utf8';
+		}
+
+		//	...
+		foreach( ['prod','host','port','user','password','database','charset'] as $key ){
+			$this->_config[$key] = ${$key} = ifset($config[$key]);
 		}
 
 		//	...
@@ -134,8 +176,12 @@ class Database implements \IF_DATABASE
 
 		//	...
 		try{
+			//	...
+			$options = $this->_Options();
+
+			//	...
 			$this->_queries[] = $dsn;
-			$this->_PDO = new \PDO($dsn, $user, $password);
+			$this->_PDO = new \PDO($dsn, $user, $password, $options);
 		}catch( \Throwable $e ){
 			\Notice::Set($e->getMessage() . " ($dsn, $user, $password)");
 		}
@@ -146,9 +192,9 @@ class Database implements \IF_DATABASE
 
 	/** Do SQL.
 	 *
-	 * @param	 array	 $config
-	 * @param	 string	 $function
-	 * @return	 mixed
+	 * @param	 array		 $config
+	 * @param	 string		 $function
+	 * @return	 mixed		 $result
 	 */
 	function SQL($config, $function)
 	{
@@ -158,44 +204,138 @@ class Database implements \IF_DATABASE
 		}
 
 		//	...
-		$query = $this->_SQL->$function($config, $this);
+		$query = $this->_SQL->{$function}($config, $this);
 
 		//	...
 		return $this->Query($query, $function);
 	}
 
+	/** Count number of record at conditions.
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Count()
+	 * @param	 array		 $config
+	 * @return	 integer	 $count
+	 */
 	function Count($config)
 	{
 		$count = $this->SQL($config, __FUNCTION__);
 		return empty($count) ? 0: (int)$count;
 	}
 
-	function Select($config)
-	{
-		return $this->SQL($config, __FUNCTION__);
-	}
-
+	/** Insert new record.
+	 *
+	 * <pre>
+	 * //	Configuration.
+	 * $config = [];
+	 * $config['table'] = 't_table';
+	 * $config['set']['value'] = $value;
+	 *
+	 * //	Execute.
+	 * $new_id = $db->Insert($config);
+	 * </pre>
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Insert()
+	 * @param	 array		 $config
+	 * @return	 integer	 $new_id
+	 */
 	function Insert($config)
 	{
 		return $this->SQL($config, __FUNCTION__);
 	}
 
+	/** Select record at conditions.
+	 *
+	 * <pre>
+	 * //	Configuration.
+	 * $config = [];
+	 * $config['table'] = 't_table';
+	 * $config['limit'] = 1;
+	 * $config['where']['value'] = $value;
+	 *
+	 * //	Execute.
+	 * $record = $db->Select($config);
+	 * </pre>
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Select()
+	 * @param	 array		 $config
+	 * @return	 array		 $record
+	 */
+	function Select($config)
+	{
+		return $this->SQL($config, __FUNCTION__);
+	}
+
+	/** Update record at conditions.
+	 *
+	 * <pre>
+	 * //	Configuration.
+	 * $config = [];
+	 * $config['table'] = 't_table';
+	 * $config['limit'] = 1;
+	 * $config['where']['id']  = $id;
+	 * $config['set']['value'] = $value;
+	 *
+	 * //	Execute.
+	 * $record = $db->Update($config);
+	 * </pre>
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Update()
+	 * @param	 array		 $config
+	 * @return	 integer	 $number
+	 */
 	function Update($config)
 	{
 		return $this->SQL($config, __FUNCTION__);
 	}
 
+	/** Delete record at conditions.
+	 *
+	 * <pre>
+	 * //	Configuration.
+	 * $config = [];
+	 * $config['table'] = 't_table';
+	 * $config['limit'] = 1;
+	 * $config['where']['id']  = $id;
+	 *
+	 * //	Execute.
+	 * $record = $db->Delete($config);
+	 * </pre>
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Delete()
+	 * @param	 array		 $config
+	 * @return	 integer	 $number
+	 */
 	function Delete($config)
 	{
 		return $this->SQL($config, __FUNCTION__);
 	}
 
+	/** Do QQL.
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Quick()
+	 * @param	 string		 $qql
+	 * @param	 array		 $options
+	 * @return	 array		 $record
+	 */
 	function Quick($qql, $options=[])
 	{
 		include_once(__DIR__.'/QQL.class.php');
 		return Database\QQL::Execute($qql, $options, $this);
 	}
 
+	/** Do Quote by each product.
+	 *
+	 * {@inheritDoc}
+	 * @see		\IF_DATABASE::Quote()
+	 * @param	 string		$value
+	 * @return	 string		$value
+	 */
 	function Quote($value)
 	{
 		//	...
@@ -213,10 +353,10 @@ class Database implements \IF_DATABASE
 
 	/** Execute SQL statement.
 	 *
-	 * @see    IF_DATABASE::Query()
-	 * @param  string $query
-	 * @param  string $type
-	 * @return array  $record
+	 * @see		\IF_DATABASE::Query()
+	 * @param	 string		 $query
+	 * @param	 string		 $type
+	 * @return	 array		 $record
 	 */
 	function Query($query, $type=null)
 	{
@@ -301,8 +441,8 @@ class Database implements \IF_DATABASE
 
 	/** Get past stacked queries.
 	 *
-	 * @see    IF_DATABASE::Queries()
-	 * @return array $queries
+	 * @see		\IF_DATABASE::Queries()
+	 * @return	 array		 $queries
 	 */
 	function Queries()
 	{

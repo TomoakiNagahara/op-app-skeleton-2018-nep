@@ -68,7 +68,7 @@ class Test
 		}
 
 		//	...
-		foreach(['action','method'] as $key){
+		foreach([/*'action','method'*/] as $key){
 			if(!isset($form[$key])){
 				self::Error("\$form has not been set $key attribute. ($name)");
 				$failed = true;

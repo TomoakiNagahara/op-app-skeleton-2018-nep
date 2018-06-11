@@ -10,7 +10,7 @@
  */
 //	...
 $form = [];
-$form['name']   = 'testcase-scaffold';
+$form['name']   = 'testcase-scaffold-login';
 $form['action'] = '';
 
 //	...

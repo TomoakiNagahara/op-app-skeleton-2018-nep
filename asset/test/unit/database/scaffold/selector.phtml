@@ -1,0 +1,36 @@
+<?php
+/**
+ * unit-test:/unit/database/scaffold/select.phtml
+ *
+ * @creation  2018-06-11
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<?php $form->Start() ?>
+<table>
+	<?php foreach( ['database','table'] as $name ): ?>
+	<tr>
+		<th><?php $form->Label($name) ?></th>
+		<td><?php $form->Input($name) ?></td>
+		<td><?php $form->Error($name) ?></td>
+	</tr>
+	<?php endforeach; ?>
+</table>
+<?php $form->Finish() ?>
+<hr/>
+<?php
+//	...
+$config = [];
+$config['table'] = $form->Value('table');
+$config['order'] = 'ai';
+$config['limit'] = 10;
+$config['offset']=  0;
+$config['page']  = (int)filter_input(INPUT_GET, 'page');
+
+//	...
+$db->Pager($config)
+?>
+<hr/>
