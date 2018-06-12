@@ -30,7 +30,6 @@ class ErrorInfo
 	 */
 	use \OP_CORE;
 
-
 	/** Set PDO error information.
 	 *
 	 * @param array $errorinfo

@@ -8,27 +8,30 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-body.body .pager {
-
+body.body .OP.pager {
+	_border: 1px solid black;
+	text-align: center;
 }
 
-body.body .pager span:not(:last-child):after {
-	content:"";
+body.body .OP.pager span.page {
+	padding: 0.1em;
 }
 
-body.body .pager span:first-child a:after {
+body.body .OP.pager span.page a,
+body.body .OP.pager span.page span.current {
+	margin:  0;
+	padding: 0.1em 0.2em;
+}
+
+body.body .OP.pager span.page span.current {
+	border: 1px solid #c0c0c0;
+	background-color: #f0f0f0;
+}
+
+body.body .OP.pager span.top a:before {
 	content:"<<";
 }
 
-body.body .pager span:last-child a:after {
+body.body .OP.pager span.last a:after {
 	content:">>";
-}
-
-body.body .pager span.page {
-	padding: 0.2em;
-}
-
-body.body .pager span.page.current {
-	border: 1px solid #c0c0c0;
-	background-color: #f0f0f0;
 }
