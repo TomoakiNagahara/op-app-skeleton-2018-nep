@@ -59,6 +59,9 @@ class Unit
 			}
 
 			//	...
+			_GetRootsPath('unit', $dir);
+
+			//	...
 			if(!file_exists($dir)){
 				$message = "Does not exists unit directory. ($dir)";
 				Notice::Set($message);
