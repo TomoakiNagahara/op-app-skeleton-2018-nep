@@ -221,7 +221,7 @@ class DML
 	static function Order($args, $db)
 	{
 		foreach( explode(',', $args['order']) as $value ){
-			list($field, $value) = explode(' ', $value);
+			list($field, $value) = explode(' ', $value.' ');
 			$field  = $db->Quote($field);
 			$field .= $value === 'desc' ? ' DESC': '';
 			$join[] = $field;
