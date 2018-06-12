@@ -65,9 +65,14 @@ class Select
 		//	...
 		foreach( $input['values'] ?? [] as $values ){
 			//	...
-			$label = $values['label'];
-			$value = $values['value'];
-			$check = $values['check'];
+			if( $values['value'] === null ){
+				$values['value']  =  '';
+			}
+
+			//	...
+			$value = $values['value'] ?? $values;
+			$label = $values['label'] ?? $value;
+			$check = $values['check'] ?? null;
 
 			//	...
 			if( isset($input['value']) ){
