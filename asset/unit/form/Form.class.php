@@ -419,10 +419,11 @@ class Form
 
 	/** Generate input tag.
 	 *
-	 * @param  string $name
-	 * @return string
+	 * @param	 string			 $name
+	 * @param	 string|array	 $name
+	 * @return	 string
 	 */
-	function GetInput($name)
+	function GetInput($name, $value=null)
 	{
 		static $request;
 
@@ -443,6 +444,15 @@ class Form
 
 			//	...
 			$input['name'] = $name;
+
+			//	...
+			if( $value ){
+				if( is_array($value) ){
+					$input['values'] = $value;
+				}else{
+					$input['value']  = $value;
+				}
+			}
 
 			//	...
 			switch( $type = ucfirst(ifset($input['type'])) ){
@@ -517,9 +527,10 @@ class Form
 
 	/** Print generated input tag.
 	 *
-	 * @param string $name
+	 * @param	 string			 $name
+	 * @param	 string|array	 $value
 	 */
-	function Input($name)
+	function Input($name, $value=null)
 	{
 		//	...
 		if( $this->_is_start === null ){
@@ -528,7 +539,7 @@ class Form
 		}
 
 		//	...
-		echo $this->GetInput($name);
+		echo $this->GetInput($name, $value);
 	}
 
 	/** Display error message.
