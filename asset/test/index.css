@@ -15,25 +15,22 @@
 	border-bottom: 2px solid #aaa;
 }
 
-#testcase > nav {
+#testcase > nav.testcase {
 	margin: 0.5em 0;
 }
 
-#testcase > nav span {
-}
-
-#testcase > nav span:first-child:before {
+#testcase > nav.testcase span:first-child:before {
 	content: "[";
 	margin-right: 0.5em;
 }
 
-#testcase > nav span:after {
+#testcase > nav.testcase span:after {
 	content: "|";
 	margin-left:  0.3em;
 	margin-right: 0.2em;
 }
 
-#testcase > nav span:last-child:after {
+#testcase > nav.testcase span:last-child:after {
 	content: "]";
 	margin-left: 0.5em;
 }
