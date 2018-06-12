@@ -14,23 +14,50 @@
 	<?php foreach( ['database','table'] as $name ): ?>
 	<tr>
 		<th><?php $form->Label($name) ?></th>
-		<td><?php $form->Input($name) ?></td>
+		<td><?php $form->Input($name, $list[$name] ?? null) ?></td>
 		<td><?php $form->Error($name) ?></td>
 	</tr>
 	<?php endforeach; ?>
 </table>
 <?php $form->Finish() ?>
-<hr/>
 <?php
 //	...
-$config = [];
-$config['table'] = $form->Value('table');
-$config['order'] = 'ai';
-$config['limit'] = 10;
-$config['offset']=  0;
-$config['page']  = (int)filter_input(INPUT_GET, 'page');
+$database = $form->GetValue('database');
+$table    = $form->GetValue('table');
 
 //	...
-$db->Pager($config)
-?>
-<hr/>
+if( $database and $table ){
+	//	OK
+}else{
+	Html('Please select database and table');
+	return;
+}
+
+/* @var $pager \OP\UNIT\Pager */
+$pager  = Unit::Instance('Pager');
+$config = ['database'=>$database, 'table'=>$table];
+$config = $pager->Config($config, $db);
+
+//	Display pagination at conditions.
+echo '<hr/>';
+$pager->Display();
+echo '<hr/>';
+
+/* @var $db \OP\UNIT\Database */
+printf('<div id="record-area">');
+foreach( $db->Select($config) as $record ){
+	printf('<div class="record">');
+	printf('<a href="?%s">Edit of this record</a>', http_build_query( array_merge($_GET, ['ai'=>$record['ai']]) ));
+	Json($record, '.OP_DUMP');
+	printf('</div>');
+}
+printf('</div><br/>');
+
+//	Display pagination at conditions.
+echo '<hr/>';
+$pager->Display();
+echo '<hr/>';
+
+//	...
+App::WebPack('unit:/dump/dump.js');
+App::WebPack('unit:/dump/dump.css');
