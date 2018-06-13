@@ -139,7 +139,7 @@ class Form
 
 			//	...
 			if( $type === 'select' or $type === 'radio' or $type === 'checkbox' ){
-				$this->_AdjustValues($input);
+				$this->_InitOption($input);
 			}
 
 			//	...
@@ -195,7 +195,7 @@ class Form
 	 *
 	 * @param	 array	&$input
 	 */
-	private function _AdjustValues(&$input)
+	private function _InitOption(&$input)
 	{
 		//	In case of empty.
 		if( empty($input['values']) ){
@@ -215,11 +215,10 @@ class Form
 
 			//	...
 			if( is_string($values) ){
-				$label =  $values;
-				$value =  $index;
+				$label = $value = $values;
 			}else{
-				$label = $values['value'] ?? $value;
-				$value = $values['label'] ?? $values;
+				$value = $values['value'];
+				$label = $values['label'];
 			}
 
 			//	...
@@ -311,10 +310,17 @@ class Form
 	 */
 	function Token()
 	{
-		static $io = '';
+		//	Static variables are also shared between different instances.
+		static $io;
 
 		//	...
-		if( $io === '' ){
+		$form_name = $this->_form['name'];
+
+		//	...
+		if(!isset($io[$form_name]) ){
+			//	Initialize.
+			$io[$form_name] = null;
+
 			//	Last time token.
 			$token = $this->_session['token'] ?? false;
 
@@ -327,17 +333,15 @@ class Form
 
 			//	Confirmation of request token.
 			if( $token ){
-				$io = ($token === (int)self::_Request('token'));
-			}else{
-				$io = null;
+				$io[$form_name] = ($token === (int)self::_Request('token'));
 			}
 		}
 
 		//	...
 		if( \Env::isAdmin() ){
-			if( $io === null ){
+			if( $io[$form_name] === null ){
 				$this->Debug("Token has not been set yet.");
-			}else if( $io === false ){
+			}else if( $io[$form_name] === false ){
 				$this->Debug("Token is unmatch.");
 			}else{
 				$this->Debug("Token is match.");
@@ -345,7 +349,7 @@ class Form
 		}
 
 		//	...
-		return $io;
+		return $io[$form_name];
 	}
 
 	/** Print form tag. (open)
@@ -647,15 +651,16 @@ class Form
 
 		//	Generate result each input name.
 		foreach( $this->Config()['input'] as $name => $input ){
-			//	Calc value.
-			$value = $saved_session_value[$name] ?? $input['value'] ?? null;
-
-			//	Set to result.
-			$result[$name] = $value;
-
 			//	If not save to session.
-			if(!ifset($input['session'], true) ){
+			if( empty($input['session']) ){
+				//	Result current submit value.
 				$result[$name] = $this->_Request($name);
+			}else{
+				//	Calc value.
+				$value = $saved_session_value[$name] ?? $input['value'] ?? null;
+
+				//	Set to result.
+				$result[$name] = $value;
 			}
 		}
 
