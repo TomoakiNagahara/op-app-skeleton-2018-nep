@@ -8,8 +8,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-body.body form.OP input[type="text"],
-body.body form.OP input[type="password"],
+body.body form.OP input:not([type="radio"]):not([type="checkbox"]),
 body.body form.OP textarea,
 body.body form.OP button,
 body.body form.OP submit {
@@ -19,9 +18,8 @@ body.body form.OP submit {
 	color:   #444;
 }
 
-body.body form.OP input[type="text"],
-body.body form.OP input[type="password"],
-body.body form.OP textarea{
+body.body form.OP input:not([type="radio"]):not([type="checkbox"]),
+body.body form.OP textarea {
 	width: 16em;
 	font-size: inherit;
 }
