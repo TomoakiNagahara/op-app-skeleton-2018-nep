@@ -190,6 +190,28 @@ class Database implements \IF_DATABASE
 		return $this->_PDO ? true: false;
 	}
 
+	/** Set/Get last time used database name.
+	 *
+	 * @param  string $database
+	 * @return string $database
+	 */
+	function Database(string $database=null)
+	{
+		if( $database ){
+			//	...
+			$this->_config['database'] = $database;
+
+			//	...
+			$database = $this->Quote($database);
+
+			//	...
+			$this->Query("use $database ", 'not');
+		}
+
+		//	...
+		return $this->_config['database'];
+	}
+
 	/** Do SQL.
 	 *
 	 * @param	 array		 $config
@@ -429,6 +451,9 @@ class Database implements \IF_DATABASE
 
 			case 'password':
 				$result = array_shift($statement->fetchAll(\PDO::FETCH_ASSOC)[0]);
+				break;
+
+			case 'not':
 				break;
 
 			default:
