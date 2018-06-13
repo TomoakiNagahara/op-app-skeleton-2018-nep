@@ -52,7 +52,7 @@ class Record
 	 *
 	 * @var array
 	 */
-	private $_columns;
+	private $_column;
 
 	/** Changed values.
 	 *
@@ -74,7 +74,7 @@ class Record
 	function __construct($struct, $record=null)
 	{
 		//	...
-		$this->_columns = $struct;
+		$this->_column = $struct;
 
 		//	...
 		if( $record ){
@@ -154,7 +154,7 @@ class Record
 		}
 
 		//	If null is okey.
-		if( $this->_columns[$name]['null'] ){
+		if( $this->_column[$name]['null'] ){
 			//	If value is empty.
 			if( (is_string($value) and strlen($value) === 0)
 					or
@@ -175,7 +175,7 @@ class Record
 	 */
 	function isReady()
 	{
-		return $this->_columns ? true: false;
+		return $this->_column ? true: false;
 	}
 
 	/** Is found record.
@@ -240,7 +240,7 @@ class Record
 	 */
 	function Column()
 	{
-		return $this->_columns;
+		return $this->_column;
 	}
 
 	/** Get Primary key field name.
@@ -254,7 +254,7 @@ class Record
 
 		//	...
 		if(!$_pkey ){
-			foreach( $this->_columns as $name => $column ){
+			foreach( $this->_column as $name => $column ){
 				if( $column['key'] === 'pri' ){
 					$_pkey = $name;
 					break;
@@ -330,6 +330,15 @@ class Record
 		return $this->_isValid;
 	}
 
+	/** Has field.
+	 *
+	 * @return	 boolean	$io
+	 */
+	function Has($field)
+	{
+		return isset($this->_column[$field]);
+	}
+
 	/** Get value.
 	 *
 	 * @param  string $field
@@ -392,7 +401,7 @@ class Record
 		$info['database']= $this->_database;
 		$info['table']	 = $this->_table;
 		$info['record']	 = $this->_record;
-		$info['column']	 = $this->_columns;
+		$info['column']	 = $this->_column;
 		$info['change']	 = $this->_change;
 		$info['found']	 = $this->isFound();
 		$info['valid']	 = $this->isValid();
