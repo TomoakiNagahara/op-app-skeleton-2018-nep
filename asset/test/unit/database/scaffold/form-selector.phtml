@@ -1,0 +1,34 @@
+<?php
+/**
+ * unit-test:/unit/database/scaffold/form-selector.phtml
+ *
+ * @creation  2018-06-11
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<?php $form->Start() ?>
+<table>
+	<?php foreach( ['database','table'] as $name ): ?>
+	<tr>
+		<th><?php $form->Label($name) ?></th>
+		<td><?php $form->Input($name, $list[$name] ?? null) ?></td>
+		<td><?php $form->Error($name) ?></td>
+	</tr>
+	<?php endforeach; ?>
+</table>
+<?php $form->Finish() ?>
+<?php
+//	...
+$database = $form->GetValue('database');
+$table    = $form->GetValue('table');
+
+//	...
+if( $database and $table ){
+	//	OK
+}else{
+	Html('Please select database and table');
+	return;
+}

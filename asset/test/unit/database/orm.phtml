@@ -25,6 +25,9 @@
 	<?php endforeach; ?>
 	<tr>
 		<td colspan=2 style="text-align: center;">
+			<?php if( $result ): ?>
+				<p class="success i0">Save was successful.</p>
+			<?php endif; ?>
 			<button>
 				<?= $found ? 'Update':'Create' ?>
 			</button>

@@ -32,7 +32,7 @@ $values = App::Session($session_key);
 //	Has not been saved login values.
 if( empty($values) ){
 	//	Initialize.
-	$form->Config('login.form.php');
+	$form->Config('form-login.conf.php');
 
 	//	Validate.
 	if( $form->Validate() ){
@@ -44,8 +44,28 @@ if( empty($values) ){
 
 //	Database connect.
 if( $values ){
-	$io = $db->Connect($values);
+	if( $db->Connect($values) ){
+
+		//	...
+		$form->Config(include('form-selector.conf.php'));
+
+		//	Get database name list.
+		$list['database'] = ['_'=>['label'=>null, 'value'=>null]];
+		foreach( $db->Query($sql->Show([], $db), 'show') as $value ){
+			$list['database'][$value]['label'] = $value;
+			$list['database'][$value]['value'] = $value;
+		}
+
+		//	Get table name list at database name.
+		$list['table'] = ['_'=>['label'=>null, 'value'=>null]];
+		if( $database = $form->GetValue('database') ){
+			foreach( $db->Query($sql->Show(['database'=>$database], $db), 'show') as $value ){
+				$list['table'][$value]['label'] = $value;
+				$list['table'][$value]['value'] = $value;
+			}
+		}
+	}
 }
 
 //	...
-App::Template('action.phtml',['form'=>$form, 'db'=>$db]);
+App::Template('action.phtml',['form'=>$form, 'db'=>$db, 'list'=>$list]);

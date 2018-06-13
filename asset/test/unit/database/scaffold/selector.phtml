@@ -1,37 +1,17 @@
 <?php
 /**
- * unit-test:/unit/database/scaffold/select.phtml
+ * unit-test:/unit/database/scaffold/selector.phtml
  *
  * @creation  2018-06-11
+ * @division  2018-06-13 from form-selector.phtml
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-?>
-<?php $form->Start() ?>
-<table>
-	<?php foreach( ['database','table'] as $name ): ?>
-	<tr>
-		<th><?php $form->Label($name) ?></th>
-		<td><?php $form->Input($name, $list[$name] ?? null) ?></td>
-		<td><?php $form->Error($name) ?></td>
-	</tr>
-	<?php endforeach; ?>
-</table>
-<?php $form->Finish() ?>
-<?php
-//	...
+//	Get database and table from form of selector.
 $database = $form->GetValue('database');
 $table    = $form->GetValue('table');
-
-//	...
-if( $database and $table ){
-	//	OK
-}else{
-	Html('Please select database and table');
-	return;
-}
 
 /* @var $pager \OP\UNIT\Pager */
 $pager  = Unit::Instance('Pager');
@@ -47,7 +27,7 @@ echo '<hr/>';
 printf('<div id="record-area">');
 foreach( $db->Select($config) as $record ){
 	printf('<div class="record">');
-	printf('<a href="?%s">Edit of this record</a>', http_build_query( array_merge($_GET, ['ai'=>$record['ai']]) ));
+	printf('<a href="?%s">Edit of this record</a>', http_build_query( array_merge($_GET, ['pkey'=>'ai','pval'=>$record['ai']]) ));
 	Json($record, '.OP_DUMP');
 	printf('</div>');
 }

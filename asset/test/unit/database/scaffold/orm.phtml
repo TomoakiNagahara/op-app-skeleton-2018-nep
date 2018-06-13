@@ -1,0 +1,92 @@
+<?php
+/**
+ * unit-test:/unit/database/scaffold/orm.phtml
+ *
+ * @creation  2018-06-13
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+/* @var $orm \OP\UNIT\ORM */
+if(!$orm = Unit::Instance('ORM') ){
+	return;
+}
+
+//	...
+$pkey = $_GET['pkey'];
+$pval = $_GET['pval'] ?? null;
+
+//	...
+$database = $form->GetValue('database');
+$table    = $form->GetValue('table');
+
+//	...
+$db->Database($database);
+
+//	Join database object.
+$orm->DB($db);
+
+/* @var $record \OP\UNIT\ORM\Record */
+if( $pval !== null ){
+	//	Find single record by QQL. (QQL is "Quick Query Language")
+	$record = $orm->Find("{$table}.{$pkey} = {$pval}");
+}else{
+	//	Generate Empty "Record" Object.
+	$record = $orm->Create($table);
+}
+
+//	...
+if(!$record->isReady() ){
+	D(false);
+	return;
+}
+
+//	In case of new record, Set create datetime.
+if( $record->isFound() ){
+	$record->has('updated') ? $record->Set('updated', Time::Datetime()) : null;
+}else{
+	$record->has('created') ? $record->Set('created', Time::Datetime()) : null;
+}
+
+//	Generate form object.
+$form = $record->Form();
+
+//	Save to database by Record object.
+$result = $form->Validate() ? $orm->Save($record): null;
+
+//	...
+$found = $record->isFound();
+$valid = $record->isValid();
+?>
+<hr/>
+<?php $form->Start() ?>
+<table id="testcase-scaffold-orm">
+<?php foreach( $record->Column() as $field => $column ): ?>
+	<?php if( $column['type'] === 'timestamp' ){ continue; } ?>
+	<tr>
+		<th><?= $form->Label($field) ?></th>
+		<td><?= $form->Input($field) ?></td>
+		<td><?= $form->Error($field) ?></td>
+	</tr>
+<?php endforeach; ?>
+	<tr>
+		<td colspan=3 class="text center">
+			<?php if( $result ): ?>
+				<p class="success i0">Record was saved.</p>
+			<?php endif; ?>
+			<button>
+				<?= $found ? 'Update' : 'Create' ?>
+			</button>
+		</td>
+	</tr>
+</table>
+<?php $form->Finish() ?>
+<?php if(!$valid ){ $form->Debug(); } ?>
+<style>
+
+#testcase-scaffold-orm th {
+	padding-right: 0.5em;
+}
+
+</style>
