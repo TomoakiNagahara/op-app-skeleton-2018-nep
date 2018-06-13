@@ -228,7 +228,7 @@ class ORM
 		}
 
 		//	...
-		if( $pval ){
+		if( strlen($pval) ){
 			//	Update
 			$config['where'][$pkey] = $pval;
 			$config['limit'] = 1;
