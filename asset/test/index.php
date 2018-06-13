@@ -15,6 +15,7 @@ if(!Env::isAdmin() ){
 
 //	Include local functions.
 include('index.inc.php');
+include('Nav.class.php');
 
 //	Set "testcase" meta URL.
 _GetRootsPath('testcase', ConvertPath('app:/_testcase'));

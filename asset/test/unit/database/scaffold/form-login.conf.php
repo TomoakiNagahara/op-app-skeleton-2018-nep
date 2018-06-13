@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-test:/unit/database/scaffold/form.conf.php
+ * unit-test:/unit/database/scaffold/form-login.conf.php
  *
  * @creation  2018-06-10
  * @version   1.0

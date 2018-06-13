@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-test:/unit/database/scaffold/select.form.php
+ * unit-test:/unit/database/scaffold/form-select.conf.php
  *
  * @creation  2018-06-11
  * @version   1.0

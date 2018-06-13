@@ -8,6 +8,12 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+/* @var $nav Nav */
+$nav = new Nav();
+$nav->Set('Debug (ON)' , ['debug'=>1]);
+$nav->Set('Debug (OFF)', ['debug'=>0]);
+$nav->Out();
+
 /* @var $db \OP\UNIT\Dataase */
 include('connect.php');
 
@@ -56,7 +62,7 @@ App::Template('orm.phtml',['form'=>$form, 'result'=>$result, 'found'=>$found, 'v
 
 //	...
 if( $_GET['debug'] ?? false ){
-	D( $db->Queries() );
+	D( $db->Queries(), $form->Config() );
 }
 
 //	...
