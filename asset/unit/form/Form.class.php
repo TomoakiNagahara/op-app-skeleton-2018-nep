@@ -148,7 +148,7 @@ class Form
 			}else if( isset($cookie[$name]) ){
 				$value = $cookie[$name];
 			}else{
-				$value = null;
+				$value = $input['value'] ?? null;
 			}
 
 			//	The value will overwrite.
@@ -350,6 +350,33 @@ class Form
 
 		//	...
 		return $io[$form_name];
+	}
+
+	/** Get input value.
+	 *
+	 * @param  string $name
+	 * @return string $value
+	 */
+	function Get($name)
+	{
+		return $this->_form['input'][$name]['value'];
+	}
+
+	/** Set input value.
+	 *
+	 * @param  string  $name
+	 * @param  string  $value
+	 * @param  boolean $session Overwrite to saved session value.
+	 */
+	function Set($name, $value, $session=true)
+	{
+		//	...
+		$this->_form['input'][$name]['value'] = $value;
+
+		//	...
+		if( $session and !empty($this->_form['input'][$name]['session']) ){
+			$this->_session[$name] = $value;
+		}
 	}
 
 	/** Print form tag. (open)
