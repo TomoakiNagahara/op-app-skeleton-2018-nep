@@ -71,9 +71,11 @@ class Record
 	 * @param string $struct
 	 * @param string $record
 	 */
-	function __construct($struct, $record=null)
+	function __construct($database, $table, $struct, $record=null)
 	{
 		//	...
+		$this->_database = $database;
+		$this->_table  = $table;
 		$this->_column = $struct;
 
 		//	...
@@ -125,9 +127,21 @@ class Record
 	 */
 	function __set($name, $value)
 	{
-		//	...
+		//	Is this necessary? Why?
+		/*
 		if( $value === null ){
 			return;
+		}
+		*/
+
+		//	Does not update timestamp.
+		if( $this->_column[$name]['type'] === 'timestamp' ){
+			return;
+		}
+
+		//	Empty string is convert to null.
+		if( is_string($value) and strlen($value) === 0 ){
+			$value = null;
 		}
 
 		//	Already changed.
@@ -139,12 +153,14 @@ class Record
 		}
 
 		//	$this->_record is origin.
+		/*
 		if( $this->_record[$name] === null ){
 
 		}
+		*/
 
 		//	$this->_record is origin.
-		if( $this->_record[$name] === $value ){
+		if( $this->_record[$name] === ( is_array($value) ? trim(join(',',$value), ',') : $value ) ){
 
 			//	Recovered to original value.
 			unset($this->_change[$name]);
@@ -167,6 +183,9 @@ class Record
 
 		//	$this->_change is update values.
 		$this->_change[$name] = $value;
+
+		//	Change of instanciated Form input value.
+		$this->Form()->Set($name, $value);
 	}
 
 	/** Is ready.
@@ -203,6 +222,7 @@ class Record
 	 */
 	function Database($database=null)
 	{
+		/*
 		if( $database ){
 			if(!$this->_database ){
 				$this->_database = $database;
@@ -210,6 +230,7 @@ class Record
 				\Notice::Set("Database name was already setted. ({$this->_database}, $database)");
 			}
 		}
+		*/
 
 		//	...
 		return $this->_database;
@@ -222,6 +243,7 @@ class Record
 	 */
 	function Table($table=null)
 	{
+		/*
 		if( $table ){
 			if(!$this->_table ){
 				$this->_table = $table;
@@ -229,6 +251,7 @@ class Record
 				\Notice::Set("Table name was already setted. ({$this->_table}, $table)");
 			}
 		}
+		*/
 
 		//	...
 		return $this->_table;
@@ -272,16 +295,21 @@ class Record
 	 */
 	function Array()
 	{
+		return array_merge($this->_record, $this->_change ?? []);
+
+		/*
 		//	...
 		$result = $this->_record;
 
 		//	...
-		foreach( $this->Changed() as $key => $value ){
+
+		foreach( $this->_change as $key => $value ){
 			$result[$key] = $value;
 		}
 
 		//	...
 		return $result;
+		*/
 	}
 
 	/** Generate Form object.
@@ -376,6 +404,9 @@ class Record
 	 */
 	function Changed()
 	{
+		return $this->_change ?? [];
+
+		/*
 		//	...
 		$result = [];
 
@@ -391,6 +422,7 @@ class Record
 
 		//	...
 		return $result;
+		*/
 	}
 
 	/** For developers
