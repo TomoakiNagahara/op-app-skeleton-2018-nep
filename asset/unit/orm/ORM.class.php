@@ -113,9 +113,9 @@ class ORM
 		}
 
 		/* @var $record ORM\Record */
-		$record = new ORM\Record( $struct, $result );
-		$record->Database( $database );
-		$record->Table(    $table    );
+		$record = new ORM\Record( $database, $table, $struct, $result );
+	//	$record->Database( $database );
+	//	$record->Table(    $table    );
 
 		//	Return "Record" Object.
 		return $record;
