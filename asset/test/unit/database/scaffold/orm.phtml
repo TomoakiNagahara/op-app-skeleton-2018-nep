@@ -42,18 +42,23 @@ if(!$record->isReady() ){
 	return;
 }
 
-//	In case of new record, Set create datetime.
-if( $record->isFound() ){
-	$record->has('updated') ? $record->Set('updated', Time::Datetime()) : null;
-}else{
-	$record->has('created') ? $record->Set('created', Time::Datetime()) : null;
-}
-
 //	Generate form object.
 $form = $record->Form();
 
-//	Save to database by Record object.
-$result = $form->Validate() ? $orm->Save($record): null;
+//	Do validation.
+if( $result = $form->Validate() ){
+	//	In case of new record, Set create datetime.
+	if( $record->isFound() ){
+		//	Update updated date time.
+//		$record->has('updated') ? $record->Set('updated', Time::GMT()) : null;
+	}else{
+		//	Generate created date time.
+		$record->has('created') ? $record->Set('created', Time::GMT()) : null;
+	}
+
+	//	Save to database by Record object.
+	$orm->Save($record);
+}
 
 //	...
 $found = $record->isFound();
