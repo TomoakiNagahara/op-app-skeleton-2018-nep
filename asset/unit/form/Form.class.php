@@ -191,7 +191,7 @@ class Form
 		}
 	}
 
-	/** Adjust to $input['values'].
+	/** Init input option.
 	 *
 	 * @param	 array	&$input
 	 */
@@ -231,24 +231,30 @@ class Form
 
 	/** Get request values.
 	 *
-	 * @param	 null|string	 $name
+	 * @return	 array	 $request;
 	 */
-	private function _Request($name='')
+	private function _Request($name=false)
 	{
 		static $_request = null;
 
 		//	...
 		if( $_request === null ){
-			$_request = ifset($_POST);
-		}
+			switch( strtolower($this->_form['method']) ){
+				case 'get':
+					$_request = $_GET  ?? [];
+					break;
 
-		//	Erase cached request value.
-		if( $name === null ){
-			$_request = [];
+				case 'post':
+					$_request = $_POST ?? [];
+					break;
+			}
+
+			//	...
+			$_request = Escape($_request);
 		}
 
 		//	...
-		return $name ? ifset($_request[$name]): $_request;
+		return $name ? ($_request[$name] ?? null) : $_request;
 	}
 
 	/** Construct
@@ -673,6 +679,9 @@ class Form
 		//	Get saved session value.
 		$saved_session_value = $this->_session;
 
+		//	Get submitted request.
+		$request = $this->_Request();
+
 		//	Remove token value.
 		unset($saved_session_value['token']);
 
@@ -681,7 +690,7 @@ class Form
 			//	If not save to session.
 			if( empty($input['session']) ){
 				//	Result current submit value.
-				$result[$name] = $this->_Request($name);
+				$result[$name] = $request[$name] ?? null;
 			}else{
 				//	Calc value.
 				$value = $saved_session_value[$name] ?? $input['value'] ?? null;
@@ -703,10 +712,9 @@ class Form
 	 *   Boolean is validation result. (true is no problem.)
 	 * </pre>
 	 *
-	 * @param	 null|string	 $input_name
 	 * @return	 null|boolean	 $io
 	 */
-	function Validate($name=null)
+	function Validate()
 	{
 		//	...
 		static $_result;
@@ -739,13 +747,8 @@ class Form
 			}
 		}
 
-		//	Individual result.
-		if( $name ){
-			return $_result[$name];
-		}
-
 		//	Overall result
-		return array_search(false, $_result, true) === false ? true: false;
+		return (array_search(false, $_result, true) === false) ? true: false;
 	}
 
 	/** Clear saved session value.
