@@ -224,7 +224,7 @@ class ORM
 
 		//	...
 		if( empty($config['set']) ){
-			return;
+			return 0;
 		}
 
 		//	...
@@ -234,23 +234,26 @@ class ORM
 			$config['limit'] = 1;
 
 			//	...
-			$pval = $this->_Update($config) !== false ? true: false;
+			$result = $this->_Update($config);
 		}else{
 			//	Insert
 			//	Get new insert id.
-			$pval = $this->_Insert($config);
+			$result = $this->_Insert($config);
 
 			//	Set new insert id.
-			$record->Set($pkey, $pval);
+			$record->Set($pkey, $result);
 
-			//	...
-			if( $form = $record->Form() ){
-				$form->Clear();
-			}
+			//	Clear form value.
+			$record->Form()->Clear();
 		}
 
 		//	...
-		return $pval;
+		if( $result ){
+			$record->Changed(true);
+		}
+
+		//	...
+		return $result;
 	}
 
 	/** Delete record.
