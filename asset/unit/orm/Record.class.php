@@ -83,11 +83,13 @@ class Record
 			//	...
 			$this->_record = $record;
 
+			/*
 			//	...
 			foreach( $record as $field => $value ){
 				//	...
 				$this->$field = $value;
 			}
+			*/
 		}
 	}
 
@@ -127,13 +129,6 @@ class Record
 	 */
 	function __set($name, $value)
 	{
-		//	Is this necessary? Why?
-		/*
-		if( $value === null ){
-			return;
-		}
-		*/
-
 		//	Does not update timestamp.
 		if( $this->_column[$name]['type'] === 'timestamp' ){
 			return;
@@ -142,6 +137,13 @@ class Record
 		//	Empty string is convert to null.
 		if( is_string($value) and strlen($value) === 0 ){
 			$value = null;
+		}
+
+		//	Empty array is convert to null.
+		if( is_array($value) ){
+			if( strlen(trim(join(',',$value), ',')) === 0 ){
+				$value = null;
+			}
 		}
 
 		//	Already changed.
@@ -153,14 +155,7 @@ class Record
 		}
 
 		//	$this->_record is origin.
-		/*
-		if( $this->_record[$name] === null ){
-
-		}
-		*/
-
-		//	$this->_record is origin.
-		if( $this->_record[$name] === ( is_array($value) ? trim(join(',',$value), ',') : $value ) ){
+		if( $this->_record[$name] === $value ){
 
 			//	Recovered to original value.
 			unset($this->_change[$name]);
@@ -222,17 +217,6 @@ class Record
 	 */
 	function Database($database=null)
 	{
-		/*
-		if( $database ){
-			if(!$this->_database ){
-				$this->_database = $database;
-			}else{
-				\Notice::Set("Database name was already setted. ({$this->_database}, $database)");
-			}
-		}
-		*/
-
-		//	...
 		return $this->_database;
 	}
 
@@ -243,17 +227,6 @@ class Record
 	 */
 	function Table($table=null)
 	{
-		/*
-		if( $table ){
-			if(!$this->_table ){
-				$this->_table = $table;
-			}else{
-				\Notice::Set("Table name was already setted. ({$this->_table}, $table)");
-			}
-		}
-		*/
-
-		//	...
 		return $this->_table;
 	}
 
@@ -295,21 +268,7 @@ class Record
 	 */
 	function Array()
 	{
-		return array_merge($this->_record, $this->_change ?? []);
-
-		/*
-		//	...
-		$result = $this->_record;
-
-		//	...
-
-		foreach( $this->_change as $key => $value ){
-			$result[$key] = $value;
-		}
-
-		//	...
-		return $result;
-		*/
+		return array_merge($this->_record ?? [], $this->_change ?? []);
 	}
 
 	/** Generate Form object.
@@ -400,29 +359,18 @@ class Record
 
 	/** Get changed values.
 	 *
+	 * @param  boolean $clear
 	 * @return array
 	 */
-	function Changed()
+	function Changed($clear=false)
 	{
+		//	...
+		if( $clear ){
+			$this->_change = null;
+		}
+
+		//	...
 		return $this->_change ?? [];
-
-		/*
-		//	...
-		$result = [];
-
-		//	...
-		if( empty($this->_change) ){
-			return $result;
-		}
-
-		//	...
-		foreach( $this->_change as $name => $value ){
-			$result[$name] = $value;
-		}
-
-		//	...
-		return $result;
-		*/
 	}
 
 	/** For developers
