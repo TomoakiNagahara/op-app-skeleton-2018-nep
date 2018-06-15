@@ -47,6 +47,11 @@ class Form
 	 */
 	private $_session = [];
 
+	/** Request
+	 *
+	 */
+	private $_request = [];
+
 	/** Start method was called flag.
 	 *
 	 * @var boolean
@@ -105,6 +110,14 @@ class Form
 		return true;
 	}
 
+	/** Initialize request.
+	 *
+	 */
+	private function _InitRequest()
+	{
+		$this->_request = Escape( strtolower($this->_form['method']) === 'post' ? $_POST ?? []: $_GET  ?? [] );
+	}
+
 	/** Initialize input config.
 	 *
 	 */
@@ -120,9 +133,6 @@ class Form
 
 		//	Result of token authentication.
 		$token = $this->Token();
-
-		//	...
-		$request = $this->_Request();
 
 		//	...
 		$cookie = \Cookie::Get($form_name, []);
@@ -143,8 +153,8 @@ class Form
 			}
 
 			//	...
-			if( isset($request[$name]) ){
-				$value = $request[$name];
+			if( isset($this->_request[$name]) ){
+				$value = $this->_request[$name];
 			}else if( isset($cookie[$name]) ){
 				$value = $cookie[$name];
 			}else{
@@ -229,34 +239,6 @@ class Form
 		}
 	}
 
-	/** Get request values.
-	 *
-	 * @return	 array	 $request;
-	 */
-	private function _Request($name=false)
-	{
-		static $_request = null;
-
-		//	...
-		if( $_request === null ){
-			switch( strtolower($this->_form['method']) ){
-				case 'get':
-					$_request = $_GET  ?? [];
-					break;
-
-				case 'post':
-					$_request = $_POST ?? [];
-					break;
-			}
-
-			//	...
-			$_request = Escape($_request);
-		}
-
-		//	...
-		return $name ? ($_request[$name] ?? null) : $_request;
-	}
-
 	/** Construct
 	 *
 	 */
@@ -288,6 +270,9 @@ class Form
 			if(!$this->_InitForm($form) ){
 				return;
 			}
+
+			//	...
+			$this->_InitRequest();
 
 			//	...
 			$this->_InitInput();
@@ -339,7 +324,7 @@ class Form
 
 			//	Confirmation of request token.
 			if( $token ){
-				$io[$form_name] = ($token === (int)self::_Request('token'));
+				$io[$form_name] = ($token === (int)($this->_request['token'] ?? null));
 			}
 		}
 
@@ -378,6 +363,9 @@ class Form
 	{
 		//	...
 		$this->_form['input'][$name]['value'] = $value;
+
+		//	...
+		$this->_request[$name] = $value;
 
 		//	...
 		if( $session and !empty($this->_form['input'][$name]['session']) ){
@@ -462,14 +450,6 @@ class Form
 	 */
 	function GetInput($name, $value=null)
 	{
-		static $request;
-
-		//	...
-		if(!$request){
-			$request = self::_Request();
-		}
-
-		//	...
 		try {
 			//	...
 			if( empty($this->_form['input'][$name]) ){
@@ -528,7 +508,7 @@ class Form
 
 		//	...
 		if( $value === null ){
-			$value = self::_Request($name);
+			$value  =  $this->_request[$name];
 		}
 
 		//	...
@@ -679,9 +659,6 @@ class Form
 		//	Get saved session value.
 		$saved_session_value = $this->_session;
 
-		//	Get submitted request.
-		$request = $this->_Request();
-
 		//	Remove token value.
 		unset($saved_session_value['token']);
 
@@ -690,7 +667,7 @@ class Form
 			//	If not save to session.
 			if( empty($input['session']) ){
 				//	Result current submit value.
-				$result[$name] = $request[$name] ?? null;
+				$result[$name] = $this->_request[$name] ?? null;
 			}else{
 				//	Calc value.
 				$value = $saved_session_value[$name] ?? $input['value'] ?? null;
@@ -772,7 +749,7 @@ class Form
 		\Cookie::Set($this->_form['name'], []);
 
 		//	...
-		$this->_Request(null);
+		$this->_request = null;
 
 		//	...
 		foreach( $this->_form['input'] as &$input ){
