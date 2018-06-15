@@ -10,38 +10,28 @@
  */
 /* @var $form \OP\UNIT\Form */
 ?>
-<section id="testcase">
 	<?php $form->Start(['action'=>'?']) ?>
-		<table>
+		<table id="testcase-form">
 		<?php foreach( ['text','textarea','select','multiple','radio','checkbox','cookie','session','file'] as $name ): ?>
 			<tr class="<?= $form->Validate($name) === false ? 'red':'' ?>">
-				<th><?php $form->Label($name) ?></th><td><b> : </b></td>
+				<th><?php $form->Label($name) ?></th><td><b>：</b></td>
 				<td><?php $form->Input($name) ?></td>
 				<td><?php $form->Error($name) ?></td>
 			</tr>
 		<?php endforeach; ?>
 			<tr>
 				<td colspan="3" style="text-align:center;">
-					<button> Submit!! </button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3" style="text-align:center;">
+					<!-- Submit button -->
+					<button> Submit!! </button><br/>
+
+					<!-- Clear button -->
 					<button onclick="location.href='?clear=1'; return false;">
 						Clear to form
 					</button>
+
+					<!-- Validation result -->
+					<p class="<?= $form->Validate() ? 'blue':'red' ?>">Validation</p>
 				</td>
 			</tr>
 		</table>
 	<?php $form->Finish() ?>
-
-	<p class="<?= $form->Validate() ? 'blue':'red' ?>">Validation</p>
-
-</section>
-<style>
-
-#testcase table tr td:nth-child(4) > span {
-	display: block;
-}
-
-</style>
