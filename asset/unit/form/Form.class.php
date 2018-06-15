@@ -689,9 +689,10 @@ class Form
 	 *   Boolean is validation result. (true is no problem.)
 	 * </pre>
 	 *
+	 * @param	 string			 $input_name
 	 * @return	 null|boolean	 $io
 	 */
-	function Validate()
+	function Validate($input_name=null)
 	{
 		//	...
 		static $_result;
@@ -722,6 +723,11 @@ class Form
 				//	Do validation.
 				$_result[$name] = \OP\UNIT\Validate::Evaluation($rule, $values[$name] ?? null, $this->_errors[$name], $values);
 			}
+		}
+
+		//	...
+		if( $input_name ){
+			return $_result[$input_name] ?? null;
 		}
 
 		//	Overall result
