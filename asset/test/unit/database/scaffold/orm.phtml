@@ -42,27 +42,34 @@ if(!$record->isReady() ){
 	return;
 }
 
+//	...
+$found = $record->isFound();
+$valid = $record->isValid();
+
 //	Generate form object.
 $form = $record->Form();
 
 //	Do validation.
-if( $result = $form->Validate() ){
+if( $form->Validate() ){
 	//	In case of new record, Set create datetime.
-	if( $record->isFound() ){
-		//	Update updated date time.
-//		$record->has('updated') ? $record->Set('updated', Time::GMT()) : null;
-	}else{
+	if(!$found ){
 		//	Generate created date time.
 		$record->has('created') ? $record->Set('created', Time::GMT()) : null;
 	}
 
 	//	Save to database by Record object.
-	$orm->Save($record);
+	$result = $orm->Save($record);
+
+	//	if successful updated.
+	if( $result and $found ){
+		//	...
+		$record->has('updated') ? $record->Set('updated', Time::GMT()) : null;
+
+		//	...
+		$orm->Save($record);
+	}
 }
 
-//	...
-$found = $record->isFound();
-$valid = $record->isValid();
 ?>
 <hr/>
 <?php $form->Start() ?>
@@ -77,8 +84,10 @@ $valid = $record->isValid();
 <?php endforeach; ?>
 	<tr>
 		<td colspan=3 class="text center">
-			<?php if( $result ): ?>
-				<p class="success i0">Record was saved.</p>
+			<?php if( null !== ($result ?? null) ): ?>
+			<p class="i0 <?= $result ? 'success':'error' ?>" style="margin: 0.5em;">
+				<?= $result ? 'Record was saved.':'There is no change to save.' ?>
+			</p>
 			<?php endif; ?>
 			<button>
 				<?= $found ? 'Update' : 'Create' ?>
