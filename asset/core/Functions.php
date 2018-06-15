@@ -287,11 +287,19 @@ function _EscapeString($var, $charset='utf-8')
  *
  * This function is convert to fixed length unique string from long or short strings.
  *
- *
- * @param string $var
- * @param number $length
+ * @param  null|number|string|array|object $var
+ * @param  number $length
+ * @return string $hash
  */
 function Hasha1($var, $length=8){
+	//	...
+	if( is_string($var) ){
+		//	...
+	}else if( is_array($var) or is_object($var) ){
+		$var = json_encode($var);
+	}
+
+	//	...
 	return substr(sha1($var . _OP_SALT_), 0, $length);
 }
 
