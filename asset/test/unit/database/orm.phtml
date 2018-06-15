@@ -25,8 +25,10 @@
 	<?php endforeach; ?>
 	<tr>
 		<td colspan=2 style="text-align: center;">
-			<?php if( $result ): ?>
-				<p class="success i0">Save was successful.</p>
+			<?php if( null !== ($result ?? null) ): ?>
+			<p class="i0 <?= $result ? 'success':'error' ?>" style="margin: 0.5em;">
+				<?= $result ? ($found ? 'Record was updated' : 'Record was created.'):'There is no change to save.' ?>
+			</p>
 			<?php endif; ?>
 			<button>
 				<?= $found ? 'Update':'Create' ?>
