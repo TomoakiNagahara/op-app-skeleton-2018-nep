@@ -68,4 +68,4 @@ if( $values ){
 }
 
 //	...
-App::Template('action.phtml',['form'=>$form, 'db'=>$db, 'list'=>$list]);
+App::Template('action.phtml',['form'=>$form, 'db'=>$db, 'list'=>$list ?? []]);

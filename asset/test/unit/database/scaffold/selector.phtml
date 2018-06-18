@@ -13,6 +13,11 @@
 $database = $form->GetValue('database');
 $table    = $form->GetValue('table');
 
+//	...
+if( !$database or !$table ){
+	return;
+}
+
 /* @var $pager \OP\UNIT\Pager */
 $pager  = Unit::Instance('Pager');
 $config = ['database'=>$database, 'table'=>$table];

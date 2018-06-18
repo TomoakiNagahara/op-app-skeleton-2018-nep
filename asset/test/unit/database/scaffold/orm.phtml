@@ -22,6 +22,11 @@ $database = $form->GetValue('database');
 $table    = $form->GetValue('table');
 
 //	...
+if( !$database or !$table ){
+	return;
+}
+
+//	...
 $db->Database($database);
 
 //	Join database object.
