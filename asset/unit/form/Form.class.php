@@ -85,7 +85,7 @@ class Form
 
 		//	...
 		if( $this->_form ){
-			\Notice::Set("Already initialized. {$this->_form['name']}");
+			\Notice::Set("Already initialized. ({$this->_form['name']})");
 			return;
 		}
 
@@ -725,7 +725,7 @@ class Form
 			}
 		}
 
-		//	...
+		//	Individual result.
 		if( $input_name ){
 			return $_result[$input_name] ?? null;
 		}
