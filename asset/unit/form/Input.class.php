@@ -39,7 +39,7 @@ class Input
 		$type  = ifset($input['type']);
 		$name  = ifset($input['name']);
 		$value = ifset($input['value']);
-		$saved = null;
+	//	$saved = null;
 
 		//	...
 		$attr = [];
@@ -51,6 +51,7 @@ class Input
 		}
 
 		//	...
+		/*
 		switch( strtolower($type) ){
 			case 'submit':
 			case 'button':
@@ -64,6 +65,7 @@ class Input
 				break;
 			default:
 		}
+		*/
 
 		//	...
 		if( $type === 'textarea' or $type === 'button' ){
