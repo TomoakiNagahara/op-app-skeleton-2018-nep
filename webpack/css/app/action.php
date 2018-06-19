@@ -1,10 +1,10 @@
 <?php
 /**
- * app-webpack-css:/webpack/css/app/action.php
+ * app-skeleton-webpack:/css/app/action.php
  *
  * @creation  2018-04-12
  * @version   1.0
- * @package   app-webpack-css
+ * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
