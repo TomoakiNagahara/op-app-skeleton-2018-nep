@@ -1,11 +1,11 @@
 /**
- * app-webpack-js:/path.js
+ * app-skeleton-webpack:/js/op/path.js
  *
  * This script user is just developers.
  *
  * @creation  2017-10-05
  * @version   1.0
- * @package   app-webpack-js
+ * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */

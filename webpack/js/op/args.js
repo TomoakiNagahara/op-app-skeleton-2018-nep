@@ -1,9 +1,9 @@
 /**
- * app-webpack-js:/args.js
+ * app-skeleton-webpack:/js/op/args.js
  *
  * @creation  2017-07-31
  * @version   1.0
- * @package   app-webpack-js
+ * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */

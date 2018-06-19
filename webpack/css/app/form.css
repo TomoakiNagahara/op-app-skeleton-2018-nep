@@ -1,14 +1,14 @@
 /**
- * app-webpack-css:/webpack/css/form.css
+ * app-skeleton-webpack:/css/app/form.css
  *
  * @creation  2018-05-16
  * @version   1.0
- * @package   app-webpack-css
+ * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-body.body form.OP input:not([type="radio"]):not([type="checkbox"]),
+body.body form.OP input:not([type="radio"]):not([type="checkbox"]):not([type="file"]),
 body.body form.OP textarea,
 body.body form.OP button,
 body.body form.OP submit {
