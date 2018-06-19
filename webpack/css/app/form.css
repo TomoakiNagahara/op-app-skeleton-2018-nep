@@ -47,9 +47,14 @@ body.body form.OP submit {
 	background-color: #e9e9e9;
 }
 
-body.body form.OP button:hover,
+body.body form.OP button:hover:not(:disabled),
 body.body form.OP submit:hover {
 	border-color:     #999;
 	background-color: #f0f0f0;
 	color: #000;
+}
+
+body.body form.OP button:disabled {
+	color: #c0c0c0;
+	cursor: not-allowed;
 }
