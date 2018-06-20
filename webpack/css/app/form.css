@@ -39,6 +39,7 @@ body.body form.OP input[type="checkbox"] {
 
 body.body form.OP [readonly="readonly"] {
 	color: #888;
+	cursor: not-allowed;
 }
 
 body.body form.OP label {
