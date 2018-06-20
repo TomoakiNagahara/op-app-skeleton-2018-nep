@@ -1,0 +1,31 @@
+<?php
+/**
+ * unit-test:/unit/database/orm/pager.phtml
+ *
+ * @creation  2018-06-11
+ * @copied    2018-06-20 from scaffold/selector.phtml
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<!-- Display pagination at conditions. -->
+<hr/>
+<?php $pager->Display() ?>
+<hr/>
+
+<!-- Display each record. -->
+<div id="record-area">
+	<?php foreach( $records as $record ): ?>
+	<div class="record">
+		<a href="?<?= http_build_query( array_merge($_GET, ['pkey'=>'ai','pval'=>$record['ai']]) ) ?>">Edit of this record</a>
+		<?php Json($record, '.OP_DUMP') ?>
+	</div>
+	<?php endforeach; ?>
+</div>
+
+<!-- Display pagination at conditions. -->
+<hr/>
+<?php $pager->Display() ?>
+<hr/>

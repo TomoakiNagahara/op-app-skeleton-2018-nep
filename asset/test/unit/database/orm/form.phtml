@@ -1,0 +1,33 @@
+<?php
+/**
+ * unit-test:/unit/database/orm/form.phtml
+ *
+ * @creation  2018-06-20
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$form = $record->Form();
+?>
+<?php $form->Start() ?>
+<table>
+	<?php foreach( $record->Column() as $name => $column ): ?>
+	<tr>
+		<th><?php $form->Label($name) ?></th>
+		<td><?php $form->Input($name) ?></td>
+		<td><?php $form->Error($name) ?></td>
+	</tr>
+	<?php endforeach; ?>
+	<tr>
+		<td></td>
+		<td>
+			<button>
+				<?= $record->isFound() ? 'Update':'Create' ?>
+			</button>
+		</td>
+		<td></td>
+	</tr>
+</table>
+<?php $form->Finish() ?>

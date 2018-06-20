@@ -17,4 +17,29 @@ if(!$orm = Unit::Instance('ORM') ){
 define('__DNS__', 'mysql://testcase:password@localhost:3306?charset=utf8');
 
 //	...
-$orm->Connect(__DNS__);
+if(!$orm->Connect(__DNS__) ){
+	return;
+}
+
+//	...
+if(!$orm->Config('config.inc.php') ){
+	return;
+}
+
+//	...
+$database = 'testcase';
+$table    = 't_orm';
+$pkey = $_GET['pkey'] ?? null;
+$pval = $_GET['pval'] ?? null;
+
+//	...
+$orm->DB()->Database($database);
+
+//	...
+$record = $pkey ? $orm->Find("$table.$pkey = $pval"): $record = $orm->Create($table);
+
+// D( $orm->DB()->Queries() );
+
+//	...
+App::Template('form.inc.php',['record'=>$record]);
+App::Template('pager.inc.php',['orm'=>$orm]);
