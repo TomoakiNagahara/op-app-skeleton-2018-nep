@@ -30,6 +30,12 @@ class Record
 	 */
 	use \OP_CORE;
 
+	/** IF_FORM
+	 *
+	 * @var \OP\UNIT\Form
+	 */
+	private $_form;
+
 	/** Database of record.
 	 *
 	 * @var string
@@ -278,12 +284,9 @@ class Record
 	 */
 	function &Form()
 	{
-		/* @var $_form IF_FORM */
-		static $_form;
-
 		//	...
-		if(!$_form ){
-			$_form = \Unit::Instance('Form');
+		if(!$this->_form ){
+			$this->_form = \Unit::Instance('Form');
 
 			//	...
 			$config = Config::Form(
@@ -294,11 +297,11 @@ class Record
 			);
 
 			//	...
-			$_form->Config($config);
+			$this->_form->Config($config);
 		}
 
 		//	...
-		return $_form;
+		return $this->_form;
 	}
 
 	/** Validation
