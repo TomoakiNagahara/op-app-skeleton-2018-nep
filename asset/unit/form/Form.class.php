@@ -665,15 +665,15 @@ class Form
 		//	Generate result each input name.
 		foreach( $this->Config()['input'] as $name => $input ){
 			//	If not save to session.
-			if( empty($input['session']) ){
-				//	Result current submit value.
-				$result[$name] = $this->_request[$name] ?? null;
-			}else{
+			if( $input['session'] ?? true ){
 				//	Calc value.
 				$value = $saved_session_value[$name] ?? $input['value'] ?? null;
 
 				//	Set to result.
 				$result[$name] = $value;
+			}else{
+				//	Result current submit value.
+				$result[$name] = $this->_request[$name] ?? null;
 			}
 		}
 
