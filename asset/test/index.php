@@ -33,7 +33,15 @@ if( file_exists( $file = join('/', $args).'.php') ){
 }else if( file_exists( $file = join('/', $args).'/action.php' ) ){
 	//	...
 }else{
-	$file = null;
+	//	...
+	$pop = array_pop($args);
+
+	//	...
+	if( file_exists( $file = join('/', $args).'/action.php' ) ){
+		//	...
+	}else{
+		$file = null;
+	}
 }
 
 //	...
@@ -41,4 +49,3 @@ App::Title('TEST CASE');
 
 //	...
 App::Template('index.phtml',['file'=>$file]);
-
