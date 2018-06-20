@@ -26,7 +26,7 @@ if(!$orm = Unit::Instance('ORM') ){
 $orm->DB($db);
 
 /* @var $record \OP\UNIT\ORM\Record */
-if( $ai = ifset($_GET['ai']) ){
+if( $ai = $_GET['ai'] ?? null ){
 	//	Find single record by QQL. (QQL is "Quick Query Language")
 	$record = $orm->Find("t_orm.ai = $ai"); // 't_test.ai = MAX()'
 }else{
@@ -58,7 +58,7 @@ $found = $record->isFound();
 $valid = $record->isValid();
 
 //	...
-App::Template('orm.phtml',['form'=>$form, 'result'=>$result, 'found'=>$found, 'valid'=>$valid]);
+App::Template('_orm.phtml',['form'=>$form, 'result'=>$result, 'found'=>$found, 'valid'=>$valid]);
 
 //	...
 if( $_GET['debug'] ?? false ){
