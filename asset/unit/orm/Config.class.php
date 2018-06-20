@@ -37,10 +37,12 @@ class Config
 	 */
 	static private function _Type($column)
 	{
+		/*
 		//	...
 		if( $column['key'] === 'pri' ){
 			return 'hidden';
 		}
+		*/
 
 		//	...
 		switch( $type = $column['type'] ){
@@ -198,6 +200,8 @@ class Config
 			$input['label'] = $type === 'hidden' ? '': $name;
 			$input['rule']  = self::_Rule($column);
 			$input['session'] = false;
+
+			//	...
 			if( $type === 'radio' or $type === 'checkbox' or $type === 'select' ){
 				$join = $type === 'select' ? [null]:[];
 				foreach( explode(',', $column['length']) as $temp ){
@@ -205,6 +209,18 @@ class Config
 				}
 				$input['values'] = join(',',$join);
 			}
+
+			//	...
+			if( $column['type'] === 'timestamp' ){
+				$input['readonly'] = true;
+			}
+
+			//	...
+			if( $column['key'] === 'pri' ){
+				$input['readonly'] = true;
+			}
+
+			//	...
 			$config['input'][$name] = $input;
 		}
 
