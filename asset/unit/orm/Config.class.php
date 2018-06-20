@@ -70,11 +70,8 @@ class Config
 	 * @param	 array	 $column
 	 * @return	 string	 $rule
 	 */
-	static private function _Rule( array $column )
+	static private function _Rule( array $column, $rule )
 	{
-		//	...
-		$rule = [];
-
 		//	Required
 		if(!$column['null'] and $column['extra'] !== 'auto_increment' ){
 			//	...
@@ -158,12 +155,13 @@ class Config
 	 * @param  string $database
 	 * @param  string $table
 	 * @param  array  $columns
-	 * @return array  $config
+	 * @param  array  $config
+	 * @return array  $result
 	 */
-	static function Form($database, $table, $columns, $record)
+	static function Form($database, $table, $columns, $record, $config)
 	{
 		//	...
-		$config = [];
+		$result = [];
 
 		//	...
 		foreach( $columns as $column ){
@@ -192,13 +190,32 @@ class Config
 				$value = $record[$name];
 			}
 
+			//	Get rule from config.
+			$rules = [];
+			switch( gettype($config[$name]['rule'] ?? false) ){
+				case 'string':
+					foreach( explode(',', $config[$name]['rule']) as $rule ){
+						$rules[] = trim($rule);
+					}
+					break;
+
+				case 'array':
+					$rules = $config[$name]['rule'];
+					break;
+
+				default:
+			}
+
+			//	...
+			$label = $config[$name]['label'] ?? ucfirst($name);
+
 			//	...
 			$input = [];
 			$input['name']  = $name;
 			$input['type']  = $type;
 			$input['value'] = $value;
-			$input['label'] = $type === 'hidden' ? '': $name;
-			$input['rule']  = self::_Rule($column);
+			$input['label'] = $type === 'hidden' ? '': $label;
+			$input['rule']  = self::_Rule($column, $rules);
 			$input['session'] = false;
 
 			//	...
@@ -221,7 +238,7 @@ class Config
 			}
 
 			//	...
-			$config['input'][$name] = $input;
+			$result['input'][$name] = $input;
 		}
 
 		//	...
@@ -232,10 +249,10 @@ class Config
 		}
 
 		//	...
-		$config['name'] = self::GetFormName($database, $table, $pval);
+		$result['name'] = self::GetFormName($database, $table, $pval);
 
 		//	...
-		return $config;
+		return $result;
 	}
 
 	/** Generate form name.
