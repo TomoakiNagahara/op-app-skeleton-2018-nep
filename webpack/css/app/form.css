@@ -15,7 +15,7 @@ body.body form.OP submit {
 	border:  1px solid #ccc;
 	margin:  0.1em 0;
 	padding: 0.2em 0.4em;
-	color:   #444;
+	_color:  #444;
 }
 
 body.body form.OP input:not([type="radio"]):not([type="checkbox"]),
@@ -35,6 +35,10 @@ body.body form.OP select[multiple] option {
 body.body form.OP input[type="radio"],
 body.body form.OP input[type="checkbox"] {
 	margin-right: 0.25em;
+}
+
+body.body form.OP [readonly="readonly"] {
+	color: #888;
 }
 
 body.body form.OP label {
