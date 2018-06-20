@@ -30,6 +30,12 @@ class ORM
 	 */
 	use \OP_CORE;
 
+	/** IF_DATABASE
+	 *
+	 * @var \OP\UNIT\Database
+	 */
+	private $_DB;
+
 	/** Insert
 	 *
 	 * @param	 array	 $config
@@ -123,29 +129,61 @@ class ORM
 
 	/** Get/Set Unit of Database.
 	 *
-	 * @param	 array		 $DB
-	 * @return	\IF_DATABASE $DB
+	 * @param	\OP\UNIT\Database\|null	 $DB
+	 * @return	\OP\UNIT\Database\		 $DB
 	 */
 	function DB($DB=null)
 	{
-		static $_DB;
-
 		if( $DB ){
-			$_DB = $DB;
-		}else if(!$_DB ){
-			$_DB = \Unit::Instance('Database');
+			$this->_DB = $DB;
+		}else
+		if(!$this->_DB ){
+			$this->_DB = \Unit::Instance('Database');
 		}
 
-		return $_DB;
+		return $this->_DB;
 	}
 
 	/** Connect to database.
 	 *
-	 * @param	 array	 $config
-	 * @reutrn	 boolean $io
+	 * <pre>
+	 * //	1. Connect at URL scheme.
+	 * $orm->Connect('mysql://testcase:password@localhost:3306?charset=utf8');
+	 *
+	 * //	2. Connect at config array.
+	 * $config = [
+	 *   'driver'   => 'mysql',
+	 *   'host'     => 'localhost',
+	 *   'port'     => '3306',
+	 *   'user'     => 'testcase',
+	 *   'password' => 'password',
+	 *   'charset'  => 'utf8',
+	 * ];
+	 * $orm->Connect($config);
+	 * </pre>
+	 *
+	 * @param	 string|array	 $config
+	 * @reutrn	 boolean		 $io
 	 */
 	function Connect($config)
 	{
+		//	...
+		if( $this->_DB ){
+			\Notice::Set('Already connected. (Instance had database object)');
+			return;
+		}
+
+		//	...
+		if( is_string($config) ){
+			$config = parse_url($config);
+			if( isset($config['query']) ){
+				parse_str($config['query'], $query);
+				$config = array_merge($config, $query);
+			}
+			D($config);
+		}
+
+		//	...
 		return $this->DB()->Connect($config);
 	}
 
