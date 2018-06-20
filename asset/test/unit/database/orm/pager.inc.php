@@ -15,7 +15,12 @@ $table    = 't_orm';
 
 /* @var $pager \OP\UNIT\Pager */
 $pager  = Unit::Instance('Pager');
-$config = $pager->Config(['database'=>$database, 'table'=>$table], $orm->DB());
+$config = [
+	'database' => $database,
+	'table'    => $table,
+	'order'    => 'timestamp desc',
+];
+$config = $pager->Config($config, $orm->DB());
 $records= $orm->DB()->Select($config);
 
 //	...
