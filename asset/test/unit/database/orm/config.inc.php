@@ -42,5 +42,37 @@ $column['field']	 = $name;
 $column['type']		 = 'float';
 $config[$database][$table][$name] = $column;
 
+//	select
+$name	 = 'select';
+$column	 = [];
+$column['field']	 = $name;
+$column['values']	 = [
+	['label'=>''   ,'value'=>'' ],
+	['label'=>'Yes','value'=>'y'],
+	['label'=>'No' ,'value'=>'n'],
+];
+$config[$database][$table][$name] = $column;
+
+//	Radio
+$name	 = 'radio';
+$column	 = [];
+$column['field']	 = $name;
+$column['values']	 = [
+	['label'=>'Yes','value'=>'y'],
+	['label'=>'No' ,'value'=>'n'],
+];
+$config[$database][$table][$name] = $column;
+
+//	checkbox
+$name	 = 'checkbox';
+$column	 = [];
+$column['field']	 = $name;
+$column['values']	 = [
+		['label'=>'Apple' ,'value'=>'a' ],
+		['label'=>'Banana','value'=>'b'],
+		['label'=>'Cocoa' ,'value'=>'c'],
+];
+$config[$database][$table][$name] = $column;
+
 //	...
 return $config;

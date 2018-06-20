@@ -23,6 +23,11 @@ $form = $record->Form();
 	<tr>
 		<td></td>
 		<td>
+			<?php if( empty($valid) ): ?>
+			<p class="i0 error">
+				Validate has failure.
+			</p>
+			<?php endif; ?>
 			<?php if( isset($saved) ): ?>
 			<p class="i0 <?= $saved ? 'success':'error' ?>">
 				<?= $saved ? 'Save record was successful.':'There are no changes to save.' ?>
