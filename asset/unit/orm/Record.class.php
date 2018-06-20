@@ -83,7 +83,7 @@ class Record
 	 * @param string $struct
 	 * @param string $record
 	 */
-	function __construct($database, $table, $struct, $record=null, $config)
+	function __construct($database, $table, $struct, $record=[], $config)
 	{
 		//	...
 		$this->_database = $database;
@@ -155,7 +155,7 @@ class Record
 		}
 
 		//	$this->_record is origin.
-		if( $this->_record[$name] === $value ){
+		if(($this->_record[$name] ?? null) === $value ){
 
 			//	Recovered to original value.
 			unset($this->_change[$name]);

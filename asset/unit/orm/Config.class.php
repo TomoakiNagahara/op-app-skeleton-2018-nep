@@ -210,7 +210,7 @@ class Config
 			$label = $config[$name]['label'] ?? ucfirst($name);
 
 			//	...
-			$input = [];
+			$input = $config[$name] ?? [];
 			$input['name']  = $name;
 			$input['type']  = $type;
 			$input['value'] = $value;
@@ -219,7 +219,7 @@ class Config
 			$input['session'] = false;
 
 			//	...
-			if( $type === 'radio' or $type === 'checkbox' or $type === 'select' ){
+			if( empty($input['values']) and ($type === 'radio' or $type === 'checkbox' or $type === 'select') ){
 				$join = $type === 'select' ? [null]:[];
 				foreach( explode(',', $column['length']) as $temp ){
 					$join[] = trim($temp, "'");
