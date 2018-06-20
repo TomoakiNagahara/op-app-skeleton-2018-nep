@@ -8,11 +8,15 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-/* @var $form \OP\UNIT\Form */
 ?>
 <section id="testcase">
 	<h2>Conversion</h2>
-	<p>This is conversion page. Please paste conversion script.</p>
+	<b>Count down <span id="count-down">5</span></b>
+	<p>
+		This is conversion page.
+		This page is automatically transfer to thanks page.
+		Please paste conversion script.
+	</p>
 </section>
 <style>
 
@@ -24,7 +28,15 @@
 
 </style>
 <script>
-setTimeout(function(){
-	location.href = './?thanks=1';
-}, 0);
+document.addEventListener('DOMContentLoaded', function(){
+	setInterval(function(){
+		var count = document.getElementById('count-down').innerText;
+		count--;
+		if( count < 0 ){
+			location.href = './thanks';
+		}else{
+			document.getElementById('count-down').innerText = count;
+		}
+	}, 1000);
+}, false);
 </script>

@@ -12,7 +12,7 @@
 ?>
 <section id="testcase">
 	<h2>Please check the input contents</h2>
-	<?php $form->Start(['action'=>'?commit']) ?>
+	<?php $form->Start(['action'=>'commit']) ?>
 		<table>
 		<?php foreach( $form->Config()['input'] as $name => $input ): ?>
 			<tr class="<?= $form->Validate($name) === false ? 'red':'' ?>">
@@ -21,16 +21,21 @@
 			</tr>
 		<?php endforeach; ?>
 			<tr>
-				<td colspan="3" style="text-align:center;">
-					<button> Submit!! </button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3" style="text-align:center;">
-					<button onclick="location.href='?clear=1'; return false;">
+				<td></td><td></td>
+				<td>
+					<button onclick="location.href='form'; return false;">
+						Go back input form
+					</button>
+					<br/>
+					<button>
+						Commit this confirm
+					</button>
+					<br/>
+					<button onclick="location.href='clear'; return false;">
 						Clear to form
 					</button>
 				</td>
+				<td></td>
 			</tr>
 		</table>
 	<?php $form->Finish() ?>
