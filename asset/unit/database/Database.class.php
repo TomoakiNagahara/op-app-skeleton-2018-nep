@@ -144,8 +144,20 @@ class Database implements \IF_DATABASE
 	function Connect($config)
 	{
 		//	...
-		if( empty($config['prod']) and isset($config['driver']) ){
-			$config['prod'] = $config['driver'];
+		if( empty($config['prod']) ){
+			//	...
+			if( isset($config['driver']) ){
+				$config['prod'] = $config['driver'];
+			}
+			//	...
+			if( isset($config['scheme']) ){
+				$config['prod'] = $config['scheme'];
+			}
+		}
+
+		//	...
+		if( empty($config['password']) and isset($config['pass']) ){
+			$config['password'] = $config['pass'];
 		}
 
 		//	...
