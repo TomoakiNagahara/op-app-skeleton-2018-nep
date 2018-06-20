@@ -17,39 +17,46 @@ if(!$form = Unit::Instance('Form') ){
 $form->Config('./config.inc.php');
 
 //	...
-if( $_GET['clear'] ?? false ){
-	$form->Clear();
-}else{
-	$valid = $form->Validate();
-}
+$valid = $form->Validate();
 
 //	...
-$values = $form->Values();
+$action = App::Args()[3] ?? 'form';
 
 //	...
-if( $valid !== true ){
-	$file = 'form.phtml';
-}else{
-	if( $_SERVER['QUERY_STRING'] === 'confirm' ){
-		$file = 'confirm.phtml';
-	}else if( $_SERVER['QUERY_STRING'] === 'commit' ){
-		$file = 'conversion.phtml';
+switch( $action ){
+	case 'form':
+		$file = 'form.phtml';
+		break;
 
-		//	...
-		include('commit.inc.php');
+	case 'confirm':
+		$file = $valid ? 'confirm.phtml':'form.phtml';
+		break;
 
-		//	...
+	case 'commit':
+		if( $valid ){
+			include('commit.inc.php');
+			$file = 'conversion.phtml';
+		}else{
+			$file = 'form.phtml';
+		}
+		break;
+
+	case 'thanks':
+		$file = 'thanks.phtml';
+		break;
+
+	case 'clear':
 		$form->Clear();
-	}
+		$file = 'form.phtml';
+		break;
+
+	default:
+		D("Undefined action. ($action)");
+		return;
 }
 
 //	...
-if( $_GET['thanks'] ?? false ){
-	$file = 'thanks.phtml';
-}
-
-//	...
-App::Template($file, ['form'=>$form, 'values'=>$values]);
+App::Template($file, ['form'=>$form]);
 
 //	...
 D( $form->Values(), $form->Test(), $form->Debug() );
