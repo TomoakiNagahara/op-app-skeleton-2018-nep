@@ -36,6 +36,13 @@ class ORM
 	 */
 	private $_DB;
 
+
+	/** Configuration.
+	 *
+	 * @var array
+	 */
+	private $_config;
+
 	/** Insert
 	 *
 	 * @param	 array	 $config
@@ -129,8 +136,8 @@ class ORM
 
 	/** Get/Set Unit of Database.
 	 *
-	 * @param	\OP\UNIT\Database\|null	 $DB
-	 * @return	\OP\UNIT\Database\		 $DB
+	 * @param	\OP\UNIT\Database|null	 $DB
+	 * @return	\OP\UNIT\Database		 $DB
 	 */
 	function DB($DB=null)
 	{
@@ -142,6 +149,21 @@ class ORM
 		}
 
 		return $this->_DB;
+	}
+
+	/** Configuration.
+	 *
+	 * @param null|string $config
+	 */
+	function Config($config=null)
+	{
+		//	...
+		if(!$this->_config = include($config) ){
+			return;
+		}
+
+		//	...
+		return $this->_config;
 	}
 
 	/** Connect to database.
@@ -180,7 +202,6 @@ class ORM
 				parse_str($config['query'], $query);
 				$config = array_merge($config, $query);
 			}
-			D($config);
 		}
 
 		//	...
