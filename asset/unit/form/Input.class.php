@@ -39,33 +39,24 @@ class Input
 		$type  = ifset($input['type']);
 		$name  = ifset($input['name']);
 		$value = ifset($input['value']);
-	//	$saved = null;
 
 		//	...
 		$attr = [];
-		$keys = ['class','style','placeholder'];
+		$keys = ['class','style','placeholder','disabled','readonly'];
+
+		//	...
 		foreach( $keys as $key ){
-			if( $val = ifset($input[$key]) ){
+			//	...
+			if( $val = $input[$key] ?? null ){
+				//	...
+				if( $key === 'disabled' or $key === 'readonly' ){
+					$val  =  $key;
+				}
+
+				//	...
 				$attr[] = sprintf('%s="%s"', $key, $val);
 			}
 		}
-
-		//	...
-		/*
-		switch( strtolower($type) ){
-			case 'submit':
-			case 'button':
-				break;
-
-			case 'radio':
-			case 'checkbox':
-				if( $value === $saved ){
-					$attr[] = 'checked="checked"';
-				}
-				break;
-			default:
-		}
-		*/
 
 		//	...
 		if( $type === 'textarea' or $type === 'button' ){
