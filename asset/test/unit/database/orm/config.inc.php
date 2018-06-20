@@ -18,17 +18,28 @@ $database = 'testcase';
 $table = 't_orm';
 
 //	ai
-$name = 'ai';
+$name	 = 'ai';
+$column	 = [];
 $column['field'] = $name;
+$column['label'] = 'Auto increment';
 $column['type']  = 'int';
+$column['comment'] = 'Auto increment number.';
 $config[$database][$table][$name] = $column;
 
 //	required
-$name = 'required';
+$name	 = 'required';
+$column	 = [];
 $column['field']	 = $name;
 $column['type']		 = 'varchar';
 $column['length']	 = 10;
 $column['null']		 = false;
+$config[$database][$table][$name] = $column;
+
+//	number
+$name	 = 'number';
+$column	 = [];
+$column['field']	 = $name;
+$column['type']		 = 'float';
 $config[$database][$table][$name] = $column;
 
 //	...
