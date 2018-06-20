@@ -15,9 +15,14 @@ document.addEventListener('DOMContentLoaded', function(){
 	var buttons = document.querySelectorAll('FORM.OP BUTTON');
 
 	//	Set each buttons.
-	for(var i=0; i<buttons.length; i++){
+	for(var button of buttons ){
+
+		if( button.onclick ){
+			continue;
+		}
+
 		//	Wait button click.
-		buttons[i].addEventListener("click", function( event ) {
+		button.addEventListener("click", function( event ) {
 			//	Disable duplicate click.
 			event.target.disabled = true;
 			event.target.form.submit();
@@ -27,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				a.addEventListener("click", function( event ) {
 					event.preventDefault();
 				}, false);
-			}
+			};
 		}, false);
-	}
+	};
 }, false );
