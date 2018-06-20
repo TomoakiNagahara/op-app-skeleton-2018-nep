@@ -36,6 +36,12 @@ class Record
 	 */
 	private $_form;
 
+	/** Configuration.
+	 *
+	 * @var array
+	 */
+	private $_config;
+
 	/** Database of record.
 	 *
 	 * @var string
@@ -77,26 +83,14 @@ class Record
 	 * @param string $struct
 	 * @param string $record
 	 */
-	function __construct($database, $table, $struct, $record=null)
+	function __construct($database, $table, $struct, $record=null, $config)
 	{
 		//	...
 		$this->_database = $database;
 		$this->_table  = $table;
 		$this->_column = $struct;
-
-		//	...
-		if( $record ){
-			//	...
-			$this->_record = $record;
-
-			/*
-			//	...
-			foreach( $record as $field => $value ){
-				//	...
-				$this->$field = $value;
-			}
-			*/
-		}
+		$this->_record = $record;
+		$this->_config = $config;
 	}
 
 	/** Get record value.
@@ -272,7 +266,7 @@ class Record
 	 *
 	 * @return array
 	 */
-	function Array()
+	function Values()
 	{
 		return array_merge($this->_record ?? [], $this->_change ?? []);
 	}
@@ -293,7 +287,8 @@ class Record
 				$this->Database(),
 				$this->Table(),
 				$this->Column(),
-				$this->Array()
+				$this->Values(),
+				$this->_config
 			);
 
 			//	...

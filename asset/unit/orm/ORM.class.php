@@ -126,9 +126,7 @@ class ORM
 		}
 
 		/* @var $record ORM\Record */
-		$record = new ORM\Record( $database, $table, $struct, $result );
-	//	$record->Database( $database );
-	//	$record->Table(    $table    );
+		$record = new ORM\Record( $database, $table, $struct, $result, $this->_config[$database][$table] ?? [] );
 
 		//	Return "Record" Object.
 		return $record;
