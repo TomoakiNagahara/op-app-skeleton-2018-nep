@@ -308,6 +308,22 @@ class ORM
 
 	}
 
+	/** Generate self-test configuration.
+	 *
+	 */
+	function Selftest($file)
+	{
+		//	...
+		$config = include($file);
+
+
+		//	...
+		return $config;
+	}
+
+	/** For developers.
+	 *
+	 */
 	function Debug()
 	{
 		D( $this->DB()->Queries() );
