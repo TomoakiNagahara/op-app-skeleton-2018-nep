@@ -32,23 +32,30 @@ class Nav
 
 	/** Generate URL Query.
 	 *
-	 * @param  array  $param
-	 * @return string $query
+	 * @param	 array		 $param
+	 * @param	 boolean	 $merge
+	 * @return	 string		 $query
 	 */
-	private function _Query(array $param)
+	private function _Query(array $param, $merge)
 	{
-		return http_build_query(array_merge($_GET, $param));
+		return http_build_query( $merge ? array_merge($_GET, $param) : $param );
 	}
 
 	/** Set
 	 *
-	 * @param string $label
-	 * @param array  $param
+	 * <pre>
+	 * $nav->Set('Debug(ON)', ['debug'=>1]);
+	 * </pre>
+	 *
+	 * @param	 string		 $label
+	 * @param	 array		 $param
+	 * @param	 boolean	 $merge
 	 */
-	function Set(string $label, array $param)
+	function Set(string $label, array $param, $merge=true )
 	{
 		$navi['label'] = $label;
 		$navi['param'] = $param;
+		$navi['merge'] = $merge;
 		$this->_navs[] = $navi;
 	}
 
@@ -70,7 +77,8 @@ class Nav
 		foreach( $this->_navs as $navi ){
 			$label = $navi['label'];
 			$param = $navi['param'];
-			printf('<span><a href="?%s">%s</a></span>', $this->_query($param), $label);
+			$merge = $navi['merge'];
+			printf('<span><a href="?%s">%s</a></span>', $this->_query($param, $merge), $label);
 		}
 		echo '</nav>'.PHP_EOL;
 	}

@@ -14,6 +14,20 @@ if(!$orm = Unit::Instance('ORM') ){
 }
 
 //	...
+$nav = new Nav();
+$nav->Set('Create'   , ['pval'=>'']   , false);
+$nav->Set('Self-test', ['selftest'=>1], false);
+$nav->Set('Debug(ON)', ['debug'=>1]);
+$nav->Set('Debug(OFF)',['debug'=>0]);
+$nav->Out();
+
+//	...
+if( $_GET['selftest'] ?? false ){
+	include('self-test.inc.php');
+	return;
+}
+
+//	...
 define('__DNS__', 'mysql://testcase:password@localhost:3306?charset=utf8');
 
 //	...
