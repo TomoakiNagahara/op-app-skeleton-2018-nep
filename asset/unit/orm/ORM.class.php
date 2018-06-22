@@ -30,18 +30,23 @@ class ORM
 	 */
 	use \OP_CORE;
 
-	/** IF_DATABASE
+	/** DSN
 	 *
-	 * @var \OP\UNIT\Database
+	 * @var string
 	 */
-	private $_DB;
-
+	private $_dsn;
 
 	/** Configuration.
 	 *
 	 * @var array
 	 */
 	private $_config;
+
+	/** IF_DATABASE
+	 *
+	 * @var \OP\UNIT\Database
+	 */
+	private $_DB;
 
 	/** Insert
 	 *
@@ -113,42 +118,10 @@ class ORM
 		}
 
 		/* @var $record ORM\Record */
-		$record = new ORM\Record( $database, $table, $struct, $result, $this->_config[$database][$table] ?? [] );
+		$record = new ORM\Record( $database, $table, $struct, $result, $this->_config[$this->_dsn][$database][$table] ?? [] );
 
 		//	Return "Record" Object.
 		return $record;
-	}
-
-	/** Get/Set Unit of Database.
-	 *
-	 * @param	\OP\UNIT\Database|null	 $DB
-	 * @return	\OP\UNIT\Database		 $DB
-	 */
-	function DB($DB=null)
-	{
-		if( $DB ){
-			$this->_DB = $DB;
-		}else
-		if(!$this->_DB ){
-			$this->_DB = \Unit::Instance('Database');
-		}
-
-		return $this->_DB;
-	}
-
-	/** Configuration.
-	 *
-	 * @param null|string $config
-	 */
-	function Config($config=null)
-	{
-		//	...
-		if(!$this->_config = include($config) ){
-			return;
-		}
-
-		//	...
-		return $this->_config;
 	}
 
 	/** Connect to database.
@@ -180,9 +153,20 @@ class ORM
 			return;
 		}
 
-		//	...
+		//	Build DSN and save.
+		if( is_array($config) ){
+			//	...
+		}
+
+		//	Parse of DSN.
 		if( is_string($config) ){
+			//	...
+			$this->_dsn = $config;
+
+			//	...
 			$config = parse_url($config);
+
+			//	...
 			if( isset($config['query']) ){
 				parse_str($config['query'], $query);
 				$config = array_merge($config, $query);
@@ -191,6 +175,38 @@ class ORM
 
 		//	...
 		return $this->DB()->Connect($config);
+	}
+
+	/** Configuration.
+	 *
+	 * @param null|string $config
+	 */
+	function Config($config=null)
+	{
+		//	...
+		if(!$this->_config = include($config) ){
+			return;
+		}
+
+		//	...
+		return $this->_config;
+	}
+
+	/** Get/Set Unit of Database.
+	 *
+	 * @param	\OP\UNIT\Database|null	 $DB
+	 * @return	\OP\UNIT\Database		 $DB
+	 */
+	function DB($DB=null)
+	{
+		if( $DB ){
+			$this->_DB = $DB;
+		}else
+			if(!$this->_DB ){
+				$this->_DB = \Unit::Instance('Database');
+		}
+
+		return $this->_DB;
 	}
 
 	/** New empty recrod.
@@ -314,11 +330,49 @@ class ORM
 	function Selftest($file)
 	{
 		//	...
-		$config = include($file);
-
+		if(!\Unit::Load('selftest') ){
+			return;
+		}
 
 		//	...
-		return $config;
+		$config = include($file);
+
+		//	...
+	//	\OP\UNIT\SELFTEST\Configer::DSN('localhost', 'mysql', '3306');
+		\OP\UNIT\SELFTEST\Configer::User('testcase', 'password', false, 'utf8');
+
+		//	...
+		foreach( $config as $dsn => $databases ){
+			//	...
+			foreach( $databases as $database => $tables ){
+				//	...
+				\OP\UNIT\SELFTEST\Configer::Database($database);
+
+				//	...
+				foreach( $tables as $table => $columns ){
+					//	...
+					D($dsn, $database, $table);
+					\OP\UNIT\SELFTEST\Configer::Table($table);
+
+					//	...
+					foreach( $columns as $field => $column ){
+						//	...
+						foreach( ['field','type','comment'] as $key ){
+							${$key} = $column[$key] ?? null;
+						}
+
+						//	...
+						\OP\UNIT\SELFTEST\Configer::Column($field, $type, $comment, $column);
+					}
+				}
+			}
+		}
+
+		//	...
+		\OP\UNIT\SELFTEST\Configer::Index(     'ai',      'ai', 'ai', 'auto incrment');
+
+		//	...
+		return \OP\UNIT\SELFTEST\Configer::Get();
 	}
 
 	/** For developers.
