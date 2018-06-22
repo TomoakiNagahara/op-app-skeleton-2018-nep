@@ -673,8 +673,12 @@ class Form
 				//	Set to result.
 				$result[$name] = $value;
 			}else{
-				//	Result current submit value.
-				$result[$name] = $this->_request[$name] ?? null;
+				//	Set currently sent value.
+				if( isset($this->_request[$name]) ){
+					$result[$name] = $this->_request[$name];
+					//	Do not set not sent input value.
+					//	$result[$name] = $this->_request[$name] ?? null;
+				}
 			}
 		}
 
