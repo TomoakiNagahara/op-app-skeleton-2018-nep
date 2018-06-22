@@ -8,6 +8,9 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	...
+define('__DSN__', 'mysql://testcase:password@localhost:3306?charset=utf8');
+
 /* @var $orm \OP\UNIT\ORM */
 if(!$orm = Unit::Instance('ORM') ){
 	return;
@@ -28,10 +31,7 @@ if( $_GET['selftest'] ?? false ){
 }
 
 //	...
-define('__DNS__', 'mysql://testcase:password@localhost:3306?charset=utf8');
-
-//	...
-if(!$orm->Connect(__DNS__) ){
+if(!$orm->Connect(__DSN__) ){
 	return;
 }
 
