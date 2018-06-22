@@ -117,6 +117,9 @@ class ORM
 			$result = $classpath::Select($select, $this->DB());
 		}
 
+		D($this->_dsn);
+		D($this->_config[$this->_dsn]);
+
 		/* @var $record ORM\Record */
 		$record = new ORM\Record( $database, $table, $struct, $result, $this->_config[$this->_dsn][$database][$table] ?? [] );
 
