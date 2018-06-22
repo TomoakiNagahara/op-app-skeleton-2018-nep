@@ -58,6 +58,12 @@ class Form
 	 */
 	private $_is_start;
 
+	/** Is token validation.
+	 *
+	 * @var boolean
+	 */
+	private $_is_token;
+
 	/** Initialize form config.
 	 *
 	 * @param	 string|array	 $form
@@ -301,16 +307,10 @@ class Form
 	 */
 	function Token()
 	{
-		//	Static variables are also shared between different instances.
-		static $io;
-
 		//	...
-		$form_name = $this->_form['name'];
-
-		//	...
-		if(!isset($io[$form_name]) ){
+		if(!isset($this->_is_token) ){
 			//	Initialize.
-			$io[$form_name] = null;
+			$this->_is_token = null;
 
 			//	Last time token.
 			$token = $this->_session['token'] ?? false;
@@ -324,15 +324,16 @@ class Form
 
 			//	Confirmation of request token.
 			if( $token ){
-				$io[$form_name] = ($token === (int)($this->_request['token'] ?? null));
+				$this->_is_token = ($token == ($this->_request['token'] ?? false));
 			}
 		}
 
 		//	...
 		if( \Env::isAdmin() ){
-			if( $io[$form_name] === null ){
+			if( $this->_is_token === null ){
 				$this->Debug("Token has not been set yet.");
-			}else if( $io[$form_name] === false ){
+			}else
+			if( $this->_is_token === false ){
 				$this->Debug("Token is unmatch.");
 			}else{
 				$this->Debug("Token is match.");
@@ -340,7 +341,7 @@ class Form
 		}
 
 		//	...
-		return $io[$form_name];
+		return $this->_is_token;
 	}
 
 	/** Get input value.
