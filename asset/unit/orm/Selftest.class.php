@@ -29,4 +29,12 @@ class Selftest
 	 *
 	 */
 	use \OP_CORE;
+
+	/** Config
+	 *
+	 */
+	function Config($config)
+	{
+
+	}
 }
