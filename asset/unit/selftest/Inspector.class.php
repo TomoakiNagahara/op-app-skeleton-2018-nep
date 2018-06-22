@@ -78,9 +78,9 @@ class Inspector
 		}
 
 		//	Adjust structure configuration.
-		foreach( $config as $dsn => &$structure ){
+		foreach( $config ?? [] as $dsn => &$structure ){
 			//	...
-			if(!preg_match('|([a-z]+)://([-_a-z0-9\.]+):([0-9]+)|', $dsn)){
+			if(!preg_match('|([a-z]+)://([-_a-z0-9\.]+):([0-9]+)??(.+)?|', $dsn)){
 				self::Error("The DSN format is wrong. ($dsn)");
 				return false;
 			}
@@ -200,7 +200,7 @@ class Inspector
 		}
 
 		//	...
-		return $DB;
+		return $DB ?? \Unit::Instance('Database');
 	}
 
 	/** Get DSN
@@ -761,6 +761,6 @@ class Inspector
 	 */
 	static function Debug()
 	{
-		D( __METHOD__, self::_DB()->Queries(), self::$_result);
+		D( __METHOD__, self::_DB()->Queries(), self::$_result );
 	}
 }
