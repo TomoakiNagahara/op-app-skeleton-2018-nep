@@ -75,4 +75,7 @@ $column['values']	 = [
 $config[$database][$table][$name] = $column;
 
 //	...
-return $config;
+$configs[__DSN__] = $config;
+
+//	...
+return $configs;

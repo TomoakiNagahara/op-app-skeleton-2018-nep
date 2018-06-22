@@ -20,6 +20,7 @@ if(!Unit::Load('selftest') ){
 
 /* @var $orm \OP\UNIT\ORM */
 $config = $orm->Selftest('config.inc.php');
+D($config);
 
 //	Set configuration.
 \OP\UNIT\SELFTEST\Inspector::Auto( $config );
