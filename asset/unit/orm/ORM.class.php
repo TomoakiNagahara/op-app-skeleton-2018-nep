@@ -329,53 +329,11 @@ class ORM
 
 	/** Generate self-test configuration.
 	 *
+	 * @param	 string	 $file
 	 */
 	function Selftest($file)
 	{
-		//	...
-		if(!\Unit::Load('selftest') ){
-			return;
-		}
-
-		//	...
-		$config = include($file);
-
-		//	...
-	//	\OP\UNIT\SELFTEST\Configer::DSN('localhost', 'mysql', '3306');
-		\OP\UNIT\SELFTEST\Configer::User('testcase', 'password', false, 'utf8');
-
-		//	...
-		foreach( $config as $dsn => $databases ){
-			//	...
-			foreach( $databases as $database => $tables ){
-				//	...
-				\OP\UNIT\SELFTEST\Configer::Database($database);
-
-				//	...
-				foreach( $tables as $table => $columns ){
-					//	...
-					D($dsn, $database, $table);
-					\OP\UNIT\SELFTEST\Configer::Table($table);
-
-					//	...
-					foreach( $columns as $field => $column ){
-						//	...
-						foreach( ['field','type','comment'] as $key ){
-							${$key} = $column[$key] ?? null;
-						}
-
-						//	...
-						\OP\UNIT\SELFTEST\Configer::Column($field, $type, $comment, $column);
-					}
-				}
-			}
-		}
-
-		//	...
-		\OP\UNIT\SELFTEST\Configer::Index(     'ai',      'ai', 'ai', 'auto incrment');
-
-		//	...
-		return \OP\UNIT\SELFTEST\Configer::Get();
+		ORM\Selftest::Auto($file);
 	}
 
 	/** For developers.
