@@ -214,34 +214,39 @@ class Form
 	private function _InitOption(&$input)
 	{
 		//	In case of empty.
-		if( empty($input['values']) ){
-			$input['values'] = $input['options'] ?? $input['option'] ?? [];
+		if( empty($input['option']) ){
+			$input['option'] = $input['options'] ?? $input['values'] ?? [];
 		}
 
 		//	In case of string.
-		if( is_string($input['values']) ){
-			$input['values'] = explode(',', $input['values']);
+		if( is_string($input['option']) ){
+			$input['option'] = explode(',', $input['option']);
 		}
 
 		//	...
-		foreach( $input['values'] as $index => &$values ){
+		foreach( $input['option'] as $index => &$option ){
 			//	...
 			$check = false;
 			$value = null;
 
 			//	...
-			if( is_string($values) ){
-				$label = $value = $values;
+			if( is_string($option) ){
+				if( $io = is_numeric($index) ){
+					$label = $value = $option;
+				}else{
+					$label = $option;
+					$value = $index;
+				}
 			}else{
-				$value = $values['value'];
-				$label = $values['label'];
+				$value = $option['value'];
+				$label = $option['label'];
 			}
 
 			//	...
-			$values = [];
-			$values['label'] = $label;
-			$values['value'] = $value;
-			$values['check'] = $check;
+			$option = [];
+			$option['label'] = $label;
+			$option['value'] = $value;
+			$option['check'] = $check;
 		}
 	}
 
@@ -465,8 +470,12 @@ class Form
 
 			//	...
 			if( $value ){
+				//	...
+				$value = Encode($value);
+
+				//	...
 				if( is_array($value) ){
-					$input['values'] = $value;
+					$input['option'] = $value;
 				}else{
 					$input['value']  = $value;
 				}
@@ -497,15 +506,17 @@ class Form
 	 * @param string $name
 	 * @param string $value Set or Overwrite value.
 	 */
-	function GetValue($name, $value=null)
+	function GetValue($name /*, $value=null*/)
 	{
+		/*
 		//	Override input value.
 		if( $value !== null ){
 			$this->_session[$name] = Escape($value);
 		}
+		*/
 
 		//	...
-		$value = ifset($this->_session[$name]);
+		$value = $this->_session[$name] ?? null;
 
 		//	...
 		if( $value === null ){
@@ -520,6 +531,9 @@ class Form
 				array_shift($value);
 			}
 		}
+
+		//	...
+
 
 		//	...
 		return $value;
@@ -613,13 +627,13 @@ class Form
 		switch( $type = $input['type'] ){
 			case 'radio':
 			case 'select':
-				foreach( $input['values'] as $values ){
+				foreach( $input['option'] as $option ){
 					//	...
-					if(!isset($values['value']) ){ continue; }
+					if(!isset($option['value']) ){ continue; }
 
 					//	...
-					if( $value === (string)$values['value'] ){
-						$value = $values['label'];
+					if( $value === (string)$option['value'] ){
+						$value = $option['label'];
 						break;
 					}
 				}
@@ -627,13 +641,13 @@ class Form
 
 			case 'checkbox':
 			case 'multiple':
-				$labels = [];
-				foreach( $input['values'] as $values ){
-					if( is_array($value) and in_array($values['value'], $value, false) ){
-						$labels[] = $values['label'];
+				$label = null;
+				foreach( $input['option'] as $option ){
+					if( is_array($value) and in_array($option['value'], $value, false) ){
+						$label .= '<span>'.$option['label'].'</span>';
 					}
 				}
-				$value = $labels;
+				$value = $label;
 				break;
 
 			case 'textarea':
@@ -644,11 +658,7 @@ class Form
 		}
 
 		//	...
-		if( is_string($value) ){
-			echo $value;
-		}else{
-			D($value);
-		}
+		echo $value;
 	}
 
 	/** Get saved values.

@@ -63,16 +63,16 @@ class Select
 		$options = '';
 
 		//	...
-		foreach( $input['values'] ?? [] as $values ){
+		foreach( $input['option'] ?? [] as $option ){
 			//	...
-			if( $values['value'] === null ){
-				$values['value']  =  '';
+			if( $option['value'] === null ){
+				$option['value']  =  '';
 			}
 
 			//	...
-			$value = $values['value'] ?? $values;
-			$label = $values['label'] ?? $value;
-			$check = $values['check'] ?? null;
+			$value = $option['value'] ?? $option;
+			$label = $option['label'] ?? $value;
+			$check = $option['check'] ?? null;
 
 			//	...
 			if( isset($input['value']) ){
