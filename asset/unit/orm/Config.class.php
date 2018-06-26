@@ -242,11 +242,7 @@ class Config
 		}
 
 		//	...
-		if( isset($record[$pkey]) ){
-			$pval = $record[$pkey];
-		}else{
-			$pval = 0;
-		}
+		$pval = isset($pkey) ? ($record[$pkey] ?? '0') : '0';
 
 		//	...
 		$result['name'] = self::GetFormName($database, $table, $pval);
