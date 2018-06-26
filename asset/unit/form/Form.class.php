@@ -539,6 +539,42 @@ class Form
 		return $value;
 	}
 
+	/** Set input config.
+	 *
+	 * @param	 string	 $name
+	 * @param	 array	 $input
+	 */
+	function SetInput($name, $input)
+	{
+		//	...
+		if( $this->_form['input'][$name] ?? true ){
+			\Notice::Set("Has not been set this input. ($name)");
+			return;
+		}
+
+		//	...
+		foreach( $input as $key => $val ){
+			$this->_form['input'][$name][$key] = $val;
+		}
+	}
+
+	/** Set input config.
+	 *
+	 * @param	 string	 $name
+	 * @param	 array	 $option
+	 */
+	function SetOption($name, $option)
+	{
+		//	...
+		if( empty($this->_form['input'][$name]) ){
+			\Notice::Set("Has not been set this input. ($name)");
+			return;
+		}
+
+		//	...
+		$this->_form['input'][$name]['option'] = $option;
+	}
+
 	/** Get error.
 	 *
 	 * @param string $name
