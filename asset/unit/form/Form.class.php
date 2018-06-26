@@ -335,13 +335,17 @@ class Form
 
 		//	...
 		if( \Env::isAdmin() ){
+			//	...
+			$form_name = $this->_form['name'];
+
+			//	...
 			if( $this->_is_token === null ){
-				$this->Debug("Token has not been set yet.");
+				$this->Debug("Token has not been set yet. ($form_name)");
 			}else
 			if( $this->_is_token === false ){
-				$this->Debug("Token is unmatch.");
+				$this->Debug("Token is unmatch. ($form_name)");
 			}else{
-				$this->Debug("Token is match.");
+				$this->Debug("Token is match. ($form_name)");
 			}
 		}
 
@@ -451,10 +455,9 @@ class Form
 	/** Generate input tag.
 	 *
 	 * @param	 string			 $name
-	 * @param	 string|array	 $name
 	 * @return	 string
 	 */
-	function GetInput($name, $value=null)
+	function GetInput($name)
 	{
 		try {
 			//	...
@@ -467,19 +470,6 @@ class Form
 
 			//	...
 			$input['name'] = $name;
-
-			//	...
-			if( $value ){
-				//	...
-				$value = Encode($value);
-
-				//	...
-				if( is_array($value) ){
-					$input['option'] = $value;
-				}else{
-					$input['value']  = $value;
-				}
-			}
 
 			//	...
 			switch( $type = ucfirst(ifset($input['type'])) ){
@@ -504,17 +494,9 @@ class Form
 	/** Get/Set value of input.
 	 *
 	 * @param string $name
-	 * @param string $value Set or Overwrite value.
 	 */
-	function GetValue($name /*, $value=null*/)
+	function GetValue($name)
 	{
-		/*
-		//	Override input value.
-		if( $value !== null ){
-			$this->_session[$name] = Escape($value);
-		}
-		*/
-
 		//	...
 		$value = $this->_session[$name] ?? null;
 
@@ -533,7 +515,19 @@ class Form
 		}
 
 		//	...
-
+		if( isset($this->_form['input'][$name]['option']) ){
+			//	...
+			if( is_string($value) ){
+				//	...
+				foreach( $this->_form['input'][$name]['option'] as $option ){
+					//	...
+					if( $option['value'] === $value ){
+						return $value;
+					}
+				}
+				return null;
+			}
+		}
 
 		//	...
 		return $value;
@@ -595,10 +589,10 @@ class Form
 
 	/** Print generated input tag.
 	 *
-	 * @param	 string			 $name
-	 * @param	 string|array	 $value
+	 * @param	 string	 $name
+	 * @param	 array	 $input
 	 */
-	function Input($name, $value=null)
+	function Input($name, $input=null)
 	{
 		//	...
 		if( $this->_is_start === null ){
@@ -607,7 +601,12 @@ class Form
 		}
 
 		//	...
-		echo $this->GetInput($name, $value);
+		if( $input ){
+			$this->SetInput($name, $input);
+		}
+
+		//	...
+		echo $this->GetInput($name);
 	}
 
 	/** Display error message.
