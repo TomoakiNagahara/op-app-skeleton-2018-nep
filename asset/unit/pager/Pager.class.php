@@ -46,8 +46,16 @@ class pager
 		//	Count conditions.
 		$this->_config['database'] = $config['database'] ?? null;
 		$this->_config['table'] = $config['table'] ?? null;
-		$this->_config['where'] = $config['where'] ?? ['ai'=>['evalu'=>'!=', 'value'=>null]];
-		$this->_config['order'] = $config['order'] ?? 'ai';
+		$this->_config['where'] = $config['where'] ?? null;
+		$this->_config['order'] = $config['order'] ?? null;
+
+		//	If empty where case is generate where condition.
+		if(!$this->_config['where'] ){
+			if( $pkey = $db->Query("SHOW INDEX FROM {$this->_config['database']}.{$this->_config['table']}", 'show')['PRIMARY'][1]['Column_name'] ?? null ){
+				$this->_config['where'][$pkey]['evalu'] = '!=';
+				$this->_config['where'][$pkey]['value'] = null;
+			}
+		}
 
 		//	Count total record number.
 		$this->_config['count'] = $db->Count($this->_config, 'count');
