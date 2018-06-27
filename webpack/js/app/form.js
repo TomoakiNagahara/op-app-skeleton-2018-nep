@@ -1,4 +1,3 @@
-<?php
 /**
  * app-skeleton-webpack:/js/app/args.js
  *
@@ -8,7 +7,6 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-?>
 //	Wait dom content loaded.
 document.addEventListener('DOMContentLoaded', function(){
 	//	Get the button tag under the form tag has OP class.
@@ -16,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	//	Set each buttons.
 	for(var button of buttons ){
-
 		if( button.onclick ){
 			continue;
 		}
@@ -25,6 +22,13 @@ document.addEventListener('DOMContentLoaded', function(){
 		button.addEventListener("click", function( event ) {
 			//	Disable duplicate click.
 			event.target.disabled = true;
+
+			//	Disable other input.
+			for(var input of event.target.form.querySelectorAll('input, textarea, select') ){
+				input.disabled = true;
+			}
+
+			//	Submit to form.
 			event.target.form.submit();
 
 			//	Disable other link click.
