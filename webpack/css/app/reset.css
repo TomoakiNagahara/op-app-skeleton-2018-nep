@@ -12,5 +12,5 @@ body.body,
 body.body * {
 	margin:  0;
 	padding: 0;
-	background-color: inherit;
+	_background-color: inherit;
 }
