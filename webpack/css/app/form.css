@@ -59,6 +59,7 @@ body.body form.OP input[type="submit"]:hover:not(:disabled) {
 	color: #000;
 }
 
+<<<<<<< HEAD
 body.body form.OP button:active,
 body.body form.OP input[type="submit"]:active {
 	border-color:     #606060 !important;
@@ -80,7 +81,20 @@ body.body form.OP input[type="submit"]::-moz-focus-inner {
 
 body.body form.OP button:disabled,
 body.body form.OP input[type="submit"]:disabled {
-	_color: #999;
-	color: #c0c0c0;
+	color: #999;
 	cursor: not-allowed;
+}
+
+body.body form.OP label.read-only,
+body.body form.OP input:read-only,
+body.body form.OP textarea:read-only {
+	color: #999;
+}
+
+body.body form.OP label.cursor.wait,
+body.body form.OP input.cursor.wait,
+body.body form.OP select.cursor.wait,
+body.body form.OP textarea.cursor.wait {
+	color: #999;
+	cursor: wait;
 }
