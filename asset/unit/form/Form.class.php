@@ -498,12 +498,7 @@ class Form
 	function GetValue($name)
 	{
 		//	...
-		$value = $this->_session[$name] ?? null;
-
-		//	...
-		if( $value === null ){
-			$value  =  $this->_request[$name];
-		}
+		$value = $this->_session[$name] ?? $this->_request[$name] ?? null;
 
 		//	...
 		if( gettype($value) === 'array' ){
