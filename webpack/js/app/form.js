@@ -25,8 +25,24 @@ document.addEventListener('DOMContentLoaded', function(){
 
 			//	Disable other input.
 			for(var input of event.target.form.querySelectorAll('input, textarea, select') ){
-				input.disabled = true;
+				switch( input.type ){
+					case 'select':
+					case 'select-one':
+					case 'select-multiple':
+						for(var option of input.options ){
+							if( option.selected === false ){
+								option.disabled = true;
+							}
+						}
+						break;
+
+					default:
+						D(input.type);
+						input.readOnly = true;
+				}
 			}
+
+			return;
 
 			//	Submit to form.
 			event.target.form.submit();
