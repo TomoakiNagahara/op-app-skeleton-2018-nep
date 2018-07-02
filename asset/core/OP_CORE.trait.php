@@ -36,8 +36,9 @@ trait OP_CORE
 					break;
 
 				case 'object':
-					$join[] = $type;
+					$join[] = get_class($type);
 					break;
+
 				default:
 					$join[] = $val;
 			}
