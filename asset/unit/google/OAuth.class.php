@@ -9,6 +9,12 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
+/** namespace
+ *
+ * @creation  2018-07-02
+ */
+namespace OP\UNIT\GOOGLE;
+
 /** OAuth
  *
  * @creation  2017-10-30
@@ -22,7 +28,33 @@ class OAuth
 	/** Trait
 	 *
 	 */
-	use OP_CORE, OP_SESSION;
+	use \OP_CORE;
+
+	/** Get Google OAuth client ID.
+	 *
+	 * @throws \Exception
+	 * @return  string
+	 */
+	static private function _ClientID()
+	{
+		if(!$val = \Env::Get('google-oauth-client-id') ){
+			throw new \Exception('Has not been set google-oauth-client-id. Please set to Env::Set("google-oauth-client-id", $id)');
+		}
+		return $val;
+	}
+
+	/** Get Google OAuth client secret.
+	 *
+	 * @throws \Exception
+	 * @return  string
+	 */
+	static private function _ClientSecret()
+	{
+		if(!$val = \Env::Get('google-oauth-client-secret') ){
+			throw new \Exception('Has not been set google-oauth-client-secret. Please set to Env::Set("google-oauth-client-secret", $secret)');
+		}
+		return $val;
+	}
 
 	/** Automatically do all process.
 	 *
@@ -31,24 +63,14 @@ class OAuth
 	 */
 	static function Auto($callback_url)
 	{
-		//	If already got.
-		if( $userinfo = self::UserInfo() ){
-			return $userinfo;
-		}
-
 		//	Get code
-		if(!$code = ifset($_GET['code']) ){
+		if(!$code = $_GET['code'] ?? null ){
 			//	Do authorization.
 			self::Auth($callback_url);
 		}
 
-		//	Get token.
-		if(!self::Callback($code, $callback_url)){
-			return false;
-		}
-
-		//	Get user info.
-		return self::UserInfo();
+		//	Get user information.
+		return self::Callback($code, $callback_url);
 	}
 
 	/** Transfer to user authentication page.
@@ -60,7 +82,7 @@ class OAuth
 		//	...
 		$params = array(
 			'scope'			 => 'https://www.googleapis.com/auth/' . ($scope ?? 'userinfo.email'),
-			'client_id'		 => Env::Get('google-oauth-client-id'),
+			'client_id'		 => self::_ClientID(),
 			'redirect_uri'	 => $redirect_uri,
 			'response_type'	 => 'code',
 		);
@@ -73,10 +95,11 @@ class OAuth
 
 		//	...
 		if( headers_sent($file, $line) ){
-			Notice::Set("Header has already been sent. ($file, $line)");
-		}else{
-			Header("Location: $url");
+			throw new \Exception("Header has already been sent. ($file, $line)");
 		}
+
+		//	...
+		Header("Location: $url");
 	}
 
 	/** Callback from authentication page.
@@ -87,79 +110,48 @@ class OAuth
 	static function Callback($code, $redirect_uri)
 	{
 		//	...
+		if(!\Unit::Load('curl')){
+			return;
+		}
+
+		//	...
 		$post = array(
 			'code'			 => $code,
 			'grant_type'	 => 'authorization_code',
 			'redirect_uri'	 => $redirect_uri,
-			'client_id'		 => Env::Get('google-oauth-client-id'),
-			'client_secret'	 => Env::Get('google-oauth-client-secret'),
+			'client_id'		 => self::_ClientID(),
+			'client_secret'	 => self::_ClientSecret(),
 		);
 
 		//	...
-		$json = Curl::Post('https://accounts.google.com/o/oauth2/token', $post);
+		$json = \OP\UNIT\Curl::Post('https://accounts.google.com/o/oauth2/token', $post);
 		$json = json_decode($json, true);
 
 		//	...
-		if( ifset($json['error']) ){
-			$error		 = ifset($json['error']);
-			$description = ifset($json['error_description']);
-			self::Error("$description ($error)");
-			return false;
+		if( $json['error'] ?? null ){
+			$error		 = $json['error'];
+			$description = $json['error_description'];
+			throw new \Exception("$description ($error)");
 		}
 
 		//	...
-		if(!$token = ifset($json['access_token'])){
-			return false;
+		if(!$token = $json['access_token'] ?? null ){
+			throw new \Exception("Token has not been return from google.");
 		}
 
 		//	...
 		$url  = "https://www.googleapis.com/oauth2/v1/userinfo?access_token={$token}";
-		$json = Curl::Get($url);
+		$json = \OP\UNIT\Curl::Get($url);
 		$json = json_decode($json, true);
 
 		//	...
-		if( ifset($json['error']) ){
-			$error		 = ifset($json['error']);
-			$description = ifset($json['error_description']);
-			self::Error("$description ($error)");
-			return false;
+		if( $json['error'] ?? null ){
+			$error		 = $json['error'];
+			$description = $json['error_description'];
+			throw new \Exception("$description ($error)");
 		}
 
 		//	...
-		self::Session('userinfo', $json);
-
-		//	...
-		return true;
-	}
-
-	/**
-	 *
-	 * @param  string $error
-	 * @return array  $errors
-	 */
-	static function Error($error=null)
-	{
-		static $_errors;
-		if( $error ){
-			$_errors[] = $error;
-		}
-		return $_errors;
-	}
-
-	/** Get user information.
-	 *
-	 * @return array
-	 */
-	static function UserInfo()
-	{
-		return self::Session('userinfo');
-	}
-
-	/** Logout
-	 *
-	 */
-	static function Logout()
-	{
-		self::Session('userinfo', []);
+		return $json;
 	}
 }
