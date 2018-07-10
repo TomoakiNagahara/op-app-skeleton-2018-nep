@@ -1,6 +1,6 @@
 <?php
 /**
- * Translation.class.php
+ * Translate.class.php
  *
  * @creation  2017-06-08
  * @version   1.0
@@ -9,7 +9,13 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-/** Translation
+/** namespace
+ *
+ * @creation  2018-07-10
+ */
+namespace OP\UNIT\GOOGLE;
+
+/** Translate
  *
  * @creation  2017-06-08
  * @version   1.0
@@ -17,18 +23,12 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-class Translation
+class Translate
 {
 	/** trait.
 	 *
 	 */
-	use OP_CORE;
-
-	/** Google cloud platform's api key.
-	 *
-	 * @var string
-	 */
-	const _API_KEY_ = 'google-cloud-translation';
+	use \OP_CORE;
 
 	/** Where error messages are stored.
 	 *
@@ -40,22 +40,22 @@ class Translation
 	 *
 	 * @param string $error
 	 */
-	static function _Error($error)
+	static private function _Error($error)
 	{
 		self::$_errors[] = $error;
 	}
 
 	/** Google cloud platform's api key.
 	 *
-	 * @param  string|null $apikey
 	 * @return string
 	 */
-	static function ApiKey($apikey=null)
+	static private function _ApiKey()
 	{
-		if( $apikey ){
-			Env::Set(self::_API_KEY_, $apikey);
+		$key = 'google-cloud-translation-api-key';
+		if(!$val = \Env::Get($key) ){
+			throw new \Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $id)');
 		}
-		return Env::Get( self::_API_KEY_ );
+		return $val;
 	}
 
 	/** Return error message.
@@ -70,15 +70,6 @@ class Translation
 	/** Get supported language code list.
 	 *
 	 * <pre>
-	 * //  Set onepiece-frameworks unit directory.
-	 * Unit::SetDirectory('app:/app/unit');
-	 *
-	 * //  Load unit of google.
-	 * Unit::Load('google');
-	 *
-	 * //  Setup google cloud platform's api key.
-	 * Translation::ApiKey('your-api-key');
-	 *
 	 * //  Setup configuration.
 	 * $config = [];
 	 * $config['model']  = 'nmt'; // NMT=Neural Machine Translation, PBMT=Phrase-Based Machine Translation
@@ -87,7 +78,7 @@ class Translation
 	 *
 	 * //  Get supported language list.
 	 * $result = Translation::Language($config);
-	 * d($result);
+	 * D($result);
 	 * </pre>
 	 *
 	 * @param  array $config
@@ -96,8 +87,7 @@ class Translation
 	static function Language($config=[])
 	{
 		//	...
-		if(!$apikey = self::ApiKey() ){
-			self::_Error("Has not been set google cloud platform's api key.");
+		if(!$apikey = self::_ApiKey() ){
 			return false;
 		}
 
@@ -157,15 +147,6 @@ class Translation
 	/** Translate
 	 *
 	 * <pre>
-	 * //  Set onepiece-frameworks unit directory.
-	 * Unit::SetDirectory('app:/app/unit');
-	 *
-	 * //  Load unit of google.
-	 * Unit::Load('google');
-	 *
-	 * //  Setup google cloud platform's api key.
-	 * Translation::ApiKey('your-api-key');
-	 *
 	 * //  Setup configuration.
 	 * $config = [];
 	 * $config['model']    = 'nmt';  // NMT=Neural Machine Translation, PBMT=Phrase-Based Machine Translation
@@ -183,10 +164,10 @@ class Translation
 	 * @param  array $config
 	 * @return array
 	 */
-	static function Translate($config)
+	static function Translation($config)
 	{
 		//	...
-		if(!$apikey = self::ApiKey() ){
+		if(!$apikey = self::_ApiKey() ){
 			self::_Error("Has not been set google cloud platform's api key.");
 			return false;
 		}
@@ -197,12 +178,12 @@ class Translation
 		$url    = "https://{$domain}{$path}";
 
 		//	...
-		$model   = ifset($config['model'],  'nmt');
-		$format  = ifset($config['format'], 'html');
-		$source  = ifset($config['source']);
-		$target  = ifset($config['target']);
-		$string  = ifset($config['string']);
-		$strings = ifset($config['strings']);
+		$model   = $config['model']   ?? 'nmt';
+		$format  = $config['format']  ?? 'html';
+		$source  = $config['source']  ??  null;
+		$target  = $config['target']  ??  null;
+		$string  = $config['string']  ??  null;
+		$strings = $config['strings'] ??  null;
 
 		//	...
 		if(!$source){
@@ -247,14 +228,14 @@ class Translation
 
 		//	...
 		if( $strings ){
-			$strings = Html::Decode($strings);
 			foreach( $strings as $string ){
-				$data .= '&q=' . Curl::Escape($string);
+				$string = html_entity_decode($string, ENT_QUOTES, 'utf-8');
+				$data .= '&q=' . \OP\UNIT\Curl::Escape($string);
 			}
 		}
 
 		//	...
-		$text = Curl::Get($url.'?'.$data);
+		$text = \OP\UNIT\Curl::Get($url.'?'.$data);
 		$json = json_decode($text, true);
 
 		//	...

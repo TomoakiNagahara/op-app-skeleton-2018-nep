@@ -9,4 +9,9 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
+if(!\Unit::Load('curl')){
+	return false;
+}
+
+//	...
 include('Google.class.php');

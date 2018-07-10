@@ -37,8 +37,9 @@ class OAuth
 	 */
 	static private function _ClientID()
 	{
-		if(!$val = \Env::Get('google-oauth-client-id') ){
-			throw new \Exception('Has not been set google-oauth-client-id. Please set to Env::Set("google-oauth-client-id", $id)');
+		$key = 'google-oauth-client-id';
+		if(!$val = \Env::Get($key) ){
+			throw new \Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $id)');
 		}
 		return $val;
 	}
@@ -50,8 +51,9 @@ class OAuth
 	 */
 	static private function _ClientSecret()
 	{
-		if(!$val = \Env::Get('google-oauth-client-secret') ){
-			throw new \Exception('Has not been set google-oauth-client-secret. Please set to Env::Set("google-oauth-client-secret", $secret)');
+		$key = 'google-oauth-client-secret';
+		if(!$val = \Env::Get($key) ){
+			throw new \Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $secret)');
 		}
 		return $val;
 	}
@@ -109,11 +111,6 @@ class OAuth
 	 */
 	static function Callback($code, $redirect_uri)
 	{
-		//	...
-		if(!\Unit::Load('curl')){
-			return;
-		}
-
 		//	...
 		$post = array(
 			'code'			 => $code,

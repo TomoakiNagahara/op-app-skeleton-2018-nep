@@ -50,4 +50,37 @@ class Google
 		//	...
 		return $this->_google_oauth_user_info;
 	}
+
+	/** Execute Google Translate.
+	 *
+	 * @param	 string	 $to
+	 * @param	 string	 $from
+	 * @param	 array	 $strings
+	 * @return	 array	 $strings
+	 */
+	function Translate($to, $from, $strings)
+	{
+		//	...
+		if(!is_array($strings) ){
+			\Notice::Set("Strings is not array.");
+			return $strings;
+		}
+
+		//	...
+		include_once('Translate.class.php');
+
+		//	...
+		$config['target']  = $to;
+		$config['source']  = $from;
+		$config['strings'] = $strings;
+
+		//	...
+		return GOOGLE\Translate::Translation($config);
+	}
+
+
+	function Debug()
+	{
+		D(GOOGLE\Translate::Errors());
+	}
 }
