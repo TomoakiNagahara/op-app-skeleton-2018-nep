@@ -47,27 +47,13 @@ class Curl
 				//	Content-Type: application/x-www-form-urlencoded
 				$temp = [];
 				foreach( $post as $key => $val ){
-					$temp[$key] = self::_Escape($val);
+					$temp[$key] = self::Escape($val);
 				}
 				$data = http_build_query($temp, null, '&');
 		}
 
 		//	...
 		return $data;
-	}
-
-	/** Escape of string.
-	 *
-	 * @param  string $string
-	 * @return string $string
-	 */
-	static private function _Escape($string)
-	{
-		$string = preg_replace('/&/' , '%26', $string);
-		$string = preg_replace('/ /' , '%20', $string);
-		$string = preg_replace('/\t/', '%09', $string);
-		$string = preg_replace('/\s/', '%20', $string);
-		return $string;
 	}
 
 	/** Execute to Curl.
@@ -79,26 +65,42 @@ class Curl
 	static private function _Execute($url, $post=null, $format=null)
 	{
 		//	...
+		$header = [];
+
+		//	...
+		$ua = null;
+
+		//	...
+		$scheme = 'http';
+		$host   = $_SERVER['HTTP_HOST']   ?? 'localhost';
+		list($path, $query) = explode('?', $_SERVER['REQUEST_URI'].'?');
+		$referer = "{$scheme}://{$host}{$path}";
+
+		//	...
 		$option = [
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_TIMEOUT        => 3,
+			CURLOPT_URL            =>  $url,
+			CURLOPT_HTTPHEADER     =>  $header,
+			CURLOPT_USERAGENT      =>  $ua,
+			CURLOPT_REFERER        =>  $referer,
+			CURLOPT_RETURNTRANSFER =>  true,
+			CURLOPT_TIMEOUT        =>  3,
 		];
 
 		//	...
-		$ch = curl_init($url);
-		curl_setopt_array($ch, $option);
+		$curl = curl_init();
+		curl_setopt_array($curl, $option);
 
 		//	...
 		if( $post ){
-			curl_setopt( $ch, CURLOPT_CUSTOMREQUEST , 'POST' );
-			curl_setopt( $ch, CURLOPT_POST          ,  true );
-			curl_setopt( $ch, CURLOPT_POSTFIELDS    ,  self::_Data($post, $format) );
+			curl_setopt( $curl, CURLOPT_CUSTOMREQUEST , 'POST' );
+			curl_setopt( $curl, CURLOPT_POST          ,  true  );
+			curl_setopt( $curl, CURLOPT_POSTFIELDS    ,  self::_Data($post, $format) );
 		}
 
 		//	...
-		$body  = curl_exec($ch);
-		$info  = curl_getinfo($ch);
-		$errno = curl_errno($ch);
+		$body  = curl_exec($curl);
+		$info  = curl_getinfo($curl);
+		$errno = curl_errno($curl);
 
 		//	...
 		switch( $errno ){
@@ -116,6 +118,20 @@ class Curl
 
 		//	...
 		return $body;
+	}
+
+	/** Escape of string.
+	 *
+	 * @param  string $string
+	 * @return string $string
+	 */
+	static function Escape($string)
+	{
+		$string = preg_replace('/&/' , '%26', $string);
+		$string = preg_replace('/ /' , '%20', $string);
+		$string = preg_replace('/\t/', '%09', $string);
+		$string = preg_replace('/\s/', '%20', $string);
+		return $string;
 	}
 
 	/** Get method.
