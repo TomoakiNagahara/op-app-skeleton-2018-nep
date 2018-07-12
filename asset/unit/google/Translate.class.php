@@ -97,9 +97,9 @@ class Translate
 		$url    = "https://{$domain}{$path}";
 
 		//	...
-		$model   = ifset($config['model'] , 'nmt');
-		$target  = ifset($config['target'], 'en' );
-		$isarray = ifset($config['array'] , true ); // Return result format.
+		$model   = $config['model']  ?? 'nmt';
+		$target  = $config['target'] ?? 'en' ;
+		$isarray = $config['array']  ?? true ; // Return result format.
 
 		//	...
 		$post = array();
@@ -108,7 +108,7 @@ class Translate
 		$post['target']	 = $target;
 
 		//	...
-		$text = Curl::Get($url, $post);
+		$text = \OP\UNIT\Curl::Get($url, $post);
 		$json = json_decode($text, true);
 
 		//	...

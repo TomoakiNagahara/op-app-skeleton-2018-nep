@@ -78,7 +78,19 @@ class Google
 		return GOOGLE\Translate::Translation($config);
 	}
 
+	/** Get language list for translate.
+	 *
+	 * @param	 string	 $lang
+	 * @return	 array	 $strings
+	 */
+	function Languages($lang=null)
+	{
+		return GOOGLE\Translate::Language(['target'=>$lang]);
+	}
 
+	/** Debug is for developers.
+	 *
+	 */
 	function Debug()
 	{
 		D(GOOGLE\Translate::Errors());
