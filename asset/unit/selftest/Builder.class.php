@@ -39,8 +39,8 @@ class Builder
 	static function Auto($configs, $results, $DB)
 	{
 		//	...
-		$config	 = $DB->Config();
-		$dsn	 = "{$config['prod']}://{$config['host']}:{$config['port']}";
+		$config = $DB->Config();
+		$dsn    = "{$config['prod']}://{$config['host']}:{$config['port']}";
 
 		//	...
 		if(!$config = ifset($configs[$dsn]) ){

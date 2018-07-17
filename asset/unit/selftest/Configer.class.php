@@ -36,26 +36,6 @@ class Configer
 	 */
 	static private $_config;
 
-	/** Generate collate from charset.
-	 *
-	 * @param	 string		 $collate
-	 * @return	 string		 $collate
-	 */
-	static private function _Collate($collate)
-	{
-		switch( $collate ){
-			case 'ascii':
-				$collate = 'ascii_general_ci';
-				break;
-
-			case 'utf8':
-			case 'utf-8':
-				$collate = 'utf8mb4_general_ci';
-				break;
-		}
-		return $collate;
-	}
-
 	/** Get saved configuration.
 	 *
 	 */
@@ -244,9 +224,9 @@ class Configer
 		//	...
 		switch( $type ){
 			case 'timestamp':
-				$column['null']		 = false;
-				$column['extra']	 = 'on update CURRENT_TIMESTAMP';
-				$column['default']	 = 'CURRENT_TIMESTAMP';
+				$column['extra']   = 'on update CURRENT_TIMESTAMP';
+				$column['default'] = 'CURRENT_TIMESTAMP';
+				$column['null']    = false;
 				break;
 
 			default:
@@ -289,9 +269,9 @@ class Configer
 			case 'ai':
 			case 'pri':
 			case 'pkey':
-				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['null']	 = false;
-				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['key']	 = 'pri';
-				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra']	 = 'auto_increment';
+				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['key']   = 'pri';
+				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
+				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['null']  = false;
 				break;
 		}
 
@@ -325,7 +305,7 @@ class Configer
 
 		//	...
 		if( empty(self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]) ){
-			\Notice::Set("Set collate is failed. This column is not set. ($database, $table, $field, $collate)");
+			\Notice::Set("Set collate is failed. Has not been set this column. ($database, $table, $field)");
 			return;
 		}
 
@@ -333,5 +313,25 @@ class Configer
 		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]['charset']   = $charset;
 		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]['collate']   = $collate;
 		self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]['collation'] = $collate;
+	}
+
+	/** Generate collate from charset.
+	 *
+	 * @param	 string		 $collate
+	 * @return	 string		 $collate
+	 */
+	static private function _Collate($collate)
+	{
+		switch( $collate ){
+			case 'ascii':
+				$collate = 'ascii_general_ci';
+				break;
+
+			case 'utf8':
+			case 'utf-8':
+				$collate = 'utf8mb4_general_ci';
+				break;
+		}
+		return $collate;
 	}
 }
