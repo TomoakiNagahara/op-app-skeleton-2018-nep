@@ -36,8 +36,9 @@ class OAuth
 	 */
 	private $_instances;
 
-	/**
+	/** OAuth of Google.
 	 *
+	 * @return \OP\UNIT\OAuthChild
 	 */
 	function Google()
 	{
@@ -77,11 +78,36 @@ class OAuthChild
 	 */
 	private $_user_info;
 
+	/** Generate unique key.
+	 *
+	 */
 	private function _Key()
 	{
 		return Hasha1( $this->_service .','. __FILE__ );
 	}
 
+	/** Generate callback url.
+	 *
+	 */
+	private function _CallbackURL()
+	{
+		//	...
+		$scheme = 'http';
+
+		//	...
+		$host = $_SERVER['HTTP_HOST'];
+
+		//	...
+		list($uri, $query) = explode('?', $_SERVER['REQUEST_URI']);
+
+		//	...
+		return "{$scheme}://{$host}{$uri}";
+	}
+
+	/** Construct
+	 *
+	 * @param string $service
+	 */
 	function __construct($service)
 	{
 		//	...
@@ -91,16 +117,28 @@ class OAuthChild
 		$this->_user_info = $this->Session($this->_Key());
 	}
 
+	/** Wrapper method.
+	 *
+	 * @return boolean
+	 */
 	function isLogin()
 	{
 		return $this->isLoggedIn();
 	}
 
+	/** Wrapper method.
+	 *
+	 * @return boolean
+	 */
 	function isLoggedIn()
 	{
 		return $this->_user_info ? true: false;
 	}
 
+	/** Do login.
+	 *
+	 * @return boolean
+	 */
 	function Login()
 	{
 		//	...
@@ -109,22 +147,48 @@ class OAuthChild
 		}
 
 		//	...
-		$scheme = 'http';
-		$host = $_SERVER['HTTP_HOST'];
-		list($uri, $query) = explode('?', $_SERVER['REQUEST_URI']);
-		$url = "{$scheme}://{$host}{$uri}";
+		$url = $this->_CallbackURL();
 
 		//	...
-		if( $this->_user_info = $service->OAuth($url) ){
-			$this->Session($this->_Key(), $this->_user_info);
+		return $this->UserInfo( $service->OAuth($url) );
+	}
+
+	/** Do logout.
+	 *
+	 */
+	function Logout()
+	{
+		//	...
+		$key = $this->_Key();
+
+		//	...
+		$this->Session($key, null);
+	}
+
+	/** Get user information.
+	 *
+	 * @param  array  $user_info
+	 * @return array  $user_info
+	 */
+	function UserInfo($user_info=null)
+	{
+		//	...
+		$key = $this->_Key();
+
+		//	...
+		if( $user_info ){
+			if( $this->_user_info ){
+				D("Already has been set user info.");
+			}else{
+				//	...
+				$this->_user_info = $user_info;
+
+				//	...
+				$this->Session($key, $user_info);
+			}
 		}
 
 		//	...
-		return $this->_user_info;
-	}
-
-	function UserInfo()
-	{
-		return $this->_user_info;
+		return $this->_user_info ?? [];
 	}
 }
