@@ -26,12 +26,12 @@ $orm->Connect($config);
 $ai = $_GET['ai'] ?? null;
 
 //  Generate Quick Query Language.
-if( empty($ai) ){
+if( $ai === null ){
 	//  Generate empty record.
-	$qql = 't_test';
+	$qql = 't_table';
 }else{
 	//  Generate found record.
-	$qql = "t_test.ai = $ai";
+	$qql = "t_table.ai = $ai";
 }
 
 //  Generate "Record" object.
@@ -53,8 +53,8 @@ $form->Error('input_name');
 printf('<button> Submit </button>');
 $form->Finish();
 
-//  Validation result.
-$validate = $record->Validate();
+//  Do validation.
+$record->Validate();
 
 //  Check validation result.
 if( $record->isValid() ){
