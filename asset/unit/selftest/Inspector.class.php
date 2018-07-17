@@ -58,7 +58,7 @@ class Inspector
 	 *
 	 * @var array
 	 */
-	static private $_result = [];
+	static private $_result;
 
 	/** Get configuration array.
 	 *
@@ -656,7 +656,6 @@ class Inspector
 			if(!$io ){
 				$success = false;
 				self::$_failure = true;
-			//	$_result['fields'][$database][$table][$field]['result']   = false;
 				$_result['columns'][$database][$table][$field][$key]['current'] = ifset($fact[$key]);
 				$_result['columns'][$database][$table][$field][$key]['modify']  = ifset($column[$key]);
 			}
@@ -689,7 +688,7 @@ class Inspector
 	 */
 	static function Form()
 	{
-		\OP\UNIT\NEWWORLD\Template::Run(__DIR__.'/form.phtml');
+		\App::Template(__DIR__.'/form.phtml');
 	}
 
 	/** Return one stacked error.
@@ -761,6 +760,6 @@ class Inspector
 	 */
 	static function Debug()
 	{
-		D( __METHOD__, self::_DB()->Queries(), self::$_result );
+		D(__METHOD__, self::_DB()->Queries(), self::$_result);
 	}
 }
