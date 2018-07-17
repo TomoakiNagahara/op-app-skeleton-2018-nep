@@ -95,6 +95,8 @@ class DML
 				//	...
 				$value = $db->PDO()->quote($value);
 			}
+
+			//	...
 			$join[] = "{$column} = {$value}";
 		}
 
@@ -198,10 +200,10 @@ class DML
 		return '('.join(' AND ', $join).')';
 	}
 
-	/** Get limit condition.
+	/** Generate limit condition.
 	 *
-	 * @param  array
-	 * @return string
+	 * @param	 array
+	 * @return	 string
 	 */
 	static function Limit($args)
 	{
@@ -212,18 +214,28 @@ class DML
 		return 'LIMIT '.(int)$args['limit'];
 	}
 
-	/** Get order condition.
+	/** Generate offset condition.
 	 *
-	 * @param  array
-	 * @param  db
-	 * @return string
+	 * @param	 array	 $args
+	 * @return	 string
+	 */
+	static function Offset($args)
+	{
+		return 'OFFSET ' . (int)$args['offset'];
+	}
+
+	/** Generate order condition.
+	 *
+	 * @param	 array
+	 * @param	\IF_DATABASE
+	 * @return	 string
 	 */
 	static function Order($args, $db)
 	{
 		foreach( explode(',', $args['order']) as $value ){
-			list($field, $value) = explode(' ', $value.' ');
+			list($field, $order) = explode(' ', $value.' ');
 			$field  = $db->Quote($field);
-			$field .= $value === 'desc' ? ' DESC': '';
+			$field .= $order === 'desc' ? ' DESC':'';
 			$join[] = $field;
 		}
 

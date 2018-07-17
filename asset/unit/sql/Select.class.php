@@ -68,7 +68,7 @@ class Select
 		$order  = isset($args['order'])  ? DML::Order($args,  $db): null;
 
 		//	OFFSET
-		$offset = isset($args['offset']) ? 'OFFSET '.(int)$args['offset']: null;
+		$offset = isset($args['offset']) ? DML::Offset($args, $db): null;
 
 		//	...
 		return "SELECT {$column} FROM {$table} WHERE {$where} {$order} {$limit} {$offset}";

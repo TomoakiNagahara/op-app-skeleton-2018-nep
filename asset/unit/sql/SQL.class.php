@@ -30,13 +30,6 @@ class SQL
 	 */
 	use \OP_CORE;
 
-
-	/** Database unit.
-	 *
-	 * @var db
-	 */
-	private $_db;
-
 	/** Count
 	 *
 	 * @param   array       $config
