@@ -23,6 +23,11 @@ if( $OP === undefined ){
 		}
 
 		//	...
+		if( div.innerText.length < 1 ){
+			return;
+		}
+
+		//	...
 		var json = JSON.parse(div.innerText);
 		var dump = table(json);
 		div.innerText = '';

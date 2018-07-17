@@ -11,6 +11,12 @@
 (function(){
 	//	...
 	$OP.Mark = function(div){
+		//	...
+		if( div.innerText.length < 1 ){
+			return;
+		}
+
+		//	...
 		var text = div.innerText;
 		var json = JSON.parse(text);
 
