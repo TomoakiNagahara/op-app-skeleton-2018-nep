@@ -33,8 +33,8 @@
 			//	...
 			json.message += "\n";
 			var pos = json.message.indexOf("\n");
-			me1.innerHTML = json.message.substr(0, pos);
-			me2.innerHTML = json.message.substr(pos+1, json.message.length -pos -2);
+			me1.innerText = json.message.substr(0, pos);
+			me2.innerText = json.message.substr(pos+1, json.message.length -pos -2);
 
 			//	...
 			tags.message.classList.add('message');
