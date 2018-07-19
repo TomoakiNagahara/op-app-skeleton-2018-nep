@@ -23,3 +23,28 @@ body.body section.important {
 	border-radius: 0.25em;
 	background-color:  #FAF8EA;
 }
+
+body.body .text.left {
+	border: 1px solid black;
+	text-align: left;
+}
+
+body.body .text.center {
+	text-align: center;
+}
+
+body.body .text.right {
+	text-align: right;
+}
+
+body.body .float.left {
+	float: left;
+}
+
+body.body .float.center {
+	float: center;
+}
+
+body.body .float.right {
+	float: right;
+}
