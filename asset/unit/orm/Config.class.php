@@ -43,7 +43,7 @@ class Config
 		}
 
 		//	...
-		switch( $column['type'] ){
+		switch( $type = $column['type'] ){
 			case 'enum':
 				$type = $column['null'] ? 'select':'radio';
 				break;
@@ -57,7 +57,6 @@ class Config
 				break;
 
 			default:
-				$type = 'text';
 		}
 
 		//	...
