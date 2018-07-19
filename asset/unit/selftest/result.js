@@ -212,17 +212,10 @@
 										.querySelector('[data-table="'+table+'"]')
 										.querySelector('[data-field="'+field+'"]');
 
-<<<<<<< HEAD
-		//	...
-		for(var name in json){
-			if( name === 'result' ){
-				continue;
-=======
 						//	...
 						__column(item, json[database][table][field][column]);
 					}
 				}
->>>>>>> ff186e9... WIP: selftest
 			}
 		}
 	};
