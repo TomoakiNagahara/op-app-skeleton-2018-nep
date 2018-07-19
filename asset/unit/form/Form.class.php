@@ -47,6 +47,12 @@ class Form
 	 */
 	private $_session = [];
 
+	/** Start method was called flag.
+	 *
+	 * @var boolean
+	 */
+	private $_is_start;
+
 	/** Initialize form config.
 	 *
 	 * @param	 string|array	 $form
@@ -91,6 +97,14 @@ class Form
 
 		//	...
 		$this->_form = Escape($form);
+
+		//	...
+		if( \Env::isAdmin() ){
+			if(!FORM\Test::Config($this->_form) ){
+				D( FORM\Test::Error() );
+				return;
+			}
+		}
 
 		//	...
 		$this->_session = $this->Session($form_name);
@@ -302,7 +316,7 @@ class Form
 		//	...
 		if( $io === '' ){
 			//	Last time token.
-			$token = (int)$this->_session['token'] ?? false;
+			$token = $this->_session['token'] ?? false;
 
 			//	Regenerate session id.
 			session_regenerate_id();
@@ -320,13 +334,13 @@ class Form
 		}
 
 		//	...
-		if( \Env::isAdmin() or true ){
+		if( \Env::isAdmin() ){
 			if( $io === null ){
 				$this->Debug("Token has not been set yet.");
 			}else if( $io === false ){
 				$this->Debug("Token is unmatch.");
 			}else{
-				$this->Debug("Token is true.");
+				$this->Debug("Token is match.");
 			}
 		}
 
@@ -340,6 +354,9 @@ class Form
 	 */
 	function Start($config=[])
 	{
+		//	...
+		$this->_is_start = true;
+
 		//	...
 		if(!$this->_form ){
 			throw new Exception("Has not been set configuration.");
@@ -374,6 +391,12 @@ class Form
 	 */
 	function Finish()
 	{
+		//	...
+		if( $this->_is_start === null ){
+			D("Start method was not called.");
+		}
+
+		//	...
 		print "</form>";
 	}
 
@@ -391,15 +414,7 @@ class Form
 		}
 
 		//	...
-		if( isset( $this->_form['input'][$name]['label'] ) ){
-			return $this->_form['input'][$name]['label'];
-		}
-
-		//	...
-		if( empty( $this->_form['input'][$name]['label'] ) ){
-			\Notice::Set("Has not been set label. ($name)");
-			return;
-		}
+		return $this->_form['input'][$name]['label'] ?? $name;
 	}
 
 	/** Generate input tag.
@@ -506,6 +521,13 @@ class Form
 	 */
 	function Input($name)
 	{
+		//	...
+		if( $this->_is_start === null ){
+			$this->_is_start  =  false;
+			D("Start method was not called.");
+		}
+
+		//	...
 		echo $this->GetInput($name);
 	}
 
@@ -635,7 +657,7 @@ class Form
 	 * <pre>
 	 * Return value
 	 *   Null is unmatch token. (Not do validation.)
-	 *   Boolean is validation result.
+	 *   Boolean is validation result. (true is no problem.)
 	 * </pre>
 	 *
 	 * @param	 null|string	 $input_name
