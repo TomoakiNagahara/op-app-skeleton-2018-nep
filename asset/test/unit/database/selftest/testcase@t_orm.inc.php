@@ -14,6 +14,7 @@ OP\UNIT\SELFTEST\Configer::Table('t_orm');
 //	...
 OP\UNIT\SELFTEST\Configer::Column(        'ai',       'int',           'Auto increment number.');
 
+OP\UNIT\SELFTEST\Configer::Column(  'required',   'varchar',                        'Required.', ['length'=>10, 'null'=>false]);
 OP\UNIT\SELFTEST\Configer::Column(    'number',     'float',                      'Any number.');
 OP\UNIT\SELFTEST\Configer::Column(   'integer',       'int',        'Integer only. (not float)');
 OP\UNIT\SELFTEST\Configer::Column(  'positive',       'int', 'Positive integer. (not negative)', ['unsigned'=>1]);

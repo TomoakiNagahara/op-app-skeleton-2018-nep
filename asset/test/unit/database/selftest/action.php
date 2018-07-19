@@ -32,6 +32,19 @@ while( $message = \OP\UNIT\SELFTEST\Inspector::Error() ){
 }
 
 //	...
+$navi['label'] = 'Debug(ON)';
+$navi['url']   = '?debug=1';
+$navies[] = $navi;
+
+//	...
+$navi['label'] = 'Debug(OFF)';
+$navi['url']   = '?debug=0';
+$navies[] = $navi;
+
+//	...
+__navigation($navies);
+
+//	...
 if( $failed !== false ){
 	\OP\UNIT\SELFTEST\Inspector::Form();
 }
