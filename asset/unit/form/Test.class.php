@@ -62,7 +62,7 @@ class Test
 		$failed = false;
 
 		//	...
-		if(!$name = ifset($form['name'])){
+		if(!$name = $form['name'] ?? null ){
 			self::Error("\$form has not been set name attribute.");
 			return;
 		}
@@ -89,7 +89,7 @@ class Test
 		$failed = false;
 
 		//	...
-		foreach( $form['input'] as $name => $input ){
+		foreach( $form['input'] ?? [] as $name => $input ){
 			//	...
 			if( gettype($name) !== 'string' ){
 				self::Error("\$form[input] is array. (not assoc)\n Ex. \$form[input][input-name] = \$input;");
@@ -118,7 +118,7 @@ class Test
 		//	...
 		foreach(['type'] as $key){
 			if(!isset($input[$key])){
-				self::Error("Input config has not been set $key attribute. ($name)");
+				self::Error("Input config has not been set $key attribute. ({$input['name']})");
 				$failed = true;
 			}
 		}
