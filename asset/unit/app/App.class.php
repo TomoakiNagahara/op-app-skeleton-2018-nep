@@ -62,7 +62,14 @@ class App
 
 	/** Layout
 	 *
-	 * @param	 string	 $name
+	 * <pre>
+	 * App::Layout(true);       // Execute layout.
+	 * App::Layout(false);      // Does not execute layout.
+	 * App::Layout('name');     // Set layout name.
+	 * $layout = App::Layout(); // Get layout name.
+	 * </pre>
+	 *
+	 * @param	 null|boolean|string	 $value
 	 */
 	static function Layout($name=null)
 	{
@@ -89,11 +96,10 @@ class App
 				break;
 
 			default:
-			//	D($type);
 		}
 
 		//	...
-		return self::$_LAYOUT_::Name();
+		return self::$_LAYOUT_::Execute() ? self::$_LAYOUT_::Name() : false;
 	}
 
 	/** WebPack
@@ -125,12 +131,12 @@ class App
 	 * @param	 string	 $separator
 	 * @return	 string	 $title
 	 */
-	static function Title($title=null, $separator=' | ')
+	static function Title($title=null)
 	{
-		static $_title;
+		static $_titles, $separator=' | ';
 		if( $title ){
-			$_title = $title . $separator . $_title;
+			$_titles[] = $title;
 		}
-		return $_title;
+		return join($separator, array_reverse($_titles));
 	}
 }
