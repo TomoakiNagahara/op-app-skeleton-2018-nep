@@ -9,6 +9,7 @@
  */
 
 body.body form.OP input[type="text"],
+body.body form.OP input[type="password"],
 body.body form.OP textarea,
 body.body form.OP button,
 body.body form.OP submit {
@@ -19,8 +20,10 @@ body.body form.OP submit {
 }
 
 body.body form.OP input[type="text"],
+body.body form.OP input[type="password"],
 body.body form.OP textarea{
 	width: 16em;
+	font-size: inherit;
 }
 
 body.body form.OP textarea {
