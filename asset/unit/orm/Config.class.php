@@ -108,6 +108,13 @@ class Config
 		}
 
 		//	...
+		if( $column['collation'] ?? null ){
+			if( strpos($column['collation'], 'ascii') !== false ){
+				$rule[] = 'ascii';
+			}
+		}
+
+		//	...
 		return join(', ', $rule);
 	}
 

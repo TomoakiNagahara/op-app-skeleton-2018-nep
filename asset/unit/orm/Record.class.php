@@ -283,13 +283,21 @@ class Record
 		return $this->_isValid;
 	}
 
+	/** Is ready record.
+	 *
+	 */
+	function isReady()
+	{
+		return $this->_columns ? true: false;
+	}
+
 	/** Is found record.
 	 *
 	 * @return boolean
 	 */
 	function isFound()
 	{
-		return $this->Get( $this->Pkey() ) ? true: false;
+		return $this->_record ? true: false;
 	}
 
 	/** Validation result.
