@@ -10,7 +10,7 @@
  */
 /* @var $db \OP\UNIT\Database */
 if( $db->isConnect() ){
-	App::Template('form.phtml', ['form'=>$form]);
+	D( $db-> );
 }else{
 	App::Template('form.phtml', ['form'=>$form]);
 }
