@@ -98,10 +98,10 @@ class Column
 
 	/** Generate each field SQL.
 	 *
-	 * @param   array      $config
-	 * @param  \OP\UNIT\DB $DB
-	 * @throws \Exception
-	 * @return  string     $SQL
+	 * @param	 array				 $config
+	 * @param	\OP\UNIT\Database	 $DB
+	 * @throws	\Exception			 $e
+	 * @return	 string				 $query
 	 */
 	static function Field($config, $DB)
 	{
@@ -164,9 +164,9 @@ class Column
 			case 'CHAR':
 			case 'VARCHAR':
 				if( $length ){
-					throw new \Exception("Has not been set length. ($database, $table, $field, $type)");
-				}else{
 					$length = (int)$length;
+				}else{
+					throw new \Exception("Has not been set length. ($field, $type)");
 				}
 				break;
 
