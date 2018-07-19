@@ -1,6 +1,4 @@
 <?php
-use OP\UNIT\NEWWORLD\Layout;
-
 /**
  * app-skeleton-2018-nep:/webpack/index.php
  *
@@ -36,7 +34,9 @@ switch( $ext ){
 
 		//	...
 		$app_path    = "./{$ext}/action.php";
-		$layout_path = ConvertPath("layout:/");//{$ext}/action.php
+
+		//	...
+		$layout_path = ConvertPath("layout:/");
 		$layout_path = realpath($layout_path.'../');
 		$layout_path.= "/$layout/$ext/action.php";
 
