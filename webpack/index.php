@@ -1,4 +1,6 @@
 <?php
+use OP\UNIT\NEWWORLD\Layout;
+
 /**
  * app-skeleton-2018-nep:/webpack/index.php
  *
@@ -20,7 +22,7 @@ if(!$ext = $args[0] ){
 }
 
 //	Get layout name.
-$layout = ifset($_GET['layout']);
+$layout = empty($_GET['layout']) ? 'white': $_GET['layout'];
 
 //	Switch work by extension.
 switch( $ext ){
@@ -34,7 +36,9 @@ switch( $ext ){
 
 		//	...
 		$app_path    = "./{$ext}/action.php";
-		$layout_path = ConvertPath("layout:/{$ext}/action.php");
+		$layout_path = ConvertPath("layout:/");//{$ext}/action.php
+		$layout_path = realpath($layout_path.'../');
+		$layout_path.= "/$layout/$ext/action.php";
 
 		//	...
 		$list = array_merge( include($app_path), include($layout_path) );

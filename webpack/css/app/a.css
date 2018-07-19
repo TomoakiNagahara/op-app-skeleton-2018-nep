@@ -7,3 +7,7 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+
+body.body a {
+	color: #3170C3;
+}
