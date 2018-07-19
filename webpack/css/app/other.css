@@ -15,3 +15,11 @@ body.body .indent {
 body.body hr {
 	margin: 0.5em 0;
 }
+
+body.body section.important {
+	padding: 0.5em 1em;
+	border: 1px solid  #F0F0E0;
+	border-left: 0.5em solid #F9E46A;
+	border-radius: 0.25em;
+	background-color:  #FAF8EA;
+}
