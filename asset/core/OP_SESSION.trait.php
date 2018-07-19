@@ -32,6 +32,8 @@ trait OP_SESSION
 	static function Session($key, $value=null)
 	{
 		static $app_id;
+
+		//	...
 		if(!$app_id){
 			if(!$app_id = Env::Get(_OP_APP_ID_) ){
 				$app_id = Hasha1(ConvertPath('app:/'));
