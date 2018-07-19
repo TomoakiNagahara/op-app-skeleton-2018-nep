@@ -57,6 +57,11 @@ class App
 	 */
 	static function Template($path, $args=null)
 	{
+		if( $args and !is_array($args)){
+			$type = is_object($args) ? get_class($args) : gettype($args);
+			D("Argument is not array. ($type)");
+			return;
+		}
 		self::$_TEMPLATE_::Run($path, $args);
 	}
 
