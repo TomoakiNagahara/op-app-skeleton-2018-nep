@@ -14,7 +14,7 @@
 	<?php foreach( ['database','table'] as $name ): ?>
 	<tr>
 		<th><?php $form->Label($name) ?></th>
-		<td><?php $form->Input($name, $list[$name] ?? null) ?></td>
+		<td><?php $form->Input($name) ?></td>
 		<td><?php $form->Error($name) ?></td>
 	</tr>
 	<?php endforeach; ?>

@@ -8,6 +8,11 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	...
+if( $_GET['sleep'] ?? 0 ){
+	sleep($_GET['sleep']);
+}
+
 /* @var $form \OP\UNIT\Form */
 if(!$form = Unit::Instance('Form') ){
 	return;
@@ -22,6 +27,13 @@ if( $_GET['clear'] ?? false ){
 }else{
 	$form->Validate();
 }
+
+//	...
+Nav::Set('Sleep(ON)' , ['sleep'=>1]);
+Nav::Set('Sleep(OFF)', ['sleep'=>0]);
+Nav::Set('Debug(ON)' , ['debug'=>1]);
+Nav::Set('Debug(OFF)', ['debug'=>0]);
+Nav::Out();
 
 //	...
 App::Template('index.phtml', ['form'=>$form]);

@@ -40,25 +40,33 @@ if(!$record->isReady() ){
 	return;
 }
 
-//	In case of new record, Set create datetime.
-if( $record->isFound() ){
-	$record->Set('updated', Time::Datetime());
-}else{
-	$record->Set('created', Time::Datetime());
-}
-
 //	Generate form object.
 $form = $record->Form();
 
-//	Save to database by Record object.
-$result = $form->Validate() ? $orm->Save($record): null;
+//	Do validation.
+$form->Validate();
 
-//	...
+//	Get result.
 $found = $record->isFound();
 $valid = $record->isValid();
+$saved = null;
 
 //	...
-App::Template('_orm.phtml',['form'=>$form, 'result'=>$result, 'found'=>$found, 'valid'=>$valid]);
+if( $valid ){
+	//	...
+	if(!$found ){
+		$record->Set('created', Time::Datetime());
+	}
+
+	//	...
+	if( $saved = $orm->Save($record) ){
+		$record->Set('updated', Time::Datetime());
+		$saved = $orm->Save($record);
+	}
+}
+
+//	...
+App::Template('_orm.phtml',['form'=>$form, 'found'=>$found, 'valid'=>$valid, 'saved'=>$saved]);
 
 //	...
 if( $_GET['debug'] ?? false ){

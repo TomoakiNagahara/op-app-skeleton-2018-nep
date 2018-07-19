@@ -26,46 +26,59 @@ if( $_GET['logout'] ?? false ){
 	App::Session($session_key, []);
 }
 
-//	Saved login values.
-$values = App::Session($session_key);
+//	Saved connection config.
+$config = App::Session($session_key);
 
-//	Has not been saved login values.
-if( empty($values) ){
+//	Has not been saved connection values.
+if( empty($config) ){
 	//	Initialize.
 	$form->Config('form-login.conf.php');
 
 	//	Validate.
 	if( $form->Validate() ){
 		//	Login values is save to session.
-		$values = $form->Values();
-		App::Session($session_key, $values);
+		$config = $form->Values();
+		App::Session($session_key, $config);
 	}
 }
 
-//	Database connect.
-if( $values ){
-	if( $db->Connect($values) ){
-
+//	Try database connect.
+if( $config ){
+	//	In case of success, building database selector form.
+	if( $db->Connect($config) ){
 		//	...
-		$form->Config(include('form-selector.conf.php'));
+		$form = Unit::Instance('Form');
+		$form->Config('form-selector.conf.php');
 
 		//	Get database name list.
-		$list['database'] = ['_'=>['label'=>null, 'value'=>null]];
-		foreach( $db->Query($sql->Show([], $db), 'show') as $value ){
-			$list['database'][$value]['label'] = $value;
-			$list['database'][$value]['value'] = $value;
+		$option = [['label'=>null, 'value'=>null]];
+		foreach( $db->Show([]) as $value ){
+			$option[] = ['label' => $value, 'value' => $value];
 		}
+		$form->SetOption('database', $option);
 
 		//	Get table name list at database name.
-		$list['table'] = ['_'=>['label'=>null, 'value'=>null]];
+		$option = [['label'=>null, 'value'=>null]];
 		if( $database = $form->GetValue('database') ){
-			foreach( $db->Query($sql->Show(['database'=>$database], $db), 'show') as $value ){
-				$list['table'][$value]['label'] = $value;
-				$list['table'][$value]['value'] = $value;
+			foreach( $db->Show(['database'=>$database]) as $value ){
+				$option[] = ['label' => $value, 'value' => $value];
 			}
 		}
+		$form->SetOption('table', $option);
+	}else{
+		//	Database connect was failed.
+		App::Session($session_key, null);
+
+		//	...
+		$form->Config('form-login.conf.php');
 	}
 }
 
 //	...
-App::Template('action.phtml',['form'=>$form, 'db'=>$db, 'list'=>$list ?? []]);
+Nav::Set('Create', ['pval'=>'']);
+
+//	...
+Nav::Out();
+
+//	...
+App::Template('action.phtml',['form'=>$form, 'db'=>$db]);

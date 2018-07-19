@@ -28,7 +28,7 @@ class Nav
 	 *
 	 * @var array
 	 */
-	private $_navs;
+	static private $_navs;
 
 	/** Generate URL Query.
 	 *
@@ -36,7 +36,7 @@ class Nav
 	 * @param	 boolean	 $merge
 	 * @return	 string		 $query
 	 */
-	private function _Query(array $param, $merge)
+	static private function _Query(array $param, $merge)
 	{
 		return http_build_query( $merge ? array_merge($_GET, $param) : $param );
 	}
@@ -44,26 +44,26 @@ class Nav
 	/** Set
 	 *
 	 * <pre>
-	 * $nav->Set('Debug(ON)', ['debug'=>1]);
+	 * Nav::Set('Debug(ON)', ['debug'=>1]);
 	 * </pre>
 	 *
 	 * @param	 string		 $label
 	 * @param	 array		 $param
 	 * @param	 boolean	 $merge
 	 */
-	function Set(string $label, array $param, $merge=true )
+	static function Set(string $label, array $param, $merge=true )
 	{
 		$navi['label'] = $label;
 		$navi['param'] = $param;
 		$navi['merge'] = $merge;
-		$this->_navs[] = $navi;
+		self::$_navs[] = $navi;
 	}
 
 	/** Get
 	 *
 	 * @return array
 	 */
-	function Get()
+	static function Get()
 	{
 		return $this->_navs;
 	}
@@ -71,14 +71,14 @@ class Nav
 	/** Out is display.
 	 *
 	 */
-	function Out()
+	static function Out()
 	{
 		echo '<nav class="testcase">'.PHP_EOL;
-		foreach( $this->_navs as $navi ){
+		foreach( self::$_navs ?? [] as $navi ){
 			$label = $navi['label'];
 			$param = $navi['param'];
 			$merge = $navi['merge'];
-			printf('<span><a href="?%s">%s</a></span>', $this->_query($param, $merge), $label);
+			printf('<span><a href="?%s">%s</a></span>', self::_query($param, $merge), $label);
 		}
 		echo '</nav>'.PHP_EOL;
 	}

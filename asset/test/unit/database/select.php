@@ -22,7 +22,9 @@ $count = $db->Count($config);
 //	Select records.
 $config = [];
 $config['table'] = 't_orm';
-$config['limit'] = 10;
+$config['limit'] = 3;
+$config['offset']= 1;
+$config['order'] = 'timestamp desc';
 $config['where']['ai']['value'] = null;
 $config['where']['ai']['evalu'] = '!';
 D('SELECT', "count=$count", $db->Select($config), $db->Queries($config));

@@ -8,7 +8,6 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-D(__FILE__);
 
 /* @var $db \OP\UNIT\Database */
 include('../connect.php');
@@ -19,30 +18,4 @@ if(!Unit::Load('selftest') ){
 }
 
 /* @var $orm \OP\UNIT\ORM */
-$config = $orm->Selftest('config.inc.php');
-D($config);
-
-//	Set configuration.
-\OP\UNIT\SELFTEST\Inspector::Auto( $config );
-
-//	Get result.
-$build  = \OP\UNIT\SELFTEST\Inspector::Build();
-$failed = \OP\UNIT\SELFTEST\Inspector::Failed();
-
-//	...
-while( $message = \OP\UNIT\SELFTEST\Inspector::Error() ){
-	printf('<p class="testcase selftest bold error">%s</p>', $message);
-}
-
-//	...
-if( $failed !== false ){
-	\OP\UNIT\SELFTEST\Inspector::Form();
-}
-
-//	...
-\OP\UNIT\SELFTEST\Inspector::Result();
-
-// ...
-if( ($_GET['debug'] ?? false) or Notice::Has() ){
-	\OP\UNIT\SELFTEST\Inspector::Debug();
-}
+$orm->Selftest('config.inc.php');
