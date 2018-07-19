@@ -18,3 +18,6 @@ OP\UNIT\NEWWORLD\Layout::Name('white');
 
 //	Template settings.
 OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template');
+
+//	Application settings.
+App::Title('app-skeleton-2018-nep');
