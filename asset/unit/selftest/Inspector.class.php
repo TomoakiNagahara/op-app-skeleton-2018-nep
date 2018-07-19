@@ -543,7 +543,7 @@ class Inspector
 			}
 
 			//	...
-			self::Columns($DB, $database, $table_name, ifset($table['columns'], []), $_result);
+			self::Fields($DB, $database, $table_name, ifset($table['columns'], []), $_result);
 			self::Indexes($DB, $database, $table_name, ifset($table['indexes'], []), $_result);
 		}
 
@@ -551,7 +551,7 @@ class Inspector
 		return $_result['tables'][$database][$table_name]['result'];
 	}
 
-	/** Inspect each column.
+	/** Inspect each fields.
 	 *
 	 * @param  \IF_DATABASE $DB
 	 * @param   string      $database
@@ -560,34 +560,34 @@ class Inspector
 	 * @param  &array       $_result
 	 * @return  boolean     $result
 	 */
-	static function Columns($DB, $database, $table, $columns, &$_result)
+	static function Fields($DB, $database, $table, $columns, &$_result)
 	{
-		//	...
+		//	Get fields list.
 		$sql  = \OP\UNIT\SQL\Show::Column($DB, $database, $table);
 		$list = $DB->Query($sql, 'show');
 
-		//	...
+		//	Each fields.
 		foreach( $columns as $name => $details ){
 
-			//	...
+			//	If field exist.
 			$io = isset($list[$name]) ? true: false;
-			$_result['columns'][$database][$table][$name]['result'] = $io;
+			$_result['fields'][$database][$table][$name]['result'] = $io;
 
-			//	...
+			//	If not exist.
 			if(!$io ){
 				self::$_failure = true;
 				continue;
 			}
 
-			//	...
-			self::Details($DB, $database, $table, $name, $details, $list[$name], $_result);
+			//	Field is exist.
+			self::Columns($DB, $database, $table, $name, $details, $list[$name], $_result);
 		}
 
 		//	...
-		return $_result['columns'][$database][$table][$name]['result'];
+		return $_result['fields'][$database][$table][$name]['result'];
 	}
 
-	/** Inspect each field define.
+	/** Inspect each columns.
 	 *
 	 * @param  \IF_DATABASE $DB
 	 * @param   string      $database
@@ -598,7 +598,7 @@ class Inspector
 	 * @param  &array       $_result
 	 * @return  boolean     $result
 	 */
-	static function Details($DB, $database, $table, $field, $column, $fact, &$_result)
+	static function Columns($DB, $database, $table, $field, $column, $fact, &$_result)
 	{
 		//	...
 		$success = true;
@@ -673,8 +673,9 @@ class Inspector
 			if(!$io ){
 				$success = false;
 				self::$_failure = true;
-				$_result['columns'][$database][$table][$field][$key]['detail']['current'] = ifset($fact[$key]);
-				$_result['columns'][$database][$table][$field][$key]['detail']['modify']  = ifset($column[$key]);
+			//	$_result['fields'][$database][$table][$field]['result']   = false;
+				$_result['columns'][$database][$table][$field][$key]['current'] = ifset($fact[$key]);
+				$_result['columns'][$database][$table][$field][$key]['modify']  = ifset($column[$key]);
 			}
 		}
 
