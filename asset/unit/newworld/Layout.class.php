@@ -38,15 +38,11 @@ class Layout
 	{
 		//	Get layout directory.
 		if(!$layout_dir = self::Directory() ){
-			$message = "Has not been set layout directory.";
-			\Notice::Set($message, debug_backtrace());
 			return false;
 		}
 
 		//	Get layout name.
 		if(!$layout_name = self::Name() ){
-			$message = "Has not been set layout name.";
-			\Notice::Set($message, debug_backtrace());
 			return false;
 		}
 
@@ -61,7 +57,7 @@ class Layout
 			}else{
 				$message = "Does not exists layout directory. ($layout_name)";
 			}
-			\Notice::Set($message, debug_backtrace());
+			\Notice::Set($message);
 			return false;
 		}
 
@@ -107,14 +103,14 @@ class Layout
 	static function Name($name=null)
 	{
 		if( $name ){
-			//	...
-			$dir = self::Directory();
+			//	Get layout directory.
+			if(!$dir = self::Directory() ){
+				\Notice::Set("Has not been set layout directory.");
+			//	\Notice::Set("Has not been set layout name.");
+			}
 
-			//	...
-			$list = _GetRootsPath('layout', $dir . $name);
-
-		}else if( $name === false ){
-
+			//	Reset meta path.
+			_GetRootsPath('layout', ConvertPath("layout:/$name"));
 		}
 
 		//	...
