@@ -14,15 +14,13 @@
 /* @var $db \OP\UNIT\Database */
 if( $db->isConnect() ){
 	//	...
-	App::Template('form-selector.phtml', ['form'=>$form, 'db'=>$db, 'list'=>$list]);
+	App::Template('form-selector.phtml', ['form'=>$form, 'db'=>$db]);
 
 	//	...
-	if( $_GET['pkey'] ?? false ){
-		App::Template('orm.phtml',['form'=>$form, 'db'=>$db]);
-	}
+	App::Template('orm.phtml',['form'=>$form, 'db'=>$db]);
 
 	//	...
-	App::Template('selector.phtml', ['form'=>$form, 'db'=>$db, 'list'=>$list]);
+	App::Template('selector.phtml', ['form'=>$form, 'db'=>$db]);
 }else{
 	//	...
 	App::Template('form-login.phtml', ['form'=>$form]);

@@ -23,16 +23,24 @@ $pager  = Unit::Instance('Pager');
 $config = ['database'=>$database, 'table'=>$table];
 $config = $pager->Config($config, $db);
 
+//	...
+if( empty($config['count']) ){
+	return;
+}
+
 //	Display pagination at conditions.
 echo '<hr/>';
 $pager->Display();
 echo '<hr/>';
 
+//	Get primary field name.
+$pkey = $db->Pkey($database, $table);
+
 /* @var $db \OP\UNIT\Database */
 printf('<div id="record-area">');
 foreach( $db->Select($config) as $record ){
 	printf('<div class="record">');
-	printf('<a href="?%s">Edit of this record</a>', http_build_query( array_merge($_GET, ['pkey'=>'ai','pval'=>$record['ai']]) ));
+	printf('<a href="?%s">Edit of this record</a>', http_build_query( array_merge($_GET, ['pkey'=>$pkey,'pval'=>$record[$pkey]]) ));
 	Json($record, '.OP_DUMP');
 	printf('</div>');
 }

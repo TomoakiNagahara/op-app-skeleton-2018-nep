@@ -9,10 +9,10 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	XSS from message.
-Notice::Set('<h1>XSS(1)');
+Notice::Set('<i style="color:red;">XSS(1)');
 
 //	XSS from arguments.
-XSS('<h1>XSS(2)', true, false, null, 0, 1, ['<h1>XSS'], ['xss'=>'<h1>XSS']);
+XSS('<i style="color:red;">XSS(2)', true, false, null, 0, 1, ['<h1>XSS'], ['xss'=>'<h1>XSS']);
 
 //	...
 if( ifset($_GET['mail']) ){

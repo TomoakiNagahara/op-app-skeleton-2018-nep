@@ -14,7 +14,6 @@ if(!$orm = Unit::Instance('ORM') ){
 }
 
 //	...
-$pkey = $_GET['pkey'];
 $pval = $_GET['pval'] ?? null;
 
 //	...
@@ -26,14 +25,23 @@ if( !$database or !$table ){
 	return;
 }
 
-//	...
+/* @var $db \OP\UNIT\Database */
 $db->Database($database);
+
+//	...
+if( $table ){
+	if(!$pkey = $db->Query("SHOW INDEX FROM {$database}.{$table}", 'show')['PRIMARY'][1]['Column_name'] ?? null ){
+		throw new Exception("This table has not been set primary key. ({$database}.{$table})");
+	}
+}else{
+	$pkey = $pval = null;
+}
 
 //	Join database object.
 $orm->DB($db);
 
 /* @var $record \OP\UNIT\ORM\Record */
-if( $pval !== null ){
+if( $pkey and $pval ){
 	//	Find single record by QQL. (QQL is "Quick Query Language")
 	$record = $orm->Find("{$table}.{$pkey} = {$pval}");
 }else{
@@ -43,7 +51,6 @@ if( $pval !== null ){
 
 //	...
 if(!$record->isReady() ){
-	D(false);
 	return;
 }
 

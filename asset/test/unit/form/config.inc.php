@@ -87,7 +87,7 @@ $input['label']	 = 'Session';
 $input['name']	 = $name;
 $input['type']	 = 'checkbox';
 $input['session']= false;
-$input['option'] = ['session'=>'Does not save value. (Do not save to session)'];
+$input['option'] = ['Does not save value. (Do not save to session)'];
 $input['rule']	 = 'required';
 $form['input'][$name] = $input;
 

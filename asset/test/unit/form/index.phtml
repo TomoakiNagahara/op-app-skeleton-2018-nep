@@ -10,17 +10,20 @@
  */
 /* @var $form \OP\UNIT\Form */
 ?>
-	<?php $form->Start(['action'=>'?']) ?>
+	<?php $form->Start() ?>
 		<table id="testcase-form">
 		<?php foreach( ['text','textarea','select','multiple','radio','checkbox','cookie','session','file'] as $name ): ?>
 			<tr class="<?= $form->Validate($name) === false ? 'red':'' ?>">
 				<th><?php $form->Label($name) ?></th><td><b>：</b></td>
 				<td><?php $form->Input($name) ?></td>
-				<td><?php $form->Error($name) ?></td>
+				<td>
+					<?php $form->Value($name) ?>
+					<?php $form->Error($name) ?>
+				</td>
 			</tr>
 		<?php endforeach; ?>
 			<tr>
-				<td colspan="3" style="text-align:center;">
+				<td colspan="4" style="text-align:center;">
 					<!-- Submit button -->
 					<button> Submit!! </button><br/>
 
@@ -35,3 +38,10 @@
 			</tr>
 		</table>
 	<?php $form->Finish() ?>
+<style>
+
+FORM.OP td span:not(:last-child):after {
+	content: ", ";
+}
+
+</style>

@@ -10,9 +10,9 @@
  */
 ?>
 
-<p class="<?= $found ? 'blue':'red' ?>">Found record</p>
+<p class="<?= $found ? 'blue':'red' ?>">Found</p>
 <p class="<?= $valid ? 'blue':'red' ?>">Validate</p>
-<p class="<?= $result !== false  ? 'blue':'red' ?>">Result</p>
+<p class="<?= $saved ? 'blue':'red' ?>">Saved</p>
 
 <?php $form->Start() ?>
 <table class="testcase">
@@ -25,11 +25,15 @@
 	<?php endforeach; ?>
 	<tr>
 		<td colspan=2 style="text-align: center;">
-			<?php if( null !== ($result ?? null) ): ?>
-			<p class="i0 <?= $result ? 'success':'error' ?>" style="margin: 0.5em;">
-				<?= $result ? ($found ? 'Record was updated' : 'Record was created.'):'There is no change to save.' ?>
+			<p class="<?= $saved ? 'success':'error' ?>">
+				<?php if( $saved ): ?>
+					Record was saved.
+				<?php elseif( $saved === 0 ):?>
+					Record has not been changed.
+				<?php elseif(!$valid ):?>
+					Validation failure.
+				<?php endif; ?>
 			</p>
-			<?php endif; ?>
 			<button>
 				<?= $found ? 'Update':'Create' ?>
 			</button>
