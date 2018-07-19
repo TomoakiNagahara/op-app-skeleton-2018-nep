@@ -304,8 +304,11 @@ class Form
 			//	Last time token.
 			$token = $this->_session['token'] ?? false;
 
+			//	Regenerate session id.
+			session_regenerate_id();
+
 			//	Regenerate new token.
-			$this->_session['token'] = Hasha1(microtime());
+			$this->_session['token'] = random_int(1000, 9999); // Hasha1(microtime());
 
 			//	Confirmation of request token.
 			if( $token ){
