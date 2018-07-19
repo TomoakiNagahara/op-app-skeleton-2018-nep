@@ -24,8 +24,8 @@ $config['prod'] = 'mysql';
 $config['port'] = '3306';
 $config['host'] = 'localhost';
 $config['user'] = 'testcase';
-$config['password'] = 'testcase';
-if(!$db->Connect($config) ){
+$config['password'] = 'password';
+if(!$io = $db->Connect($config) ){
 	return;
 }
 

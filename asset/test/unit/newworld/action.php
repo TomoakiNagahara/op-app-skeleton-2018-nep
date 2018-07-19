@@ -8,6 +8,3 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-
-//	Template
-\OP\UNIT\NEWWORLD\Template::Get('./error.phtml');

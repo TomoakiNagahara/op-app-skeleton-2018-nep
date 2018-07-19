@@ -47,65 +47,12 @@ $form = $record->Form();
 //	Save to database by Record object.
 $result = $form->Validate() ? $orm->Save($record): null;
 
-//	Debug
-/*
-D('ai', $ai);
-D('result', $result);
-D('Found', $record->isFound());
-D('Validate', $record->isValid(), $record->Validate(), $form->Validate());
-*/
-
-?>
-
-<p class="<?= $record->isFound() ? 'blue':'red' ?>">Found record</p>
-<p class="<?= $record->isValid() ? 'blue':'red' ?>">Validate</p>
-<p class="<?= $result !== false  ? 'blue':'red' ?>">Result</p>
-
-<?php $form->Start() ?>
-<table class="testcase">
-	<?php foreach( ['number','integer','positive','ascii','multibyte'] as $name ): ?>
-	<tr>
-		<th><?= $form->Label($name) ?></th>
-		<td><?= $form->Input($name) ?></td>
-		<td><?= $form->Error($name) ?></td>
-	</tr>
-	<?php endforeach; ?>
-	<tr>
-		<td colspan=2 style="text-align: center;">
-			<button>
-				<?= !$ai ? 'Create':'Update' ?>
-			</button>
-		</td>
-	</tr>
-</table>
-<?php $form->Finish() ?>
-
-<hr/>
-
-<style>
-
-table.testcase th,
-table.testcase td {
-	padding: 0 0.5em;
-}
-
-table.testcase td:nth-child(3) > span:nth-child(2) {
-	display: none;
-}
-
-</style>
-
-<?php
 //	...
-if( ifset($_GET['debug']) ){
-	$orm->Debug();
-	$form->Debug();
-	$record->Debug();
-}else{
-	if(!$record->isValid() ){
-		$form->Debug();
-	}
-}
+$found = $record->isFound();
+$valid = $record->isValid();
+
+//	...
+App::Template('orm.phtml',['form'=>$form, 'result'=>$result, 'found'=>$found, 'valid'=>$valid]);
 
 //	...
 foreach( $db->Quick('t_orm','order=timestamp desc, limit=10') as $temp ){
