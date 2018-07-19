@@ -59,6 +59,7 @@ class Builder
 			//	...
 			self::Database($config, $result, $DB);
 			self::Table   ($config, $result, $DB);
+			self::Field   ($config, $result, $DB);
 			self::Column  ($config, $result, $DB);
 			self::Index   ($config, $result, $DB);
 
@@ -147,16 +148,16 @@ class Builder
 		}
 	}
 
-	/** Build column.
+	/** Build new field.
 	 *
 	 * @param   array       $config
 	 * @param   array       $result
 	 * @param  \IF_DATABASE $DB
 	 */
-	static function Column($config, &$result, $_db)
+	static function Field($config, &$result, $_db)
 	{
 		//	...
-		foreach( ifset($result['columns'], []) as $database => $tables ){
+		foreach( ifset($result['fields'], []) as $database => $tables ){
 			//	...
 			foreach( $tables as $table => $columns ){
 				//	...
@@ -184,33 +185,41 @@ class Builder
 						//	...
 						$sql = \OP\UNIT\SQL\Column::Create($database, $table, $name, $conf, $_db);
 						$io  = $_db->Query($sql, 'alter');
-
-						//	...
-						continue;
 					}
+				}
+			}
+		}
+	}
 
-					//	...
-					unset($column['result']); // Why?
-					$fail = null;
+	/** Modify exist column.
+	 *
+	 * @param	 array			  $config
+	 * @param	 array			  $result
+	 * @param	\OP\UNIT\Database $DB
+	 */
+	static function Column($config, &$result, $_db)
+	{
+		//	...
+		foreach( $result['columns'] ?? [] as $database => $tables ){
+			//	...
+			foreach( $tables as $table => $columns ){
 
+				//	...
+				foreach( $columns as $name => $column ){
 					//	Change each column.
 					foreach( $column as $field => $value ){
-						if( $value['result'] === false ){
-							//	key is index
-							if( $field === 'key' ){
-								$result['indexes'][$database][$table][$name] = $value['detail']['modify'];
-							}else{
-								$fail = true;
-								break;
-							}
+						//	...
+						if( $value['result'] ){
+							continue;
 						}
-					}
 
-					//	Update already exists column.
-					if( $fail ){
 						//	Change is modify.
+						$conf= $config['databases'][$database]['tables'][$table]['columns'][$name];
 						$sql = \OP\UNIT\SQL\Column::Change($database, $table, $name, $conf, $_db);
 						$io  = $_db->Query($sql, 'alter');
+
+						//	...
+						break;
 					}
 				}
 			}

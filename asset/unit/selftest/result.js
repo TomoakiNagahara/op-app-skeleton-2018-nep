@@ -52,6 +52,9 @@
 		__tables(list, json[dsn]['tables']);
 
 		//	...
+		__fields(list, json[dsn]['fields']);
+
+		//	...
 		__columns(list, json[dsn]['columns']);
 	}
 
@@ -156,7 +159,7 @@
 	}
 
 	//	...
-	function __columns(root, json){
+	function __fields(root, json){
 		//	...
 		for(var database in json ){
 			for(var table in json[database] ){
@@ -168,30 +171,25 @@
 					.querySelector('[data-table="'+table+'"]').appendChild(list);
 
 				//	...
-				for(var column in json[database][table] ){
+				for(var field in json[database][table] ){
 					//	...
-					var result = json[database][table][column]['result'];
-					var color  = result ? 'success' : 'error';
+					var result = json[database][table][field]['result'];
 					var item = document.createElement('li');
-						item.innerText = column;
-						item.classList.add(color);
-						if( !result ){
-							item.classList.add('bold');
-						}
+						item.innerText = field;
+						item.classList.add('field');
+						item.dataset.field = field;
 					list.appendChild(item);
-
-					//	...
-					var result = __details(list, json[database][table][column]);
 
 					//	...
 					if( result ){
 						item.classList.add('success');
 
 						//	Remove list tag.
-						list.removeChild(item);
+					//	list.removeChild(item);
 					}else{
 						item.classList.add('error');
 						item.classList.add('bold');
+						item.classList.add('missing');
 					}
 				}
 			}
@@ -199,51 +197,40 @@
 	};
 
 	//	...
-	function __details(root, json){
-		//	...
-		var list = document.createElement('ul');
-		root.appendChild(list);
+	function __columns(root, json){
+		for(var database in json ){
+			for(var table in json[database] ){
+				for(var field in json[database][table] ){
+					for(var column in json[database][table][field] ){
+						//	...
+						if( json[database][table][field][column].result ){
+							continue;
+						}
 
-		//	...
-		var result = true;
+						//	...
+						var item = root	.querySelector('[data-database="'+database+'"]')
+										.querySelector('[data-table="'+table+'"]')
+										.querySelector('[data-field="'+field+'"]');
 
+<<<<<<< HEAD
 		//	...
 		for(var name in json){
 			if( name === 'result' ){
 				continue;
+=======
+						//	...
+						__column(item, json[database][table][field][column]);
+					}
+				}
+>>>>>>> ff186e9... WIP: selftest
 			}
-
-			//	...
-			if( json[name]['result'] ){
-				continue;
-			}
-
-			//	...
-			result = false;
-
-			//	...
-			var span = document.createElement('span');
-				span.innerText = name;
-				span.classList.add('bold');
-
-			var item = document.createElement('li');
-				item.classList.add('error');
-
-			//	...
-			item.appendChild(span);
-			list.appendChild(item);
-
-			//	...
-			__detail(item, json[name]['detail']);
 		}
-
-		//	...
-		return result;
 	};
 
 	//	...
-	function __detail(item, json){
+	function __column(item, json){
 		//	...
+		var column  = document.createElement('span');
 		var current = document.createElement('span');
 		var arrow   = document.createElement('span');
 		var modify  = document.createElement('span');
@@ -253,22 +240,26 @@
 		modify .innerText = json.modify;
 
 		//	...
-		item   .classList.add('name');
+		item   .classList.remove('success');
+		item   .classList.remove('missing');
+		item   .classList.add('error');
+		column .classList.add('column');
 		current.classList.add('current');
 		arrow  .classList.add('arrow');
 		modify .classList.add('modify');
 
 		//	...
-		if(!json.current ){
+		if( json.current.length ){
 			current.classList.add('empty');
 		}
-		if(!json.modify ){
+		if( json.modify.length ){
 			modify .classList.add('empty');
 		}
 
 		//	...
-		item.appendChild(current);
-		item.appendChild(arrow);
-		item.appendChild(modify);
+		column.appendChild(current);
+		column.appendChild(arrow);
+		column.appendChild(modify);
+		item.appendChild(column);
 	};
 })();
