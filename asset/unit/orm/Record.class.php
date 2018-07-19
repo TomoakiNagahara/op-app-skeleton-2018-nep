@@ -136,6 +136,11 @@ class Record
 		}
 
 		//	$this->_record is origin.
+		if( $this->_record[$name] === null ){
+
+		}
+
+		//	$this->_record is origin.
 		if( $this->_record[$name] === $value ){
 
 			//	Recovered to original value.

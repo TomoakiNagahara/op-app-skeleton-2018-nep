@@ -187,6 +187,13 @@ class Config
 			$input['label'] = $type === 'hidden' ? '': $name;
 			$input['rule']  = self::_Rule($column);
 		//	$input['session'] = false;
+			if( $type === 'radio' or $type === 'checkbox' ){
+				$join = [];
+				foreach( explode(',', $column['length']) as $temp ){
+					$join[] = trim($temp, "'");
+				}
+				$input['values'] = join(',',$join);
+			}
 			$config['input'][$name] = $input;
 		}
 
