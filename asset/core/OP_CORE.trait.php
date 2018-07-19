@@ -104,6 +104,6 @@ trait OP_CORE
 		if( $val !== null ){
 			$_store[$key] = $val;
 		}
-		return ifset($_store[$key]);
+		return $_store[$key] ?? null;
 	}
 }
