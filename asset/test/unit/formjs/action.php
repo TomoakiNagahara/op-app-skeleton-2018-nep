@@ -14,4 +14,4 @@ if(!Unit::Load('formjs')){
 }
 
 //	...
-include( ConvertPath('unit:/formjs/test.html') );
+include( ConvertPath('unit:/formjs/test.php') );
