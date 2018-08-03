@@ -19,13 +19,3 @@
 if( $OP === undefined ){
 	var $OP = {};
 }
-
-/** Check if admin.
- *
- * <pre>
- * $OP.isAdmin(); --> true / false
- * </pre>
- */
-$OP.isAdmin = function(){
-	return <?= Env::isAdmin() ? 'true': 'false'; ?>;
-}
