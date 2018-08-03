@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-formjs:/test.css
+ * unit-formjs:/test.php
  *
  * @created   2018-08-03
  * @version   1.0
@@ -8,12 +8,13 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
- ?>
 //	...
-<style>
-form.OP {
-	border: 1px solid black;
-	margin-bottom: 1em;
-	padding: 1em;
-}
-</style>
+D($_GET);
+
+//	...
+\OP\UNIT\WebPack::Css(__DIR__.'/test');
+
+//	...
+include('test-1.html');
+include('test-2.html');
+include('test.css');

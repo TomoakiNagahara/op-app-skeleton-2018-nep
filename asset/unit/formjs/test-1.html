@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-formjs:/index.php
+ * unit-formjs:/test-1.html
  *
  * @created   2018-08-03
  * @version   1.0
@@ -8,12 +8,8 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-//	...
-D($_GET);
-
-//	...
-\OP\UNIT\WebPack::Css(__DIR__.'/test');
 ?>
+<h2>test-1.html</h2>
 <form name="test1" class="OP">
 	<!-- text -->
 	<input type="text" name="text" value="test" onchange="$OP.Form('test2').Input('text').Value(this.value)" />
@@ -61,13 +57,6 @@ D($_GET);
 	<input type="checkbox" name="checkbox[]" value="C" />C
 	<br/>
 </form>
-<style>
-form.OP {
-	border: 1px solid black;
-	margin-bottom: 1em;
-	padding: 1em;
-}
-</style>
 <script>
 //	...
 $form = $OP.Form('test1');
