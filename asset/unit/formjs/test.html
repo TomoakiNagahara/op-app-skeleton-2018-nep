@@ -35,6 +35,12 @@ D($_GET);
 	<input type="radio" name="radio" value="B" onchange="$OP.Form('test2').Input('radio').Value(this.value)" checked />B
 	<input type="radio" name="radio" value="C" onchange="$OP.Form('test2').Input('radio').Value(this.value)" />C
 	<br/>
+
+	<!-- checkbox -->
+	<input type="checkbox" name="checkbox[]" value="A" onchange="$OP.Form('test2').Input('checkbox').Value(this.value, this.checked)" />A
+	<input type="checkbox" name="checkbox[]" value="B" onchange="$OP.Form('test2').Input('checkbox').Value(this.value, this.checked)" checked />B
+	<input type="checkbox" name="checkbox[]" value="C" onchange="$OP.Form('test2').Input('checkbox').Value(this.value, this.checked)" checked />C
+	<br/>
 </form>
 <form name="test2" class="OP">
 	<input type="text" name="text" value="" />
@@ -49,6 +55,10 @@ D($_GET);
 	<input type="radio" name="radio" value="A" />A
 	<input type="radio" name="radio" value="B" />B
 	<input type="radio" name="radio" value="C" />C
+	<br/>
+	<input type="checkbox" name="checkbox[]" value="A" />A
+	<input type="checkbox" name="checkbox[]" value="B" />B
+	<input type="checkbox" name="checkbox[]" value="C" />C
 	<br/>
 </form>
 <style>
