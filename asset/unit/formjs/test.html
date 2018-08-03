@@ -9,18 +9,32 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
+D($_GET);
+
+//	...
 \OP\UNIT\WebPack::Css(__DIR__.'/test');
 ?>
 <form name="test1" class="OP">
+	<!-- text -->
 	<input type="text" name="text" value="test" onchange="$OP.Form('test2').Input('text').Value(this.value)" />
 	<button class="button"> submit </button><br/>
+
+	<!-- textarea -->
 	<textarea name="textarea" onchange="$OP.Form('test2').Input('textarea').Value(this.value)"></textarea><br/>
+
+	<!-- select -->
 	<select name="select" onchange="$OP.Form('test2').Input('select').Value(this.value)">
 		<option></option>
 		<option>A</option>
 		<option value="b">B</option>
 		<option selected>C</option>
 	</select>
+
+	<!-- radio -->
+	<input type="radio" name="radio" value="A" onchange="$OP.Form('test2').Input('radio').Value(this.value)"  />A
+	<input type="radio" name="radio" value="B" onchange="$OP.Form('test2').Input('radio').Value(this.value)" checked />B
+	<input type="radio" name="radio" value="C" onchange="$OP.Form('test2').Input('radio').Value(this.value)" />C
+	<br/>
 </form>
 <form name="test2" class="OP">
 	<input type="text" name="text" value="" />
@@ -32,6 +46,10 @@
 		<option value="b">B</option>
 		<option selected>C</option>
 	</select>
+	<input type="radio" name="radio" value="A" />A
+	<input type="radio" name="radio" value="B" />B
+	<input type="radio" name="radio" value="C" />C
+	<br/>
 </form>
 <style>
 form.OP {
@@ -46,7 +64,7 @@ $form = $OP.Form('test1');
 D( $form, $form.Test() );
 
 //	...
-for( var name of ['text','textarea','select','hoge'] ){
+for( var name of ['text','textarea','select','radio','checkbox','hoge'] ){
 	$input = $form.Input(name);
 	if( $input.Test() ){
 		D( name, $input.Value() );
@@ -54,7 +72,7 @@ for( var name of ['text','textarea','select','hoge'] ){
 }
 
 //	...
-D( $form.Input('select') );
+//D( $form.Input('select') );
 
 //	...
 $input.Value('hoge');
@@ -68,4 +86,6 @@ $OP.Form('test2').Input('textarea').Value('test');
 //	...
 $OP.Form('test2').Input('select').Value('A');
 
+//	...
+$OP.Form('test2').Input('radio').Value('B');
 </script>
