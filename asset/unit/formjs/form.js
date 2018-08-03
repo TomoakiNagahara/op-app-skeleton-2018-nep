@@ -24,14 +24,6 @@
 		};
 
 		//	...
-		Tag(){
-			if(!this.tag ){
-
-			}
-			return this.tag;
-		};
-
-		//	...
 		Test(){
 			return true;
 		};
@@ -40,14 +32,17 @@
 	//	...
 	class Form extends Core {
 		//	...
-		_constructor(name){
+		constructor(name){
+			//	...
+			super(name);
+
 			//	...
 			this.tag = document.querySelector(`FORM[NAME="${name}"]`);
 		};
 
 		//	...
 		Input(name){
-			var $_input = new Input(name);
+			var $_input = new Input(name, this);
 			return $_input;
 		};
 	};
@@ -55,8 +50,49 @@
 	//	...
 	class Input extends Core {
 		//	...
-		Value(){
+		constructor(name, parent){
+			//	...
+			super(name);
 
+			//	...
+			this.parent = parent;
+
+			//	...
+			this.tag = this.parent.tag.querySelector(`[NAME="${name}"]`);
+
+			//	...
+			this.onchange = this.tag.onchange;
+
+			//	...
+			var onchange = null;
+
+			//	...
+			document.addEventListener('change', function(e){
+				onchange
+			}, false);
+		};
+
+		//	...
+		Value(value){
+			//	...
+			var tag = this.tag.tagName;
+
+			//	...
+			switch( tag ){
+				case 'INPUT':
+					//	...
+					if( value ){
+						this.tag.value = value;
+					}else{
+						value = this.tag.value;
+					};
+					break;
+				default:
+				D(`Has not been support yet this tag. (this.tag.tagName)`);
+			};
+
+			//	...
+			return value;
 		};
 	};
 })();
