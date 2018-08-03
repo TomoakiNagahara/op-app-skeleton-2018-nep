@@ -1,0 +1,35 @@
+<?php
+/**
+ * unit-formjs:/index.php
+ *
+ * @created   2018-08-03
+ * @version   1.0
+ * @package   unit-form
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+\OP\UNIT\WebPack::Css(__DIR__.'/test');
+?>
+<form name="test1" class="OP">
+	<input type="text" name="message" value="" />
+	<button class="button"> submit </button>
+</form>
+<form name="test2" class="OP">
+	<input type="text" name="text" value="" />
+	<button class="button"> submit </button>
+</form>
+<style>
+form.OP {
+	border: 1px solid black;
+	margin-bottom: 1em;
+	padding: 1em;
+}
+</style>
+<script>
+$form = $OP.Form('test1');
+D( $form, $form.Test() );
+
+$input = $form.Input('message');
+D( $input, $input.Test() );
+</script>
