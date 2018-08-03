@@ -58,11 +58,12 @@
 			this.parent = parent;
 
 			//	...
-			this.tag = this.parent.tag.querySelector(`[NAME="${name}"]`);
-
-			//	...
-			if(!this.tag ){
-				D(`Has not been found this tag. (${name})`);
+			if( this.tag = this.parent.tag.querySelector(`[NAME="${name}"]`) ){
+				//	OK
+			}else if( this.tag = this.parent.tag.querySelector(`[NAME="${name}[]"]`) ){
+				//	Checkbox
+			}else{
+				D(`Has not been found this input name. (${this.parent.name}, ${name})`);
 				return;
 			};
 
@@ -79,7 +80,7 @@
 		};
 
 		//	...
-		Value(value){
+		Value(value, checked){
 			//	...
 			if(!this.tag ){
 				return null;
@@ -109,6 +110,30 @@
 							var node = this.parent.tag.querySelector(`[name="${this.name}"]:checked`);
 							value = node ? node.value: null;
 						}
+						break;
+					};
+
+					//	...
+					if( this.tag.type === 'checkbox' ){
+						//	...
+						if( value !== undefined ){
+							//	Set
+							var node = this.parent.tag.querySelector(`[name="${this.name}[]"][value="${value}"]`);
+							if( node.value === value ){
+								node.checked = checked;
+							}
+						}else{
+							//	Get
+							value = [];
+
+							//	...
+							var nodes = this.parent.tag.querySelectorAll(`[name="${this.name}[]"]:checked`);
+
+							//	...
+							for(var i=0; i<nodes.length; i++ ){
+								value[i] = nodes[i].value;
+							}
+						};
 						break;
 					};
 				//	break;
