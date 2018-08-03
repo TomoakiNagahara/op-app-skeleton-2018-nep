@@ -12,11 +12,12 @@
 \OP\UNIT\WebPack::Css(__DIR__.'/test');
 ?>
 <form name="test1" class="OP">
-	<input type="text" name="message" value="" />
+	<!input type="text" name="test" value="test" onchange="D(1)"/>
+	<input type="text" name="message" value="test" onchange="$OP.Form('test2').Input('recieve').Value(this.value)" />
 	<button class="button"> submit </button>
 </form>
 <form name="test2" class="OP">
-	<input type="text" name="text" value="" />
+	<input type="text" name="recieve" value="" />
 	<button class="button"> submit </button>
 </form>
 <style>
@@ -27,9 +28,17 @@ form.OP {
 }
 </style>
 <script>
+//	...
 $form = $OP.Form('test1');
 D( $form, $form.Test() );
 
+//	...
 $input = $form.Input('message');
-D( $input, $input.Test() );
+D( $input, $input.Test(), $input.Value() );
+
+//	...
+$input.Value('hoge');
+
+//	...
+$OP.Form('test2').Input('recieve').Value('foo');
 </script>
