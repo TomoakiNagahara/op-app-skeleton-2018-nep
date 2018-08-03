@@ -91,6 +91,28 @@
 			//	...
 			switch( tag ){
 				case 'input':
+					//	...
+					if( this.tag.type === 'radio' ){
+						//	...
+						if( value !== undefined ){
+							//	Set
+							var nodes = this.parent.tag.querySelectorAll(`[name="${this.name}"]`);
+
+							//	...
+							for(var i=0; i<nodes.length; i++ ){
+								if( nodes[i].value === value ){
+									nodes[i].checked = true;
+								}
+							}
+						}else{
+							//	Get
+							var node = this.parent.tag.querySelector(`[name="${this.name}"]:checked`);
+							value = node ? node.value: null;
+						}
+						break;
+					};
+				//	break;
+
 				case 'textarea':
 					//	...
 					if( value ){
@@ -103,7 +125,6 @@
 				case 'select':
 					if( value !== undefined ){
 						for(var i=0, len=this.tag.options.length; i<len; i++ ){
-							D(i, this.tag.options[i].value, value);
 							if( this.tag.options[i].value === value ){
 								this.tag.selectedIndex = i;
 								break;
