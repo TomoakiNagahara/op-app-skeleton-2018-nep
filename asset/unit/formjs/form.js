@@ -25,7 +25,7 @@
 
 		//	...
 		Test(){
-			return true;
+			return this.tag ? true: false;
 		};
 	};
 
@@ -61,6 +61,12 @@
 			this.tag = this.parent.tag.querySelector(`[NAME="${name}"]`);
 
 			//	...
+			if(!this.tag ){
+				D(`Has not been found this tag. (${name})`);
+				return;
+			};
+
+			//	...
 			this.onchange = this.tag.onchange;
 
 			//	...
@@ -68,18 +74,24 @@
 
 			//	...
 			document.addEventListener('change', function(e){
-				onchange
+				onchange;
 			}, false);
 		};
 
 		//	...
 		Value(value){
 			//	...
-			var tag = this.tag.tagName;
+			if(!this.tag ){
+				return null;
+			};
+
+			//	...
+			var tag = this.tag.tagName.toLowerCase();
 
 			//	...
 			switch( tag ){
-				case 'INPUT':
+				case 'input':
+				case 'textarea':
 					//	...
 					if( value ){
 						this.tag.value = value;
@@ -87,8 +99,23 @@
 						value = this.tag.value;
 					};
 					break;
+
+				case 'select':
+					if( value !== undefined ){
+						for(var i=0, len=this.tag.options.length; i<len; i++ ){
+							D(i, this.tag.options[i].value, value);
+							if( this.tag.options[i].value === value ){
+								this.tag.selectedIndex = i;
+								break;
+							}
+						};
+					}else{
+						value = this.tag.options[this.tag.selectedIndex].value;
+					};
+					break;
+
 				default:
-				D(`Has not been support yet this tag. (this.tag.tagName)`);
+				D(`Has not been support yet this tag. (${tag})`);
 			};
 
 			//	...

@@ -12,13 +12,26 @@
 \OP\UNIT\WebPack::Css(__DIR__.'/test');
 ?>
 <form name="test1" class="OP">
-	<!input type="text" name="test" value="test" onchange="D(1)"/>
-	<input type="text" name="message" value="test" onchange="$OP.Form('test2').Input('recieve').Value(this.value)" />
-	<button class="button"> submit </button>
+	<input type="text" name="text" value="test" onchange="$OP.Form('test2').Input('text').Value(this.value)" />
+	<button class="button"> submit </button><br/>
+	<textarea name="textarea" onchange="$OP.Form('test2').Input('textarea').Value(this.value)"></textarea><br/>
+	<select name="select" onchange="$OP.Form('test2').Input('select').Value(this.value)">
+		<option></option>
+		<option>A</option>
+		<option value="b">B</option>
+		<option selected>C</option>
+	</select>
 </form>
 <form name="test2" class="OP">
-	<input type="text" name="recieve" value="" />
-	<button class="button"> submit </button>
+	<input type="text" name="text" value="" />
+	<button class="button"> submit </button><br/>
+	<textarea name="textarea"></textarea><br/>
+	<select name="select">
+		<option></option>
+		<option value="A">A</option>
+		<option value="b">B</option>
+		<option selected>C</option>
+	</select>
 </form>
 <style>
 form.OP {
@@ -33,12 +46,26 @@ $form = $OP.Form('test1');
 D( $form, $form.Test() );
 
 //	...
-$input = $form.Input('message');
-D( $input, $input.Test(), $input.Value() );
+for( var name of ['text','textarea','select','hoge'] ){
+	$input = $form.Input(name);
+	if( $input.Test() ){
+		D( name, $input.Value() );
+	};
+}
+
+//	...
+D( $form.Input('select') );
 
 //	...
 $input.Value('hoge');
 
 //	...
-$OP.Form('test2').Input('recieve').Value('foo');
+$OP.Form('test2').Input('text').Value('foo');
+
+//	...
+$OP.Form('test2').Input('textarea').Value('test');
+
+//	...
+$OP.Form('test2').Input('select').Value('A');
+
 </script>
