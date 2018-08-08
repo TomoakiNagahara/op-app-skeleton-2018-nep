@@ -10,3 +10,28 @@
  */
 ?>
 <h2>test-2.html</h2>
+<form name="test-2">
+	<!-- type -->
+	<select name="type"
+		data-cruise='["","lunch","afternoon","dinner","night"]'
+		data-clubhouse='["","lunch","dinner"]'
+		data-set='["","lunch","dinner"]'>
+	</select>
+
+	<!-- timezone -->
+	<select name="timezone"></select>
+</form>
+<script>
+//	...
+$OP.Form('test-2').Input('type').Option(['','cruise','clubhouse',"set"]);
+
+//	...
+$OP.Form('test-2').Input('type').Event('change', function(e, input){
+	//	...
+	var value  = input.Value();
+	var option = input.Data(value);
+
+	//	...
+	input.parent.Input('timezone').Option( option );
+});
+</script>
