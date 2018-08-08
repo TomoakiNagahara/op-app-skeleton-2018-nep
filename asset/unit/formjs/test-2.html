@@ -20,12 +20,15 @@
 
 	<!-- timezone -->
 	<select name="timezone"></select>
+
+	<!-- result -->
+	<input type="text" name="result" />
 </form>
 <script>
-//	...
+//	type
 $OP.Form('test-2').Input('type').Option(['','cruise','clubhouse',"set"]);
 
-//	...
+//	type
 $OP.Form('test-2').Input('type').Event('change', function(e, input){
 	//	...
 	var value  = input.Value();
@@ -33,5 +36,15 @@ $OP.Form('test-2').Input('type').Event('change', function(e, input){
 
 	//	...
 	input.parent.Input('timezone').Option( option );
+
+	//	...
+	input.parent.Input('result').Value( value );
+});
+
+//	timezone
+$OP.Form('test-2').Input('timezone').Event('change', function(e, input){
+	//	...
+	var value = input.Value();
+	input.parent.Input('result').Value( ', '+value, true );
 });
 </script>

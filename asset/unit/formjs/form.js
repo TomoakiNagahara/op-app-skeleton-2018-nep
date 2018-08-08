@@ -69,7 +69,7 @@
 		};
 
 		//	...
-		Value(value, checked){
+		Value(value, add, checked){
 			//	...
 			if(!this.tag ){
 				return null;
@@ -130,7 +130,11 @@
 				case 'textarea':
 					//	...
 					if( value ){
-						this.tag.value = value;
+						if( add ){
+							this.tag.value += value;
+						}else{
+							this.tag.value = value;
+						}
 					}else{
 						value = this.tag.value;
 					};
@@ -210,6 +214,15 @@
 			var input = this;
 			input.tag.addEventListener(label, function(e){
 				func(e, input);
+
+				/*
+				//	...
+				if( label === 'change' ){
+					if( selectedIndex === 0 ){
+						// throw event
+					}
+				}
+				*/
 			}, false);
 		};
 	};
