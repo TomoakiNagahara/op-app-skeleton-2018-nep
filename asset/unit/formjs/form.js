@@ -66,17 +66,6 @@
 				D(`Has not been found this input name. (${this.parent.name}, ${name})`);
 				return;
 			};
-
-			//	...
-			this.onchange = this.tag.onchange;
-
-			//	...
-			var onchange = null;
-
-			//	...
-			document.addEventListener('change', function(e){
-				onchange;
-			}, false);
 		};
 
 		//	...
@@ -166,6 +155,62 @@
 
 			//	...
 			return value;
+		};
+
+		//	...
+		Option(options, add){
+			//	...
+			if(!add ){
+				while( this.tag.options.length ){
+					this.tag.removeChild( this.tag.options[0] );
+				};
+			};
+
+			//	...
+			if( typeof options === "string" ){
+				options = JSON.parse(options)
+			};
+
+			//	...
+			if(!options){
+				return;
+			};
+
+			//	...
+			for( var option of options ){
+				//	...
+				switch( typeof option ){
+					case 'string':
+						var value = option;
+						var label = option;
+						break;
+
+					default:
+						D(typeof option);
+					continue;
+				}
+
+				//	...
+				var tag = document.createElement('option');
+					tag.value     = value;
+					tag.innerText = label;
+
+				//	...
+				this.tag.appendChild( tag );
+			};
+		};
+
+		//	...
+		Data(name){
+			return this.tag.dataset[name] ? this.tag.dataset[name]: null;
+		};
+
+		//	...
+		Event(label, func){
+			var input = this;
+			input.tag.addEventListener(label, function(e){
+				func(e, input);
+			}, false);
 		};
 	};
 })();
