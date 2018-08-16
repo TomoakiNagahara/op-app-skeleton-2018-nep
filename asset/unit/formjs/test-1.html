@@ -10,16 +10,16 @@
  */
 ?>
 <h2>test-1.html</h2>
-<form name="test1" class="OP">
+<form name="test-1" class="OP">
 	<!-- text -->
-	<input type="text" name="text" value="test" onchange="$OP.Form('test2').Input('text').Value(this.value)" />
+	<input type="text" name="text" value="test" />
 	<button class="button"> submit </button><br/>
 
 	<!-- textarea -->
-	<textarea name="textarea" onchange="$OP.Form('test2').Input('textarea').Value(this.value)"></textarea><br/>
+	<textarea name="textarea"></textarea><br/>
 
 	<!-- select -->
-	<select name="select" onchange="$OP.Form('test2').Input('select').Value(this.value)">
+	<select name="select">
 		<option></option>
 		<option>A</option>
 		<option value="b">B</option>
@@ -27,18 +27,19 @@
 	</select>
 
 	<!-- radio -->
-	<input type="radio" name="radio" value="A" onchange="$OP.Form('test2').Input('radio').Value(this.value)"  />A
-	<input type="radio" name="radio" value="B" onchange="$OP.Form('test2').Input('radio').Value(this.value)" checked />B
-	<input type="radio" name="radio" value="C" onchange="$OP.Form('test2').Input('radio').Value(this.value)" />C
+	<input type="radio" name="radio" value="A" />A
+	<input type="radio" name="radio" value="B" checked />B
+	<input type="radio" name="radio" value="C" />C
 	<br/>
 
 	<!-- checkbox -->
-	<input type="checkbox" name="checkbox[]" value="A" onchange="$OP.Form('test2').Input('checkbox').Value(this.value, this.checked)" />A
-	<input type="checkbox" name="checkbox[]" value="B" onchange="$OP.Form('test2').Input('checkbox').Value(this.value, this.checked)" checked />B
-	<input type="checkbox" name="checkbox[]" value="C" onchange="$OP.Form('test2').Input('checkbox').Value(this.value, this.checked)" checked />C
+	<input type="checkbox" name="checkbox[]" value="A" />A
+	<input type="checkbox" name="checkbox[]" value="B" checked />B
+	<input type="checkbox" name="checkbox[]" value="C" checked />C
+	<input type="hidden"   name="checkbox[]" value="" />
 	<br/>
 </form>
-<form name="test2" class="OP">
+<form name="receive" class="OP">
 	<input type="text" name="text" value="" />
 	<button class="button"> submit </button><br/>
 	<textarea name="textarea"></textarea><br/>
@@ -59,32 +60,34 @@
 </form>
 <script>
 //	...
-$form = $OP.Form('test1');
+$form = $OP.Form('test-1');
 D( $form, $form.Test() );
 
 //	...
 for( var name of ['text','textarea','select','radio','checkbox','hoge'] ){
+	//	...
 	$input = $form.Input(name);
-	if( $input.Test() ){
-		D( name, $input.Value() );
+
+	//	...
+	if(!$input.Test() ){
+		D(`${name} is failed.`);
+		continue;
 	};
+
+	//	...
+	if( name === 'checkbox' ){
+	//	$input.Value({'A':true, 'C':false}, true);
+	};
+
+	//	...
+	var value = $input.Value();
+	$OP.Form('receive').Input(name).Value(value);
+
+	//	...
+	$input.Event('change', function(e, input){
+		var name  = input.Name();
+		var value = input.Value();
+		$OP.Form('receive').Input(name).Value(value);
+	});
 }
-
-//	...
-//D( $form.Input('select') );
-
-//	...
-$input.Value('hoge');
-
-//	...
-$OP.Form('test2').Input('text').Value('foo');
-
-//	...
-$OP.Form('test2').Input('textarea').Value('test');
-
-//	...
-$OP.Form('test2').Input('select').Value('A');
-
-//	...
-$OP.Form('test2').Input('radio').Value('B');
 </script>

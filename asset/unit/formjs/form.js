@@ -10,9 +10,18 @@
 //	...
 (function(){
 	//	...
+	var __form__  = {};
+	var __input__ = {};
+
+	//	...
 	$OP.Form = function(name){
-		var $_form = new Form(name);
-		return $_form;
+		//	...
+		if( __form__[name] === undefined ){
+			__form__[name] = new Form(name);
+		};
+
+		//	...
+		return __form__[name];
 	};
 
 	//	...
@@ -25,7 +34,7 @@
 
 		//	...
 		Test(){
-			return this.tag ? true: false;
+			return this.Tag() ? true: false;
 		};
 	};
 
@@ -41,9 +50,24 @@
 		};
 
 		//	...
+		Tag(){
+			return this.tag;
+		};
+
+		//	...
 		Input(name){
-			var $_input = new Input(name, this);
-			return $_input;
+			//	...
+			if( __input__[this.name] === undefined ){
+				__input__[this.name] = {};
+			};
+
+			//	...
+			if( __input__[this.name][name] === undefined ){
+				__input__[this.name][name] = new Input(name, this);;
+			}
+
+			//	...
+			return __input__[this.name][name];
 		};
 	};
 
@@ -55,34 +79,93 @@
 			super(name);
 
 			//	...
+			this.name = name;
+
+			//	...
 			this.parent = parent;
 
 			//	...
-			if( this.tag = this.parent.tag.querySelector(`[NAME="${name}"]`) ){
+			var value = $OP.URL.Query.Get(name);
+
+			//	...
+			if( value !== null ){
+
+				//	...
+				if( typeof value !== 'string' ){
+					//	...
+					var temp = {};
+
+					//	...
+					for(var val of value){
+						temp[val] = true;
+					}
+
+					//	...
+					value = temp;
+				};
+
+				//	...
+				this.Value(value);
+			};
+		};
+
+		//	...
+		Tag(){
+			//	...
+			var tags = null;
+
+			//	...
+			if( this.parent.tag === null ){
+				//	NG
+				D('this.parent.tag === null');
+			}else if( (tags = this.parent.tag.querySelectorAll(`[NAME="${this.name}"]`)).length ){
 				//	OK
-			}else if( this.tag = this.parent.tag.querySelector(`[NAME="${name}[]"]`) ){
+			}else if( (tags = this.parent.tag.querySelectorAll(`[NAME="${this.name}[]"]`)).length ){
 				//	Checkbox
 			}else{
 				D(`Has not been found this input name. (${this.parent.name}, ${name})`);
 				return;
 			};
+
+			//	...
+			return tags;
 		};
 
 		//	...
-		Value(value, add, checked){
+		Form(){
+			return this.parent;
+		};
+
+		//	...
+		Input(name){
+			return this.parent.Input(name);
+		};
+
+		//	...
+		Name(){
+			return this.name;
+		};
+
+		//	...
+		Value(value, add){
 			//	...
-			if(!this.tag ){
+			var tags = this.Tag();
+
+			//	...
+			if( tags.length ){
+				var tag = tags[0];
+			}else{
 				return null;
 			};
 
 			//	...
-			var tag = this.tag.tagName.toLowerCase();
+			var tagname = tag.tagName.toLowerCase();
 
 			//	...
-			switch( tag ){
+			switch( tagname ){
 				case 'input':
 					//	...
-					if( this.tag.type === 'radio' ){
+					if( tag.type === 'radio' ){
 						//	...
 						if( value !== undefined ){
 							//	Set
@@ -103,53 +186,66 @@
 					};
 
 					//	...
-					if( this.tag.type === 'checkbox' ){
+					if( tag.type === 'checkbox' ){
 						//	...
 						if( value !== undefined ){
 							//	Set
-							var node = this.parent.tag.querySelector(`[name="${this.name}[]"][value="${value}"]`);
-							if( node.value === value ){
-								node.checked = checked;
-							}
+							for(var tag of tags){
+								//	...
+								if( add ){
+									//	...
+									if( value[tag.value] === undefined ){
+										continue;
+									}
+								};
+								//	...
+								tag.checked = value[tag.value];
+							};
 						}else{
 							//	Get
 							value = [];
 
 							//	...
-							var nodes = this.parent.tag.querySelectorAll(`[name="${this.name}[]"]:checked`);
+							for(var tag of tags){
+								//	Get
+								value[tag.value] = tag.checked;
 
-							//	...
-							for(var i=0; i<nodes.length; i++ ){
-								value[i] = nodes[i].value;
-							}
+								/*
+								//	...
+								if( tag.checked ){
+									value.push(tag.value);
+								}
+								*/
+							};
 						};
+
 						break;
 					};
 				//	break;
 
 				case 'textarea':
 					//	...
-					if( value ){
+					if( value !== undefined ){
 						if( add ){
-							this.tag.value += value;
+							tag.value += value;
 						}else{
-							this.tag.value = value;
+							tag.value = value;
 						}
 					}else{
-						value = this.tag.value;
+						value = tag.value;
 					};
 					break;
 
 				case 'select':
 					if( value !== undefined ){
-						for(var i=0, len=this.tag.options.length; i<len; i++ ){
-							if( this.tag.options[i].value === value ){
-								this.tag.selectedIndex = i;
+						for(var i=0, len=tag.options.length; i<len; i++ ){
+							if( tag.options[i].value === value ){
+								tag.selectedIndex = i;
 								break;
 							}
 						};
 					}else{
-						value = this.tag.options[this.tag.selectedIndex].value;
+						value = tag.options[tag.selectedIndex].value;
 					};
 					break;
 
@@ -164,9 +260,20 @@
 		//	...
 		Option(options, add){
 			//	...
+			var tags = this.Tag();
+			var tag  = null;
+			if( tags.length ){
+				tag = tags[0];
+			}else{
+				D(`Tag is empty. (${this.name})`);
+				return;
+			};
+
+			//	...
 			if(!add ){
-				while( this.tag.options.length ){
-					this.tag.removeChild( this.tag.options[0] );
+				//	...
+				while( tag.options.length ){
+					tag.removeChild( tag.options[0] );
 				};
 			};
 
@@ -195,35 +302,46 @@
 				}
 
 				//	...
-				var tag = document.createElement('option');
-					tag.value     = value;
-					tag.innerText = label;
+				var opt = document.createElement('option');
+					opt.value     = value;
+					opt.innerText = label;
 
 				//	...
-				this.tag.appendChild( tag );
+				tag.appendChild( opt );
 			};
 		};
 
 		//	...
 		Data(name){
-			return this.tag.dataset[name] ? this.tag.dataset[name]: null;
+			//	...
+			var tag = this.Tag()[0];
+
+			//	...
+			return tag.dataset[name] ? tag.dataset[name]: null;
 		};
 
 		//	...
 		Event(label, func){
+			//	...
 			var input = this;
-			input.tag.addEventListener(label, function(e){
-				func(e, input);
 
-				/*
+			//	...
+			for(var tag of this.Tag()){
+
 				//	...
-				if( label === 'change' ){
-					if( selectedIndex === 0 ){
-						// throw event
+				tag.addEventListener(label, function(e){
+					func(e, input);
+
+					/*
+					//	...
+					if( label === 'change' ){
+						if( selectedIndex === 0 ){
+							// throw event
+						}
 					}
-				}
-				*/
-			}, false);
+					*/
+				}, false);
+			};
 		};
 	};
 })();
