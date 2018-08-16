@@ -19,24 +19,21 @@ if( typeof $OP.URL === "undefined" ){
 
 	//	...
 	location.search.substr(1).split('&').map(function(v){
-		var m = v.match(/^([^=]+)(=)(.+)/);
-		if( m ){
-			//	...
-			var key = m[1];
-			var val = decodeURIComponent(m[3].replace(/\+/,' '));
+		var tmp = v.split('=');
+		var key = tmp[0];
+		var val = decodeURIComponent(tmp[1].replace(/\+/,' '));
 
-			//	For checkbox.
-			if( key.match(/%5B%5D$/) ){
-				key = key.replace(/%5B%5D$/,'');
-				if( queries[key] === undefined ){
-					queries[key] = [];
-				}
-D(val)
-				//	...
-				queries[key].push(val);
-			}else{
-				queries[key] = val;
-			};
+		//	For checkbox.
+		if( key.match(/%5B%5D$/) ){
+			key = key.replace(/%5B%5D$/,'');
+			if( queries[key] === undefined ){
+				queries[key] = [];
+			}
+
+			//	...
+			queries[key].push(val);
+		}else{
+			queries[key] = val;
 		};
 	});
 
@@ -55,30 +52,32 @@ D(val)
 
 	//	...
 	$OP.URL.Query.Get = function(key, def){
-		if( queries[key] ){
-			return queries[key];
-			/*
-			return decodeURI(queries[key])
-					.replace(/%2F/g,'/')
-					.replace(/%3F/g,'?');
-			*/
-		}else if( def === null ){
+		//	...
+		var result = null;
+
+		//	...
+		if( queries[key] !== undefined ){
+			result = queries[key];
+		}else if( def === undefined ){
 			//	Web storage
 		}else{
-			return def ? def: null;
+			result = def;
 		}
+
+		//	...
+		return result;
 	};
 
 	//	...
 	$OP.URL.Query.Set = function(key, val, save){
-		queries[key] = val
+		queries[key] = val;
 		window.history.pushState(null, null, __generate());
 
 		//	...
 		if( save ){
 			//	Web storage
-		}
-	}
+		};
+	};
 
 	//	...
 	function __generate(){
@@ -86,7 +85,7 @@ D(val)
 		for(var key in queries ){
 			var val =  queries[key];
 			url += key+"="+val+'&';
-		}
+		};
 		return url.slice(0, -1);
 	};
 })();
