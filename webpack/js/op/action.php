@@ -13,4 +13,6 @@ return [
 	__DIR__.'/path',
 	__DIR__.'/args',
 	__DIR__.'/d',
+	__DIR__.'/url',
+	__DIR__.'/form',
 ];

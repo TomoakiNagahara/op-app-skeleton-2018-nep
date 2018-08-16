@@ -9,5 +9,4 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 return [
-	__DIR__.'/form',
 ];
