@@ -85,6 +85,9 @@
 			this.parent = parent;
 
 			//	...
+			this.tag = null;
+
+			//	...
 			var value = $OP.URL.Query.Get(name);
 
 			//	...
@@ -110,7 +113,12 @@
 		};
 
 		//	...
-		Tag(){
+		Tag(value){
+			//	...
+			if( value === undefined && this.tag ){
+				return [this.tag];
+			};
+
 			//	...
 			var tags = null;
 
@@ -125,6 +133,19 @@
 			}else{
 				D(`Has not been found this input name. (${this.parent.name}, ${name})`);
 				return;
+			};
+
+			//	...
+			if( tags.length === 1 ){
+				this.tag = tags[0];
+			}else if( value !== undefined ){
+				for(var tag of tags){
+					//	...
+					if( tag.value === value ){
+						this.tag = tag;
+						return [this.tag];
+					};
+				};
 			};
 
 			//	...
@@ -327,9 +348,12 @@
 
 			//	...
 			for(var tag of this.Tag()){
-
 				//	...
 				tag.addEventListener(label, function(e){
+					//	...
+					input.Tag( e.target.value );
+
+					//	...
 					func(e, input);
 
 					/*
