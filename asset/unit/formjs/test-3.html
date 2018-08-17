@@ -1,0 +1,51 @@
+<?php
+/**
+ * unit-formjs:/test-3.html
+ *
+ * @created   2018-08-17
+ * @version   1.0
+ * @package   unit-form
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<h2>test-3.html</h2>
+<form name="test-3">
+	<!-- type -->
+	<label><input type="radio" name="type" value="cruise"    data-timezone='["","lunch","afternoon","dinner","night"]'/>cruise</label>
+	<label><input type="radio" name="type" value="clubhouse" data-timezone='["","lunch","dinner"]'/> clubhouse</label>
+	<label><input type="radio" name="type" value="set"       data-timezone='["","lunch","dinner"]' /> set</label>
+
+	<!-- timezone -->
+	<select name="timezone"></select>
+
+	<!-- result -->
+	<input type="text" name="result" />
+</form>
+<script>
+//	Form
+$form = $OP.Form('test-3');
+
+//	type
+$form.Input('type').Event('change', function(e, input){
+	//	...
+	var option = input.Data('timezone');
+
+	//	...
+	input.Input('timezone').Option( option );
+
+	//	...
+	input.Input('result').Value( value );
+});
+
+//	timezone
+$form.Input('timezone').Event('change', function(e, input){
+	//	...
+	var type     = input.Input('type').Value();
+	var timezone = input.Input('timezone').Value();
+	var value    = type + ', ' + timezone;
+
+	//	...
+	input.parent.Input('result').Value( value );
+});
+</script>

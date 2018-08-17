@@ -17,4 +17,5 @@ D($_GET);
 //	...
 include('test-1.html');
 include('test-2.html');
+include('test-3.html');
 include('test.css');
