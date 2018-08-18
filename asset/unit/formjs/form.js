@@ -226,6 +226,10 @@
 							//	Get
 							value = [];
 
+							//	Reset stored tag. (Re:get)
+							this.tag = null;
+							var tags = this.Tag();
+
 							//	...
 							for(var tag of tags){
 								//	Get
