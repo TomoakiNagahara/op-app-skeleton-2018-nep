@@ -131,7 +131,7 @@
 			}else if( (tags = this.parent.tag.querySelectorAll(`[NAME="${this.name}[]"]`)).length ){
 				//	Checkbox
 			}else{
-				D(`Has not been found this input name. (${this.parent.name}, ${name})`);
+				D(`Has not been found this input name. (${this.parent.name}, ${this.name})`);
 				return;
 			};
 
@@ -313,18 +313,11 @@
 			};
 
 			//	...
-			for( var option of options ){
+			var is_array = Array.isArray(options);
+			for(var option in options ){
 				//	...
-				switch( typeof option ){
-					case 'string':
-						var value = option;
-						var label = option;
-						break;
-
-					default:
-						D(typeof option);
-					continue;
-				}
+				var label = options[option];
+				var value = is_array ? label: option;
 
 				//	...
 				var opt = document.createElement('option');
