@@ -10,11 +10,11 @@
  */
 ?>
 <h2>test-3.html</h2>
-<form name="test-3">
+<form name="test-3" class="OP">
 	<!-- type -->
-	<label><input type="radio" name="type" value="cruise"    data-timezone='["","lunch","afternoon","dinner","night"]'/>cruise</label>
-	<label><input type="radio" name="type" value="clubhouse" data-timezone='["","lunch","dinner"]'/> clubhouse</label>
-	<label><input type="radio" name="type" value="set"       data-timezone='["","lunch","dinner"]' /> set</label>
+	<label><input type="radio" name="type" value="cruise"    data-timezone='["","lunch","afternoon","dinner","night"]' />cruise</label>
+	<label><input type="radio" name="type" value="clubhouse" data-timezone='["","lunch","dinner"]' />clubhouse</label>
+	<label><input type="radio" name="type" value="set"       data-timezone='["","lunch","dinner"]' />set</label>
 
 	<!-- timezone -->
 	<select name="timezone"></select>
@@ -49,3 +49,4 @@ $form.Input('timezone').Event('change', function(e, input){
 	input.parent.Input('result').Value( value );
 });
 </script>
+<hr/>

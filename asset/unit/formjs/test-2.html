@@ -10,12 +10,12 @@
  */
 ?>
 <h2>test-2.html</h2>
-<form name="test-2">
+<form name="test-2" class="OP">
 	<!-- type -->
 	<select name="type"
 		data-cruise='["","lunch","afternoon","dinner","night"]'
 		data-clubhouse='["","lunch","dinner"]'
-		data-set='["","lunch","dinner"]'>
+		data-set='{"":"","lunch":"Clubhouse Lunch & Afternoon Cruise","dinner":"Clubhouse Dinner & Night Cruise"}'>
 	</select>
 
 	<!-- timezone -->
@@ -55,3 +55,4 @@ $form.Input('timezone').Event('change', function(e, input){
 	input.parent.Input('result').Value( value );
 });
 </script>
+<hr/>

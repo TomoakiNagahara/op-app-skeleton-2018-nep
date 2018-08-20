@@ -11,6 +11,14 @@
 ?>
 <h2>test-1.html</h2>
 <form name="test-1" class="OP">
+	<!-- Menu -->
+	<menu>
+		|
+		<a href='?text=TOM & JERRY'>TOM & JERRY</a> |
+		<a href='?text=space %26 C++'>Space & C++</a> |
+		<a href='?text=">XSS<"'>XSS</a> |
+	</menu>
+
 	<!-- text -->
 	<input type="text" name="text" value="test" />
 	<button class="button"> submit </button><br/>
@@ -91,3 +99,4 @@ for( var name of ['text','textarea','select','radio','checkbox','hoge'] ){
 	});
 }
 </script>
+<hr/>

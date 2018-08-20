@@ -15,4 +15,9 @@ form.OP {
 	margin-bottom: 1em;
 	padding: 1em;
 }
+
+form.OP label input {
+	border:1px solid black;
+	margin-right: 0.5em;
+}
 </style>
