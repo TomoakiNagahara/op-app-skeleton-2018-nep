@@ -11,4 +11,5 @@
 //	...
 return [
 	__DIR__.'/body',
+	__DIR__.'/color',
 ];
