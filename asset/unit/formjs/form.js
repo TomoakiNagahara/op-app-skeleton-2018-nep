@@ -3,7 +3,7 @@
  *
  * @created   2018-08-03
  * @version   1.0
- * @package   unit-form
+ * @package   unit-formjs
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
