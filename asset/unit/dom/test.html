@@ -1,0 +1,35 @@
+<?php
+/**
+ * unit-dom:/test.html
+ *
+ * @created   2018-08-23
+ * @version   1.0
+ * @package   unit-dom
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<div>
+	<p class="test">This is test string(1).</p>
+	<span class="test">This is test string(2).</span>
+	<span class="test" style="display:none;">This is test string(3).</span>
+	<span class="test">This is test string(4).</span>
+	<div id="text"></div>
+	<div id="html"></div>
+</div>
+<script>
+//	...
+$dom = $OP.Dom('.test');
+
+//	...
+$dom.Hide();
+
+//	...
+$dom.Show();
+
+//	...
+$OP.Dom('#text').Text('This is <b>TEST</b>.');
+
+//	...
+$OP.Dom('#html').Html("This is <b>TEST</b>. <script>xss<\/script>");
+</script>
