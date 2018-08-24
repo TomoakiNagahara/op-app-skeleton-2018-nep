@@ -88,7 +88,60 @@
 			this.tag = null;
 
 			//	...
-			var value = $OP.URL.Query.Get(name);
+			this.__SetToURLQuery();
+
+			//	...
+			this.__GetFromURLQuery();
+		};
+
+		//	...
+		__SetToURLQuery(){
+			//	...
+			var tags = this.Tag();
+			if(!tags.length ){
+				return;
+			};
+
+			//	...
+			var tag = tags[0];
+
+			//	...
+			if( tag.getAttribute('type') === "password" ){
+				return;
+			};
+
+			//	...
+			var val = tag.getAttribute('url-query');
+			if( val && val !== 'set' ){
+				return;
+			};
+
+			//	...
+			this.Event('change', function(e, input){
+				var value = input.Value();
+				$OP.URL.Query.Set(input.name, value);
+			});
+		};
+
+		//	...
+		__GetFromURLQuery(){
+			//	...
+			var tags = this.Tag();
+			if(!tags.length ){
+				return;
+			};
+
+			//	...
+			var tag = tags[0];
+
+			//	...
+			var val = tag.getAttribute('url-query');
+			if( val && val !== 'get' ){
+				return;
+			};
+
+			//	...
+			var value = $OP.URL.Query.Get(this.name);
 
 			//	...
 			if( value !== null ){
