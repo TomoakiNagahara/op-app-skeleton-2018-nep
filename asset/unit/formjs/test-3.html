@@ -28,6 +28,7 @@ $form = $OP.Form('test-3');
 
 //	type
 $form.Input('type').Event('change', function(e, input){
+
 	//	...
 	var option = input.Data('timezone');
 
@@ -35,7 +36,7 @@ $form.Input('type').Event('change', function(e, input){
 	input.Input('timezone').Option( option );
 
 	//	...
-	input.Input('result').Value( value );
+	input.Input('result').Value('');
 });
 
 //	timezone
@@ -46,7 +47,9 @@ $form.Input('timezone').Event('change', function(e, input){
 	var value    = type + ', ' + timezone;
 
 	//	...
-	input.parent.Input('result').Value( value );
+	if( type && timezone ){
+		input.parent.Input('result').Value( value );
+	};
 });
 </script>
 <hr/>
