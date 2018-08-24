@@ -1,0 +1,30 @@
+<?php
+/**
+ * unit-formjs:/test-4.html
+ *
+ * @created   2018-08-24
+ * @version   1.0
+ * @package   unit-formjs
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<h2>test-4.html</h2>
+<form name="test-4" class="OP">
+	Force automatically set input value from URL Query. But not set to URL Query.<br/>
+	<input type="text" name="get" url-query="get" /><br/>
+
+	Force automatically set to URL Query from input value. But not get from URL Query.<br/>
+	<input type="text" name="set" url-query="set" /><br/>
+
+	If input type is password, Not automatically to URL Query.<br/>
+	<input type="password" name="password" /><br/>
+	<button> Submit </button>
+</form>
+<script>
+//	Form
+$form = $OP.Form('test-4');
+$form.Input('get');
+$form.Input('set');
+$form.Input('password');
+</script>
