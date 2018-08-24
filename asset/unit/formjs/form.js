@@ -233,6 +233,16 @@
 			};
 
 			//	...
+			if( value !== undefined ){
+				//	...
+				setTimeout(function(){
+					var evt = document.createEvent("HTMLEvents");
+						evt.initEvent("change", false, true);
+					tag.dispatchEvent(evt);
+				}, 0);
+			};
+
+			//	...
 			var tagname = tag.tagName.toLowerCase();
 
 			//	...
