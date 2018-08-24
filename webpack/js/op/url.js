@@ -19,7 +19,13 @@ if( typeof $OP.URL === "undefined" ){
 
 	//	...
 	location.search.substr(1).split('&').map(function(v){
+		//	...
 		var tmp = v.split('=');
+		if( tmp.length !== 2 ){
+			return;
+		};
+
+		//	...
 		var key = tmp[0];
 		var val = decodeURIComponent(tmp[1].replace(/\+/,' '));
 
