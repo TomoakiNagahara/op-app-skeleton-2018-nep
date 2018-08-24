@@ -185,7 +185,7 @@
 				//	Checkbox
 			}else{
 				D(`Has not been found this input name. (${this.parent.name}, ${this.name})`);
-				return;
+				return [];
 			};
 
 			//	...
@@ -333,7 +333,11 @@
 							}
 						};
 					}else{
-						value = tag.options[tag.selectedIndex].value;
+						if( tag.selectedIndex >= 0 && tag.options[tag.selectedIndex].value ){
+							value = tag.options[tag.selectedIndex].value;
+						}else{
+							value = '';
+						};
 					};
 					break;
 
@@ -403,6 +407,7 @@
 
 		//	...
 		Event(label, func){
+
 			//	...
 			var input = this;
 
