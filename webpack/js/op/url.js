@@ -92,6 +92,8 @@ if( typeof $OP.URL === "undefined" ){
 			var val =  queries[key];
 			url += key+"="+val+'&';
 		};
-		return url.slice(0, -1);
+
+		//	...
+		return url.length === 1 ? url : url.slice(0, -1);
 	};
 })();
