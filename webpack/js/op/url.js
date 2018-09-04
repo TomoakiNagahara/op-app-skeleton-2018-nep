@@ -18,7 +18,7 @@ if( typeof $OP.URL === "undefined" ){
 	var queries = {};
 
 	//	...
-	location.search.substr(1).split('&').map(function(v){
+	location.search.substr(1).replace(/&amp;/g,'%26').split('&').map(function(v){
 		//	...
 		var tmp = v.split('=');
 		if( tmp.length !== 2 ){
