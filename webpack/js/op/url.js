@@ -22,7 +22,7 @@ if( typeof $OP.URL === "undefined" ){
 		//	...
 		var tmp = v.split('=');
 		if( tmp.length !== 2 ){
-			return;
+			tmp = ['',''];
 		};
 
 		//	...
