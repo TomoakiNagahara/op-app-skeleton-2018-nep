@@ -34,10 +34,16 @@ if( typeof $OP.URL === "undefined" ){
 			key = key.replace(/%5B%5D$/,'');
 			if( queries[key] === undefined ){
 				queries[key] = [];
-			}
+			};
+		};
 
-			//	...
-			queries[key].push(val);
+		//	...
+		if( 'object' === typeof queries[key] ){
+			if( queries[key] instanceof Array ){
+				queries[key].push(val);
+			}else{
+				console.error(key, queries[key]);
+			};
 		}else{
 			queries[key] = val;
 		};
@@ -76,7 +82,10 @@ if( typeof $OP.URL === "undefined" ){
 
 	//	...
 	$OP.URL.Query.Set = function(key, val, save){
+		//	...
 		queries[key] = val;
+
+		//	...
 		window.history.pushState(null, null, __generate());
 
 		//	...
@@ -87,10 +96,29 @@ if( typeof $OP.URL === "undefined" ){
 
 	//	...
 	function __generate(){
+		//	...
 		var url = '?';
+
+		//	...
 		for(var key in queries ){
 			var val =  queries[key];
-			url += key+"="+val+'&';
+
+			//	...
+			if( key === '' ){ continue };
+
+			//	...
+			if( 'object' === typeof val ){
+				for(var i in val){
+					var v =  val[i];
+					if( val instanceof Array ){
+						url += `${key}%5B%5D=${v}&`;
+					}else{
+						url += `${key}%5B${i}%5D=${v}&`;
+					};
+				};
+			}else{
+				url += key+"="+val+'&';
+			};
 		};
 
 		//	...
