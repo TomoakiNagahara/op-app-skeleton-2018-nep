@@ -27,7 +27,7 @@ if( typeof $OP.URL === "undefined" ){
 
 		//	...
 		var key = tmp[0];
-		var val = decodeURIComponent(tmp[1].replace(/\+/,' '));
+		var val = decodeURIComponent(tmp[1].replace(/\+/g,' '));
 
 		//	For checkbox.
 		if( key.match(/%5B%5D$/) ){
