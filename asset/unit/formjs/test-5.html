@@ -1,0 +1,33 @@
+<?php
+/**
+ * unit-formjs:/test-5.html
+ *
+ * @created   2018-08-17
+ * @version   1.0
+ * @package   unit-formjs
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<h2>test-5.html</h2>
+<form name="test-5" class="OP">
+	<!-- type -->
+	<label><input type="checkbox" name="checkbox[]" value="a" />A</label>
+	<label><input type="checkbox" name="checkbox[]" value="b" />B</label>
+	<label><input type="checkbox" name="checkbox[]" value="c" />C</label>
+	<button> Submit </button>
+	<br/>
+	<span>A</span>
+	<span>B</span>
+	<span>C</span>
+</form>
+<script>
+//	Form
+$form = $OP.Form('test-5');
+
+//	Input
+$form.Input('checkbox').Event('change', function(e, input){
+	var value = input.Value();
+});
+</script>
+<hr/>
