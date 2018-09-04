@@ -36,6 +36,11 @@
 		Test(){
 			return this.Tag() ? true: false;
 		};
+
+		//	...
+		Name(){
+			return this.name;
+		};
 	};
 
 	//	...
@@ -119,7 +124,21 @@
 			//	...
 			this.Event('change', function(e, input){
 				var value = input.Value();
-				$OP.URL.Query.Set(input.name, value);
+				var name  = input.Name();
+				//	...
+				if( 'object' === typeof value ){
+					var values = [];
+					for(var key in value){
+						if( value[key] ){
+							values.push(key);
+						};
+					};
+
+					//	...
+					$OP.URL.Query.Set(name, values);
+				}else{
+					$OP.URL.Query.Set(name, value);
+				};
 			});
 		};
 
