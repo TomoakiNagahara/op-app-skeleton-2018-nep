@@ -1,0 +1,150 @@
+<?php
+/**
+ * unit-test:/unit/shadow-dom/test.html
+ *
+ * @creation  2018-09-04
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<app></app>
+<riot name="app">
+	<div>
+		<p>This is test.</p>
+		<span if="true">true</span>
+		<span if="false">false</span>
+		<span if="0">0</span>
+		<span if="1">1</span>
+		<span if="1-1">1-1</span>
+		<span if="0+1">0+1</span>
+		<span value="hoge">hoge</span>
+		<ul><li for="[1,2,3]"><span value="i">TEST</span></li></ul>
+	</div>
+</riot>
+<script>
+$riot = {};
+$riot.Init = function(dom){
+	//	...
+	this.tags  = {};
+	this.value = {};
+
+	//	...
+	var riots = dom.getElementsByTagName('riot');
+
+	//	...
+	for(var i=0; i<riots.length; i++){
+		var riot = riots[i];
+		var name = riot.getAttribute('name');
+
+		//	...
+		this.tags[name] = {};
+		this.tags[name].html = riot.innerHTML;
+
+		//	...
+		riot.innerHTML = '';
+	};
+};
+
+//	...
+$riot.Value = function(key, value){
+	this.value[key] = value;
+};
+
+//	...
+$riot.Update = function(name){
+	//	...
+	if( this.tags[name] ){
+		var slots = document.getElementsByTagName(name);
+		for(var i=0; i<slots.length; i++){
+			//	...
+			var slot = slots[i];
+				slot.innerHTML = this.tags[name].html;
+
+			//	...
+			this.__Main(slot);
+
+			//	...
+			/*
+			for(let i=0; i<slot.childNodes.length; i++){
+				if( slot.childNodes[i].tagName ){
+					this.__Main( slot.childNodes[i] );
+				};
+			};
+			*/
+		};
+	};
+};
+
+//	...
+$riot.__Main = function(dom){
+	//	...
+	this.__If(dom, this.value);
+
+	//	...
+	this.__For(dom, this.value);
+
+	//	...
+//	this.__Value(dom, this.value);
+};
+
+//	...
+$riot.__If = function(dom, value){
+	//	...
+	var tags = dom.querySelectorAll(':scope > [if]');
+	for(var i=0; i<tags.length; i++){
+		//	...
+		if(!eval(tags[i].getAttribute('if')) ){
+			tags[i].parentNode.removeChild(tags[i]);
+			this.__Main(tags[i]);
+		};
+	};
+};
+
+//...
+$riot.__For = function(dom, value){
+	//	...
+	var tags = dom.querySelectorAll(':scope > [for]');
+	for(var i=0; i<tags.length; i++){
+		var tag = tags[i];
+		var tagname = tag.tagName;
+		var html = tag.innerHTML;
+
+		//	...
+		var val = tag.getAttribute('for');
+			val = eval(val);
+
+		//	...
+		for(var n=0; n<val.length; n++){
+			var tmp = document.createElement(tagname);
+				tmp.innerHTML = html;
+
+			//	...
+			this.__Value(tmp, {i:n});
+
+			//	...
+			tag.appendChild(tmp);
+		}
+	};
+};
+
+//...
+$riot.__Value = function(dom, value){
+	//	...
+	var tags = dom.querySelectorAll(':scope > [value]');
+	for(var i=0; i<tags.length; i++){
+		var key = tags[i].getAttribute('value');
+		tags[i].innerText = value[key];
+	};
+};
+
+//	...
+$riot.Init(document);
+
+//	...
+$riot.Value('hoge', 'HoGeeeee!!');
+
+//	...
+$riot.Update('app');
+</script>
