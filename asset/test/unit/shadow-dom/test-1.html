@@ -1,0 +1,126 @@
+<?php
+/**
+ * unit-test:/unit/shadow-dom/test-1.html
+ *
+ * @creation  2018-09-04
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<div>
+	<app></app>
+</div>
+<p>Outside of riot.</p>
+<hr/>
+<riot name="app">
+	<h1>app</h1>
+	<p>{p}</p>
+	<style>
+	p {
+		color: red;
+	}
+	</style>
+	<script>
+	this.p = 'This is test.';
+	</script>
+</riot>
+<script>
+//	...
+var riot = {};
+
+//	...
+riot.Entry = function(name){
+
+};
+
+//	...
+riot.Mount = function(name){
+	//	...
+	var sdom = {};
+
+	//	...
+	sdom.element = document.querySelector(`riot[name="${name}"]`);
+
+	//	...
+	if(!sdom.element ){
+		console.error(`Has not be found this name. (${name})`);
+		return;
+	};
+
+	//	...
+	sdom.html   = sdom.element.innerHTML;
+	sdom.style  = sdom.html.match(/(<style>)([\s\S]*)(<\/style>)/)[2];
+	sdom.script = sdom.html.match(/(<script>)([\s\S]*)(<\/script>)/)[2];
+
+	//	...
+	sdom.html = sdom.html.replace(/(<style>)([\s\S]*)(<\/style>)/   , '');
+	sdom.html = sdom.html.replace(/(<script>)([\s\S]*)(<\/script>)/ , '');
+
+	//	...
+	sdom.style = sdom.style.replace(/^(\s*)(\w*)/, `${name} $2`);
+
+	//	...
+	if( sdom.element.parentNode ){
+		sdom.element.parentNode.removeChild(sdom.element);
+	}
+
+	//	...
+	var mount_points = document.querySelectorAll(name);
+	for(var mount_point of mount_points){
+		mount_point.innerHTML = sdom.html;
+	};
+
+	//	...
+	D(sdom.html);
+	d(sdom.style);
+	d(sdom.script);
+	return;
+};
+
+//	...
+(function(){
+	/*
+	//	...
+	var apps = document.getElementsByTagName('app');
+	var main = '<p>This is test.</p>';
+	var span = '<span>TEST</span>';
+
+	//	...
+	for(const app of apps) {
+		app.innerHTML = main;
+	};
+	*/
+
+	riot.Mount('app');
+
+	//	...
+	return;
+
+	/**
+	 * @see https://qiita.com/phi/items/98975e1bb4995c1f1bcf
+	 */
+	Object.defineProperty(Object.prototype, "each", {
+		//	...
+		value: function(func, self) {
+			//	...
+			self = self || this;
+
+			//	...
+			Object.keys(this).forEach(function(key, index) {
+				//	...
+				var value = this[key];
+
+				//	...
+				func.call(self, key, value, index);
+			}, this);
+		}
+	});
+
+	//	...
+	obj.each(function(key, value, index) {
+		d([index, key, value].join(','));
+	});
+})();
+</script>
