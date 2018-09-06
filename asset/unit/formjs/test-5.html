@@ -13,21 +13,24 @@
 <form name="test-5" class="OP">
 	<!-- type -->
 	<label><input type="checkbox" name="checkbox[]" value="a" />A</label>
-	<label><input type="checkbox" name="checkbox[]" value="b" />B</label>
+	<label><input type="checkbox" name="checkbox[]" value="b" checked />B</label>
 	<label><input type="checkbox" name="checkbox[]" value="c" />C</label>
+	       <input type="hidden"   name="checkbox[]" value="d" />
 	<button> Submit </button>
-	<br/>
-	<span>A</span>
-	<span>B</span>
-	<span>C</span>
 </form>
 <script>
 //	Form
-$form = $OP.Form('test-5');
+$input = $OP.Form('test-5').Input('checkbox');
+
+//	...
+if(!$OP.URL.Query.Get('checkbox') ){
+	$input.Value({a:true,c:false}, true);
+}
 
 //	Input
-$form.Input('checkbox').Event('change', function(e, input){
+$input.Event('change', function(e, input){
 	var value = input.Value();
+	D(value);
 });
 </script>
 <hr/>
