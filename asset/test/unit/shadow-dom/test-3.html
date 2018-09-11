@@ -1,0 +1,349 @@
+<?php
+/**
+ * unit-test:/unit/shadow-dom/test-3.html
+ *
+ * @creation  2018-09-04
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<hr/>
+<app></app>
+<hr/>
+<item></item>
+<item></item>
+<hr/>
+<sdom name="app">
+	<div>
+		<!-- main -->
+		<p>This is test.</p>
+		<span if="true">true</span>
+		<span if="false">false</span>
+		<ol for='["apple","banana","cacao"]'>
+			<li if="{i}">{i}, {v}</li>
+		</ol>
+		<ul if='1' for='{"a":"Apple","b":"banana","c":"Cacao","false":"false"}'>
+			<li if='"{i}" != "false"'>{i}, {v}</li>
+		</ul>
+
+		<!-- Extarnal shadow dom -->
+		<item></item>
+
+		<!-- Control form -->
+		<form class="OP">
+			<button onclick="insert">Insert item</button>
+			<button onclick="">Update item</button>
+			<button onclick="">Delete item</button>
+		</form>
+	</div>
+</sdom>
+<sdom name="item">
+	<p>This is item!</p>
+</sdom>
+<script>
+(function(){
+	//	...
+	var __sdom    = {};
+	var __actions = {};
+	var __logs    = [];
+
+	//	...
+	$OP.SDOM = {};
+
+	//	...
+	setTimeout(function(){
+		//	...
+		var list = document.getElementsByTagName('sdom');
+
+		//	...
+		for(var i=0; i<list.length; i++){
+			var sdom = list[i];
+			var name = sdom.getAttribute('name');
+
+			//	...
+			if( __sdom[name] ){
+				console.error(`This name Shadow DOM has already registered. (${name})`);
+				continue;
+			};
+
+			//	...
+			__sdom[name] = new ShadowDom(sdom);
+		};
+	}, 0);
+
+	//	...
+	$OP.SDOM.Get = function(name){
+		//	...
+		if(!__sdom[name] ){
+			console.error(`This name Shadow DOM not found. (${name})`);
+			return null;
+		};
+
+		//	...
+		return __sdom[name];
+	};
+
+	//	...
+	$OP.SDOM.Action = {};
+
+	//	...
+	$OP.SDOM.Action.Set = function(sdom_name, func_name, func){
+		//	...
+		if(!sdom_name || !func_name){
+			console.error(`SDOM name or Function name has not been set.`);
+			return false;
+		};
+
+		//	...
+		if( typeof func !== 'function' ){
+			console.error(`Has not been set Function. (${sdom_name}, ${func_name})`);
+			return false;
+		};
+
+		//	...
+		if(!__actions[sdom_name] ){
+			__actions[sdom_name] = {};
+		};
+
+		//	...
+		if( __actions[sdom_name][func_name] ){
+			console.error(`This action has already set. (${name})`);
+			return false;
+		};
+
+		//	...
+		__actions[sdom_name][func_name] = func;
+	};
+
+	//	...
+	$OP.SDOM.Action.Exe = function(sdom_name, func_name){
+		//	...
+		if(!__actions[sdom_name] || !__actions[sdom_name][func_name] ){
+			console.error(`This action has not been set. (${sdom_name} ${func_name})`);
+			return false;
+		};
+
+		//	...
+		return __actions[sdom_name][func_name]();
+	};
+
+	//	...
+	$OP.SDOM.Debug = function(log){
+		if( log ){
+			__logs.push(log);
+		}else{
+			console.dir(__logs);
+			__logs = [];
+		};
+	};
+})();
+
+//	...
+var ShadowDom = function(temp){
+	//	...
+	this.__root = document;
+
+	//	...
+	if( typeof temp === 'string' ){
+		//	...
+		var list = this.__root.getElementsByTagName(`sdom`);
+
+		//	...
+		for(var i=0; i<list.length; i++){
+			var sdom = list[i];
+			if( name === sdom.getAttribute('name') ){
+				break;
+			};
+		};
+	}else{
+		var sdom = temp;
+	};
+
+	//	...
+	this.__name = sdom.getAttribute('name');
+	this.__html = sdom.innerHTML;
+
+	//	...
+	sdom.innerHTML = '';
+
+	//	...
+	this.InsertPosition(this.__name);
+};
+
+//	...
+ShadowDom.prototype.InsertPosition = function(name){
+	//	...
+	this.__mount_point = this.__root.getElementsByTagName(name);
+
+	//	...
+	if( this.__mount_point.length === 0 ){
+		console.error(`Insert point has not been found. (${name})`);
+	};
+};
+
+//	...
+ShadowDom.prototype.Build = function(){
+	//	...
+	var dom = document.createElement('div');
+		dom.innerHTML = this.__html;
+
+	//	...
+	this.__Dom(dom);
+
+	//	...
+	this.__On(dom);
+
+	//	...
+	for(var i=0; i<this.__mount_point.length; i++){
+		this.__mount_point[i].innerHTML = dom.innerHTML;
+	};
+};
+
+//	...
+ShadowDom.prototype.Insert = function(){
+	this.Build();
+};
+
+//	...
+ShadowDom.prototype.Update = function(){
+	this.Build();
+};
+
+//	...
+ShadowDom.prototype.Delete = function(){
+	this.__mount_point.innerHTML = '';
+};
+
+//	...
+ShadowDom.prototype.Action = function(name, func){
+	//	...
+	if(!this.__name ){
+	//	console.error(`Has not been set name.`);
+		return false;
+	};
+
+	//	...
+	$OP.SDOM.Action.Set(this.__name, name, func);
+};
+
+//	...
+ShadowDom.prototype.__Dom = function(dom){
+	//	...
+	for(var i=0; i<dom.childNodes.length; i++){
+		//	...
+		var node = dom.childNodes[i];
+
+		//	...
+		if(!node.tagName ){
+			continue;
+		};
+
+		//	...
+		this.__If( node.querySelectorAll(':scope > [if]') );
+
+		//	...
+		this.__For( node.querySelectorAll(':scope > [for]') );
+
+		//	...
+		this.__Dom( node );
+	};
+};
+
+//	...
+ShadowDom.prototype.__If = function(list){
+	//	...
+	for(var i=0; i<list.length; i++){
+		var dom = list[i];
+		var val = dom.getAttribute('if');
+		if(!eval( val ) ){
+			dom.parentNode.removeChild(dom);
+		};
+	};
+};
+
+//	...
+ShadowDom.prototype.__For = function(list){
+	//	...
+	for(let i=0; i<list.length; i++){
+		var dom = list[i];
+		var json= dom.getAttribute('for');
+		var val = JSON.parse(json);
+		var temp= '';
+
+		//	...
+		for(let i in val){
+			let v = val[i];
+
+			//	...
+			var html = dom.innerHTML;
+
+			//	...
+			html = html.replace(/\{i\}/g, i);
+			html = html.replace(/\{v\}/g, v);
+
+			//	...
+			temp += html;
+		};
+
+		//	...
+		dom.innerHTML  = '';
+		dom.innerHTML += temp;
+	};
+};
+
+//...
+ShadowDom.prototype.__On = function(dom){
+	//	...
+	for(var attr of ['onclick','onmouseover','onmouseleave']){
+
+		//	...
+		var list = dom.querySelectorAll(`[${attr}]`);
+
+		//	...
+		for(var i=0; i<list.length; i++){
+			var temp = list[i];
+
+			//	...
+			var sdom_name = this.__name;
+			var func_name = temp.getAttribute(attr);;
+
+			//	...
+			temp.setAttribute(attr, `return $OP.SDOM.Action.Exe('${sdom_name}', '${func_name}');`);
+		};
+	};
+};
+
+//	...
+setTimeout(function(){
+	var sdom = $OP.SDOM.Get('app');
+	if( sdom ){
+		//	...
+		sdom.Insert();
+
+		//	...
+		sdom.Action('insert', function(){
+			//	...
+			var sdom = $OP.SDOM.Get('item');
+			sdom.Insert();
+
+			return false;
+		});
+
+		//...
+		sdom.Action('update', function(){
+			d('update');
+		//	sdom.Update();
+			return false;
+		});
+
+		//...
+		sdom.Action('delete', function(){
+			d('delete');
+		//	sdom.Delete();
+			return false;
+		});
+	};
+}, 0);
+</script>
