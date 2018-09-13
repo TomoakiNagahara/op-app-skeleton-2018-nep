@@ -36,6 +36,7 @@
 			<button onclick="insert">Insert item</button>
 			<button onclick="">Update item</button>
 			<button onclick="">Delete item</button>
+			<input type="submit" value="?" onclick="return false;"/>
 		</form>
 
 		<!-- Json -->
@@ -43,11 +44,16 @@
 		<span>{ json.date }</span>
 		<span>{ json.datetime }</span>
 		<span>{ json.foo.bar }</span>
+		<ol for="{ this.json }" json="{ json.1st.2nd.3rd }">
+			<li>{ index }, { value }</li>
+		</ol>
 	</div>
 </sdom>
 <sdom name="item">
 	<p>This is item!</p>
 </sdom>
+<style>
+</style>
 <script>
 (function(){
 	//	...
@@ -126,8 +132,14 @@
 	//	...
 	$OP.SDOM.Action.Exe = function(sdom_name, func_name){
 		//	...
+		if(!sdom_name || !func_name){
+			console.error(`Shadow DOM name or Function name is empty. (${sdom_name}, ${func_name})`);
+			return false;
+		};
+
+		//	...
 		if(!__actions[sdom_name] || !__actions[sdom_name][func_name] ){
-			console.error(`This action has not been set. (${sdom_name} ${func_name})`);
+			console.error(`This action has not been set. (${sdom_name}, ${func_name})`);
 			return false;
 		};
 
@@ -268,10 +280,47 @@ ShadowDom.prototype.__Dom = function(dom){
 //...
 ShadowDom.prototype.__Json = function(dom){
 	//	...
-	dom.innerHTML = dom.innerHTML.replace(/(\{\s*json\.[\w\.]+\s*\})/g, function(match, offset, string){
-		console.log(match, offset, string);
-		return ' (hit) ';
+	var json = this.__json;
+
+	//	...
+	dom.innerHTML = dom.innerHTML.replace(/(\{\s*json\.([\w\.]+)\s*\})/g, function(match, offset, string){
+		var list = string.split('.');
+		var key  = null;
+		var val  = null;
+		var type = null;
+		while( key = list.shift() ){
+			if( val ){
+				val = val[key];
+			}else{
+				val = json[key];
+			}
+			type = typeof val;
+			switch( type ){
+				case 'undefined':
+					D(key, type);
+					return 'undefined';
+
+				case 'boolean':
+					return val ? 'true': 'false';
+
+				case 'number':
+				case 'string':
+					return val;
+
+				case 'object':
+					break;
+
+				default:
+					console.log(json, type, key, val);
+			};
+		};
+
+		//	...
+		return JSON.stringify(val).replace(/'/,"\'").replace(/"/g, "'");
 	});
+
+	//	...
+	console.dir( dom.querySelectorAll('[json]')[0].getAttribute('json') );
 };
 
 //	...
@@ -291,8 +340,11 @@ ShadowDom.prototype.__For = function(list){
 	//	...
 	for(let i=0; i<list.length; i++){
 		var dom = list[i];
-		var json= dom.getAttribute('for');
-		var val = JSON.parse(json);
+		var tmp = dom.getAttribute('for');
+		if( tmp === "{ this.json }" ){
+			tmp = dom.getAttribute('json').replace(/'/g, '"');
+		};
+		var val = JSON.parse(tmp);
 		var temp= '';
 
 		//	...
@@ -305,6 +357,10 @@ ShadowDom.prototype.__For = function(list){
 			//	...
 			html = html.replace(/\{\s*i\s*\}/g, i);
 			html = html.replace(/\{\s*v\s*\}/g, v);
+
+			//	...
+			html = html.replace(/\{\s*index\s*\}/g, i);
+			html = html.replace(/\{\s*value\s*\}/g, v);
 
 			//	...
 			temp += html;
@@ -345,6 +401,14 @@ setTimeout(function(){
 		//	...
 		var json = {};
 			json.date = '2020-10-10';
+			json.time = 12345;
+			json.datetime = '2020-10-10 00:00:00';
+			json.foo = {};
+			json.foo.bar = true;
+			json['1st'] = {};
+			json['1st']['2nd'] = {};
+			json['1st']['2nd']['3rd'] = {};
+			json['1st']['2nd']['3rd']['4th'] = [true,null,false,'0',0,1,'1'];
 		sdom.Json(json);
 
 		//	...
