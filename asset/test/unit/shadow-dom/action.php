@@ -9,4 +9,4 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-include('test-3.html');
+include('test-4.html');
