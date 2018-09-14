@@ -40,11 +40,10 @@
 		</form>
 
 		<!-- Json -->
-		<span>{ json.time }</span>
-		<span>{ json.date }</span>
-		<span>{ json.datetime }</span>
-		<span>{ json.foo.bar }</span>
-		<ol for="{ this.json }" json="{ json.1st.2nd.3rd }">
+		<ul for="{ this.json }" json="{ json }">
+			<li>{ index }, { value }<span if="'{ index }' === 'foo'">, { json.foo.bar }</span></li>
+		</ul>
+		<ol for="{ this.json }" json="{ json.1st.2nd.3rd.4th }">
 			<li>{ index }, { value }</li>
 		</ol>
 	</div>
@@ -283,44 +282,60 @@ ShadowDom.prototype.__Json = function(dom){
 	var json = this.__json;
 
 	//	...
-	dom.innerHTML = dom.innerHTML.replace(/(\{\s*json\.([\w\.]+)\s*\})/g, function(match, offset, string){
+	dom.innerHTML = dom.innerHTML.replace(/(\{\s*(json[\w\.]*)\s*\})/g, function(match, offset, string){
+		//	...
 		var list = string.split('.');
 		var key  = null;
 		var val  = null;
 		var type = null;
-		while( key = list.shift() ){
-			if( val ){
-				val = val[key];
-			}else{
-				val = json[key];
-			}
-			type = typeof val;
-			switch( type ){
-				case 'undefined':
-					D(key, type);
-					return 'undefined';
 
-				case 'boolean':
-					return val ? 'true': 'false';
+		//	...
+		if( list.length === 1 ){
+			val = json;
+		}else{
+			//	json.foo.bar --> foo.bar
+			var root = list.shift();
 
-				case 'number':
-				case 'string':
-					return val;
+			//	...
+			while( key = list.shift() ){
+				//	...
+			//	val = val ? val[key]: json[key];
 
-				case 'object':
-					break;
+				//	...
+				if( val ){
+					val = val[key];
+				}else{
+					val = json[key];
+				}
 
-				default:
-					console.log(json, type, key, val);
+				//	...
+				type = typeof val;
+
+				//	...
+				switch( type ){
+					case 'undefined':
+						D(key, type);
+						return 'undefined';
+
+					case 'boolean':
+						return val ? 'true': 'false';
+
+					case 'number':
+					case 'string':
+						return val;
+
+					case 'object':
+						break;
+
+					default:
+						console.log(json, type, key, val);
+				};
 			};
 		};
 
 		//	...
-		return JSON.stringify(val).replace(/'/,"\'").replace(/"/g, "'");
+		return JSON.stringify(val).replace(/'/, "\\'").replace(/"/g, "'");
 	});
-
-	//	...
-	console.dir( dom.querySelectorAll('[json]')[0].getAttribute('json') );
 };
 
 //	...
@@ -342,7 +357,12 @@ ShadowDom.prototype.__For = function(list){
 		var dom = list[i];
 		var tmp = dom.getAttribute('for');
 		if( tmp === "{ this.json }" ){
-			tmp = dom.getAttribute('json').replace(/'/g, '"');
+			tmp = dom.getAttribute('json');
+			if( tmp ){
+				tmp = tmp.replace(/\\'/g  , '&#39;');
+				tmp = tmp.replace(/'/g    , '"');
+				tmp = tmp.replace(/&#39;/g, "'");
+			};
 		};
 		var val = JSON.parse(tmp);
 		var temp= '';
@@ -399,17 +419,7 @@ setTimeout(function(){
 	var sdom = $OP.SDOM.Get('app');
 	if( sdom ){
 		//	...
-		var json = {};
-			json.date = '2020-10-10';
-			json.time = 12345;
-			json.datetime = '2020-10-10 00:00:00';
-			json.foo = {};
-			json.foo.bar = true;
-			json['1st'] = {};
-			json['1st']['2nd'] = {};
-			json['1st']['2nd']['3rd'] = {};
-			json['1st']['2nd']['3rd']['4th'] = [true,null,false,'0',0,1,'1'];
-		sdom.Json(json);
+		sdom.Json( get_json() );
 
 		//	...
 		sdom.Insert();
@@ -425,8 +435,8 @@ setTimeout(function(){
 
 		//...
 		sdom.Action('update', function(){
-			d('update');
-		//	sdom.Update();
+			this.Json( get_json() );
+			this.Update();
 			return false;
 		});
 
@@ -438,4 +448,20 @@ setTimeout(function(){
 		});
 	};
 }, 0);
+
+//	...
+function get_json(){
+	var date = new Date();
+	var json = {};
+		json.time = Date.now() / 1000;
+		json.date = (date.getYear()+1900)+'-'+(date.getMonth()+1)+'-'+date.getDate();
+		json.datetime = date.toISOString();
+		json.foo = {};
+		json.foo.bar = true;
+		json['1st'] = {};
+		json['1st']['2nd'] = {};
+		json['1st']['2nd']['3rd'] = {};
+		json['1st']['2nd']['3rd']['4th'] = [true,null,false,'0',0,1,'1',"iPhone"];
+	return json;
+};
 </script>
