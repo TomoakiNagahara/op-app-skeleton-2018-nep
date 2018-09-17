@@ -34,9 +34,9 @@
 		<!-- Control form -->
 		<form class="OP">
 			<button onclick="insert">Insert item</button>
-			<button onclick="">Update item</button>
-			<button onclick="">Delete item</button>
-			<input type="submit" value="?" onclick="return false;"/>
+			<button onclick="update">Update item</button>
+			<button onclick="remove">Delete item</button>
+			<input type="submit" value=" Ajax " onclick="ajax"/>
 		</form>
 
 		<!-- Json -->
@@ -232,8 +232,10 @@ ShadowDom.prototype.Update = function(){
 };
 
 //	...
-ShadowDom.prototype.Delete = function(){
-	this.__mount_point.innerHTML = '';
+ShadowDom.prototype.Remove = function(){
+	for(var i=0; i<this.__mount_point.length; i++){
+		this.__mount_point[i].innerHTML = '';
+	};
 };
 
 //	...
@@ -429,25 +431,39 @@ setTimeout(function(){
 			//	...
 			var sdom = $OP.SDOM.Get('item');
 			sdom.Insert();
-
 			return false;
 		});
 
 		//...
 		sdom.Action('update', function(){
-			this.Json( get_json() );
-			this.Update();
+			var sdom = $OP.SDOM.Get('app');
+			sdom.Json( get_json() );
+			sdom.Update();
 			return false;
 		});
 
 		//...
-		sdom.Action('delete', function(){
-			d('delete');
-		//	sdom.Delete();
+		sdom.Action('remove', function(){
+			//	...
+			var sdom = $OP.SDOM.Get('item');
+			sdom.Remove();
+			return false;
+		});
+
+		//...
+		sdom.Action('ajax', function(){
+			//	...
+			/*
+			$OP.Ajax.Post('<?= ConvertURL('testcase:/api') ?>', {}, function(json){
+				D(json);
+			});
+			*/
 			return false;
 		});
 	};
 }, 0);
+
+D($OP.Ajax);
 
 //	...
 function get_json(){
