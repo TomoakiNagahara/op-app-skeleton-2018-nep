@@ -7,28 +7,3 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-
-body.body div[role="table"] {
-	display: table;
-}
-
-body.body div[role="tr"],
-body.body div[role="table"] > div {
-	display: table-row;
-}
-
-body.body div[role="th"],
-body.body div[role="td"],
-body.body div[role="table"] > div > div {
-	vertical-align: middle;
-	display: table-cell;
-}
-
-body.body div[role="th"] {
-	text-align:  center;
-	font-weight: bold;
-}
-
-body.body div[role="td"] {
-	padding-left: 0.5em;
-}
