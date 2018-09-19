@@ -22,6 +22,13 @@ $OP.Path.meta.app = "<?= ConvertPath('app:/') ?>";
 $OP.Path.meta.doc = "<?= ConvertPath('doc:/') ?>";
 <?php endif; ?>
 
+/** Set meta path.
+ *
+ */
+$OP.Path.Set = function(meta, path){
+	$OP.Path.meta[meta] = path;
+};
+
 /** Compress to meta path from real path.
  *
  * <pre>
