@@ -8,8 +8,14 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
+/**
+ * Font family
+ */
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic);
+
 body.body {
 	color: black;
 	background-color: white;
 	font-size: 9pt;
+	font-family: Avenir, "Open Sans", sans-serif;
 }
