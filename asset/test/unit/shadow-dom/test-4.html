@@ -54,6 +54,10 @@
 <style>
 </style>
 <script>
+//	...
+$OP.Path.Set('testcase', '<?= ConvertPath('testcase:/') ?>');
+
+//	...
 (function(){
 	//	...
 	var __sdom    = {};
@@ -233,6 +237,7 @@ ShadowDom.prototype.Update = function(){
 
 //	...
 ShadowDom.prototype.Remove = function(){
+	//	...
 	for(var i=0; i<this.__mount_point.length; i++){
 		this.__mount_point[i].innerHTML = '';
 	};
@@ -452,18 +457,21 @@ setTimeout(function(){
 
 		//...
 		sdom.Action('ajax', function(){
+			var url  = 'testcase:/api';
+			var data = {};
+				data.ping = 1;
 			//	...
-			/*
-			$OP.Ajax.Post('<?= ConvertURL('testcase:/api') ?>', {}, function(json){
+			var xhr = $OP.Ajax.Post( url, data, function(json){
+				//	...
+				console.log(json.result);
+			}, function(json){
+				//	...
 				D(json);
 			});
-			*/
 			return false;
 		});
 	};
 }, 0);
-
-D($OP.Ajax);
 
 //	...
 function get_json(){

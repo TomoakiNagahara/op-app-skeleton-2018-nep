@@ -9,4 +9,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
+//D($_GET, $_POST);
+
+//	...
 include('test-4.html');
