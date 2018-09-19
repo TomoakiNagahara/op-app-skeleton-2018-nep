@@ -108,7 +108,7 @@ function ConvertURL($url)
 		$rewrite_base = dirname($_SERVER['SCRIPT_NAME']).'/';
 
 		//	...
-		return rtrim($rewrite_base, '/').substr($url,4);
+		$result = rtrim($rewrite_base, '/').substr($url,4);
 
 	}else if( strpos($url, $_SERVER['DOCUMENT_ROOT']) === 0 ){
 
@@ -116,7 +116,7 @@ function ConvertURL($url)
 		$rewrite_base = $_SERVER['DOCUMENT_ROOT'];
 
 		//	...
-		return substr($url, strlen($_SERVER['DOCUMENT_ROOT']));
+		$result = substr($url, strlen($_SERVER['DOCUMENT_ROOT']));
 
 	}else{
 		//	...
@@ -130,13 +130,33 @@ function ConvertURL($url)
 			//	match
 			if( strpos($url, $key) === 0 ){
 				//	Convert
-				return ConvertURL( CompressPath($dir . substr($url, $len)) );
+				$result = ConvertURL( CompressPath($dir . substr($url, $len)) );
 			}
 		}
-
-		//	...
-		\Notice::Set("This URL did not match the meta pattern. ($url)");
 	}
+
+	//	Separate url query.
+	if( $pos = strpos($result, '?') ){
+		$url = substr($result, 0, $pos);
+		$que = substr($result, $pos);
+	}else{
+		$url = $result;
+		$que = '';
+	}
+
+	//	Add slash. (Anti Apache's automatic transfer)
+	if( $pos = strrpos($url, '/') ){
+		$tmp = substr($url, $pos+1);
+		if( strpos($tmp, '.') ){
+			//	/foo/bar/index.html
+		}else{
+			//	/foo/bar --> /foo/bar/
+			$url .= '/';
+		}
+	}
+
+	//	...
+	return $url . $que;
 }
 
 /** Dump value for developers only.
