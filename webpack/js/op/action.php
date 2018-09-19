@@ -15,4 +15,5 @@ return [
 	__DIR__.'/d',
 	__DIR__.'/url',
 	__DIR__.'/form',
+	__DIR__.'/ajax',
 ];
