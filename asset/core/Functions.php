@@ -411,6 +411,9 @@ function Json($json, $attr)
 function Html($string, $attr=null)
 {
 	//	...
+	$string = Escape($string);
+
+	//	...
 	if( $attr ){
 		$attr = Attribute($attr);
 	}
@@ -430,5 +433,10 @@ function Html($string, $attr=null)
 	$attr.= $class ? " class='$class'":'';
 
 	//	...
-	printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
+	if( $tag === 'a' ){
+		$attr = ' href="' . $string . '"';
+		printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
+	}else{
+		printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
+	}
 }
