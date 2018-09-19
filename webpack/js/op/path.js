@@ -84,8 +84,10 @@ $OP.Path.Convert = function( path ){
 	}
 
 	//	Get meta label.
-	var m = path.match(/^([\w]+):\/[^/]/);
-	if( m && m.length && m[1] ){
+	var m = path.match(/^([\w]+):\//);
+
+	//	Replace to real path from meta label.
+	if( m && m[1] ){
 		//	Convert to real path.
 		var r = new RegExp('^'+m[1]+':/');
 		path = path.replace(r, $OP.Path.meta[m[1]]);
@@ -94,6 +96,29 @@ $OP.Path.Convert = function( path ){
 		var r = new RegExp('^' + $OP.Path.meta.doc);
 		path = path.replace(r, '/');
 	}
+
+	//	Separate to url query.
+	var pos = path.indexOf('?');
+	if( pos === -1 ){
+		var url = path;
+		var que = '';
+	}else{
+		var url = path.substr(0, pos);
+		var que = path.substr(pos);
+	};
+
+	//	Search file name from tail of URL.
+	var pos = url.lastIndexOf('/');
+	var str = url.substr(pos+1);
+	var pos = str.indexOf('.');
+
+	//	Add slash. Anti apache's automatically transfer.
+	if( str && pos === -1 ){
+		url += '/';
+	};
+
+	//	Join
+	path = url + que;
 
 	//	Return.
 	return path;
