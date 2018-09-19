@@ -43,6 +43,11 @@ class pager
 	 */
 	function Config($config=[], $db)
 	{
+		//	...
+		if( empty($config['database']) or empty($config['table']) ){
+			throw new \Exception("Has not been set database or table.");
+		}
+
 		//	Count conditions.
 		$this->_config['database'] = $config['database'] ?? null;
 		$this->_config['table'] = $config['table'] ?? null;
@@ -51,9 +56,11 @@ class pager
 
 		//	If empty where case is generate where condition.
 		if(!$this->_config['where'] ){
-			if( $pkey = $db->Query("SHOW INDEX FROM {$this->_config['database']}.{$this->_config['table']}", 'show')['PRIMARY'][1]['Column_name'] ?? null ){
+			if( $pkey = $db->PKey($this->_config['database'], $this->_config['table']) ?? null ){
 				$this->_config['where'][$pkey]['evalu'] = '!=';
 				$this->_config['where'][$pkey]['value'] = null;
+			}else{
+				throw new \Exception("This table has not been set primary key. ({$this->_config['database']}.{$this->_config['table']})");
 			}
 		}
 
@@ -63,11 +70,11 @@ class pager
 		//	Get method variable name.
 		$this->_config['label'] = $config['label'] ?? 'page';
 
-		//	Current page.
+		//	Get current page.
 		$this->_config['page']  = (int)($config['page']  ?? $_GET[$this->_config['label']] ?? 1);
 
 		//	Paging conditions.
-		$this->_config['limit'] = $config['limit'] ?? 10; // Page per record.
+		$this->_config['limit']  = $config['limit'] ?? 10; // Page per record.
 		$this->_config['offset'] = $config['offset'] ?? (((int)$this->_config['page']) -1) * $this->_config['limit'];
 
 		//	...
