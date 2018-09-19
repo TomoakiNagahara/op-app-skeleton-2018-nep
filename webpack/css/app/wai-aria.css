@@ -1,0 +1,42 @@
+/**
+ * app-skeleton-webpack:/css/app/wai-aria.css
+ *
+ * @creation  2017-01-11
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+/** Table 
+ * 
+ * @see https://www.w3.org/TR/wai-aria-practices/examples/table/table.html
+ * @see https://www.w3.org/TR/wai-aria-practices/examples/table/css/table.css
+ */
+body.body div[role="table"] {
+	display: table;
+}
+
+body.body div[role="table"] div[role="tr"],
+body.body div[role="table"] div[role="row"],
+body.body div[role="table"] > div:not([role]) {
+	display: table-row;
+}
+
+body.body div[role="table"] div[role="th"],
+body.body div[role="table"] div[role="td"],
+body.body div[role="table"] > div:not([role]) > div:not([role]) {
+	vertical-align: middle;
+	display: table-cell;
+}
+
+body.body div[role="table"] div[role="th"],
+body.body div[role="table"] span[role="columnheader"] {
+	text-align:  center;
+	font-weight: bold;
+}
+
+body.body div[role="table"] div[role="td"],
+body.body div[role="table"] span[role="cell"] {
+	padding-left: 0.5em;
+}
