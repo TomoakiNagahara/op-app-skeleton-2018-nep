@@ -19,12 +19,12 @@ span.args > span.arg > span.quote:after {
 }
 
 span.args > span.arg > span.boolean.true {
-	color: #0000f0;
+	color: blue;
 }
 
 span.args > span.arg > span.null,
 span.args > span.arg > span.boolean.false {
-	color: #f00000;
+	color: red;
 }
 
 span.args > span.arg > span.number {
@@ -41,11 +41,11 @@ span.args > span.arg > span.double {
 }
 
 span.args > span.arg > span.array {
-	color: #c0c0f0;
+	color: purple;
 }
 
 span.args > span.arg > span.object {
-	color: #c0f0c0;
+	color: green;
 }
 
 span.args > span.arg > span.string > span.meta {
