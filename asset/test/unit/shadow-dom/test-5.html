@@ -1,0 +1,42 @@
+<?php
+/**
+ * unit-test:/unit/shadow-dom/test-5.html
+ *
+ * @creation  2018-09-19
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<app name="main"></app>
+<sdom name="app">
+	<div json="["apple","berry","cacao"]">
+		<item name="{value}">{index},{value}</item>
+	</div>
+</sdom>
+<sdom name="item">
+	<button onclick="ajax"> ajax </button>
+</sdom>
+<style>
+</style>
+<script>
+//	...
+<?php include('test-5-sdom.js') ?>
+
+//	...
+$OP.Path.Set('testcase', '<?= ConvertPath('testcase:/') ?>');
+
+//	...
+$app  = $OP.SDOM.Create('app');
+$item = $OP.SDOM.Create('item');
+
+//	...
+$app_main   = $app.Insert('main');
+/*
+$item_apple = $main.Insert('apple');
+$item_berry = $main.Insert('berry');
+$item_cocoa = $main.Insert('cocoa');
+*/
+//	...
+</script>
