@@ -12,8 +12,8 @@
 <hr/>
 <app></app>
 <hr/>
-<item></item>
-<item></item>
+<item json="{"value":"foo"}"></item>
+<item json="{"value":"bar"}"></item>
 <hr/>
 <sdom name="app">
 	<div>
@@ -29,7 +29,7 @@
 		</ul>
 
 		<!-- Extarnal shadow dom -->
-		<item></item>
+		<item json="{"value":"hoge"}"></item>
 
 		<!-- Control form -->
 		<form class="OP">
@@ -49,7 +49,7 @@
 	</div>
 </sdom>
 <sdom name="item">
-	<p>This is item!</p>
+	<p>This is item! ({value})</p>
 </sdom>
 <style>
 </style>
@@ -247,7 +247,7 @@ ShadowDom.prototype.Remove = function(){
 ShadowDom.prototype.Action = function(name, func){
 	//	...
 	if(!this.__name ){
-	//	console.error(`Has not been set name.`);
+		console.error(`Has not been set name.`);
 		return false;
 	};
 
