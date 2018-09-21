@@ -9,14 +9,28 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 ?>
+<hr/>
 <app name="main"></app>
+<hr/>
 <sdom name="app">
-	<div json="["apple","berry","cacao"]">
-		<item name="{value}">{index},{value}</item>
+	<p if="{ true }" >Insert is <span if="{ true }">successful</span><span if="{ false }">failure</span></p>
+	<p if="{ false }">If function was failure.</p>
+	<div for="{ this.json }" json='["apple","berry","cacao"]'>
+		<item name="{value}">{ index }, { value }</item>
 	</div>
 </sdom>
 <sdom name="item">
-	<button onclick="ajax"> ajax </button>
+	<span onclick="ajax">[ do ajax ! ]</span>
+	<style>
+	span {
+		border: 1px solid black;
+	};
+	</style>
+	<script>
+	function ajax(){
+		D('ajax!');
+	};
+	</script>
 </sdom>
 <style>
 </style>
@@ -33,10 +47,12 @@ $item = $OP.SDOM.Create('item');
 
 //	...
 $app_main   = $app.Insert('main');
-/*
-$item_apple = $main.Insert('apple');
-$item_berry = $main.Insert('berry');
-$item_cocoa = $main.Insert('cocoa');
-*/
+$item_apple = $item.Insert('apple');
+$item_berry = $item.Insert('berry');
+$item_cocoa = $item.Insert('cacao');
+
 //	...
+$item.Event('onclick', function(){
+
+});
 </script>
