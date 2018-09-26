@@ -41,10 +41,15 @@
 				//	...
 				if( name === dom.getAttribute('name') ){
 					//	...
-					__parser(dom);
+					if( __list[tag][name] ){
+						console.error(`This shadow dom was already exist.(${tag}, ${name})`);
+						return false;
+					};
 
 					//	...
-					__list[tag][name] = dom;
+					__list[tag][name] = __parser(dom);
+
+					//	...
 					break;
 				};
 			};
@@ -57,11 +62,17 @@
 		};
 
 		//	...
-		return __list[tag][name];
+		__script(name, __list[tag][name]['script']);
+
+		//	...
+		return __list[tag][name]['dom'];
 	};
 
 	//	...
-	function __parser(dom){
+	function __parser(dom, list){
+		//	...
+		list = {};
+
 		//	...
 		for(var tag of ['script','style']){
 			var st = dom.innerHTML.indexOf(`<${tag}>`);
@@ -71,12 +82,66 @@
 				var ad = 2 + tag.length;
 
 				//	...
-				D( dom.innerHTML.slice(st+ad,en) );
+				list[tag] = dom.innerHTML.slice(st+ad,en);
 
 				//	...
 				dom.innerHTML = dom.innerHTML.substr(0, st);
 			};
 		};
+
+		//	...
+		list['dom'] = dom;
+
+		//	...
+		return list;
+	};
+
+	//	...
+	function __script(sdom_name, script){
+		//	...
+		if(!script ){
+			return;
+		};
+
+		//	...
+		var st   = script.indexOf('function');
+		var en   = script.indexOf('(');
+		var name = script.slice(st+9, en);
+		var func = script.substr(en);
+
+		//	...
+		$OP.SDOM.Action.Set(sdom_name, name, function hoge(){d('hoge');});
+
+		D(st, en, name, func);
+	};
+
+	//	...
+	__action = {};
+
+	//	...
+	$OP.SDOM.Action = {};
+
+	//	...
+	$OP.SDOM.Action.Set = function(sdom_name, func_name, func){
+		//	...
+		if(!__action[sdom_name] ){
+			__action[sdom_name] = {};
+		};
+
+		//	...
+		if( __action[sdom_name][func_name] ){
+			console.error(`This function was already exists. (${sdom_name}, ${func_name})`);
+			return;
+		};
+
+		//	...
+		__action[sdom_name][func_name] = func;
+	};
+
+	//	...
+	$OP.SDOM.Action.Exe = function(sdom_name, func_name){
+		D(sdom_name, func_name, __action[sdom_name][func_name]);
+		return __action[sdom_name][func_name]();
 	};
 })();
 
@@ -237,7 +302,9 @@ ShadowDom.prototype.__On = function(dom){
 
 			//	...
 			var sdom_name = this.__name;
-			var func_name = temp.getAttribute(attr);;
+			var func_name = temp.getAttribute(attr);
+
+			D(sdom_name, func_name);
 
 			//	...
 			temp.setAttribute(attr, `return $OP.SDOM.Action.Exe('${sdom_name}', '${func_name}');`);
