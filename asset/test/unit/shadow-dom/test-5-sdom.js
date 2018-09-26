@@ -110,9 +110,7 @@
 		var func = script.substr(en);
 
 		//	...
-		$OP.SDOM.Action.Set(sdom_name, name, function hoge(){d('hoge');});
-
-		D(st, en, name, func);
+		$OP.SDOM.Action.Set(sdom_name, name, Function.call(null,"return function"+func)());
 	};
 
 	//	...
@@ -140,7 +138,6 @@
 
 	//	...
 	$OP.SDOM.Action.Exe = function(sdom_name, func_name){
-		D(sdom_name, func_name, __action[sdom_name][func_name]);
 		return __action[sdom_name][func_name]();
 	};
 })();
@@ -303,8 +300,6 @@ ShadowDom.prototype.__On = function(dom){
 			//	...
 			var sdom_name = this.__name;
 			var func_name = temp.getAttribute(attr);
-
-			D(sdom_name, func_name);
 
 			//	...
 			temp.setAttribute(attr, `return $OP.SDOM.Action.Exe('${sdom_name}', '${func_name}');`);
