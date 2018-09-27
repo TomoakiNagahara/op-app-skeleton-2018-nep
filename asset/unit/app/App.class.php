@@ -24,6 +24,7 @@ class App
 	 */
 	use OP_CORE, OP_SESSION;
 
+	//	...
 	static private $_DISPATCH_	 = 'OP\UNIT\NEWWORLD\Dispatch';
 	static private $_LAYOUT_	 = 'OP\UNIT\NEWWORLD\Layout';
 	static private $_ROUTER_	 = 'OP\UNIT\NEWWORLD\Router';
@@ -38,10 +39,15 @@ class App
 		$content = self::$_DISPATCH_::Get();
 
 		//	...
+		if( Env::isLocalhost() ){
+			$cache = false;
+		}
+
+		//	...
 		switch( $mime = Env::Mime() ){
 			case 'text/css':
 			case 'text/javascript':
-				$cache = true;
+				$cache = $cache ?? true;
 				break;
 
 			default:
