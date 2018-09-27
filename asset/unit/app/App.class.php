@@ -37,6 +37,18 @@ class App
 		//	Execute end-point.
 		$content = self::$_DISPATCH_::Get();
 
+		//	...
+		switch( $mime = Env::Mime() ){
+			case 'text/css':
+			case 'text/javascript':
+				$cache = true;
+				break;
+
+			default:
+				//	Set mime.
+				Env::Mime('text/html');
+		}
+
 		//	The content is wrapped in the Layout.
 		echo self::$_LAYOUT_::Get($content);
 	}
