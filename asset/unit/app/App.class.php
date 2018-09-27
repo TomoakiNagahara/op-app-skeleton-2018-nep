@@ -49,6 +49,29 @@ class App
 				Env::Mime('text/html');
 		}
 
+		//	Cache control.
+		if( $cache ?? false ){
+			//	Overwrite at empty.
+			header('Pragma: ', true);
+
+			//	Cache control.
+			$age    = 60*60*1;
+			header("Cache-Control: max-age={$age}", true);
+
+			/** This section is for http 1.0.
+			 *
+			 *  If not set "Cache-Control" header then search "Expires".
+			 *  If exists "Expires" header then subtraction from "Date" header. (Will to max-age)
+			 *  If has not been set both header then search "Last-modified" header. (Do automatic calculate)
+			 */
+			$date   = time();
+			$time   = $date + $age;
+			$date   = gmdate('D, j M Y H:i:s ', $date) . 'GMT';
+			$expire = gmdate('D, j M Y H:i:s ', $time) . 'GMT';
+			header("Date: {$date}", true);
+			header("Expires: {$expire}", true);
+		}
+
 		//	The content is wrapped in the Layout.
 		echo self::$_LAYOUT_::Get($content);
 	}
