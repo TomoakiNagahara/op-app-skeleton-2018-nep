@@ -62,7 +62,7 @@
 		};
 
 		//	...
-		__script(name, __list[tag][name]['script']);
+		__list[tag][name]['function'] = __script(name, __list[tag][name]['script']);
 
 		//	...
 		return __list[tag][name]['dom'];
@@ -104,13 +104,22 @@
 		};
 
 		//	...
+		var list = {};
+
+		//	...
 		var st   = script.indexOf('function');
 		var en   = script.indexOf('(');
 		var name = script.slice(st+9, en);
 		var func = script.substr(en);
 
 		//	...
-		$OP.SDOM.Action.Set(sdom_name, name, Function.call(null,"return function"+func)());
+		list[name] = func;
+
+		//	...
+		return list;
+
+		//	...
+//		$OP.SDOM.Action.Set(sdom_name, name, Function.call(null,"return function"+func)());
 	};
 
 	//	...
@@ -138,6 +147,12 @@
 
 	//	...
 	$OP.SDOM.Action.Exe = function(sdom_name, func_name){
+		if(!__action[sdom_name] || !__action[sdom_name][func_name] ){
+			console.error(`Has not been set this function. (sdom: ${sdom_name}, func: ${func_name})`);
+			return false;
+		}
+
+		//	...
 		return __action[sdom_name][func_name]();
 	};
 })();

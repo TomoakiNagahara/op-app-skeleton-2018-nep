@@ -28,7 +28,16 @@
 	</style>
 	<script>
 	function ajax(){
-		D('ajax!');
+		//	...
+		var url  = $OP.Path.Convert('testcase:/api');
+		var data = {};
+			data.ping = $OP.Date.Datetime();
+		//	...
+		$OP.Ajax.Post(url, data, function(json){
+				D(json);
+			}, function(){
+				console.error(url, data);
+			});
 	};
 	</script>
 </sdom>
