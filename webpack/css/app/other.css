@@ -28,6 +28,7 @@ body.body hr {
 	margin: 0.5em 0;
 }
 
+/* Where is this use? */
 body.body section.important {
 	padding: 0.5em 1em;
 	border: 1px solid  #F0F0E0;
@@ -59,4 +60,8 @@ body.body .float.center {
 
 body.body .float.right {
 	float: right;
+}
+
+body.body [onclick] {
+	cursor: pointer;
 }
