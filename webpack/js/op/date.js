@@ -20,13 +20,12 @@
 	 * @return object date
 	 */
 	$OP.Date.Get = function(datetime){
-		datetime = datetime.replace(/-/g,'/');
-		return new Date(datetime);
+		return new Date( datetime.replace(/-/g,'/') );
 	};
 
 	/** Get date string from data object.
 	 *
-	 * @param  object date
+	 * @param  object date|null
 	 * @return string datetime
 	 */
 	$OP.Date.Date = function(date){
@@ -56,7 +55,7 @@
 
 	/** Get date time string from object.
 	 *
-	 * @param  object date
+	 * @param  object date|null
 	 * @return string datetime
 	 */
 	$OP.Date.Datetime = function(date){
