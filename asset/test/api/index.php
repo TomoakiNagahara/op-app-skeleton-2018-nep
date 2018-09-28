@@ -12,6 +12,9 @@
 App::Layout(false);
 
 //	...
+Env::Mime('text/json');
+
+//	...
 $json = [
 	'status' => true,
 	'errors' => [],
