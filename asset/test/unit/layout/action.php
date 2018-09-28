@@ -24,3 +24,6 @@ __navigation($navs);
 
 //	...
 App::Template('index.phtml');
+
+//	Suppress 304 Not Modifiers header.
+Html( Time::Datetime() );
