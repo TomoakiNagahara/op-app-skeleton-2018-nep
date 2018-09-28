@@ -38,8 +38,9 @@ class App
 		//	Execute end-point.
 		$content = self::$_DISPATCH_::Get();
 
-		//	...
+		//	For developers.
 		if( Env::isLocalhost() ){
+			$etag  = true;
 			$cache = false;
 		}
 
@@ -47,16 +48,23 @@ class App
 		switch( $mime = Env::Mime() ){
 			case 'text/css':
 			case 'text/javascript':
+				$etag  = $etag  ?? true; // Add Etag to URL Query for JS and CSS.
 				$cache = $cache ?? true;
 				break;
 
 			default:
 				//	Set mime.
+				$etag = true;
 				Env::Mime('text/html');
 		}
 
+		//	Generate 304 Not Modified hash key by content.
+		if( $etag ){
+			$etag = Hasha1($content);
+		}
+
 		//	Cache control.
-		if( $cache ?? false ){
+		if( $etag || ($cache ?? false) ){
 			//	Overwrite at empty.
 			header('Pragma: ', true);
 
@@ -76,6 +84,24 @@ class App
 			$expire = gmdate('D, j M Y H:i:s ', $time) . 'GMT';
 			header("Date: {$date}", true);
 			header("Expires: {$expire}", true);
+		}
+
+		//	Submit Etag header.
+		if( $etag ){
+			//	...
+			$last_modified = filemtime( __FILE__ );
+			$last_modified = gmdate( "D, d M Y H:i:s T", $last_modified);
+
+			//	...
+			header("Last-Modified: {$last_modified}", true);
+			header("Etag: {$etag}", true);
+		}
+
+		//	Check 304 Not Modified.
+		if( $etag === filter_input( INPUT_SERVER, 'HTTP_IF_NONE_MATCH' ) ){
+			header('HTTP/1.1 304 Not Modified');
+			exit( ifset($_SERVER['HTTP_IF_NONE_MATCH']) );
+			return;
 		}
 
 		//	The content is wrapped in the Layout.
