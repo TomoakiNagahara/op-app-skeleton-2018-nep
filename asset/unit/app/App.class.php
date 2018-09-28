@@ -54,8 +54,20 @@ class App
 
 			default:
 				//	Set mime.
-				$etag = true;
 				Env::Mime('text/html');
+
+				//	Etag flag.
+				$etag = true;
+
+				/*
+				//	Get unique hash key.
+				$hash_js  = \OP\UNIT\WebPack::Hash('js');
+				$hash_css = \OP\UNIT\WebPack::Hash('css');
+
+				//	Add unique hash key.
+				$content .= "<!-- $hash_js, $hash_css -->\n";
+				*/
+			break;
 		}
 
 		//	Generate 304 Not Modified hash key by content.
@@ -78,29 +90,32 @@ class App
 			 *  If exists "Expires" header then subtraction from "Date" header. (Will to max-age)
 			 *  If has not been set both header then search "Last-modified" header. (Do automatic calculate)
 			 */
+			/*
 			$date   = time();
 			$time   = $date + $age;
 			$date   = gmdate('D, j M Y H:i:s ', $date) . 'GMT';
 			$expire = gmdate('D, j M Y H:i:s ', $time) . 'GMT';
 			header("Date: {$date}", true);
 			header("Expires: {$expire}", true);
+			*/
 		}
 
 		//	Submit Etag header.
 		if( $etag ){
+			/*
 			//	...
 			$last_modified = filemtime( __FILE__ );
 			$last_modified = gmdate( "D, d M Y H:i:s T", $last_modified);
 
 			//	...
 			header("Last-Modified: {$last_modified}", true);
+			*/
 			header("Etag: {$etag}", true);
 		}
 
 		//	Check 304 Not Modified.
 		if( $etag === filter_input( INPUT_SERVER, 'HTTP_IF_NONE_MATCH' ) ){
 			header('HTTP/1.1 304 Not Modified');
-			exit( ifset($_SERVER['HTTP_IF_NONE_MATCH']) );
 			return;
 		}
 
