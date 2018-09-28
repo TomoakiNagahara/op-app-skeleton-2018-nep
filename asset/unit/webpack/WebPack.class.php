@@ -52,19 +52,20 @@ class WebPack
 	 *
 	 * @param string       $extension
 	 * @param string|array $file_path
+	 * @param boolean      $prepend true is head, false is foot.
 	 */
-	static function Set($ext, $path)
+	static function Set($ext, $path, $prepend=false)
 	{
-		//	...
+		//	Check extension.
 		if( empty($ext) ){
 			Notice::Set("Has not been set extension.");
 			return;
 		}
 
-		//	...
+		//	Get session by extension.
 		$session = self::Session($ext);
 
-		//	...
+		//	Convert to array list.
 		if( is_string($path) ){
 			$list[] = $path;
 		}else if( is_array($path) ){
@@ -73,18 +74,18 @@ class WebPack
 			$list = [];
 		}
 
-		//	...
-		foreach( $list as $path ){
+		//	Add to head or foot.
+		if( empty($list) ){
 			//	...
-			$hash = Hasha1($path);
-
-			//	...
-			if( empty($session[$hash]) ){
-				$session[$hash] = $path;
-			}
+		}else if( empty($session) ){
+			$session = $list;
+		}else if( $prepend ){
+			$session = array_merge( $list, $session );
+		}else{
+			$session = array_merge( $session, $list );
 		}
 
-		//	...
+		//	Set session by extension.
 		self::Session($ext, $session);
 	}
 
@@ -120,7 +121,7 @@ class WebPack
 			echo "\n";
 		}
 
-		//	...
+		//	Set empty array.
 		self::Session($ext, []);
 	}
 
