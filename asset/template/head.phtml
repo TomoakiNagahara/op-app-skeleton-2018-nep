@@ -8,8 +8,14 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-//	...
+
+//	Get layout name
 $layout = App::Layout();
+
+//	Get webpack unique hash key.
+$hash_js  = \OP\UNIT\WebPack::Hash('js');
+$hash_css = \OP\UNIT\WebPack::Hash('css');
+
 ?>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -20,10 +26,10 @@ $layout = App::Layout();
 							 type="image/png"	 href="<?= ConvertURL("app:/img/icon.png") ?>" />
 
 <!-- JavaScript -->
-<script type="text/javascript" src="<?= ConvertURL("app:/webpack/js/?layout={$layout}") ?>"></script>
+<script type="text/javascript" src="<?= ConvertURL("app:/webpack/js/?layout={$layout}&hash={$hash_js}") ?>"></script>
 
 <!-- Stylesheet -->
-<link rel="stylesheet" type="text/css" href="<?= ConvertURL("app:/webpack/css/?layout={$layout}") ?>" />
+<link rel="stylesheet" type="text/css" href="<?= ConvertURL("app:/webpack/css/?layout={$layout}&hash={$hash_css}") ?>" />
 
 <!-- title -->
 <title><?= App::Title() ?></title>
