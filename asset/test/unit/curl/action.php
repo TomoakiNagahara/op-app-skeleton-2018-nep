@@ -35,10 +35,6 @@ $url = "http://{$host}{$uri}";
 $data['ping'] = true;
 
 //	...
-Html($url);
-Json($data, 'OP_DUMP');
-
-//	...
 switch( $method = $_GET['method'] ?? null ){
 	case 'get':
 		$result = \OP\UNIT\Curl::Get($url, $data);
@@ -49,9 +45,17 @@ switch( $method = $_GET['method'] ?? null ){
 		break;
 
 	default:
-		D('Please choose method.');
+		$result = 'Please choose method.';
+}
+
+//	...
+if( $method ){
+	Html($url);
+	Json($data, 'OP_DUMP');
 }
 
 //	...
 Html($result);
+
+//	...
 Json(json_decode($result, true), 'OP_DUMP');
