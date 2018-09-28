@@ -123,4 +123,12 @@ class WebPack
 		//	...
 		self::Session($ext, []);
 	}
+
+	/** Generate unique hash key by stacked files.
+	 *
+	 */
+	static function Hash($ext)
+	{
+		return Hasha1(self::Session($ext));
+	}
 }
