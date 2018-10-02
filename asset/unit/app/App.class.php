@@ -40,7 +40,7 @@ class App
 
 		//	For developers.
 		if( Env::isLocalhost() ){
-			$etag  = true;
+			$etag  = $_GET['etag'] ?? true;
 			$cache = false;
 		}
 
@@ -57,16 +57,15 @@ class App
 				Env::Mime('text/html');
 
 				//	Etag flag.
-				$etag = true;
+				$etag = $etag ?? true;
 
-				/*
 				//	Get unique hash key.
 				$hash_js  = \OP\UNIT\WebPack::Hash('js');
 				$hash_css = \OP\UNIT\WebPack::Hash('css');
 
 				//	Add unique hash key.
 				$content .= "<!-- $hash_js, $hash_css -->\n";
-				*/
+			//	$content .= "$hash_js, $hash_css";
 			break;
 		}
 
