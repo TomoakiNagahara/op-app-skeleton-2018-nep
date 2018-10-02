@@ -257,6 +257,9 @@ function Escape($var, $charset=null)
 			break;
 
 		case 'object':
+			/*
+			D("Objects are not yet supported.");
+			*/
 			$var = get_class($var);
 			break;
 
@@ -307,9 +310,9 @@ function _EscapeString($var, $charset='utf-8')
  *
  * This function is convert to fixed length unique string from long or short strings.
  *
- * @param  null|number|string|array|object $var
- * @param  number $length
- * @return string $hash
+ * @param  null|integer|float|string|array|object $var
+ * @param  integer $length
+ * @return string  $hash
  */
 function Hasha1($var, $length=8){
 	//	...
@@ -392,11 +395,11 @@ function Json($json, $attr)
 	//	Convert to json.
 	$json = json_encode($json);
 
-	//	...
+	//	Encode XSS. (Not escape quote)
 	$json = htmlentities($json, ENT_NOQUOTES, 'utf-8');
 
 	//	...
-	Html($json, 'div.'.$attr);
+	Html($json, 'div.'.$attr, false);
 }
 
 /** Display HTML.
@@ -407,11 +410,14 @@ function Json($json, $attr)
  *
  * @param	 string		 $string
  * @param	 string		 $config
+ * @param	 boolean	 $escape tag and quote
  */
-function Html($string, $attr=null)
+function Html($string, $attr=null, $escape=true)
 {
-	//	...
-	$string = Escape($string);
+	//	Escape tag and quote.
+	if( $escape ){
+		$string = Escape($string);
+	}
 
 	//	...
 	if( $attr ){
