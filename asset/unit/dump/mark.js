@@ -12,6 +12,24 @@
 	//	...
 	$OP.Mark = function(div){
 		//	...
+		if( div.getAttribute('op-mark-complete') ){
+			//	...
+			console.log('op-mark-complete');
+
+			//	...
+			var scripts = document.head.querySelectorAll('script');
+			for(var script of document.head.querySelectorAll('script')){
+				var source = script.getAttribute('src');
+				var queries= $OP.URL.Query.Parse( ((source + '?').split('?'))[1] );
+
+				//	...
+				console.log(script.getAttribute('src'));
+			};
+
+			return;
+		};
+
+		//	...
 		if( div.innerText.length < 1 ){
 			return;
 		}
@@ -39,11 +57,17 @@
 		div.appendChild(spans.file);
 		div.appendChild(spans.line);
 		div.appendChild(spans.args);
+
+		//	...
+		div.setAttribute('op-mark-complete', true);
 	}
 
 	//	...
 	document.addEventListener('DOMContentLoaded', function(){
+		//	...
 		var divs = document.querySelectorAll('div.OP_MARK');
+
+		//	...
 		for(var i=0; i<divs.length; i++){
 			$OP.Mark(divs[i]);
 		}
