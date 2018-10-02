@@ -97,21 +97,18 @@ class Dump
 			default:
 				//	...
 				if( \Unit::Load('webpack') ){
-					//	...
-					\OP\UNIT\WebPack::Js(
-					[__DIR__.'/mark',
-					 __DIR__.'/mark']
-					);
-
-					//	...
-					\OP\UNIT\WebPack::Js( __DIR__.'/dump' );
-					\OP\UNIT\WebPack::Css(
-					[__DIR__.'/mark',
-					 __DIR__.'/dump']
-					);
+					//	Set to webpack list.
+					static $is_webpack;
+					if(!$is_webpack ){
+						$is_webpack = true;
+						//	..
+						\OP\UNIT\WebPack::Js( [__DIR__.'/mark', __DIR__.'/dump']);
+						\OP\UNIT\WebPack::Css([__DIR__.'/mark', __DIR__.'/dump']);
+					}
 				}
 				//	...
 				self::MarkHtml($args, $trace);
+			break;
 		}
 	}
 
