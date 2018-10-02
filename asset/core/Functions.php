@@ -119,13 +119,13 @@ function ConvertURL($url)
 		$result = substr($url, strlen($_SERVER['DOCUMENT_ROOT']));
 
 	}else{
-		//	...
+		//	What is this?
 		$key = ':/';
 
-		//	...
+		//	???
 		$len = strpos($url, $key) + strlen($key);
 
-		//	...
+		//	Why?
 		foreach( _GetRootsPath() as $key => $dir ){
 			//	match
 			if( strpos($url, $key) === 0 ){
@@ -145,7 +145,13 @@ function ConvertURL($url)
 	}
 
 	//	Add slash. (Anti Apache's automatic transfer)
-	if( $pos = strrpos($url, '/') ){
+	$len = strlen($url);
+	$pos = strrpos($url, '/');
+
+	//	...
+	if( $len === ($pos+1) ){
+		//	...
+	}else{
 		$tmp = substr($url, $pos+1);
 		if( strpos($tmp, '.') ){
 			//	/foo/bar/index.html
