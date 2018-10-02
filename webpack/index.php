@@ -50,19 +50,13 @@ switch( $ext ){
 		$list = [];
 }
 
-//	...
+//	Load webpack unit.
 if(!Unit::Load('webpack') ){
 	return;
 }
 
-//	...
-$store = OP\UNIT\Webpack::Get($ext);
+//	Add to head of list.
+OP\UNIT\WebPack::Set($ext, $list, true);
 
-//	...
-OP\UNIT\WebPack::Set($ext, $list);
-
-//	...
+//	Output packing string.
 OP\UNIT\Webpack::Out($ext);
-
-//	...
-echo $store;
