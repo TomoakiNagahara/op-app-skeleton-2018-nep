@@ -65,12 +65,15 @@ class WebPack
 		//	Get session by extension.
 		$session = self::Session($ext);
 
-		//	Convert to array list.
+		//	Convert to array.
 		if( is_string($path) ){
+			//	String to array.
 			$list[] = $path;
 		}else if( is_array($path) ){
+			//	Array to array.
 			$list = $path;
 		}else{
+			//	Empty array.
 			$list = [];
 		}
 
@@ -84,6 +87,14 @@ class WebPack
 		}else{
 			$session = array_merge( $session, $list );
 		}
+
+		/** The array_unique function is remove duplicate value from array.
+		 *
+		 *  Do not use array_search function.
+		 *  1. Because, the search for duplicate values of arrays is only string. (needle is not support array)
+		 *  2. And, passed argument value there is a already duplicate possibility.
+		 */
+		$session = array_unique($session);
 
 		//	Set session by extension.
 		self::Session($ext, $session);
