@@ -15,41 +15,6 @@ if( typeof $OP.URL === "undefined" ){
 //	...
 (function(){
 	//	...
-	var queries = {};
-
-	//	...
-	location.search.substr(1).replace(/&amp;/g,'%26').split('&').map(function(v){
-		//	...
-		var tmp = v.split('=');
-		if( tmp.length !== 2 ){
-			tmp = ['',''];
-		};
-
-		//	...
-		var key = tmp[0];
-		var val = decodeURIComponent(tmp[1].replace(/\+/g,' '));
-
-		//	For checkbox.
-		if( key.match(/%5B%5D$/) ){
-			key = key.replace(/%5B%5D$/,'');
-			if( queries[key] === undefined ){
-				queries[key] = [];
-			};
-		};
-
-		//	...
-		if( 'object' === typeof queries[key] ){
-			if( queries[key] instanceof Array ){
-				queries[key].push(val);
-			}else{
-				console.error(key, queries[key]);
-			};
-		}else{
-			queries[key] = val;
-		};
-	});
-
-	//	...
 	$OP.URL.Protocol = function(){
 		return location.Protocol;
 	};
@@ -61,6 +26,47 @@ if( typeof $OP.URL === "undefined" ){
 
 	//	...
 	$OP.URL.Query = {};
+
+	//	...
+	$OP.URL.Query.Parse = function(query){
+		//	...
+		var queries = {};
+
+		//	...
+		query.substr(1).replace(/&amp;/g,'%26').split('&').map(function(v){
+			//	...
+			var tmp = v.split('=');
+			if( tmp.length !== 2 ){
+				tmp = ['',''];
+			};
+
+			//	...
+			var key = tmp[0];
+			var val = decodeURIComponent(tmp[1].replace(/\+/g,' '));
+
+			//	For checkbox.
+			if( key.match(/%5B%5D$/) ){
+				key = key.replace(/%5B%5D$/,'');
+				if( queries[key] === undefined ){
+					queries[key] = [];
+				};
+			};
+
+			//	...
+			if( 'object' === typeof queries[key] ){
+				if( queries[key] instanceof Array ){
+					queries[key].push(val);
+				}else{
+					console.error(key, queries[key]);
+				};
+			}else{
+				queries[key] = val;
+			};
+		});
+
+		//	...
+		return queries;
+	};
 
 	//	...
 	$OP.URL.Query.Get = function(key, def){
@@ -124,4 +130,7 @@ if( typeof $OP.URL === "undefined" ){
 		//	...
 		return url.length === 1 ? url : url.slice(0, -1);
 	};
+
+	//	Initialize of accessed URL Query. (And remove of "?")
+	var queries = $OP.URL.Query.Parse( location.search.substr(1) );
 })();
