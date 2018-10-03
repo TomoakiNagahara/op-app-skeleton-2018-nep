@@ -62,6 +62,7 @@ class App
 				$etag = $etag ?? true;
 
 				//	Get unique hash key.
+				Unit::Load('webpack');
 				$hash_js  = \OP\UNIT\WebPack::Hash('js');
 				$hash_css = \OP\UNIT\WebPack::Hash('css');
 
