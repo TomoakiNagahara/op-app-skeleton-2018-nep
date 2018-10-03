@@ -23,7 +23,11 @@ $list = App::Session('testcase-menu') ?? $list = ['core'=>[],'unit'=>[]];
 
 //	Search directory recursively.
 $args = App::Args();
+
+//	...
 $target = &$list;
+
+//	...
 while( $arg = array_shift($args) ){
 	//	Build recursively.
 	$target = &$target[$arg];
@@ -57,7 +61,7 @@ while( $arg = array_shift($args) ){
 function _list($list, $dir){
 	echo '<ul>';
 	foreach( $list as $key => $var ){
-		printf('<li><a href="%s">%s</a></li>', $dir.$key, $key);
+		printf('<li><a href="%s">%s</a></li>', $dir.$key.'/', $key);
 		if( $var and is_array($var) ){
 			_list($var, $dir.$key.'/');
 		}
