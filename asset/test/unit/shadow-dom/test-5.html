@@ -20,7 +20,7 @@
 	</div>
 </sdom>
 <sdom name="item">
-	<span onclick="ajax">[ do ajax ! ]</span>
+	<span onclick="ajax" index="{index}" value="{value}">[ do ajax ! ]</span>
 	<style>
 	span {
 		border: 1px solid black;
@@ -28,13 +28,16 @@
 	</style>
 	<script>
 	function ajax(){
+
+		console.log(this);
+
 		//	...
 		var url  = $OP.Path.Convert('testcase:/api');
 		var data = {};
 			data.ping = $OP.Date.Datetime();
 		//	...
 		$OP.Ajax.Post(url, data, function(json){
-				D(json);
+				console.log(url, data, json);
 			}, function(){
 				console.error(url, data);
 			});
@@ -45,7 +48,8 @@
 </style>
 <script>
 //	...
-<?php include('test-5-sdom.js') ?>
+<?php include('test-5-sdom-core.js') ?>
+<?php include('test-5-sdom-obj.js') ?>
 
 //	...
 $OP.Path.Set('testcase', '<?= ConvertPath('testcase:/') ?>');
