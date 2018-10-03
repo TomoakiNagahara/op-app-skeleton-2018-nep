@@ -47,6 +47,8 @@ class App
 		//	...
 		switch( $mime = Env::Mime() ){
 			case 'text/css':
+			case 'text/json':
+			case 'text/jsonp':
 			case 'text/javascript':
 				$etag  = $etag  ?? true; // Add Etag to URL Query for JS and CSS.
 				$cache = $cache ?? true;
