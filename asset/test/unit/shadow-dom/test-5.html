@@ -16,11 +16,14 @@
 	<p if="{ true }" >Insert is <span if="{ true }">successful</span><span if="{ false }">failure</span></p>
 	<p if="{ false }">If function was failure.</p>
 	<div for="{ this.json }" json='["apple","berry","cacao"]'>
-		<item name="{value}">{ index }, { value }</item>
+		<item name="fruit">fruit { index } is { value }</item><br/>
 	</div>
+	<!--
+	<item name="{value}">{ index }, { value }</item>
+	 -->
 </sdom>
 <sdom name="item">
-	<span onclick="ajax" index="{index}" value="{value}">[ do ajax ! ]</span>
+	<span onclick="ajax" index="{ index }" value="{ value }">[ { value } is do ajax ! ]</span>
 	<style>
 	span {
 		border: 1px solid black;
@@ -28,13 +31,13 @@
 	</style>
 	<script>
 	function ajax(){
-
-		console.log(this);
-
 		//	...
 		var url  = $OP.Path.Convert('testcase:/api');
 		var data = {};
 			data.ping = $OP.Date.Datetime();
+			data.index = this.getAttribute('index');
+			data.value = this.getAttribute('value');
+
 		//	...
 		$OP.Ajax.Post(url, data, function(json){
 				console.log(url, data, json);
@@ -55,13 +58,14 @@
 $OP.Path.Set('testcase', '<?= ConvertPath('testcase:/') ?>');
 
 //	...
-$app  = $OP.SDOM.Create('app');
-$item = $OP.SDOM.Create('item');
+$sdom_app  = $OP.SDOM.Create('app');
+$sdom_item = $OP.SDOM.Create('item');
 
 //	...
-$app_main   = $app.Insert('main');
-$item_apple = $item.Insert('apple');
-$item_berry = $item.Insert('berry');
-$item_cocoa = $item.Insert('cacao');
+$sdom_app_main   = $sdom_app. Insert(document,  'main');
+$sdom_item_fruit = $sdom_item.Insert($sdom_app, 'fruit');
+
+//	...
+$sdom_app.Update();
 
 </script>

@@ -13,13 +13,18 @@ var ShadowDom = function(name){
 	this.__name   = name;
 
 	//	...
-	var dom = $OP.SDOM.Get(document, 'sdom', name);
+	var dom = $OP.SDOM.Get('sdom', name);
 
 	//	...
 	this.__html = dom.innerHTML;
 
 	//	...
 	dom.innerHTML = '';
+
+	/*
+	this.__dom = document.createElement('div');
+	this.__dom.innerHTML = this.__html;
+	*/
 };
 
 //	...
@@ -29,7 +34,10 @@ ShadowDom.prototype.Build = function(){
 		dom.innerHTML = this.__html;
 
 	//	...
-//	this.__Json(dom);
+	this.__Child(dom);
+
+	//	...
+	this.__Json(dom);
 
 	//	...
 	this.__Dom(dom);
@@ -42,7 +50,7 @@ ShadowDom.prototype.Build = function(){
 	var name_2 = this.__insert_name;
 
 	//	...
-	var temp = $OP.SDOM.Get(document, this.__name, this.__insert_name);
+	var temp = $OP.SDOM.Get(this.__name, this.__insert_name);
 	if(!temp ){
 		return;
 	};
@@ -52,9 +60,17 @@ ShadowDom.prototype.Build = function(){
 };
 
 //	...
-ShadowDom.prototype.Insert = function(name){
+ShadowDom.prototype.Insert = function(root_dom, name){
+	//	...
+	this.__root = root_dom;
+
 	//	...
 	this.__insert_name = name;
+
+	//	...
+	if( root_dom.Child ){
+		root_dom.Child(this, name);
+	};
 
 	//	...
 	this.Build();
@@ -70,6 +86,102 @@ ShadowDom.prototype.Update = function(){
 ShadowDom.prototype.Remove = function(){
 	//	...
 	this.__insert_point.innerHTML = '';
+};
+
+//...
+ShadowDom.prototype.Child = function(sdom, name){
+	//	...
+	if(!this.__child ){
+		this.__child = {};
+	};
+
+	//	...
+	this.__child[name] = sdom;
+};
+
+//	...
+ShadowDom.prototype.__Child = function(dom){
+	for(var name in this.__child ){
+		var sdom  = this.__child[name];
+
+		//	...
+		sdom_name = sdom.__name;
+		attr_name = name;
+
+		//	...
+		var list = dom.querySelectorAll(sdom_name);
+		for(var i=0; i<list.length; i++){
+			//	Check attribute name.
+			if( list[i].getAttribute('name') !== attr_name ){
+				continue;
+			}
+
+			//	Insert child Shadow-DOM.
+			list[i].innerHTML = sdom.__html;
+		};
+	};
+};
+
+//...
+ShadowDom.prototype.__Json = function(dom){
+	//	...
+	var json = this.__json;
+
+	//	...
+	dom.innerHTML = dom.innerHTML.replace(/(\{\s*(json[\w\.]*)\s*\})/g, function(match, offset, string){
+		//	...
+		var list = string.split('.');
+		var key  = null;
+		var val  = null;
+		var type = null;
+
+		//	...
+		if( list.length === 1 ){
+			val = json;
+		}else{
+			//	json.foo.bar --> foo.bar
+			var root = list.shift();
+
+			//	...
+			while( key = list.shift() ){
+				//	...
+			//	val = val ? val[key]: json[key];
+
+				//	...
+				if( val ){
+					val = val[key];
+				}else{
+					val = json[key];
+				}
+
+				//	...
+				type = typeof val;
+
+				//	...
+				switch( type ){
+					case 'undefined':
+						D(key, type);
+						return 'undefined';
+
+					case 'boolean':
+						return val ? 'true': 'false';
+
+					case 'number':
+					case 'string':
+						return val;
+
+					case 'object':
+						break;
+
+					default:
+						console.log(json, type, key, val);
+				};
+			};
+		};
+
+		//	...
+		return JSON.stringify(val).replace(/'/, "\\'").replace(/"/g, "'");
+	});
 };
 
 //	...
