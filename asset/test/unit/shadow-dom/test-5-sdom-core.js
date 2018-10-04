@@ -15,13 +15,17 @@
 	//	...
 	$OP.SDOM = {};
 
-	//	...
+	/** Create ShadowDom object.
+	 *
+	 * @param	 string		 SDOM tag name attribute.
+	 * @return	 object		 ShadowDom
+	 */
 	$OP.SDOM.Create = function(name){
 		return new ShadowDom(name);
 	};
 
 	//	...
-	$OP.SDOM.Get = function(root, tag, name){
+	$OP.SDOM.Get = function(tag, name){
 		//	...
 		if(!__list[tag] ){
 			__list[tag] = {};
@@ -29,9 +33,9 @@
 
 		//	...
 		if( __list[tag][name] ){
-			//	Exist
+			//	Already found.
 		}else{
-			//	Search
+			//	Do search.
 			var list = document.getElementsByTagName(tag);
 
 			//	...
@@ -114,9 +118,6 @@
 
 		//	...
 		$OP.SDOM.Action.Set(sdom_name, name, func);
-
-		//	...
-//		$OP.SDOM.Action.Set(sdom_name, name, Function.call(null,"return function"+func)());
 
 		//	...
 		list[name] = func;
