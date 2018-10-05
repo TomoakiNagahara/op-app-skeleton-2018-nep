@@ -47,6 +47,6 @@ class Japan
 	function Tax($date)
 	{
 		include_once('Tax.class.php');
-		return JAPAN\Tax::Get($date);
+		return JAPAN\Tax::Rate($date);
 	}
 }
