@@ -16,6 +16,9 @@ var ShadowDom = function(name){
 	var dom = $OP.SDOM.Get('sdom', name);
 
 	//	...
+	this.__On(dom);
+
+	//	...
 	this.__html = dom.innerHTML;
 
 	//	...
@@ -41,9 +44,6 @@ ShadowDom.prototype.Build = function(){
 
 	//	...
 	this.__Dom(dom);
-
-	//	...
-	this.__On(dom);
 
 	//	...
 	var name_1 = this.__name;
