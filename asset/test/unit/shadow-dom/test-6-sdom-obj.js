@@ -1,7 +1,7 @@
 /**
- * unit-test:/unit/shadow-dom/test-5-obj.js
+ * unit-test:/unit/shadow-dom/test-6-obj.js
  *
- * @creation  2018-10-03
+ * @creation  2018-10-05
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
