@@ -10,7 +10,7 @@
 //	...
 (function(){
 	//	...
-	__list = {};
+	var __list = {};
 
 	//	...
 	$OP.SDOM = {};
@@ -57,6 +57,9 @@
 					break;
 				};
 			};
+
+			//	...
+			__style(name, __list[tag][name]['style']);
 		};
 
 		//	...
@@ -98,6 +101,26 @@
 
 		//	...
 		return list;
+	};
+
+	//	...
+	function __style(name, source){
+		//	...
+		if(!source ){
+			return;
+		};
+
+		//	...
+		var style = document.createElement('style');
+			style.setAttribute('name', name);
+
+		//	...
+		style.innerHTML = source.replace(/[\t\s]*(.+)\{/g, function(match, p1, offset, string){
+			return "\n" + name + ' ' + p1 + '{';
+		});
+
+		//	...
+		document.getElementsByTagName('body')[0].appendChild(style);
 	};
 
 	//	...

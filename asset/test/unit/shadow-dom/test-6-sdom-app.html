@@ -1,0 +1,28 @@
+<?php
+/**
+ * unit-test:/unit/shadow-dom/test-6-sdom-app.html
+ *
+ * @creation  2018-10-09
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<sdom name="app">
+	<p onclick="onclick">Style is scoped!!</p>
+	<style>
+	p {
+		color: blue;
+	}
+	span.test {
+		color: blue;
+	}
+	</style>
+	<script>
+	//	...
+	function onclick(){
+		D(this.innerText);
+	};
+	</script>
+</sdom>

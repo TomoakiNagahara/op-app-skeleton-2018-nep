@@ -12,4 +12,4 @@
 //D($_GET, $_POST);
 
 //	...
-include('test-5.html');
+include('test-6.html');
