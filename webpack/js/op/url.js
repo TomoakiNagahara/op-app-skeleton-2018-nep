@@ -33,7 +33,7 @@ if( typeof $OP.URL === "undefined" ){
 		var queries = {};
 
 		//	...
-		query.substr(1).replace(/&amp;/g,'%26').split('&').map(function(v){
+		query.replace(/&amp;/g,'%26').split('&').map(function(v){
 			//	...
 			var tmp = v.split('=');
 			if( tmp.length !== 2 ){
