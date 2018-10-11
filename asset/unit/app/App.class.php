@@ -227,6 +227,30 @@ class App
 		OP\UNIT\WebPack::Set($ext, $path);
 	}
 
+	/** Get to transparently GET or POST.
+	 *
+	 * @return array $request
+	 */
+	static function Request()
+	{
+		//	...
+		$method = $_SERVER['REQUEST_METHOD'];
+
+		//	...
+		switch( $method ){
+			case 'GET':
+				$request = $_GET;
+				break;
+
+			case 'POST':
+				$request = $_POST;
+				break;
+		}
+
+		//	...
+		return Escape( $request ?? [] );
+	}
+
 	/** Get/Set title.
 	 *
 	 * @param	 string	 $title
