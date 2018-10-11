@@ -359,6 +359,19 @@ class Database implements \IF_DATABASE
 		return $this->Query($this->_SQL->Show($config, $this), 'show');
 	}
 
+	/** Get field name of primary key.
+	 *
+	 * @param	 string	 $database
+	 * @param	 string	 $table
+	 * @return	 string	 $pkey
+	 */
+	function PKey($database, $table)
+	{
+		$database = $this->Quote($database);
+		$table    = $this->Quote($table);
+		return $this->Query("SHOW INDEX FROM {$database}.{$table}", 'show')['PRIMARY'][1]['Column_name'] ?? null;
+	}
+
 	/** Do QQL.
 	 *
 	 * {@inheritDoc}
