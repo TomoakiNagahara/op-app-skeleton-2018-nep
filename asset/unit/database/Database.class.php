@@ -349,6 +349,16 @@ class Database implements \IF_DATABASE
 		return $this->SQL($config, __FUNCTION__);
 	}
 
+	/** Get database or table or user.
+	 *
+	 * @param	 array	 $config
+	 * @return	 array	 $array
+	 */
+	function Show($config)
+	{
+		return $this->Query($this->_SQL->Show($config, $this), 'show');
+	}
+
 	/** Do QQL.
 	 *
 	 * {@inheritDoc}
