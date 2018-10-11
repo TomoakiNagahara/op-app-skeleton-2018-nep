@@ -3,33 +3,18 @@ onepiece-frameworks SQL unit
 
 This is just SQL generate. Not throw query.
 
+## How to use
+
+### Instantiate
+
 ```
-/* @var $db \OP\UNIT\Database */
-if(!$db = Unit::Instance('Database') ){
-    throw new Exception('Instance of the Database unit was failed.');
-}
+$sql = Unit::Instance('SQL');
+```
 
-/* @var $sql \OP\UNIT\SQL */
-if(!$sql = Unit::Instance('SQL') ){
-    throw new Exception('Instance of the Database unit was failed.');
-}
+### Select
 
-//  Configuration.
-$config = [
-    'prod'     => 'mysql',
-    'host'     => 'localhost',
-    'port'     => '3306',
-    'user'     => 'testcase',
-    'password' => 'password',
-    'database' => 'testcase',
-];
-
-//  Connect to database by configuration.
-if(!$io = $db->Connect($config) ){
-    throw new Exception('Connect to database was failed.');
-}
-
-//  Select
+```
+//  Select configuration.
 $config = [
   'table' = 'table_name',
   'limit' = 1,
@@ -38,9 +23,14 @@ $config = [
   ],
 ];
 
-D( $sql->Select($config, $db) );
+//  Generate SQL query.
+$query = $sql->Select($config, $db);
+```
 
-//  Insert
+### Insert
+
+```
+//  Insert configuration.
 $config = [
   'table' = 'table_name',
   'set'  = [
@@ -49,8 +39,13 @@ $config = [
   ],
 ];
 
-D( $sql->Insert($config, $db) );
+//  Generate SQL query.
+$query = $sql->Insert($config, $db);
+```
 
+### Update
+
+```
 //  Update
 $config = [
   'table' = 'table_name',
@@ -64,8 +59,13 @@ $config = [
   ],
 ];
 
-D( $sql->Update($config, $db) );
+//  Generate SQL query.
+$query = $sql->Update($config, $db);
+```
 
+### Delete
+
+```
 //  Delete
 $config = [
   'table' = 'table_name',
@@ -75,5 +75,6 @@ $config = [
   ],
 ];
 
-D( $sql->Delete($config, $db) );
+//  Generate SQL query.
+$query = $sql->Delete($config, $db);
 ```
