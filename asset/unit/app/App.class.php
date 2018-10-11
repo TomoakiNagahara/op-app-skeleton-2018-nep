@@ -59,16 +59,24 @@ class App
 				Env::Mime('text/html');
 
 				//	Etag flag.
-				$etag = $etag ?? true;
+				if( $etag = $etag ?? true ){
+					//	Check if Notice occurring.
+					if( Notice::Has() ){
+						//	Finger print is microtime.
+						$fp = microtime();
+					}else{
+						//	Get unique hash key.
+						Unit::Load('webpack');
+						$hash_js  = \OP\UNIT\WebPack::Hash('js');
+						$hash_css = \OP\UNIT\WebPack::Hash('css');
 
-				//	Get unique hash key.
-				Unit::Load('webpack');
-				$hash_js  = \OP\UNIT\WebPack::Hash('js');
-				$hash_css = \OP\UNIT\WebPack::Hash('css');
+						//	Finger print is unique hash key.
+						$fp = "$hash_js, $hash_css";
+					}
 
-				//	Add unique hash key.
-				$content .= "<!-- $hash_js, $hash_css -->\n";
-			//	$content .= "$hash_js, $hash_css";
+					//	Add finger print for reload.
+					$content .= "<!-- $fp -->";
+				}
 			break;
 		}
 
