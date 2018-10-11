@@ -246,7 +246,6 @@ class Database implements \IF_DATABASE
 
 	/** Count number of record at conditions.
 	 *
-	 * {@inheritDoc}
 	 * @see		\IF_DATABASE::Count()
 	 * @param	 array		 $config
 	 * @return	 integer	 $count
@@ -255,28 +254,6 @@ class Database implements \IF_DATABASE
 	{
 		$count = $this->SQL($config, __FUNCTION__);
 		return empty($count) ? 0: (int)$count;
-	}
-
-	/** Insert new record.
-	 *
-	 * <pre>
-	 * //	Configuration.
-	 * $config = [];
-	 * $config['table'] = 't_table';
-	 * $config['set']['value'] = $value;
-	 *
-	 * //	Execute.
-	 * $new_id = $db->Insert($config);
-	 * </pre>
-	 *
-	 * {@inheritDoc}
-	 * @see		\IF_DATABASE::Insert()
-	 * @param	 array		 $config
-	 * @return	 integer	 $new_id
-	 */
-	function Insert($config)
-	{
-		return $this->SQL($config, __FUNCTION__);
 	}
 
 	/** Select record at conditions.
@@ -292,12 +269,32 @@ class Database implements \IF_DATABASE
 	 * $record = $db->Select($config);
 	 * </pre>
 	 *
-	 * {@inheritDoc}
 	 * @see		\IF_DATABASE::Select()
 	 * @param	 array		 $config
 	 * @return	 array		 $record
 	 */
 	function Select($config)
+	{
+		return $this->SQL($config, __FUNCTION__);
+	}
+
+	/** Insert new record.
+	 *
+	 * <pre>
+	 * //	Configuration.
+	 * $config = [];
+	 * $config['table'] = 't_table';
+	 * $config['set']['value'] = $value;
+	 *
+	 * //	Execute.
+	 * $new_id = $db->Insert($config);
+	 * </pre>
+	 *
+	 * @see		\IF_DATABASE::Insert()
+	 * @param	 array		 $config
+	 * @return	 integer	 $new_id
+	 */
+	function Insert($config)
 	{
 		return $this->SQL($config, __FUNCTION__);
 	}
@@ -316,7 +313,6 @@ class Database implements \IF_DATABASE
 	 * $record = $db->Update($config);
 	 * </pre>
 	 *
-	 * {@inheritDoc}
 	 * @see		\IF_DATABASE::Update()
 	 * @param	 array		 $config
 	 * @return	 integer	 $number
@@ -339,7 +335,6 @@ class Database implements \IF_DATABASE
 	 * $record = $db->Delete($config);
 	 * </pre>
 	 *
-	 * {@inheritDoc}
 	 * @see		\IF_DATABASE::Delete()
 	 * @param	 array		 $config
 	 * @return	 integer	 $number
@@ -374,7 +369,6 @@ class Database implements \IF_DATABASE
 
 	/** Do QQL.
 	 *
-	 * {@inheritDoc}
 	 * @see		\IF_DATABASE::Quick()
 	 * @param	 string		 $qql
 	 * @param	 array		 $options
@@ -388,7 +382,6 @@ class Database implements \IF_DATABASE
 
 	/** Do Quote by each product.
 	 *
-	 * {@inheritDoc}
 	 * @see		\IF_DATABASE::Quote()
 	 * @param	 string		$value
 	 * @return	 string		$value
