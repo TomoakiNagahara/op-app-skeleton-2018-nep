@@ -508,4 +508,13 @@ class Database implements \IF_DATABASE
 	{
 		return $this->_queries;
 	}
+
+	/** Display debug information.
+	 *
+	 * @see IF_DATABASE::Debug()
+	 */
+	function Debug()
+	{
+		D($this->_queries);
+	}
 }
