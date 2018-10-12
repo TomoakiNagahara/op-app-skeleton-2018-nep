@@ -124,26 +124,74 @@
 	};
 
 	//	...
-	function __script(sdom_name, script){
+	function __script(sdom_name, source){
 		//	...
-		if(!script ){
+		if(!source ){
 			return;
 		};
 
 		//	...
-		var list = {};
+		var list    = {};
+		var scripts = {};
 
 		//	...
-		var st   = script.indexOf('function');
-		var en   = script.indexOf('(');
-		var name = script.slice(st+9, en);
-		var func = script.substr(en);
+		var r = new RegExp(/function ([-_a-z0-9]+) ?\(\)\ ?{/i);
+		do{
+			//	...
+			var i = source.search(r);
+			if( i === -1 ){
+				break;
+			};
+
+			//	...
+			source = source.substr(i);
+
+			//	...
+			var match  = source.match(r);
+			var length = match[0].length -1;
+			var name   = match[1];
+
+			//	...
+			source = source.substr(length);
+
+			//	...
+			var br = 0;
+			for(var i=0; i<source.length; i++){
+				//	...
+				switch( source[i] ){
+					case '{':
+						br++;
+						break;
+					case '}':
+						br--;
+						break;
+				};
+
+				//	...
+				if( br === 0 ){
+					//	...
+					var script = source.substr(0, i+1);
+
+					//	...
+					source = source.substr( script.length );
+
+					//	...
+					scripts[name] = script + ';';
+					break;
+				}
+			};
+		}while( source.length );
 
 		//	...
-		$OP.SDOM.Action.Set(sdom_name, name, func);
+		for(var name in scripts ){
+			var func = scripts[name];
 
-		//	...
-		list[name] = func;
+			//	...
+			$OP.SDOM.Action.Set(sdom_name, name, func);
+
+			//	...
+			list[name] = func;
+		};
 
 		//	...
 		return list;
@@ -183,10 +231,19 @@
 		//	...
 		var func = __action[sdom_name][func_name];
 
-		//	...
-		eval(`function kage ${func}`);
+		//	Init return value.
+		var result = false;
 
-		//	...
-		return kage.call(dom);
+		//	Closed scope.
+		(function(){
+			//	Create function in closed scope.
+			eval(`function kage () ${func}`);
+
+			//	Function execute.
+			result = kage.call(dom);
+		})();
+
+		//	Return false is to suppress form submit.
+		return result ? result: false;
 	};
 })();

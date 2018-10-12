@@ -11,6 +11,11 @@
 ?>
 <sdom name="app">
 	<p onclick="onclick">Style is scoped!!</p>
+	<form class="OP">
+		<button onclick="item_insert"> Insert item </button>
+		<button onclick="item_remove"> Remove item </button>
+		<span onclick="item_remove">button</span>
+	</form>
 	<style>
 	p {
 		color: blue;
@@ -21,8 +26,18 @@
 	</style>
 	<script>
 	//	...
-	function onclick(){
+	function onclick () {
 		D(this.innerText);
+	};
+
+	//	...
+	function item_insert () {
+		d('insert');
+	};
+
+	//	...
+	function item_remove () {
+		d('remove');
 	};
 	</script>
 </sdom>
