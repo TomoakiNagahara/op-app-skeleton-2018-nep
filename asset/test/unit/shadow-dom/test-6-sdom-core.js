@@ -11,6 +11,7 @@
 (function(){
 	//	...
 	var __list = {};
+	var __sdom = {};
 
 	//	...
 	$OP.SDOM = {};
@@ -25,7 +26,33 @@
 	};
 
 	//	...
-	$OP.SDOM.Get = function(tag, name){
+	$OP.SDOM.Get = function(tag_name, attr_name){
+		//	...
+		if(!__sdom ){
+			__sdom = {};
+		};
+
+		//	...
+		if(!__sdom[tag_name] ){
+			__sdom[tag_name] = {};
+		};
+
+		//	...
+		if( __sdom[tag_name][attr_name] ){
+			//	Already exists.
+		}else{
+			//	...
+			$sdom = $OP.SDOM.Create(tag_name);
+			$sdom.Insert(document, attr_name);
+			__sdom[tag_name][attr_name] = $sdom;
+		};
+
+		//	...
+		return __sdom[tag_name][attr_name];
+	};
+
+	//	...
+	$OP.SDOM.GetDOM = function(tag, name){
 		//	...
 		if(!__list[tag] ){
 			__list[tag] = {};
@@ -59,7 +86,9 @@
 			};
 
 			//	...
-			__style(name, __list[tag][name]['style']);
+			if( __list[tag][name] && __list[tag][name]['style'] ){
+				__style(name, __list[tag][name]['style']);
+			};
 		};
 
 		//	...

@@ -20,6 +20,9 @@
 #app p {
 	border: 1px solid black;
 }
+sdom {
+	display: none;
+}
 </style>
 <script>
 //	...
@@ -30,7 +33,5 @@
 $OP.Path.Set('testcase', '<?= ConvertPath('testcase:/') ?>');
 
 //	...
-$sdom_app  = $OP.SDOM.Create('app');
-$sdom_app.Insert(document,  'main');
-$sdom_app.Update();
+$app_main = $OP.SDOM.Get('app', 'main');
 </script>

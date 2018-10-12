@@ -13,16 +13,21 @@ var ShadowDom = function(name){
 	this.__name   = name;
 
 	//	...
-	var dom = $OP.SDOM.Get('sdom', name);
+	var dom = $OP.SDOM.GetDOM('sdom', name);
 
 	//	...
-	this.__On(dom);
+	if( dom ){
+		//	...
+		this.__On(dom);
 
-	//	...
-	this.__html = dom.innerHTML;
+		//	...
+		this.__html = dom.innerHTML;
 
-	//	...
-	dom.innerHTML = '';
+		//	...
+		dom.innerHTML = '';
+	}else{
+		this.__html = '';
+	};
 };
 
 //	...
@@ -41,11 +46,13 @@ ShadowDom.prototype.Build = function(){
 	this.__Dom(dom);
 
 	//	...
+	/*
 	var name_1 = this.__name;
 	var name_2 = this.__insert_name;
+	*/
 
 	//	...
-	var temp = $OP.SDOM.Get(this.__name, this.__insert_name);
+	var temp = $OP.SDOM.GetDOM(this.__name, this.__insert_name);
 	if(!temp ){
 		return;
 	};
