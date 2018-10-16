@@ -87,7 +87,13 @@ ShadowDom.prototype.Update = function(){
 //	...
 ShadowDom.prototype.Remove = function(){
 	//	...
-	this.__insert_point.innerHTML = '';
+	var temp = $OP.SDOM.GetDOM(this.__name, this.__insert_name);
+	if(!temp ){
+		return;
+	};
+
+	//	...
+	temp.innerHTML = dom.innerHTML;
 };
 
 //...
