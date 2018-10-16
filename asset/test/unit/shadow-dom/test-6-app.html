@@ -33,32 +33,14 @@
 	//	...
 	function item_insert () {
 		var item_main = $OP.SDOM.Get('item', 'main');
-
-		console.log(item_main);
-
-		/*
-		if( this.__sdom ){
-			this.__sdom.Update();
-		}else{
-			this.__sdom = $OP.SDOM.Create('item');
-			this.__sdom.Insert('app', 'main');
-		};
-		*/
 	};
 
 	//	...
 	function item_remove () {
 		var item_main = $OP.SDOM.Get('item', 'main');
-
-		console.log(item_main);
-
-		/*
-		var sdom = $OP.SDOM.Get('item', 'main');
-		if( sdom ){
-			D( sdom.Remove );
-		//	sdom.Remove();
-		};
-		*/
+		if( item_main ){
+			item_main.Remove();
+		}
 	};
 	</script>
 </sdom>
