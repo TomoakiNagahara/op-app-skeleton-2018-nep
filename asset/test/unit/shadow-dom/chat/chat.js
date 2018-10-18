@@ -1,14 +1,14 @@
-<?php
 /**
- * unit-test:/unit/shadow-dom/chat/chat.html
+ * unit-test:/unit/shadow-dom/chat/chat.js
  *
- * @creation  2018-10-16
+ * @creation  2018-10-17
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-?>
-<sdom name="chat">
-	<p>...</p>
-</sdom>
+//	...
+(function(){
+	//	...
+	$OP.SDOM('chat','main').Insert();
+})();

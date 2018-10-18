@@ -9,4 +9,20 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 ?>
-<app name="chat"></app>
+<chat name="main"></chat>
+<?php
+include('chat.html');
+?>
+<script>
+<?php
+include('sdom-core.js');
+include('sdom-public.js');
+include('sdom-private.js');
+include('chat.js');
+?>
+</script>
+<style>
+sdom {
+	display: none;
+}
+</style>
