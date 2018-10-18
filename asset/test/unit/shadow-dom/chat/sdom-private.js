@@ -11,14 +11,38 @@
 (function(){
 	//	...
 	ShadowDom.prototype.__Mount = function(){
-		__add_style();
-		__add_script();
+		//	...
+		var sdom = __get_sdom(this.__sdom_name);
+
+		//	...
+		for(var tag_name of ['style','script']){
+			//	...
+			var list = document.querySelectorAll(`${tag_name}[name=${this.__sdom_name}]`);
+
+			//	...
+			if( list.length !== 0 ){
+				return;
+			};
+
+			//	...
+			var dom = document.createElement(tag_name);
+
+			//	...
+			document.querySelector('body').appendChild(dom);
+
+			//	...
+			dom.innerHTML = sdom[tag_name];
+		};
 	};
 
 	//	...
 	ShadowDom.prototype.__Remove = function(){
-		__del_style();
-		__del_script();
+		//	...
+		var sdom = __get_sdom(this.__sdom_name);
+
+		//	...
+		__del_style(sdom);
+		__del_script(sdom);
 	};
 
 	//	...
@@ -33,60 +57,6 @@
 		dom.innerHTML = sdom.html;
 	};
 
-	//	...
-	var __sdom = {};
-
-	//	...
-	function __get_dom(root, sdom_name, attr_name){
-		//	...
-		var list = root.querySelectorAll(`${sdom_name}[name=${attr_name}]`);
-
-		//	...
-		var dom = document.createElement('div');
-
-		//	...
-		switch( list.length ){
-			case 0:
-				console.error(`Not Found tag. (${sdom_name}, ${attr_name})`);
-				break;
-
-			case 1:
-				dom = list[0];
-				break;
-
-			default:
-				console.error(`Found was multiple tags. (${sdom_name}, ${attr_name})`);
-			break;
-		};
-
-		//	...
-		return dom;
-	};
-
-	//	...
-	function __get_sdom(sdom_name){
-		//	...
-		if(!__sdom[sdom_name] ){
-			//	...
-			for(var sdom of document.getElementsByTagName('sdom') ){
-				//	...
-				if( sdom_name === sdom.getAttribute('name') ){
-					var temp = {};
-						temp.html   = sdom.innerHTML;
-						temp.style  = '';
-						temp.script = '';
-					__sdom[sdom_name] = temp;
-				};
-			};
-		};
-
-		//	...
-		return __sdom[sdom_name];
-	};
-
-	//	...
-	function __add_style(){};
-	function __add_script(){};
-	function __del_style(){};
-	function __del_script(){};
+	//	Load model functions.
+	<?php include('sdom-model.js') ?>
 })();
