@@ -8,4 +8,21 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-(function(){})();
+(function(){
+	//	...
+	var __sdom = {};
+
+	//	...
+	$OP.SDOM = function(sdom_name, attr_name){
+		//	...
+		if(!__sdom[sdom_name] ){
+			__sdom[sdom_name] = {};
+		};
+
+		//	...
+		__sdom[sdom_name][attr_name] = new ShadowDom(sdom_name, attr_name);
+
+		//	...
+		return __sdom[sdom_name][attr_name];
+	};
+})();
