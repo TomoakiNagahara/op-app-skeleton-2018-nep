@@ -1,3 +1,4 @@
+
 /**
  * unit-test:/unit/shadow-dom/chat/sdom-model.js
  *
@@ -86,4 +87,58 @@ function __parser(source){
 
 	//	...
 	return result;
+};
+
+//	...
+function __for_if_root(rdom){
+	//	...
+	for(var dom of rdom.querySelectorAll('[for]')){ // scope > [for]
+		__for(dom);
+	};
+
+	//	...
+	for(var dom of rdom.querySelectorAll('[if]')){
+		__for(dom);
+	};
+};
+
+//	...
+function __for(rdom){
+	//	...
+	let json = rdom.getAttribute('for');
+
+	//	...
+	if( json.search(/{?\s*this.json\s*}?/) === 0 ){
+		json = rdom.getAttribute('json');
+	};
+
+	//	...
+		json = JSON.parse(json);
+
+	//	...
+	let html = rdom.innerHTML;
+	D(html);
+
+	//	...
+	for(let i in json){
+		let v =  json[i];
+
+		//	...
+		let temp = html;
+		for(let key in v){
+			let val =  v[key];
+
+			//	...
+			var rx = `${key}`;
+			temp = temp.replace(rx, `${val}`);
+		};
+
+		//	...
+		rdom.innerHTML += temp;
+	};
+};
+
+//...
+function __if(dom){
+	D(dom);
 };
