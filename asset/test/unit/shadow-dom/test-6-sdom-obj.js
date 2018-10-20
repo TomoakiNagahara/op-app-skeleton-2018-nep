@@ -93,7 +93,7 @@ ShadowDom.prototype.Remove = function(){
 	};
 
 	//	...
-	temp.innerHTML = dom.innerHTML;
+	temp.innerHTML = '';
 };
 
 //...

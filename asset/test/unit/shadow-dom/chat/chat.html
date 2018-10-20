@@ -17,8 +17,11 @@
 		<button> submit </button>
 	</form>
 	<hr/>
-	<div for="this.json" json="[{"nickname":"hoge","comment":"hoge"}]">
-		{ nickname }：{ comment }
+	<div for="this.json" json='[{"nickname":"tom","comment":"hello"},{"nickname":"joe","comment":"bye"}]'>
+		<div>
+			<span>{ nickname }</span>
+			<span>{ comment }</span>
+		</div>
 	</div>
 	<style>
 	chat p {

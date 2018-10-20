@@ -47,16 +47,21 @@
 
 	//	...
 	ShadowDom.prototype.__Build = function(){
-		//	...
+		//	Shadow DOM
 		var sdom = __get_sdom(this.__sdom_name);
 
-		//	...
-		var dom = __get_dom(document, this.__sdom_name, this.__attr_name);
+		//	Real DOM
+		var rdom = __get_dom(document, this.__sdom_name, this.__attr_name);
 
 		//	...
-		dom.innerHTML = sdom.html;
+		rdom.innerHTML = sdom.html;
+
+		//	...
+		__for_if_root(rdom);
 	};
 
 	//	Load model functions.
-	<?php include('sdom-model.js') ?>
+	//	<?php
+	include('sdom-model.js')
+	//	?>
 })();
