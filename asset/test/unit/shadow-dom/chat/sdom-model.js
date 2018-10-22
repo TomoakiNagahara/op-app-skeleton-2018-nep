@@ -106,10 +106,8 @@ function __for_if_root(rdom){
 function __for(rdom){
 	//	...
 	let json = rdom.getAttribute('for');
-
-	//	...
-	if( json.search(/{?\s*this.json\s*}?/) === 0 ){
-		json = rdom.getAttribute('json');
+	if(!json.length ){
+		return;
 	};
 
 	//	...
@@ -117,20 +115,27 @@ function __for(rdom){
 
 	//	...
 	let html = rdom.innerHTML;
-	D(html);
+
+	//	...
+	rdom.innerHTML = '';
 
 	//	...
 	for(let i in json){
 		let v =  json[i];
-
 		//	...
 		let temp = html;
-		for(let key in v){
-			let val =  v[key];
 
-			//	...
-			var rx = `${key}`;
-			temp = temp.replace(rx, `${val}`);
+		//	...
+		if( 'object' !== typeof v ){
+			temp = temp.replace(/{\s*value\s*}/, v);
+		}else{
+			for(let key in v){
+				let val =  v[key];
+
+				//	...
+				var rx = new RegExp(String.raw`{\s*${key}\s*}`, 'g');
+				temp = temp.replace(rx, `${val}`);
+			};
 		};
 
 		//	...
@@ -140,5 +145,5 @@ function __for(rdom){
 
 //...
 function __if(dom){
-	D(dom);
+
 };
