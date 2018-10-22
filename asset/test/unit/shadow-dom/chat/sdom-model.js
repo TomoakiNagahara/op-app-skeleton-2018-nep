@@ -40,14 +40,17 @@ function __get_dom(root, sdom_name, attr_name){
 
 //	...
 function __get_sdom(sdom_name){
-	//	...
+	//	If exists.
 	if(!__sdom[sdom_name] ){
-		//	...
+		//	Search target sdom.
 		for(var sdom of document.getElementsByTagName('sdom') ){
-			//	...
+			//	<sdom name="sdom-name">...</sdom>
 			if( sdom_name === sdom.getAttribute('name') ){
-				//	...
-				__sdom[sdom_name] = __parser(sdom.innerHTML);
+				//	__sdom[sdom_name] = {"html":"...","style":"...","script":"..."}
+				__sdom[sdom_name] = __parse_sdom(sdom.innerHTML);
+
+				//	Parse of script to each functions.
+				__sdom[sdom_name]['script'] = __parse_script(__sdom[sdom_name]['script']);
 			};
 		};
 	};
@@ -57,7 +60,7 @@ function __get_sdom(sdom_name){
 };
 
 //	...
-function __parser(source){
+function __parse_sdom(source){
 	//	...
 	var result = {};
 		result.html   = '';
@@ -90,20 +93,87 @@ function __parser(source){
 };
 
 //	...
+function __parse_script(source){
+	//	...
+	var result = {};
+
+	//	...
+	let r = new RegExp(/\s*function\s*([-_a-z0-9]+)\(\)\s*\{/i);
+
+	//	...
+	do{
+		//	...
+		var i = source.search(r);
+		if( i === -1 ){
+			break;
+		};
+
+		//	...
+		source = source.substr(i);
+
+		//	...
+		var match  = source.match(r);
+		var length = match[0].length -1;
+		var name   = match[1];
+
+		//	...
+		source = source.substr(length);
+
+		//	...
+		var br = 0;
+		for(var i=0; i<source.length; i++){
+			//	...
+			switch( source[i] ){
+				case '{':
+					br++;
+					break;
+				case '}':
+					br--;
+					break;
+			};
+
+			//	...
+			if( br === 0 ){
+				//	...
+				var script = source.substr(0, i+1);
+
+				//	...
+				source = source.substr( script.length );
+
+				//	...
+				result[name] = script;
+
+				//	...
+				break;
+			}
+		};
+	}while( source.length );
+
+	//	...
+	return result;
+};
+
+//	...
 function __for_if_root(rdom){
 	//	...
-	for(var dom of rdom.querySelectorAll('[for]')){ // scope > [for]
+	for(var dom of rdom.querySelectorAll('[for]')){ // :scope > [for]
 		__for(dom);
 	};
 
 	//	...
-	for(var dom of rdom.querySelectorAll('[if]')){
-		__for(dom);
+	for(var dom of rdom.querySelectorAll('[if]')){ // :scope > [if]
+		__if(dom);
 	};
 };
 
 //	...
 function __for(rdom){
+	//	...
+	let html = rdom.innerHTML;
+
+	//	...
+	rdom.innerHTML = '';
+
 	//	...
 	let json = rdom.getAttribute('for');
 	if(!json.length ){
@@ -112,12 +182,6 @@ function __for(rdom){
 
 	//	...
 		json = JSON.parse(json);
-
-	//	...
-	let html = rdom.innerHTML;
-
-	//	...
-	rdom.innerHTML = '';
 
 	//	...
 	for(let i in json){
@@ -144,6 +208,6 @@ function __for(rdom){
 };
 
 //...
-function __if(dom){
-
+function __if(rdom){
+	D( rdom.getAttribute('if') );
 };

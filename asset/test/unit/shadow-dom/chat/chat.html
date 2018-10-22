@@ -17,10 +17,7 @@
 		<button> submit </button>
 	</form>
 	<hr/>
-	<div for='["apple","banana"]'>
-		<span>{ value }</span>
-	</div>
-	<div for='[{"nickname":"tom","comment":"hello"},{"nickname":"joe","comment":"bye"}]'>
+	<div for=''>
 		<div>
 			<span>{ nickname }</span>
 			<span>{ comment  }</span>
@@ -32,6 +29,25 @@
 	}
 	</style>
 	<script>
+	//	...
+	function onInsert(){
+		var url  = 'testcase:/api/chat/load';
+		var data = {};
+		$OP.Ajax.Post(url, data, function(json){
+			D(json);
+		}, function(e){
+			console.Error(e);
+		});
+	};
 
+	//	...
+	function onUpdate(){
+		//	function onUpdate()
+	};
+
+	//	...
+	function onDelete(){
+		//	function onDelete()
+	};
 	</script>
 </sdom>

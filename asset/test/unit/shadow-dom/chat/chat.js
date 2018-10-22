@@ -10,5 +10,8 @@
 //	...
 (function(){
 	//	...
-	$OP.SDOM('chat','main').Insert();
+	$OP.Path.Set('testcase', "<?= ConvertPath('testcase:/') ?>");
+
+	//	...
+	$OP.SDOM.Get('chat','main').Insert();
 })();

@@ -17,21 +17,21 @@ var ShadowDom = function(sdom_name, attr_name){
 //	...
 ShadowDom.prototype.Insert = function(){
 	//	...
-	this.__Mount();
+	this.__Insert();
 
 	//	...
-	this.__Build();
+	this.__Update();
 };
 
 
 //...
 ShadowDom.prototype.Update = function(){
 	//	...
-	this.__Build();
+	this.__Update();
 };
 
 //...
 ShadowDom.prototype.Delete = function(){
 	//	...
-	this.__Remove();
+	this.__Delete();
 };
