@@ -83,19 +83,32 @@ $OP.Path.Convert = function( path ){
 		return;
 	}
 
-	//	Get meta label.
+	//	Search meta label.
 	var m = path.match(/^([\w]+):\//);
 
-	//	Replace to real path from meta label.
-	if( m && m[1] ){
-		//	Convert to real path.
-		var r = new RegExp('^'+m[1]+':/');
-		path = path.replace(r, $OP.Path.meta[m[1]]);
+	//	Get meta label
+	var meta = m[1] ? m[1] : null;
 
-		//	Remove document-root path.
-		var r = new RegExp('^' + $OP.Path.meta.doc);
-		path = path.replace(r, '/');
-	}
+	//	Replace to real path from meta label.
+	switch( meta === null ){
+		case null:
+		case 'http':
+		case 'https':
+			return path;
+		default:
+	};
+
+	//	Convert to real path.
+	if(!$OP.Path.meta[meta] ){
+		console.error(`This meta name has not been set. (${meta})`);
+		return false;
+	};
+
+	//	Convert to full path.
+	path = $OP.Path.meta[meta] + path.substr( meta.length +2 );
+
+	//	Remove document-root path.
+	path = path.substr( $OP.Path.meta.doc.length -1 );
 
 	//	Separate to url query.
 	var pos = path.indexOf('?');
