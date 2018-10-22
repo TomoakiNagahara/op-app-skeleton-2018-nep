@@ -17,4 +17,5 @@ return [
 	__DIR__.'/form',
 	__DIR__.'/ajax',
 	__DIR__.'/date',
+	__DIR__.'/html',
 ];
