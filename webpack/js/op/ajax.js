@@ -1,7 +1,7 @@
 /**
  * app-skeleton-webpack:/js/op/ajax.js
  *
- * @creation  2018-10-18
+ * @creation  2018-09-18
  * @version   1.0
  * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
@@ -45,6 +45,9 @@
 
 		//	...
 		url = $OP.Path.Convert(url);
+		if( url === false ){
+			return false;
+		};
 
 		//	...
 		var xhr = new XMLHttpRequest();
