@@ -26,12 +26,11 @@
 
 			//	...
 			var dom = document.createElement(tag_name);
+				dom.innerHTML = sdom[tag_name];
+				dom.setAttribute('name', this.__sdom_name);
 
 			//	...
 			document.querySelector('body').appendChild(dom);
-
-			//	...
-			dom.innerHTML = sdom[tag_name];
 		};
 	};
 
