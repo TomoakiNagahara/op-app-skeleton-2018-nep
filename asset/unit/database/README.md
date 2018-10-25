@@ -31,9 +31,36 @@ $config = [
 if(!$io = $db->Connect($config) ){
     throw new Exception('Connect to database was failed.');
 }
+```
 
-//  Get records by SQL.
+### Fetch record. (Throw SQL Query)
+
+```
+<?php
+/* @var $sql \OP\UNIT\Database */
+if(!$sql = Unit::Instance('Database') ){
+    throw new Exception('Instance of the Database unit was failed.');
+}
+
+//  Connect to database by configuration file.
+if(!$io = $db->Connect('config.php') ){
+    throw new Exception('Connect to database was failed.');
+}
+
+/**
+ * Get records by direct write SQL.
+ * This is not recommended.
+ * But SQL is properly escaped.
+ */
 $records = $db->Query('SELECT * FROM table_name');
+
+/**
+ * Result of record may return int 0 or empty array.
+ * If this fails, this returns false.
+ */
+if( $records === false ){
+    throw new Exception('Select was failed.');
+}
 ```
 
 ### Generate SQL Query by SQL-UNIT.
@@ -45,7 +72,17 @@ if(!$sql = Unit::Instance('SQL') ){
     throw new Exception('Instance of the SQL unit was failed.');
 }
 
-//  Select configuration.
+/* @var $sql \OP\UNIT\Database */
+if(!$db = Unit::Instance('Database') ){
+    throw new Exception('Instance of the Database unit was failed.');
+}
+
+//  Connect to database by configuration file.
+if(!$io = $db->Connect('config.php') ){
+    throw new Exception('Connect to database was failed.');
+}
+
+//  Create select configuration.
 $config = [
     'table' => 'table_name',
     'limit' =>  10,
@@ -57,9 +94,20 @@ $config = [
     ]
 ];
 
-//  Generate select sql query.
+//  Generate select sql query string.
 $query = $sql->Select($config);
 
 //  Fetch records.
 $records = $db->Query($query);
+```
+
+### How to debug
+
+```
+<?php
+//	Dump all throwed query.
+D( $db->Queries() );
+
+//	Dump debug information.
+$db->Debug();
 ```
