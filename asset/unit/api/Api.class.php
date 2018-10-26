@@ -139,9 +139,14 @@ class Api
 		if( self::$_html === false ){
 			//	Only for admin.
 			if( \Env::isAdmin() ){
-				//	Save.
+				//	Get leaked content.
 				if( $leak = ob_get_clean() ){
 					self::$_result['__LEAKED__'] = $leak;
+				}
+
+				//	Get Notice message.
+				if( \Notice::Has() ){
+					self::$_result['notice'][] = \Notice::Get();
 				}
 			}else{
 				//	Throw away.
