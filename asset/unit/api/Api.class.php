@@ -56,7 +56,7 @@ class Api
 		];
 
 		//	Whether to output in HTML.
-		self::$_html = $_GET['html'] ? true: false;
+		self::$_html = empty($_GET['html']) ? false: true;
 
 		//	Does not output in HTML.
 		if( self::$_html === false ){
