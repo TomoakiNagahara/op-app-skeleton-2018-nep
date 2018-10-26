@@ -12,14 +12,20 @@
 /* @var $sql \OP\UNIT\SQL      */
 
 //	...
+$ai = $request['ai'] ?? 0;
+
+//	...
 $config = [];
 $config['table'] = 't_chat';
-$config['where']['ai']['value'] = 1;
+$config['where']['ai']['value'] = $ai;
 $config['where']['ai']['evalu'] = '>';
 $config['limit'] = 10;
 $config['order'] = 'timestamp desc';
 
 //	...
-if(!$result = $db->Select($config) ){
+$result = $db->Select($config);
+
+//	...
+if( $result === false ){
 	throw new Exception("Select was failed.");
 };
