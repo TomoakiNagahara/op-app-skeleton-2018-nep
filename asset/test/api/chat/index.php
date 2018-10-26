@@ -9,26 +9,11 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-$request = App::Request();
-
-//	...
-$json = [
-	'status' => true,
-	'errors' => [],
-	'result' => null,
-];
-
-//	...
 try {
 	//	...
-	if(!Unit::Load('Database') ){
-		throw new Exception('Database unit is load of failed.');
-	};
-
-	//	...
-	if(!Unit::Load('SQL') ){
-		throw new Exception('SQL unit is load of failed.');
-	};
+	if(!Unit::Load('api')){
+		throw new Exception('Load API-Unit was failed.');
+	}
 
 	/* @var $db \OP\UNIT\Database */
 	if(!$db = Unit::Instance('Database') ){
@@ -59,32 +44,27 @@ try {
 	switch( $action = App::Args()[0] ?? null ){
 		case 'load':
 		case 'save':
+			//	...
+			$result = [];
+
+			//	...
+			$request = App::Request();
+
+			//	...
 			include("{$action}.php");
 			break;
 
 		default:
 			$json['errors'][] = 'Has not been set action.';
 	};
+
+	//	Enter result.
+	\OP\UNIT\Api::Result($result);
+
 } catch ( Throwable $e ){
-	$json['errors'][] = $e->getMessage();
+	//	Catch the exception.
+	\OP\UNIT\Api::Error( $e->getMessage() );
 };
 
 //	...
-if( $result ){
-	$json['result'] = $result;
-}
-
-//	...
-if( empty($request['html']) ){
-	//	...
-	App::Layout(false);
-
-	//	...
-	Env::Mime('text/json');
-
-	//	...
-	echo json_encode($json);
-}else{
-	//	...
-	D($json);
-};
+\OP\UNIT\Api::Finish();
