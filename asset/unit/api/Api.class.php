@@ -65,6 +65,14 @@ class Api
 				throw new \Exception('ob_start was failed.');
 			}
 		}
+
+		//	If localhost, will automatically wait one second.
+		if( \Env::isLocalhost() ){
+			if( $sleep = $_GET['sleep'] ?? 1 ){
+				self::$_result['sleep'] = $sleep;
+				sleep($sleep);
+			}
+		}
 	}
 
 	/** Stack the errors.
@@ -109,6 +117,17 @@ class Api
 	static function Get($key)
 	{
 		return self::$_result[$key];
+	}
+
+	static function Dump($label, $value)
+	{
+		//	Only just admin.
+		if(!\Env::isAdmin() ){
+			return;
+		}
+
+		//	Set dump info.
+		self::$_result['dump'][] = [$label, $value];
 	}
 
 	/** Output JSON string to stdout. (Default is JSON)
