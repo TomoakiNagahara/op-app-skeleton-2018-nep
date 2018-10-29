@@ -1,5 +1,7 @@
 /**
- * app-skeleton-webpack:/js/app/args.js
+ * app-skeleton-webpack:/js/app/ux-submit.js
+ *
+ * Anti duplicate submit.
  *
  * @creation  2017-07-31
  * @version   1.0
