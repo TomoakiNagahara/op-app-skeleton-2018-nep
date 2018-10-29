@@ -12,17 +12,28 @@ var ShadowDom = function(sdom_name, attr_name){
 	//	...
 	this.__sdom_name = sdom_name;
 	this.__attr_name = attr_name;
+	this.__json = {};
+};
+
+//	...
+ShadowDom.prototype.Json = function(index, value){
+	//	...
+	if( value !== undefined ){
+		this.__json[index] = value;
+	};
+
+	//	...
+	return this.__json[index] ? this.__json[index]: null;
 };
 
 //	...
 ShadowDom.prototype.Insert = function(){
 	//	...
-	this.__Insert();
-
-	//	...
-	this.__Update();
+	if( this.__Insert() ){
+		//	...
+		this.__Update();
+	}
 };
-
 
 //...
 ShadowDom.prototype.Update = function(){
