@@ -14,8 +14,8 @@ return [
 	__DIR__.'/args',
 	__DIR__.'/d',
 	__DIR__.'/url',
-	__DIR__.'/form',
 	__DIR__.'/ajax',
 	__DIR__.'/date',
 	__DIR__.'/html',
+	__DIR__.'/ux-submit',
 ];
