@@ -12,9 +12,9 @@
 var __sdom = {};
 
 //	...
-function __get_dom(root, sdom_name, attr_name){
+function __get_rdom(root, sdom_name, attr_name){
 	//	...
-	var list = root.querySelectorAll(`${sdom_name}[name=${attr_name}]`);
+	var list = root.querySelectorAll(`[sdom-name="${sdom_name}"][idnt-name="${attr_name}"]`);
 
 	//	...
 	var dom = document.createElement('div');
@@ -154,20 +154,20 @@ function __parse_script(source){
 };
 
 //	...
-function __for_if_root(rdom){
+function __for_if_root(sdom, rdom){
 	//	...
 	for(var dom of rdom.querySelectorAll('[for]')){ // :scope > [for]
-		__for(dom);
+		__for(sdom, dom);
 	};
 
 	//	...
 	for(var dom of rdom.querySelectorAll('[if]')){ // :scope > [if]
-		__if(dom);
+		__if(sdom, dom);
 	};
 };
 
 //	...
-function __for(rdom){
+function __for(sdom, rdom){
 	//	...
 	let html = rdom.innerHTML;
 
@@ -175,13 +175,18 @@ function __for(rdom){
 	rdom.innerHTML = '';
 
 	//	...
-	let json = rdom.getAttribute('for');
+	var json = rdom.getAttribute('for');
 	if(!json.length ){
 		return;
 	};
 
 	//	...
+	var m = json.match(/^ *(this\.json)\.(\w+) *$/);
+	if( m[2] ){
+		json = sdom.Json(m[2]);
+	}else{
 		json = JSON.parse(json);
+	}
 
 	//	...
 	for(let i in json){
@@ -208,6 +213,6 @@ function __for(rdom){
 };
 
 //...
-function __if(rdom){
+function __if(sdom, rdom){
 	D( rdom.getAttribute('if') );
 };

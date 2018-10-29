@@ -17,7 +17,7 @@
 		<button> submit </button>
 	</form>
 	<hr/>
-	<div for=''>
+	<div for="this.json.chat">
 		<div>
 			<span>{ nickname }</span>
 			<span>{ comment  }</span>
@@ -31,10 +31,21 @@
 	<script>
 	//	...
 	function onInsert(){
+		//	...
+		var sdom_name = this.getAttribute('sdom-name');
+		var idnt_name = this.getAttribute('idnt-name');
+
+		//	...
 		var url  = 'testcase:/api/chat/load';
 		var data = {};
+
+		//	...
 		$OP.Ajax.Post(url, data, function(json){
-			D(json);
+			//	Set result of json.
+			var sdom = $OP.SDOM.Get(sdom_name, idnt_name);
+				sdom.Json('chat', json.result);
+				sdom.Update();
+
 		}, function(e){
 			console.Error(e);
 		});

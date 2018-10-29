@@ -40,10 +40,20 @@
 		};
 
 		//	...
-		var rdom = __get_dom(document, this.__sdom_name, this.__attr_name);
+		var rdom = __get_rdom(document, this.__sdom_name, this.__attr_name);
 
 		//	...
-		$OP.SDOM.Action.Exe(this.__sdom_name, 'onInsert', rdom);
+		var sdom_name = rdom.getAttribute('sdom-name');
+		var idnt_name = rdom.getAttribute('idnt-name');
+		var io = ( (sdom_name === this.__sdom_name) && (idnt_name === this.__attr_name) ) ? true: false;
+
+		//	...
+		if( io ){
+			$OP.SDOM.Action.Exe(this.__sdom_name, 'onInsert', rdom);
+		};
+
+		//	...
+		return io;
 	};
 
 	//	...
@@ -52,13 +62,13 @@
 		var sdom = __get_sdom(this.__sdom_name);
 
 		//	Real DOM.
-		var rdom = __get_dom(document, this.__sdom_name, this.__attr_name);
+		var rdom = __get_rdom(document, this.__sdom_name, this.__attr_name);
 
 		//	Initialize html.
 		rdom.innerHTML = sdom.html;
 
 		//	Processing.
-		__for_if_root(rdom);
+		__for_if_root(this, rdom);
 	};
 
 	//	...
