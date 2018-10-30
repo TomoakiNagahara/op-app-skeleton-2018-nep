@@ -25,5 +25,6 @@ return [
 	__DIR__.'/other',
 	__DIR__.'/breadcrumbs',
 	__DIR__.'/pager',
+	__DIR__.'/tips',
 	__DIR__.'/debug',
 ];

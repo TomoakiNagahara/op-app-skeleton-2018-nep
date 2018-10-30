@@ -1,0 +1,31 @@
+/**
+ * app-skeleton-webpack:/css/app/tips.css
+ *
+ * @creation  2018-10-30
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+span[data-tips] {
+	position: relative;
+	text-decoration: underline;
+	color: #00F;
+	cursor: help;
+}
+
+span[data-tips]:hover::after {
+	content: attr(data-tips);
+	position: absolute;
+	left: 0;
+	top: 24px;
+	min-width: 200px;
+	border: 1px #aaaaaa solid;
+	border-radius: 10px;
+	background-color: #ffffcc;
+	padding: 12px;
+	color: #000000;
+	font-size: 14px;
+	z-index: 1;
+}
