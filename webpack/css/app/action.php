@@ -23,6 +23,7 @@ return [
 	__DIR__.'/table',
 	__DIR__.'/wai-aria',
 	__DIR__.'/other',
+	__DIR__.'/breadcrumbs',
 	__DIR__.'/pager',
 	__DIR__.'/debug',
 ];

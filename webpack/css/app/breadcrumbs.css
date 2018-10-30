@@ -1,0 +1,27 @@
+/**
+ * app-skeleton-webpack:/css/app/breadcrumbs.css
+ *
+ * @creation  2018-10-30
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+#head-area .breadcrumbs {
+
+}
+
+#head-area .breadcrumbs > ol {
+	list-style-type: none;
+}
+
+#head-area .breadcrumbs > ol > li {
+	display: inline;
+}
+
+#head-area .breadcrumbs > ol > li:not(:last-child)::after {
+	margin-left:  0.3em;
+	margin-right: 0.2em;
+	content: '>';
+}
