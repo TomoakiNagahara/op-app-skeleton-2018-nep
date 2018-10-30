@@ -20,6 +20,7 @@ return [
 	__DIR__.'/list',
 	__DIR__.'/code',
 	__DIR__.'/form',
+	__DIR__.'/button',
 	__DIR__.'/table',
 	__DIR__.'/wai-aria',
 	__DIR__.'/other',
