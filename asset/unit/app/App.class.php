@@ -142,6 +142,15 @@ class App
 		return self::$_ROUTER_::Get()['args'];
 	}
 
+	/** Get end-point directory name.
+	 *
+	 * @return	 string	 $endpoint
+	 */
+	static function EndPoint()
+	{
+		return self::$_ROUTER_::Get()['end-point'];
+	}
+
 	/** Template
 	 *
 	 * @param	 string	 $path
