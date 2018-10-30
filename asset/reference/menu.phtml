@@ -1,0 +1,44 @@
+<?php
+/**
+ * unit-referencet:/menu.phtml
+ *
+ * @creation  2018-10-30
+ * @version   1.0
+ * @package   unit-reference
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+?>
+<section id="menu-right">
+	<ul>
+		<li><a href="<?= ConvertURL("app:/$reference/core") ?>">Core</a></li>
+		<li>
+			<a href="<?= ConvertURL("app:/$reference/unit") ?>">Unit</a>
+			<ul>
+			<?php
+			$root = ConvertURL("app:/");
+			foreach( glob('../unit/*') as $file ){
+				$name = basename($file);
+				printf('<li><a href="%s">%s</a></li>'."\n", $root."$reference/unit/$name", $name);
+			}
+			?>
+			</ul>
+		</li>
+	</ul>
+</section>
+<style>
+#menu-right {
+	border: 1px solid black;
+	float: right;
+}
+
+#menu-right > ul {
+	padding: 0.5em 1.0em;
+}
+
+#menu-right ul {
+	margin:  0;
+	padding-left: 1.0em;
+	list-style-type: none;
+}
+</style>
