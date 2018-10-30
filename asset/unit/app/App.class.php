@@ -265,4 +265,19 @@ class App
 		}
 		return join($separator, array_reverse($_titles));
 	}
+
+	/** Get/Set breadcrumbs arguments.
+	 *
+	 * @param  array $list
+	 * @return array $lists
+	 */
+	static function Breadcrumbs($list=null)
+	{
+		static $_list;
+		if( $list ){
+			$_list[] = $list;
+		}else{
+			return $_list;
+		}
+	}
 }
