@@ -28,7 +28,15 @@ foreach( App::Args() as $arg ){
 }
 
 //	...
-$action = $args[0].'/action.php';
+include('menu.phtml');
+
+//	...
+if( count($args) < 2 ){
+	return;
+}
+
+//	...
+$action = $args[1]."/action.php";
 
 //	...
 if( file_exists($action) ){
