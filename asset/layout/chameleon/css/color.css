@@ -18,7 +18,7 @@ body.body .background {
 }
 
 body.body .border {
-	border-color: hsl( calc(var(--root-hue) + 180), 30%, 30%);
+	border-color: hsl( var(--root-hue), 50%, 50%);
 }
 
 body.body .success {
