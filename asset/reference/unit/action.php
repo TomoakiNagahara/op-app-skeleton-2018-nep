@@ -16,11 +16,5 @@ if(!file_exists($path) ){
 	D('Does not exists README file.');
 	return;
 }
-?>
-<div>
-	<code>
-		<pre>
-<?php include($path) ?>
-		</pre>
-	</code>
-</div>
+
+return file_get_contents($path);

@@ -40,5 +40,42 @@ $action = $args[1]."/action.php";
 
 //	...
 if( file_exists($action) ){
-	include($action);
+	printf('<div id="markdown" class="markdown" data-markdown="%s"></div>', include($action));
 }
+?>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+//	...
+document.addEventListener('DOMContentLoaded', function(){
+	//	...
+	/*
+	marked.setOptions({
+		gfm:		 true,
+		tables:		 true,
+		breaks:		 false,
+		pedantic:	 false,
+		sanitize:	 true,
+		smartLists:	 true,
+		smartypants: false,
+		langPrefix: '',
+		highlight:	 function(code, lang) {
+			// hogehoge
+			return code;
+		}
+	});
+	*/
+
+	//	...
+	var dom = document.querySelector('#markdown');
+	if(!dom ){
+		return;
+	};
+
+	//	...
+	var text = dom.dataset.markdown;
+	var html = marked(text);
+D(text, html);
+	//	...
+	dom.innerHTML = html;
+});
+</script>
