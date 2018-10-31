@@ -25,3 +25,31 @@ $content = Dispatch::Get();
 //	The content is wrapped in the Layout.
 echo Layout::Get($content);
 ```
+
+## Detail of each classes
+
+### Router
+
+ Router class is calculate end-point from URL.
+ End-point file name is "index.php".
+
+#### Methods
+
+##### Set
+
+ Set route table method.
+
+##### Get
+
+ Get route table method.
+
+| index     | value |
+|-----------|-------|
+| args      | Arguments of Smart-URL. |
+| end-point | Full path of end-point. |
+
+### Dispatcher
+
+### Template
+
+### Layout
