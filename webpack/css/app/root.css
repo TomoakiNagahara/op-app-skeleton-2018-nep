@@ -1,9 +1,14 @@
 /**
- * app-skeleton-webpack:/css/app/debug.php
+ * app-skeleton-webpack:/css/app/root.css
  *
- * @creation  2018-05-01
+ * @creation  2018-10-26
  * @version   1.0
  * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+
+:root {
+	--root-color-font: #555;
+	--root-color-background: #eee;
+}

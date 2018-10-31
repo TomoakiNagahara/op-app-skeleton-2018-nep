@@ -11,6 +11,7 @@
 //	...
 return [
 	__DIR__.'/reset',
+	__DIR__.'/root',
 	__DIR__.'/body',
 	__DIR__.'/color',
 	__DIR__.'/font',
@@ -19,13 +20,16 @@ return [
 	__DIR__.'/p',
 	__DIR__.'/list',
 	__DIR__.'/code',
+	__DIR__.'/pre',
 	__DIR__.'/form',
 	__DIR__.'/button',
 	__DIR__.'/table',
 	__DIR__.'/wai-aria',
 	__DIR__.'/other',
+	__DIR__.'/border',
 	__DIR__.'/breadcrumbs',
 	__DIR__.'/pager',
 	__DIR__.'/tips',
+	__DIR__.'/markdown',
 	__DIR__.'/debug',
 ];
