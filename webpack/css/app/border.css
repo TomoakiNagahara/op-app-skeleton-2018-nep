@@ -1,13 +1,15 @@
 /**
- * app-skeleton-webpack:/css/app/code.css
+ * app-skeleton-webpack:/css/border.css
  *
- * @creation  2018-04-12
+ * @creation  2018-10-31
  * @version   1.0
  * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-body.body code {
-
+body.body .border {
+	border-width: 1px;
+	border-style: solid;
+	/* border-color setting is done at color.css */
 }

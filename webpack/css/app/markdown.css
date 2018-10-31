@@ -1,0 +1,27 @@
+/**
+ * app-skeleton-webpack:/css/app/markdown.css
+ *
+ * @creation  2018-10-31
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body .markdown table,
+body.body .markdown th,
+body.body .markdown td {
+	border-width: 1px;
+	border-style: solid;
+	border-color: hsl( var(--root-hue), 80%, 40%) !important;
+}
+
+body.body .markdown table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+body.body .markdown th,
+body.body .markdown td {
+	padding: 0.2em 0.5em;
+}
