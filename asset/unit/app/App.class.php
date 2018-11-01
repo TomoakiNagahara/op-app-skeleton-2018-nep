@@ -46,6 +46,7 @@ class App
 
 		//	...
 		switch( $mime = Env::Mime() ){
+			case 'text/plain':
 			case 'text/css':
 			case 'text/json':
 			case 'text/jsonp':
