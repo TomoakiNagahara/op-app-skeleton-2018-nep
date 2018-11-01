@@ -282,7 +282,7 @@ class App
 	 */
 	static function Breadcrumbs($list=null)
 	{
-		static $_list;
+		static $_list = [];
 		if( $list ){
 			$_list[] = $list;
 		}else{
