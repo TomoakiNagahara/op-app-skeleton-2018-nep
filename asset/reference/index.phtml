@@ -1,0 +1,56 @@
+<?php
+/**
+ * unit-referencet:/index.phtml
+ *
+ * @creation  2018-11-01
+ * @version   1.0
+ * @package   unit-reference
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+include('menu.phtml');
+?>
+<div id="reference" class="markdown">Pleasd wait...</div>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+//	...
+document.addEventListener('DOMContentLoaded', function(){
+	//	...
+	/*
+	marked.setOptions({
+		gfm:		 true,
+		tables:		 true,
+		breaks:		 false,
+		pedantic:	 false,
+		sanitize:	 true,
+		smartLists:	 true,
+		smartypants: false,
+		langPrefix: '',
+		highlight:	 function(code, lang) {
+			// hogehoge
+			return code;
+		}
+	});
+	*/
+
+	//	...
+	var url  = './README';
+	var data = {};
+
+	//	...
+	$OP.Ajax.Post(url, data, function(text){
+		//	...
+		var dom = document.querySelector('#reference');
+		if(!dom ){
+			return;
+		};
+
+		//	...
+		dom.innerHTML = marked(text);
+
+	}, function(e){
+		console.error(e);
+	});
+});
+</script>

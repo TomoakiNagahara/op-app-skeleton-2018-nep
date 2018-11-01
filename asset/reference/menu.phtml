@@ -8,6 +8,24 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	...
+$endpoint  = App::EndPoint();
+$reference = basename(dirname($endpoint));
+
+//	...
+App::Breadcrumbs(['href'=>'app:/','text'=>'TOP']);
+
+//	...
+App::Breadcrumbs(['href'=>'app:/'.$reference,'text'=>'Reference']);
+
+//	...
+$args = [$reference];
+foreach( App::Args() as $arg ){
+	$args[] = $arg;
+	$list['text'] = ucfirst($arg);
+	$list['href'] = 'app:/'.join('/', $args);
+	App::Breadcrumbs($list);
+}
 ?>
 <section id="menu-right" class="background border">
 	<ul>
@@ -19,7 +37,7 @@
 			$root = ConvertURL("app:/");
 			foreach( glob('../unit/*') as $file ){
 				$name = basename($file);
-				printf('<li><a href="%s">%s</a></li>'."\n", $root."$reference/unit/$name", $name);
+				printf('<li><a href="%s">%s</a></li>'.PHP_EOL, $root."$reference/unit/$name/", $name);
 			}
 			?>
 			</ul>
