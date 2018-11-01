@@ -22,6 +22,9 @@ try {
 	//	Load of the NewWorld.
 	Unit::Load('newworld');
 
+	//	Closure
+	(function(){
+
 	//	Include configuration file.
 	include(__DIR__.'/config.php');
 
@@ -29,6 +32,8 @@ try {
 	if( file_exists(__DIR__.'/_config.php') ){
 		include(__DIR__.'/_config.php');
 	}
+
+	})();
 
 	//	Launch application.
 	App::Auto();
