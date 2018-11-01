@@ -30,7 +30,7 @@ if(!$OP.URL ){
 	 * @copyright Tomoaki Nagahara All right reserved.
 	 */
 	var __meta = {};
-		__meta.app = '<?= ConvertURL('app:/'); ?>';
+		__meta.app = "<?= ConvertURL('app:/'); ?>";
 
 	/** Set meta url label and real url.
 	 *
