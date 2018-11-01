@@ -45,8 +45,11 @@ class Notice
 				break;
 
 			case 'text/css':
+				echo "/* {$notice['message']} */\n";
+				break;
+
 			case 'text/javascript':
-				echo "/* {$notice['message']} */".PHP_EOL;
+				printf("console.error('%s');\n", str_replace("'", "\'", Decode($notice['message'])));
 				break;
 
 			default:
