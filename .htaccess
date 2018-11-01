@@ -68,3 +68,10 @@ Options +FollowSymLinks +ExecCGI -Indexes
 <Files ~ "\.(dat|log|csv|sql)$">
 	deny from all
 </Files>
+
+## 
+# For Sakura Cloud Web-Accelerator
+# 
+<Files ~ "¥.(gif|jpe?g|png|ico)$">
+	Header set Cache-Control "s-maxage=86400, public"
+</Files>
