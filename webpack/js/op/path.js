@@ -14,51 +14,6 @@
  *
  */
 $OP.Path = {};
-$OP.Path.meta = {};
-
-<?php if( Env::isAdmin() ): ?>
-$OP.Path.meta.op  = "<?= ConvertPath('op:/')  ?>";
-$OP.Path.meta.app = "<?= ConvertPath('app:/') ?>";
-$OP.Path.meta.doc = "<?= ConvertPath('doc:/') ?>";
-<?php endif; ?>
-
-/** Set meta path.
- *
- */
-$OP.Path.Set = function(meta, path){
-	$OP.Path.meta[meta] = path;
-};
-
-/** Compress to meta path from real path.
- *
- * <pre>
- * $OP.Path.Compress('/var/www/htdocs/app/test'); --> app:/test
- * $OP.Path.Compress('/var/www/htdocs/foo/bar');  --> doc:/foo/bar
- * </pre>
- *
- * @creation  2017-06-07
- * @version   1.0
- * @package   app-webpack-js
- * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
- * @copyright Tomoaki Nagahara All right reserved.
- */
-$OP.Path.Compress = function( path ){
-	//	...
-	if(!path){
-		return '';
-	}
-
-	//	...
-	for(var key in $OP.Path.meta ){
-		var val =  $OP.Path.meta[key];
-		if( val === path.substr(0, val.length ) ){
-			return key + ':/' + path.substr(val.length);
-		}
-	}
-
-	//	...
-	return path;
-}
 
 /** Convert to document-root-url from meta path.
  *
