@@ -10,7 +10,7 @@ Only this.
 $selftest = Unit::Instantiate('Selftest');
 
 //  Automatically do self test.
-$selftest->Auto('table-config.json');
+$selftest->Auto('database-config.json');
 ```
 
 ## How to generate configuration file.
@@ -40,7 +40,7 @@ $configer->Database([
 ]);
 
 //  Privilege configuration.
-$configer->Database([
+$configer->Privilege([
   'user'     => 'testcase-user',
   'database' => 'testcase',
   'table'    => '*',
@@ -48,6 +48,52 @@ $configer->Database([
   'column'   => '*',
 ]);
 
+//  Add auto incrment id column configuration.
+$Configer->Column([
+  'name'    =>  'id',
+  'type'    => 'int',
+  'length'  =>    11,
+  'null'    => false,
+  'default' =>  null,
+  'comment' => 'Auto increment id.',
+]);
 
+//  Add auto incrment id configuration.
+$Configer->Index([
+  'name'    => 'ai',
+  'type'    => 'ai',
+  'column'  => 'ai',
+  'comment' => 'auto incrment',
+]);
+
+//  Add type of set column configuration.
+$Configer->Column([
+  'name'    => 'flags',
+  'type'    => 'set',
+  'length'  => 'a, b, c',
+  'null'    =>  true,
+  'default' =>  null,
+  'comment' => 'Ideal for form of checkbox values. (Multiple choice)',
+]);
+
+//  Add type of enum column configuration.
+$Configer->Column([
+  'name'    => 'choice',
+  'type'    => 'enum',
+  'length'  => 'a, b, c',
+  /*
+  'null'    =>  true, // Can be omitted.
+  'default' =>  null, // Can be omitted.
+  */
+  'comment' => 'Ideal for form of select or radio mono value. (Single choice)',
+]);
+
+//  Add search index configuration.
+$Configer->Index([
+  'name'    => 'search index',
+  'type'    => 'index',
+  'column'  => 'flags, choice',
+  'comment' => 'Indexed by two columns.',
+]);
 
 ```
