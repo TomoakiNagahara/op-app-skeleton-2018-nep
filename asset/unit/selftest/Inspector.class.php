@@ -193,7 +193,7 @@ class Inspector
 			}
 		}
 
-		/* @var $DB \OP\UNIT\DB\DB */
+		/* @var $DB \OP\UNIT\Database */
 		if(!$DB = self::Connect($request) ){
 			self::Error("Database connection was failed.");
 			return;
@@ -252,6 +252,9 @@ class Inspector
 		if( self::$_failure === null ){
 			self::$_failure  =  false;
 		}
+
+		//	...
+		return !self::Failed();
 	}
 
 	/** Inspection.
@@ -405,8 +408,8 @@ class Inspector
 
 	/** Check each user connection.
 	 *
-	 * @param  array          $config
-	 * @return \OP\UNIT\DB\DB $DB
+	 * @param	 array				 $config
+	 * @return	\OP\UNIT\Database	 $DB
 	 */
 	static function Connect($config)
 	{
@@ -415,7 +418,7 @@ class Inspector
 		$host = $config['host'];
 		$user = $config['user'];
 
-		/* @var $DB \OP\UNIT\DB\DB */
+		/* @var $DB \OP\UNIT\Database */
 		if(!$DB = \Unit::Instance('Database') ){
 			return false;
 		}
@@ -703,7 +706,7 @@ class Inspector
 	 *
 	 * </pre>
 	 *
-	 * @param unknown $message
+	 * @param	 string		 $message
 	 */
 	static function Error($message=null)
 	{

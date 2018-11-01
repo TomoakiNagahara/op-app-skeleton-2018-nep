@@ -198,7 +198,7 @@ class Configer
 	 * @param	 string		 $comment
 	 * @param	 array		 $option
 	 */
-	static function Column($name, $type, $comment, $option=[])
+	static function Column($name, $type, $length, $null, $default, $comment, $option=[])
 	{
 		//	...
 		$dsn      = self::Dsn();
@@ -207,12 +207,11 @@ class Configer
 
 		//	...
 		$type     = strtolower($type);
-		$length   = $option['length']   ?? null;
-		$null     = $option['null']     ?? true;
-		$default  = $option['default']  ?? null;
+		$length   = $option['length']   ?? $length;
 		$unsigned = $option['unsigned'] ?? null;
 
 		//	...
+		$column['field']    = $name;
 		$column['name']     = $name;
 		$column['type']     = $type;
 		$column['unsigned'] = $unsigned;

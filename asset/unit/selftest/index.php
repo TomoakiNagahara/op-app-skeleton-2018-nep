@@ -9,6 +9,11 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
+if(!Unit::Load('sql') ){
+	return;
+}
+
+//	...
 include_once(__DIR__.'/autoloader.php');
 
 //	...

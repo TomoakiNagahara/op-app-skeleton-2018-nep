@@ -30,22 +30,94 @@ class Selftest
 	 */
 	use \OP_CORE;
 
+	/** Automatically do self test.
+	 *
+	 */
+	function Auto($config)
+	{
+		//	...
+		/*
+		if(!$db = $this->Database() ){
+			return;
+		};
+		*/
+
+		//	...
+		$io = \OP\UNIT\SELFTEST\Inspector::Auto($config);
+		if(!$io ){
+			$this->Form();
+		}
+
+		//	...
+		\OP\UNIT\SELFTEST\Inspector::Result();
+	}
+
+	/** Get the unit of Database.
+	 *
+	 * @return \OP\UNIT\Database $database
+	 */
+	/*
+	function Database()
+	{
+		//	...
+		if(!$config = $this->Form() ){
+			return;
+		};
+
+		// @var $db \OP\UNIT\Database
+		if(!$db = \Unit::Instantiate('database') ){
+			return;
+		};
+
+		//	...
+		if(!$db->Connect($config) ){
+			return;
+		};
+
+		//	...
+		return $db;
+	}
+	*/
+
 	/** Form
 	 *
 	 */
 	function Form()
 	{
+		//	...
 		include(__DIR__.'/form.phtml');
+
+		/*
+		//	...
+		if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
+			return;
+		};
+
+		//	...
+		foreach(['driver','host','port','user','password','charset'] as $key){
+			//	...
+			if(!$val = $_POST[$key] ?? null ){
+				return;
+			}
+
+			//	...
+			$config[$key] = $val;
+		};
+
+		//	...
+		return $config;
+		*/
 	}
 
 	/** Inspector
 	 *
-	 * @param  array   $args
-	 * @return boolean $io
+	 * @param	 array				 $args
+	 * @param	\OP\UNIT\Database	 $db
+	 * @return	 boolean			 $io
 	 */
-	function Inspector($args)
+	function Inspector($args, $db)
 	{
-		return \OP\UNIT\SELFTEST\Inspector::Inspection($args);
+		return \OP\UNIT\SELFTEST\Inspector::Inspection($args, $db);
 	}
 
 	/** Result
