@@ -25,13 +25,13 @@ try {
 	//	Closure
 	(function(){
 
-	//	Include configuration file.
-	include(__DIR__.'/config.php');
+		//	Include configuration file.
+		include(__DIR__.'/config.php');
 
-	//	Include private configuration file.
-	if( file_exists(__DIR__.'/_config.php') ){
-		include(__DIR__.'/_config.php');
-	}
+		//	Include private configuration file.
+		if( file_exists(__DIR__.'/_config.php') ){
+			include(__DIR__.'/_config.php');
+		}
 
 	})();
 
