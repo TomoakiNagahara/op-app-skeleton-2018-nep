@@ -1,1 +1,27 @@
-
+<?php
+/**
+ * app-skeleton-2018-nep:/menu/top.php
+ *
+ * @creation  2018-10-30
+ * @version   1.0
+ * @package   app-skeleton
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+if(!$breadcrumbs = App::Breadcrumbs() ){
+	return;
+}
+?>
+<section class="breadcrumbs">
+	<ol>
+		<?php
+		foreach($breadcrumbs as $list){
+			$text = $list['text'];
+			$href = $list['href'];
+			$href = ConvertURL($href);
+			printf('<li><a href="%s">%s</a></li>'.PHP_EOL, $href, $text);
+		}
+		?>
+	</ol>
+</section>
