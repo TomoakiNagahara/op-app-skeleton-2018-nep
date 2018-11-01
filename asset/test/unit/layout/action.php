@@ -15,7 +15,7 @@ $layout = $_GET['layout'] ?? 'white';
 App::Layout($layout);
 
 //	...
-foreach(['white','dark'] as $layout){
+foreach(['white','dark','chameleon'] as $layout){
 	$nav['label'] = $layout;
 	$nav['url']   = '?layout='.$layout;
 	$navs[] = $nav;
