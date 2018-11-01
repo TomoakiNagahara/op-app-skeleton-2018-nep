@@ -3,14 +3,81 @@
  *
  * @creation  2017-06-08
  * @version   1.0
- * @package   app-skeleton
+ * @package   app-skeleton-webpack
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-if( typeof $OP.URL === "undefined" ){
+if(!$OP.URL ){
 	$OP.URL = {};
 }
+
+//	...
+(function(){
+	/** Store meta url label and real url.
+	 *
+	 * <pre>
+	 * // meta url label and real url.
+	 * __meta = {
+	 *   'app' = '/op/7/app'
+	 * }
+	 * </pre>
+	 *
+	 * @creation  2018-11-01
+	 * @version   1.0
+	 * @package   app-skeleton-webpack
+	 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+	 * @copyright Tomoaki Nagahara All right reserved.
+	 */
+	var __meta = {};
+		__meta.app = '<?= ConvertURL('app:/'); ?>';
+
+	/** Set meta url label and real url.
+	 *
+	 * <pre>
+	 * $OP.URL.Meta('testcase', '/op/7/app/testcase/');
+	 * </pre>
+	 *
+	 * @creation  2018-11-01
+	 * @version   1.0
+	 * @package   app-skeleton-webpack
+	 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+	 * @copyright Tomoaki Nagahara All right reserved.
+	 */
+	$OP.URL.Meta = function(meta, path){
+		__meta[meta] = path;
+	};
+
+	/** Convert to real url from meta url.
+	 *
+	 * <pre>
+	 * $OP.URL.Meta('testcase', '/op/7/app/testcase/');
+	 * $OP.URL.Convert('testcase:/api'); --> /op/7/app/testcase/api/
+	 * </pre>
+	 *
+	 * @creation  2018-11-01
+	 * @version   1.0
+	 * @package   app-skeleton-webpack
+	 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+	 * @copyright Tomoaki Nagahara All right reserved.
+	 */
+	$OP.URL.Convert = function(url){
+		//	...
+		var m = url.match(/^([_a-z0-9]+):\//);
+		if(!m ){
+			return url;
+		};
+
+		//	...
+		if(!__meta[m[1]] ){
+			console.error(`Has not been set this meta url. (${m[1]})`);
+			return null;
+		};
+
+		//	...
+		return url.replace(m[1]+':/', __meta[m[1]]);
+	};
+})();
 
 //	...
 (function(){
