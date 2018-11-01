@@ -9,73 +9,23 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-$endpoint  = App::EndPoint();
-$reference = basename(dirname($endpoint));
+$args = App::Args();
 
 //	...
-App::Breadcrumbs(['href'=>'app:/','text'=>'TOP']);
+switch( $count = count($args) ){
+	case 0:
+	case 1:
+		include('menu.phtml');
+		break;
 
-//	...
-App::Breadcrumbs(['href'=>'app:/'.$reference,'text'=>'Reference']);
+	case 2:
+		include('index.phtml');
+		break;
 
-//	...
-$args = [$reference];
-foreach( App::Args() as $arg ){
-	$args[] = $arg;
-	$list['text'] = ucfirst($arg);
-	$list['href'] = 'app:/'.join('/', $args);
-	App::Breadcrumbs($list);
-}
+	case 3:
+		include('readme.php');
+		break;
 
-//	...
-include('menu.phtml');
-
-//	...
-if( count($args) < 2 ){
-	return;
-}
-
-//	...
-$action = $args[1]."/action.php";
-
-//	...
-if( file_exists($action) ){
-	printf('<div id="markdown" class="markdown" data-markdown="%s"></div>', include($action));
-}
-?>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-<script>
-//	...
-document.addEventListener('DOMContentLoaded', function(){
-	//	...
-	/*
-	marked.setOptions({
-		gfm:		 true,
-		tables:		 true,
-		breaks:		 false,
-		pedantic:	 false,
-		sanitize:	 true,
-		smartLists:	 true,
-		smartypants: false,
-		langPrefix: '',
-		highlight:	 function(code, lang) {
-			// hogehoge
-			return code;
-		}
-	});
-	*/
-
-	//	...
-	var dom = document.querySelector('#markdown');
-	if(!dom ){
-		return;
-	};
-
-	//	...
-	var text = dom.dataset.markdown;
-	var html = marked(text);
-D(text, html);
-	//	...
-	dom.innerHTML = html;
-});
-</script>
+	default:
+		D($count, $args);
+};
