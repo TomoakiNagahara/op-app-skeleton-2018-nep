@@ -14,9 +14,9 @@ if(!Unit::Load('selftest') ){
 }
 
 //	Generate configuration json file.
-$config = include('config.php');
+$config = include('config.inc.php');
 
-//	Generate instance.
+/* @var $selftest \OP\UNIT\Selftest */
 $selftest = Unit::Instantiate('Selftest');
 
 //	Automatically inspection.
