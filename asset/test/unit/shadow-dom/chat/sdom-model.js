@@ -244,7 +244,7 @@ function __if(sdom, rdom, key){
 
 		//	...
 		var io = eval(`${le} ${ce} ${ri}`);
-D(io);
+
 		//	...
 		if( key === 'disabled' ){
 			if(!io ){
@@ -265,8 +265,9 @@ D(io);
 		var inputs = __if_inputs(str);
 		if(!inputs ){ return };
 		for(var i=0; i<inputs.length; i++){
-			inputs[0].addEventListener('change', function(t){
-				D(t);
+			inputs[0].addEventListener('change', function(e){
+				D( 'event.target', e.target.value );
+				D( '$OP.Form()', $OP.Form('chat').Input('nickname').Value() );
 				func();
 			});
 		};
@@ -304,9 +305,21 @@ function __if_value(str){
 	var input_name = temp[2];
 	var attr_name  = temp[3];
 	var prop_name = temp[4];
-	var form  = document.querySelector(`form[name=${form_name}]`);
-	var input = $OP.Form(form_name).Input(input_name);
-	var value = input.Value();
+
+	//	...
+	if( attr_name === undefined){
+		console.error(`Has not been set attribute. (${attr_name})`);
+		return false;
+	};
+
+	//	...
+	if( attr_name !== 'value' ){
+		console.error(`Has not been supported this attribute yet. (${attr_name})`);
+		return false;
+	};
+
+	//	...
+	var value = __get_input_value(form_name, );
 
 	//	...
 	if( value === null ){
@@ -325,4 +338,50 @@ function __if_value(str){
 
 	//	...
 	return value[prop_name];
+};
+
+//	...
+function __get_input_value(form_name, input_name){
+	//	...
+	var form   = document.querySelector(`form[name=${form_name}]`);
+	var inputs = form.querySelectorAll(`input[name=${input_name}]`);
+
+	//	...
+	var type = __get_input_type(inputs);
+
+	//	...
+	return __get_input_type_value(inputs, type);
+};
+
+//	...
+function __get_input_type(inputs){
+	//	...
+	var type = null;
+
+	//	...
+	if( inputs.length === 1 ){
+		type = inputs[0].getAttribute('type');
+		return type ? type: inputs[0].tagName;
+	};
+
+	//	...
+	for(var i=0; i<input.length; i++){
+		if( type !== 'hidden' ){
+			type = input[i].getAttribute('type');
+		};
+	}
+
+	//	...
+	return type;
+};
+
+//	...
+function __get_input_type_value(inputs, type){
+	//	...
+	if( type === 'text' && type === 'textarea' ){
+		return inputs[0].value;
+	};
+
+	//	...
+	console.error(type);
 };
