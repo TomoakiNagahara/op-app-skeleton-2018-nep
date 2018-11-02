@@ -1,0 +1,54 @@
+/**
+ * app-skeleton-webpack:/css/app/form-button.css
+ *
+ * @creation  2018-10-26
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body form.OP .button,
+body.body form.OP button,
+body.body form.OP input[type="submit"] {
+	border-radius: 0.2em;
+	background-color: #e9e9e9;
+	font-size: 9pt;
+	user-select: none;
+}
+
+body.body form.OP .button:hover:not(:disabled),
+body.body form.OP button:hover:not(:disabled),
+body.body form.OP input[type="submit"]:hover:not(:disabled) {
+	border-color:     #909090;
+	background-color: #f0f0f0;
+	color: #000;
+}
+
+body.body form.OP .button:active,
+body.body form.OP button:active,
+body.body form.OP input[type="submit"]:active {
+	border-color:     #606060 !important;
+	background-color: #e0e0e0 !important;
+	outline: none !important;
+}
+
+body.body form.OP .button:focus,
+body.body form.OP button:focus,
+body.body form.OP input[type="submit"]:focus {
+	border-color:     #606060 !important;
+	outline: none !important;
+}
+
+body.body form.OP .button::-moz-focus-inner,
+body.body form.OP button::-moz-focus-inner,
+body.body form.OP input[type="submit"]::-moz-focus-inner {
+	border :0px;
+}
+
+body.body form.OP .button:disabled,
+body.body form.OP button:disabled,
+body.body form.OP input[type="submit"]:disabled {
+	color: #999;
+	cursor: not-allowed;
+}
