@@ -154,15 +154,10 @@ function __parse_script(source){
 };
 
 //	...
-function __for_if_root(sdom, rdom){
+function __for_root(sdom, rdom){
 	//	...
 	for(var dom of rdom.querySelectorAll('[for]')){ // :scope > [for]
 		__for(sdom, dom);
-	};
-
-	//	...
-	for(var dom of rdom.querySelectorAll('[if]')){ // :scope > [if]
-		__if(sdom, dom);
 	};
 };
 
@@ -213,6 +208,70 @@ function __for(sdom, rdom){
 };
 
 //...
-function __if(sdom, rdom){
-	D( rdom.getAttribute('if') );
+function __if_root(sdom, rdom){
+	for(var key of ['if','disabled','readonly'] ){
+		for(var dom of rdom.querySelectorAll(`[${key}]`)){
+			var val = dom.getAttribute(key);
+			var io = __if(sdom, rdom, key, val);
+
+			//	...
+			if( key === 'disabled' ){
+				if(!io ){
+					dom.removeAttribute(key);
+				}
+			}
+		};
+	};
+};
+
+//...
+function __if(sdom, rdom, key, val){
+	//	...
+	var m = val.match(/^(.+) ([!<>=]+) (.+)$/);
+	if(!m ){
+		return;
+	};
+
+	//	...
+	var le = m[1].trim();
+	var ce = m[2].trim();
+	var ri = m[3].trim();
+
+	//	...
+	le = __if_value(le);
+	ri = __if_value(ri);
+
+	//	...
+	return eval(`${le} ${ce} ${ri}`);
+};
+
+//	...
+function __if_value(str){
+	//	...
+	if(!str.match(/^form\./) ){
+		return str;
+	};
+
+	//	...
+	var temp = str.split('.');
+	var form_name  = temp[1];
+	var input_name = temp[2];
+	var attr_name  = temp[3];
+	var prop_name = temp[4];
+	var form  = document.querySelector(`form[name=${form_name}]`);
+	var input = $OP.Form(form_name).Input(input_name);
+	var value = input.Value();
+
+	//	...
+	if( prop_name === undefined ){
+		return value;
+	}
+
+	//	...
+	if( value[prop_name] === undefined ){
+		return false;
+	}
+
+	//	...
+	return value[prop_name];
 };

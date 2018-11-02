@@ -67,8 +67,11 @@
 		//	Initialize html.
 		rdom.innerHTML = sdom.html;
 
-		//	Processing.
-		__for_if_root(this, rdom);
+		//	For processing.
+		__for_root(this, rdom);
+
+		//	If processing.
+		__if_root(this, rdom);
 	};
 
 	//	...
