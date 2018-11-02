@@ -37,6 +37,7 @@ $configer->User([
 $configer->Database([
   'name'     => 'testcase',
   'charset'  => 'utf8',
+  'collate'  => 'utf8mb4_general_ci',
 ]);
 
 //  Privilege configuration.
@@ -48,8 +49,16 @@ $configer->Privilege([
   'column'   => '*',
 ]);
 
+//  Add table configuration.
+$configer->Table([
+  'name'    => 't_table',
+  'charset' => 'utf8',
+  'collate' => 'utf8mb4_general_ci',
+  'comment' => 'This is test table.',
+]);
+
 //  Add auto incrment id column configuration.
-$Configer->Column([
+$configer->Column([
   'name'    =>  'id',
   'type'    => 'int',
   'length'  =>    11,
@@ -59,7 +68,7 @@ $Configer->Column([
 ]);
 
 //  Add auto incrment id configuration.
-$Configer->Index([
+$configer->Index([
   'name'    => 'ai',
   'type'    => 'ai',
   'column'  => 'ai',
@@ -67,17 +76,18 @@ $Configer->Index([
 ]);
 
 //  Add type of set column configuration.
-$Configer->Column([
+$configer->Column([
   'name'    => 'flags',
   'type'    => 'set',
   'length'  => 'a, b, c',
   'null'    =>  true,
   'default' =>  null,
+  'collate' => 'ascii_general_ci', // Change collate.
   'comment' => 'Ideal for form of checkbox values. (Multiple choice)',
 ]);
 
 //  Add type of enum column configuration.
-$Configer->Column([
+$configer->Column([
   'name'    => 'choice',
   'type'    => 'enum',
   'length'  => 'a, b, c',
@@ -89,7 +99,7 @@ $Configer->Column([
 ]);
 
 //  Add search index configuration.
-$Configer->Index([
+$configer->Index([
   'name'    => 'search index',
   'type'    => 'index',
   'column'  => 'flags, choice',
