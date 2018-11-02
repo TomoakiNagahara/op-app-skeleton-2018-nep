@@ -209,72 +209,85 @@ function __for(sdom, rdom){
 
 //...
 function __if_root(sdom, rdom){
-	for(var key of ['if','disabled','readonly'] ){
-		for(var dom of rdom.querySelectorAll(`[${key}]`)){
-			//	...
-			__if(sdom, dom, key);
-		};
+	for(var dom of rdom.querySelectorAll('[if]')){
+		//	...
+		__if(sdom, dom);
 	};
 };
 
 //...
-function __if(sdom, rdom, key){
+function __if(sdom, rdom){
 	//	...
 	var func = function(){
 		//	...
-		var val = rdom.getAttribute(key);
+		var parsed = __if_parser(rdom.getAttribute('if'));
 
 		//	...
-		var m = val.match(/^(.+) ([!<>=]+) (.+)$/);
-		if(!m ){
-			return;
-		};
-
-		//	...
-		m = m.map(v => v.trim());
-
-		//	...
-		var le = m[1];
-		var ce = m[2];
-		var ri = m[3];
-
-		//	...
-		le = __if_value(le);
-		ri = __if_value(ri);
+		var ce = parsed.eval;
+		var le = __if_value(parsed.left);
+		var ri = __if_value(parsed.right);
 
 		//	...
 		var io = eval(`${le} ${ce} ${ri}`);
 
 		//	...
-		if( key === 'disabled' ){
-			if(!io ){
-				rdom.removeAttribute(key);
-			}
+		switch( parsed.value ){
+			case 'disabled':
+				rdom[parsed.value] = io;
+			break;
 		}
 
 		//	..
-		return m;
+		return parsed;
 	};
 
 	//	...
-	var m = func();
+	var parsed = func();
 
 	//	...
-	m.map(function(str, ind){
-		if(!ind ){ return };
+	[parsed.left, parsed.right].map(function(str){
 		var inputs = __if_inputs(str);
 		if(!inputs ){ return };
 		for(var i=0; i<inputs.length; i++){
-			inputs[0].addEventListener('change', function(e){
-				D( 'event.target', e.target.value );
-				D( '$OP.Form()', $OP.Form('chat').Input('nickname').Value() );
+			inputs[i].addEventListener('input', function(e){
 				func();
 			});
 		};
 	});
 };
 
-//...
+//	...
+function __if_parser(str){
+	//	...
+	var parsed = {};
+
+	//	...
+	if( str.indexOf('?') !== -1 ){
+		var tmp = str.split('?');
+		var str = tmp[0].trim();
+		var att = tmp[1].trim();
+	}else{
+		var str = str.trim();
+		var att = 'remove';
+	};
+
+	//	...
+	var m = str.match(/^(.+) ([!<>=]+) (.+)$/);
+	if(!m ){
+		return str;
+	};
+
+	//	...
+	parsed.left  = m[1].trim();
+	parsed.eval  = m[2].trim();
+	parsed.right = m[3].trim();
+	parsed.value = att;
+
+	//	...
+	return parsed;
+};
+
+//	...
 function __if_inputs(str){
 	//	...
 	if(!str.match(/^form\./) ){
@@ -304,7 +317,7 @@ function __if_value(str){
 	var form_name  = temp[1];
 	var input_name = temp[2];
 	var attr_name  = temp[3];
-	var prop_name = temp[4];
+	var prop_name  = temp[4];
 
 	//	...
 	if( attr_name === undefined){
@@ -319,7 +332,7 @@ function __if_value(str){
 	};
 
 	//	...
-	var value = __get_input_value(form_name, );
+	var value = __get_input_value(form_name, input_name);
 
 	//	...
 	if( value === null ){
@@ -365,7 +378,7 @@ function __get_input_type(inputs){
 	};
 
 	//	...
-	for(var i=0; i<input.length; i++){
+	for(var i=0; i<inputs.length; i++){
 		if( type !== 'hidden' ){
 			type = input[i].getAttribute('type');
 		};
@@ -378,7 +391,7 @@ function __get_input_type(inputs){
 //	...
 function __get_input_type_value(inputs, type){
 	//	...
-	if( type === 'text' && type === 'textarea' ){
+	if( type === 'text' || type === 'textarea' ){
 		return inputs[0].value;
 	};
 
