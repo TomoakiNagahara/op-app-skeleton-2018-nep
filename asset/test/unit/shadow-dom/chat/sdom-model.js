@@ -211,38 +211,84 @@ function __for(sdom, rdom){
 function __if_root(sdom, rdom){
 	for(var key of ['if','disabled','readonly'] ){
 		for(var dom of rdom.querySelectorAll(`[${key}]`)){
-			var val = dom.getAttribute(key);
-			var io = __if(sdom, rdom, key, val);
-
 			//	...
-			if( key === 'disabled' ){
-				if(!io ){
-					dom.removeAttribute(key);
-				}
-			}
+			__if(sdom, dom, key);
 		};
 	};
 };
 
 //...
-function __if(sdom, rdom, key, val){
+function __if(sdom, rdom, key){
 	//	...
-	var m = val.match(/^(.+) ([!<>=]+) (.+)$/);
-	if(!m ){
-		return;
+	var func = function(){
+		//	...
+		var val = rdom.getAttribute(key);
+
+		//	...
+		var m = val.match(/^(.+) ([!<>=]+) (.+)$/);
+		if(!m ){
+			return;
+		};
+
+		//	...
+		m = m.map(v => v.trim());
+
+		//	...
+		var le = m[1];
+		var ce = m[2];
+		var ri = m[3];
+
+		//	...
+		le = __if_value(le);
+		ri = __if_value(ri);
+
+		//	...
+		var io = eval(`${le} ${ce} ${ri}`);
+D(io);
+		//	...
+		if( key === 'disabled' ){
+			if(!io ){
+				rdom.removeAttribute(key);
+			}
+		}
+
+		//	..
+		return m;
 	};
 
 	//	...
-	var le = m[1].trim();
-	var ce = m[2].trim();
-	var ri = m[3].trim();
+	var m = func();
 
 	//	...
-	le = __if_value(le);
-	ri = __if_value(ri);
+	m.map(function(str, ind){
+		if(!ind ){ return };
+		var inputs = __if_inputs(str);
+		if(!inputs ){ return };
+		for(var i=0; i<inputs.length; i++){
+			inputs[0].addEventListener('change', function(t){
+				D(t);
+				func();
+			});
+		};
+	});
+};
+
+//...
+function __if_inputs(str){
+	//	...
+	if(!str.match(/^form\./) ){
+		return false;
+	};
 
 	//	...
-	return eval(`${le} ${ce} ${ri}`);
+	var temp = str.split('.');
+	var form_name  = temp[1];
+	var input_name = temp[2];
+	var form   = document.querySelector(`form[name=${form_name}]`);
+	var inputs = form.querySelectorAll(`[name=${input_name}]`);
+
+	//	...
+	return inputs;
 };
 
 //	...
@@ -263,14 +309,19 @@ function __if_value(str){
 	var value = input.Value();
 
 	//	...
+	if( value === null ){
+		return false;
+	};
+
+	//	...
 	if( prop_name === undefined ){
 		return value;
-	}
+	};
 
 	//	...
 	if( value[prop_name] === undefined ){
 		return false;
-	}
+	};
 
 	//	...
 	return value[prop_name];
