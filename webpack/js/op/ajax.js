@@ -90,7 +90,7 @@
 						//	...
 						if( (json.errors && json.errors.length) ||
 							(json.notice && json.notice.length) ){
-							console.error('Error', json.uri);
+							console.error('Error', url);
 							console.log(json);
 						};
 
