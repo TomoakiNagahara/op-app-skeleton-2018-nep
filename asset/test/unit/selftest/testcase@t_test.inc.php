@@ -14,7 +14,7 @@ OP\UNIT\SELFTEST\Configer::Table('t_test');
 //	...
 OP\UNIT\SELFTEST\Configer::Column(       'ai',      'int',   11, false, null, 'Auto increment number.');
 OP\UNIT\SELFTEST\Configer::Column(       'id',     'char',    8, false, null, '8byte hash key.');
-OP\UNIT\SELFTEST\Configer::Column(     'text',     'text',    8,  true, null, 'Free text.');
+OP\UNIT\SELFTEST\Configer::Column(     'text',     'text', null,  true, null, 'Free text.');
 OP\UNIT\SELFTEST\Configer::Column(      'tag',  'varchar',   20,  true, null, 'Search tag. Muximum 20 charcter. Correspond to multi byte charcter.');
 OP\UNIT\SELFTEST\Configer::Column(   'weight',      'int',   11, false,    1, 'Order weigth.');
 OP\UNIT\SELFTEST\Configer::Column(     'flag',      'set','a,b',  true, null, 'flags');
