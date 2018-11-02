@@ -9,4 +9,9 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
+if(!Unit::Load('formjs') ){
+	return;
+};
+
+//	...
 include('index.html');

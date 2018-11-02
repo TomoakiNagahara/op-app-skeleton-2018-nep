@@ -11,10 +11,10 @@
 ?>
 <sdom name="chat">
 	<p>Please leave comment</p>
-	<form class="OP">
+	<form name="chat" class="OP">
 		<input type="text" name="nickname" value="" />
 		<input type="text" name="comment"  value="" />
-		<button> submit </button>
+		<button disabled=" form.chat.nickname.value.length == 0 "> submit </button>
 	</form>
 	<hr/>
 	<div for="this.json.chat">
@@ -41,6 +41,9 @@
 
 		//	...
 		$OP.Ajax.Post(url, data, function(json){
+
+			D(json);
+
 			//	Set result of json.
 			var sdom = $OP.SDOM.Get(sdom_name, idnt_name);
 				sdom.Json('chat', json.result);
@@ -57,7 +60,17 @@
 	};
 
 	//	...
+	function onUpdated(){
+		//	function onUpdate()
+	};
+
+	//	...
 	function onDelete(){
+		//	function onDelete()
+	};
+
+	//	...
+	function onDeleted(){
 		//	function onDelete()
 	};
 	</script>
