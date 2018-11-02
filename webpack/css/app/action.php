@@ -22,7 +22,7 @@ return [
 	__DIR__.'/code',
 	__DIR__.'/pre',
 	__DIR__.'/form',
-	__DIR__.'/button',
+	__DIR__.'/form-button',
 	__DIR__.'/table',
 	__DIR__.'/wai-aria',
 	__DIR__.'/other',
