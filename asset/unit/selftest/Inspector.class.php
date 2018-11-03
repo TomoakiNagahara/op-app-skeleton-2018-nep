@@ -168,41 +168,6 @@ class Inspector
 		return $config;
 	}
 
-	/** Generate DB object from the Form.
-	 *
-	 * @return	\OP\UNIT\Database	 $DB
-	 */
-	static function _DB()
-	{
-		//	...
-		if( $_SERVER['REQUEST_METHOD'] === 'GET' ){
-			return;
-		}
-
-		//	...
-		if(!$request = Escape($_POST) ){
-			self::Error("Has not been submitted the Form.");
-			return;
-		}
-
-		//	...
-		foreach(['driver','host','port','user'] as $key){
-			if(!isset($request[$key])){
-				self::Error("Configuration arguments has not been set $key.");
-				return;
-			}
-		}
-
-		/* @var $DB \OP\UNIT\Database */
-		if(!$DB = self::Connect($request) ){
-			self::Error("Database connection was failed.");
-			return;
-		}
-
-		//	...
-		return $DB ?? \Unit::Instance('Database');
-	}
-
 	/** Get DSN
 	 *
 	 */
@@ -219,13 +184,8 @@ class Inspector
 	 *
 	 * @param array $args
 	 */
-	static function Auto($args)
+	static function Auto($args, $DB)
 	{
-		//	...
-		if(!$DB = self::_DB() ){
-			return;
-		}
-
 		//	...
 		if(!$config = self::_Config($args) ){
 			return;
