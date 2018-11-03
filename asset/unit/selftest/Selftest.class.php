@@ -36,14 +36,14 @@ class Selftest
 	function Auto($config)
 	{
 		//	...
-		/*
 		if(!$db = $this->Database() ){
 			return;
 		};
-		*/
 
 		//	...
-		$io = \OP\UNIT\SELFTEST\Inspector::Auto($config);
+		$io = \OP\UNIT\SELFTEST\Inspector::Auto($config, $db);
+
+		//	...
 		if(!$io ){
 			$this->Form();
 		}
@@ -56,7 +56,6 @@ class Selftest
 	 *
 	 * @return \OP\UNIT\Database $database
 	 */
-	/*
 	function Database()
 	{
 		//	...
@@ -77,7 +76,6 @@ class Selftest
 		//	...
 		return $db;
 	}
-	*/
 
 	/** Form
 	 *
