@@ -85,26 +85,27 @@ class Selftest
 		//	...
 		include(__DIR__.'/form.phtml');
 
-		/*
 		//	...
 		if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
 			return;
 		};
 
 		//	...
+		$config = [];
+
+		//	...
 		foreach(['driver','host','port','user','password','charset'] as $key){
 			//	...
 			if(!$val = $_POST[$key] ?? null ){
-				return;
+				return false;
 			}
 
 			//	...
-			$config[$key] = $val;
+			$config[$key] = Escape($val);
 		};
 
 		//	...
 		return $config;
-		*/
 	}
 
 	/** Inspector
