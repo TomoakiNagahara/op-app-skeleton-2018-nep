@@ -171,12 +171,8 @@ class Inspector
 	/** Get DSN
 	 *
 	 */
-	static function _DSN()
+	static function _DSN($config)
 	{
-		//	...
-		$config = self::_DB()->Config();
-
-		//	...
 		return "{$config['prod']}://{$config['host']}:{$config['port']}";
 	}
 
@@ -230,7 +226,7 @@ class Inspector
 		}
 
 		//	...
-		$dsn = self::_DSN();
+		$dsn = self::_DSN( $DB->Config() );
 
 		//	...
 		if(!isset($config[$dsn]) ){
@@ -254,7 +250,7 @@ class Inspector
 	{
 		//	...
 		$host = $DB->Config()['host'];
-		$dsn  = self::_DSN();
+		$dsn  = self::_DSN($DB->Config());
 
 		//	...
 		if(!$sql  = \OP\UNIT\SQL\Show::User($DB) ){
@@ -400,7 +396,7 @@ class Inspector
 	static function Structures($config, $DB)
 	{
 		//	...
-		$dsn  = self::_DSN();
+		$dsn  = self::_DSN($DB->Config());
 
 		//	...
 		self::Databases($DB, $config['databases'], self::$_result[$dsn]);
