@@ -30,6 +30,15 @@ class Selftest
 	 */
 	use \OP_CORE;
 
+	/** Generate Configer instance.
+	 *
+	 * @return \OP\UNIT\SELFTEST\Configer
+	 */
+	function Configer()
+	{
+		return new \OP\UNIT\SELFTEST\Configer();
+	}
+
 	/** Automatically do self test.
 	 *
 	 */
