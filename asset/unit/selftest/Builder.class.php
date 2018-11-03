@@ -141,8 +141,15 @@ class Builder
 				$args = $configs['databases'][$database]['tables'][$table];
 				$args['database'] = $database;
 				$args['table']    = $table;
-				if( $sql = \OP\UNIT\SQL\Table::Create($args, $DB) ){
-					$io  = $DB->Query($sql, 'create');
+
+				//	...
+				if(!$sql = \OP\UNIT\SQL\Table::Create($args, $DB) ){
+					throw new \Exception("Failed: $sql");
+				}
+
+				//	...
+				if(!$io  = $DB->Query($sql, 'create') ){
+					throw new \Exception("Failed: $io");
 				}
 			}
 		}
@@ -183,8 +190,13 @@ class Builder
 					//	Create new column.
 					if(!$column['result'] ){
 						//	...
-						$sql = \OP\UNIT\SQL\Column::Create($database, $table, $name, $conf, $_db);
-						$io  = $_db->Query($sql, 'alter');
+						if(!$sql = \OP\UNIT\SQL\Column::Create($database, $table, $name, $conf, $_db) ){
+							throw new \Exception("Failed: $sql");
+						}
+
+						if(!$io  = $_db->Query($sql, 'alter')){
+							throw new \Exception("Failed: $io");
+						}
 					}
 				}
 			}
@@ -217,6 +229,11 @@ class Builder
 						$conf= $config['databases'][$database]['tables'][$table]['columns'][$name];
 						$sql = \OP\UNIT\SQL\Column::Change($database, $table, $name, $conf, $_db);
 						$io  = $_db->Query($sql, 'alter');
+
+						//	...
+						if(!$io ){
+							throw new \Exception("Failed: $field ($io)");
+						}
 
 						//	...
 						break;
@@ -256,8 +273,14 @@ class Builder
 					$modifier = 'ADD';
 
 					//	...
-					$sql = "ALTER TABLE {$database}.{$table} {$modifier} $index($column)";
-					$io  = $DB->Query($sql, 'alter');
+					if(!$sql = "ALTER TABLE {$database}.{$table} {$modifier} $index($column)" ){
+						throw new \Exception("Failed: $sql");
+					}
+
+					//	...
+					if(!$io  = $DB->Query($sql, 'alter') ){
+						throw new \Exception("Failed: $io");
+					}
 				}
 			}
 		}
@@ -284,35 +307,50 @@ class Builder
 			//	...
 			if(!ifset($result['exist']) ){
 				//	...
-				if( $qu = \OP\UNIT\SQL\User::Create($config, $DB) ){
-					$io = $DB->Query($qu);
+				if(!$qu = \OP\UNIT\SQL\User::Create($config, $DB) ){
+					throw new \Exception("Failed: $qu");
+				}
 
-					//	...
-					$config['database']  = '*';
-					$config['table']     = '*';
-					$config['privileges']= 'USAGE';
+				//	...
+				if(!$io = $DB->Query($qu) ){
+					throw new \Exception("Failed: $qu ($io)");
+				}
 
-					//	USAGE
-					if( $qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
-						$io = $DB->Query($qu);
-					}
+				//	...
+				$config['database']  = '*';
+				$config['table']     = '*';
+				$config['privileges']= 'USAGE';
 
-					//	...
-					foreach( $configs[$user]['privilege'] as $database => $tables ){
-						foreach( $tables as $table => $privileges ){
-							foreach( $privileges as $privilege => $column ){
-								$config = [];
-								$config['host']      = $host;
-								$config['user']      = $user;
-								$config['database']  = $database;
-								$config['table']     = $table;
-								$config['privileges']= $privilege;
-								$config['column']    = $column;
+				//	USAGE
+				if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
+					throw new \Exception("Failed: $qu");
+				}
 
-								//	...
-								if( $qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
-									$io = $DB->Query($qu);
-								}
+				//	...
+				if(!$io = $DB->Query($qu) ){
+					throw new \Exception("Failed: $qu ($io)");
+				}
+
+				//	...
+				foreach( $configs[$user]['privilege'] as $database => $tables ){
+					foreach( $tables as $table => $privileges ){
+						foreach( $privileges as $privilege => $column ){
+							$config = [];
+							$config['host']      = $host;
+							$config['user']      = $user;
+							$config['database']  = $database;
+							$config['table']     = $table;
+							$config['privileges']= $privilege;
+							$config['column']    = $column;
+
+							//	...
+							if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
+								throw new \Exception("Failed: $qu");
+							}
+
+							//	...
+							if(!$io = $DB->Query($qu) ){
+								throw new \Exception("Failed: $qu ($io)");
 							}
 						}
 					}
@@ -326,8 +364,15 @@ class Builder
 				$config['host'] = $host;
 				$config['user'] = $user;
 				$config['password'] = $configs[$user]['password'];
-				if( $qu = \OP\UNIT\SQL\User::Password($config, $DB) ){
-					$io = $DB->Query($qu);
+
+				//	...
+				if(!$qu = \OP\UNIT\SQL\User::Password($config, $DB) ){
+					throw new \Exception("Failed: $qu");
+				}
+
+				//	...
+				if(!$io = $DB->Query($qu) ){
+					throw new \Exception("Failed: $qu ($io)");
 				}
 			}
 
@@ -380,8 +425,13 @@ class Builder
 						$config['privileges']= $privilege;
 
 						//	...
-						if( $qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
-							$io = $DB->Query($qu);
+						if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
+							throw new \Exception("Failed: $qu");
+						}
+
+						//	...
+						if(!$io = $DB->Query($qu) ){
+							throw new \Exception("Failed: $qu ($io)");
 						}
 					}
 				}

@@ -211,6 +211,7 @@ class Configer
 		$unsigned = $option['unsigned'] ?? null;
 
 		//	...
+		$column = [];
 		$column['field']    = $name;
 		$column['name']     = $name;
 		$column['type']     = $type;
@@ -258,6 +259,7 @@ class Configer
 		}
 
 		//	...
+		$index = [];
 		$index['name']    = $name;
 		$index['type']    = $type;
 		$index['column']  = $column;

@@ -122,9 +122,15 @@ class Inspector
 
 						//	...
 						switch( $type = $define['type'] ?? null ){
+							case null:
+								D("type is null. ($database_name, $table_name, $column_name, $type)");
+								break;
+
 							case 'text':
 								unset($define['length']);
 								break;
+
+							default:
 						}
 
 						//	$define['index'] -- copy --> $define['key']
@@ -251,6 +257,7 @@ class Inspector
 		//	...
 		$host = $DB->Config()['host'];
 		$dsn  = self::_DSN($DB->Config());
+		$lists= [];
 
 		//	...
 		if(!$sql  = \OP\UNIT\SQL\Show::User($DB) ){
@@ -330,6 +337,9 @@ class Inspector
 				//	...
 				foreach( $privileges as $privilege => $columns ){
 					//	...
+					$temp = [];
+
+					//	...
 					if( is_string($privilege) ){
 						foreach( explode(',', $privilege) as $key ){
 							$temp[trim($key)] = $columns;
@@ -341,6 +351,11 @@ class Inspector
 
 					//	...
 					foreach( $privilege as $key => $field ){
+						//	Anti eclipse notice. (un never used)
+						if(!$field){
+							D($field);
+						}
+
 						//	...
 						if( isset($grants[$user][$host][$database][$table][$key]) ){
 							continue;
@@ -369,11 +384,6 @@ class Inspector
 	 */
 	static function Connect($config)
 	{
-		//	...
-		$type = $config['driver'];
-		$host = $config['host'];
-		$user = $config['user'];
-
 		/* @var $DB \OP\UNIT\Database */
 		if(!$DB = \Unit::Instance('Database') ){
 			return false;
@@ -636,8 +646,14 @@ class Inspector
 	static function Indexes($DB, $database, $table, $indexes, &$_result)
 	{
 		//	...
-		$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table);
-		$list = $DB->Query($sql);
+		if(!$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table) ){
+			throw new \Exception("Failed: $sql");
+		}
+
+		//	...
+		if(!$list = $DB->Query($sql) ){
+			throw new \Exception("Failed: $sql ($list)");
+		}
 
 		//	`ALTER TABLE ``t_test`` DROP PRIMARY KEY;
 	}
