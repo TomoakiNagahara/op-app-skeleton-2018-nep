@@ -377,27 +377,6 @@ class Inspector
 		return $result['privileges'] === true ? true: false;
 	}
 
-	/** Check each user connection.
-	 *
-	 * @param	 array				 $config
-	 * @return	\OP\UNIT\Database	 $DB
-	 */
-	static function Connect($config)
-	{
-		/* @var $DB \OP\UNIT\Database */
-		if(!$DB = \Unit::Instance('Database') ){
-			return false;
-		}
-
-		//	...
-		if(!$DB->Connect($config)){
-			return false;
-		}
-
-		//	...
-		return $DB;
-	}
-
 	/** Inspect structures.
 	 *
 	 * @param  array      $config
