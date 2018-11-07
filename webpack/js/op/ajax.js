@@ -7,11 +7,13 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-(function(){
-	//	...
+//	...
+if(!$OP.Ajax ){
 	$OP.Ajax = {};
+};
 
-	//	...
+//	...
+(function(){
 	$OP.Ajax.Get = function(url, data, __success, __failure){
 		//	...
 		if( data ){
