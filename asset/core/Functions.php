@@ -90,33 +90,48 @@ function ConvertPath($path)
 	return $path;
 }
 
-/** Convert url from meta path to document root path.
+/** Convert to Document root URL from meta path.
  *
- * <pre>
- * print ConvertURL('app:/index.php'); // -> /index.php
- * </pre>
+ * This function is for abstract whatever path the application on placed.
+ *
+ * Example:
+ * Document root    --> /var/www/html
+ * Application root --> /var/www/html/onepiece-app/
+ *
+ * ConvertURL('doc:/index.html'); --> /index.html
+ * ConvertURL('app:/index.php');  --> /onepiece-app/index.php
  *
  * @param  string $meta_url
- * @return string
+ * @return string $document_root_url
  */
 function ConvertURL($url)
 {
 	//	...
+	global $_OP;
+
+	//	Full path.
+	$rewrite_base = rtrim($_OP[DOC_ROOT], '/');
+
+	//	...
 	if( strpos($url, 'app:/') === 0 ){
 
-		//	...
-		$rewrite_base = dirname($_SERVER['SCRIPT_NAME']).'/';
+		/** Convert to application root path from meta path.
+		 *
+		 * app:/foo/bar --> /op/7/app-skeleton-2018/foo/bar/
+		 *
+		 * @var string $result
+		 */
+		$result = substr($_OP[APP_ROOT], strlen($rewrite_base)).substr($url, 5);
 
-		//	...
-		$result = rtrim($rewrite_base, '/').substr($url,4);
+	}else if( strpos($url, $_OP[DOC_ROOT]) === 0 ){
 
-	}else if( strpos($url, $_SERVER['DOCUMENT_ROOT']) === 0 ){
-
-		//	...
-		$rewrite_base = $_SERVER['DOCUMENT_ROOT'];
-
-		//	...
-		$result = substr($url, strlen($_SERVER['DOCUMENT_ROOT']));
+		/** Convert to document root url path from full path.
+		 *
+		 * /var/www/html/index.html --> /index.html
+		 *
+		 * @var string $result
+		 */
+		$result = substr($url, strlen($rewrite_base));
 
 	}else{
 		//	What is this?
@@ -135,6 +150,11 @@ function ConvertURL($url)
 		}
 	}
 
+	/** Add slash to URL tail.
+	 *
+	 * Apache will automatic transfer, in case of directory.
+	 */
+
 	//	Separate url query.
 	if( $pos = strpos($result, '?') ){
 		$url = substr($result, 0, $pos);
@@ -144,16 +164,18 @@ function ConvertURL($url)
 		$que = '';
 	}
 
-	//	Add slash. (Anti Apache's automatic transfer)
-	$len = strlen($url);
-	$pos = strrpos($url, '/');
+	// Right slash position.
+	$pos = strrpos($url, '/') +1;
 
-	//	...
-	if( $len === ($pos+1) ){
-		//	...
+	//	If URL is closed by slash.
+	if( strlen($url) === ($pos) ){
+		//	OK
 	}else{
-		$tmp = substr($url, $pos+1);
-		if( strpos($tmp, '.') ){
+		//	Get file name.
+		$file = substr($url, $pos);
+
+		//	File name has extension.
+		if( strpos($file, '.') ){
 			//	/foo/bar/index.html
 		}else{
 			//	/foo/bar --> /foo/bar/
