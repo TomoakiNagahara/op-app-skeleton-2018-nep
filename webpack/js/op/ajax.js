@@ -188,6 +188,6 @@ if(!$OP.Ajax ){
 			//	...
 			join.push(key +'='+ val);
 		}
-		return join.join('&').replace( /%20/g, '+' );
+		return join.join('&')/*.replace( /%20/g, '+' )*/;
 	}
 })();
