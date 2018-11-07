@@ -14,6 +14,14 @@ if(!$OP.Ajax ){
 
 //	...
 (function(){
+	/** Get method.
+	 *
+	 * @param   string    URL
+	 * @param   object    POST or GET data
+	 * @param   function  Successful
+	 * @param   function  failed
+	 * @return  XMLHttpRequest
+	 */
 	$OP.Ajax.Get = function(url, data, __success, __failure){
 		//	...
 		if( data ){
@@ -22,17 +30,38 @@ if(!$OP.Ajax ){
 		return _ajax('get', url, null, __success, __failure);
 	};
 
-	//	...
+	/** Post method.
+	 *
+	 * @param   string    URL
+	 * @param   object    POST or GET data
+	 * @param   function  Successful
+	 * @param   function  failed
+	 * @return  XMLHttpRequest
+	 */
 	$OP.Ajax.Post = function(url, data, __success, __failure){
 		return _ajax('post', url, data, __success, __failure);
 	};
 
-	//	...
+	/** POST data is JSON.
+	 *
+	 * @param   string    URL
+	 * @param   object    POST or GET data
+	 * @param   function  Successful
+	 * @param   function  failed
+	 * @return  XMLHttpRequest
+	 */
 	$OP.Ajax.Json = function(url, data, __success, __failure){
 		return _ajax('json', url, data, __success, __failure);
 	};
 
-	//	...
+	/** POST data is XML.
+	 *
+	 * @param   string    URL
+	 * @param   object    POST or GET data
+	 * @param   function  Successful
+	 * @param   function  failed
+	 * @return  XMLHttpRequest
+	 */
 	$OP.Ajax.Xml = function(url, data, __success, __failure){
 		return _ajax('xml', url, data, __success, __failure);
 	};
@@ -56,7 +85,7 @@ if(!$OP.Ajax ){
 		if(!xhr){
 			console.error("XMLHttpRequest was failed.");
 			return;
-		}
+		};
 
 		//	...
 		xhr.onreadystatechange = function(){
@@ -162,6 +191,12 @@ if(!$OP.Ajax ){
 
 	/** Generate URL Query.
 	 *
+	 * <pre>
+	 * {"A":1, "B":2} --> A=1&B=2
+	 * </pre>
+	 *
+	 * @param   object
+	 * @return  string
 	 */
 	function _convert_url_query(data){
 		var join = [];
@@ -188,6 +223,15 @@ if(!$OP.Ajax ){
 			//	...
 			join.push(key +'='+ val);
 		}
+
+		/**
+		 * Escape otherwise this: A-Z, a-z, 0-9, *, -, ., _
+		 *
+		 * " " --> %20
+		 * "+" --> %2b
+		 *
+		 * @see https://url.spec.whatwg.org/#concept-urlencoded-byte-serializer
+		 */
 		return join.join('&')/*.replace( /%20/g, '+' )*/;
 	}
 })();
