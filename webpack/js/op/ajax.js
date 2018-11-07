@@ -124,6 +124,9 @@ if(!$OP.Ajax ){
 			}
 		};
 
+		//	For debug.
+		console.log(url);
+
 		//	method, url, async, user-name, password
 		xhr.open(method, url, true, null, null);
 
