@@ -172,11 +172,11 @@ class Time
 			Notice::Set("Frozen time is already setted.");
 		}else{
 			//	...
-			if(!is_numeric($time)){ // $time --> 2020-01-01 00:00:00
-				if(!$time = strtotime($time)){
-					Notice::Set("strtotime was failed.");
+			if( is_numeric($time) === false ){   // $time --> 2020-01-01 00:00:00
+				if( $time  = strtotime($time) ){ // 2020-01-01 00:00:00 --> 1577804400
+					$time -= date('Z');          // For UTC: Subtract the time zone offset.
 				}else{
-					$time = strtotime(gmdate('Y-m-d H:i:s'));
+					Notice::Set("strtotime was failed.");
 				}
 			}
 			self::$_time = $time;
