@@ -40,7 +40,7 @@ class Time
 	 * @param  string $calc  '1 month'
 	 * @return string
 	 */
-	static function _Format($format, $calc=null)
+	static function Format($format, $calc=null)
 	{
 		//	...
 		$time = self::Get();
@@ -85,7 +85,7 @@ class Time
 	 */
 	static function Date($calc=null)
 	{
-		return self::_Format('Y-m-d', $calc);
+		return self::Format('Y-m-d', $calc);
 	}
 
 	/** Return date and time.
@@ -94,7 +94,7 @@ class Time
 	 */
 	static function Datetime($calc=null)
 	{
-		return self::_Format('Y-m-d H:i:s', $calc);
+		return self::Format('Y-m-d H:i:s', $calc);
 	}
 
 	/** Get/Set Timezone.
