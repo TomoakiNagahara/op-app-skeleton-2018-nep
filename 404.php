@@ -9,4 +9,11 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-App::Template('404_not_found.phtml');
+if( Time::Format('n') === '10' ){
+	$path = '404-Halloween.phtml';
+}else{
+	$path = '404_not_found.phtml';
+}
+
+//	...
+App::Template($path);
