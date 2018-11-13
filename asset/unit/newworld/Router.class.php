@@ -65,10 +65,8 @@ class Router
 	 */
 	static private function _InitRouteTable()
 	{
-		global $_OP;
-
 		//	...
-		$file  = 'index.php'; // Env::Get(Router::_END_POINT_FILE_NAME_, 'index.php');
+		global $_OP;
 
 		//	...
 		self::$_route = [];
@@ -113,8 +111,8 @@ class Router
 
 		//	...
 		do{
-			//	...
-			$path = trim(join(DIRECTORY_SEPARATOR, $dirs).DIRECTORY_SEPARATOR.$file, DIRECTORY_SEPARATOR);
+			//	['foo','bar'] --> foo/bar//index.php --> foo/bar/index.php
+			$path = trim(join(DIRECTORY_SEPARATOR, $dirs).DIRECTORY_SEPARATOR.'index.php', DIRECTORY_SEPARATOR);
 
 			//	...
 			if( isset($dir) ){
