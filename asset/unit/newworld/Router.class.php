@@ -94,7 +94,7 @@ class Router
 			if( $extension === 'html' ){
 				if( file_exists($full_path) ){
 					self::$_route[Router::_END_POINT_] = $full_path;
-					return self::$_route;
+					return;
 				}
 			}
 		}
@@ -132,9 +132,6 @@ class Router
 
 			//	...
 		}while( false !== $dir = array_pop($dirs) );
-
-		//	Return route table.
-		return self::$_route;
 	}
 
 	/** Get dispatch route by request uri.
