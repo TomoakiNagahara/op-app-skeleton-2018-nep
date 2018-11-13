@@ -18,16 +18,19 @@ if(!isset($_OP)){
 //	You should leave this logic. It's for you.	//
 /***********************************************/
 
-//	Get route table.
+//	Get route table arguments.
 $args = App::Args();
 
-//	Checking 404 page.
-if( count($args) === 0 ){
+//	Does if has arguments?
+if( empty($args) ){
 	//	Access is top page.
 	//	Welcome page is sample page
 	//	 --> ./asset/template/welcome.phtml
 	App::Template('welcome.phtml');
 }else{
-	//	Non existent page.
+	//	Change http status code.
+	http_response_code(404);
+
+	//	Execute 404.php
 	App::Template('404.php');
 }
