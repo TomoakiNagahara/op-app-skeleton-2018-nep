@@ -8,9 +8,20 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+
 //	...
-OP\UNIT\SELFTEST\Configer::Database('testcase');
-OP\UNIT\SELFTEST\Configer::Privilege('testcase','testcase','*', 'SELECT, INSERT, UPDATE, DELETE', '*');
+OP\UNIT\SELFTEST\Configer::Database([
+	'name' => 'testcase'
+]);
+
+//	...
+OP\UNIT\SELFTEST\Configer::Privilege([
+	'user'      => 'testcase',
+	'database'  => 'testcase',
+	'table'     => '*',
+	'privilege' => 'SELECT, INSERT, UPDATE, DELETE',
+	'column'    => '*'
+]);
 
 //	...
 include('testcase@t_test.inc.php');

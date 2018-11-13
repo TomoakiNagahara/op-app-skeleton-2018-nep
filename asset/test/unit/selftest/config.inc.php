@@ -12,7 +12,7 @@
 $path = $_GET['target'] ?? 'testcase';
 
 //	...
-$path .= '.inc.php';
+$path = "{$path}.config/{$path}.inc.php";
 
 //	...
 if(!file_exists($path)){
