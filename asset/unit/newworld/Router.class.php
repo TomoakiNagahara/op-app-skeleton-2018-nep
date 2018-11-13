@@ -30,7 +30,13 @@ class Router
 	 */
 	use \OP_CORE;
 
-	/** Use for route table's associative key name.
+	/** Use for route table's associative array key name.
+	 *
+	 * @var string
+	 */
+	const _ARGS_ = 'args';
+
+	/** Use for route table's associative array key name.
 	 *
 	 * @var string
 	 */
