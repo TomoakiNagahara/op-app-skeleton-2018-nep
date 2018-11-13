@@ -32,6 +32,17 @@ echo Layout::Get($content);
 
  Router class is calculate end-point from URL.
  End-point file name is "index.php".
+ Search end-point by request uri.
+ Generate smart-url's arguments by request URL.
+
+#### Structure of route table
+
+```
+{
+  "args" : [],
+  "end-point" : "/index.html"
+}
+```
 
 #### Methods
 
