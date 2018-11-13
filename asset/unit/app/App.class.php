@@ -57,41 +57,51 @@ class App
 			$cache = false;
 		}
 
+		//	Get mime
+		list($type, $ext) = explode('/', strtolower(Env::Mime() ?? '/') );
+
 		//	...
-		switch( $mime = Env::Mime() ){
-			case 'text/plain':
-			case 'text/css':
-			case 'text/json':
-			case 'text/jsonp':
-			case 'text/javascript':
-				$etag  = $etag  ?? true; // Add Etag to URL Query for JS and CSS.
-				$cache = $cache ?? true;
-				break;
+		if( $type === 'text' ){
+			//	...
+			switch( $ext  ){
+				case 'plain':
+				case 'css':
+				case 'json':
+				case 'jsonp':
+				case 'javascript':
+					$etag  = $etag  ?? true; // Add Etag to URL Query for JS and CSS.
+					$cache = $cache ?? true;
+					break;
 
-			default:
-				//	Set mime.
-				Env::Mime('text/html');
+				default:
+					//	Set mime.
+					Env::Mime('text/html');
 
-				//	Etag flag.
-				if( $etag = $etag ?? true ){
-					//	Check if Notice occurring.
-					if( Notice::Has() ){
-						//	Finger print is microtime.
-						$fp = microtime();
-					}else{
-						//	Get unique hash key.
-						Unit::Load('webpack');
-						$hash_js  = \OP\UNIT\WebPack::Hash('js');
-						$hash_css = \OP\UNIT\WebPack::Hash('css');
+					//	Etag flag.
+					if( $etag = $etag ?? true ){
+						//	Check if Notice occurring.
+						if( Notice::Has() ){
+							//	Finger print is microtime.
+							$fp = microtime();
+						}else{
+							//	Get unique hash key.
+							Unit::Load('webpack');
+							$hash_js  = \OP\UNIT\WebPack::Hash('js');
+							$hash_css = \OP\UNIT\WebPack::Hash('css');
 
-						//	Finger print is unique hash key.
-						$fp = "$hash_js, $hash_css";
+							//	Finger print is unique hash key.
+							$fp = "$hash_js, $hash_css";
+						}
+
+						//	Add finger print for reload.
+						$content .= "<!-- $fp -->";
 					}
-
-					//	Add finger print for reload.
-					$content .= "<!-- $fp -->";
-				}
-			break;
+				break;
+			}
+		}else{
+			//	image
+			$etag  = true;
+			$cache = true;
 		}
 
 		//	Generate 304 Not Modified hash key by content.
