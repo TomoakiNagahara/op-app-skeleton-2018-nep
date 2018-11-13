@@ -17,12 +17,12 @@ call_user_func(function(){
 		//	Checking rewrite setting.
 		if( 'app.php' !== basename($_SERVER['SCRIPT_FILENAME']) ){
 			//	Has not been setting rewrite.
-			include(__DIR__.'/bootstrap/op/rewrite.phtml');
+			include(__DIR__.'/bootstrap/op/rewrite.php');
 		}
 
 		//	Check mbstring installed.
 		if(!function_exists('mb_language') ){
-			include(__DIR__.'/bootstrap/php/mbstring.phtml');
+			include(__DIR__.'/bootstrap/php/mbstring.php');
 		}
 
 		//	Reset application root.
