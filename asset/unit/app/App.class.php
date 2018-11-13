@@ -35,8 +35,21 @@ class App
 	 */
 	static function Auto()
 	{
+		//	End-point file path.
+		$endpoint = null;
+
+		//	Each http status code
+		switch( $status = $_SERVER['REDIRECT_STATUS'] ){
+			//	Error status.
+			case '403':
+		//	case '404':
+				//	Overwrite end-point file path.
+				$endpoint = ConvertPath("app:/{$status}.php");
+				break;
+		}
+
 		//	Execute end-point.
-		$content = self::$_DISPATCH_::Get();
+		$content = OP\UNIT\NEWWORLD\Dispatch::Get($endpoint);
 
 		//	For developers.
 		if( Env::isLocalhost() ){
