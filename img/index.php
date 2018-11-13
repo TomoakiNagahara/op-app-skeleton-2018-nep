@@ -19,6 +19,9 @@ $path = ConvertPath("layout:/img/$file");
 
 //	Is file exists?
 if(!file_exists($path) ){
+	//	Change http status code.
+	http_response_code('404');
+
 	//	If not, change file name.
 	$path = '404.png';
 }
@@ -31,6 +34,7 @@ $ext = strtolower(array_pop($tmp));
 switch( $ext ){
 	case 'jpg':
 		$mime = 'jpeg';
+	//	break;
 
 	case 'gif':
 	case 'png':
