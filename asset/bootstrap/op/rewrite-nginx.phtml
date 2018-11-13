@@ -33,7 +33,7 @@ http {
             #   Inside location at location
 
             #   Inaccessible pages
-            location ~ (\.ht|/op/7/app-skeleton-2018-nep/asset/) {
+            location ~ ([^\w]\.ht|/op/7/app-skeleton-2018-nep/asset/) {
                 error_page  403     @app-skeleton;
                 deny        all;
             }
