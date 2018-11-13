@@ -1,0 +1,28 @@
+<?php
+/**
+ * app-skeleton-2018-nep:/asset/bootstrap/php/mbstring-osx.phtml
+*
+* @creation  2018-11-13
+* @version   1.0
+* @package   app-skeleton
+* @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+* @copyright Tomoaki Nagahara All right reserved.
+*/
+if( preg_match('/apache/', PHP_SAPI) ){
+	$target = 'apache2';
+}else if( preg_match('/cgi/', PHP_SAPI) ){
+	$target = "php{$v}-fpm";
+}else{
+	$target = null;
+}
+?>
+<code>
+<pre>
+sudo port install php<?= $v ?>-mbstring
+<?php if( $target ): ?>
+sudo port unload <?= $target.PHP_EOL ?>
+sudo port load <?= $target ?>
+<?php endif; ?>
+</pre>
+</code>
+<?php
