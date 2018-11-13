@@ -46,84 +46,69 @@ class Configer
 
 	/** Get DSN
 	 *
-	 * @param	 string		 $host
-	 * @param	 string		 $product
-	 * @param	 string		 $port
+	 * @param	 array		 $config
 	 * @return	 string		 $dsn
 	 */
-	static function DSN($host=null, $product=null, $port=null)
+	static function DSN($config=null)
 	{
-		static $_host = 'localhost', $_product = 'mysql', $_port = '3306';
+		//	...
+		static $_config = [
+			'host'    => 'localhost',
+			'product' => 'mysql',
+			'port'    => '3306'
+		];
 
 		//	...
-		if( $host ){
-			$_host = $host;
-		}
-		if( $product ){
-			$_product = $product;
-		}
-		if( $port ){
-			$_port = $port;
-		}
-
-		//	...
-		if(!$host ){
-			$_host;
-		}
-		if(!$product ){
-			$_product;
-		}
-		if(!$port ){
-			$_port;
+		foreach( array_keys($_config) as $key ){
+			if( $val = $config[$key] ?? null ){
+				$_config[$key] = $val;
+			}
 		}
 
 		//	...
-		return sprintf('%s://%s:%s', $_product, $_host, $_port);
+		return sprintf('%s://%s:%s', $_config['product'], $_config['host'], $_config['port']);
 	}
 
 	/** Set user.
 	 *
-	 * @param	 string		 $user
-	 * @param	 string		 $password
-	 * @param	 string		 $charset
-	 * @return	 string		 $user
+	 * @param	 array		 $config
 	 */
-	static function User($user=null, $password=null, $charset=null)
+	static function User($config=null)
 	{
 		//	...
-		static $_user, $_charset='utf8';
+		$dsn = self::Dsn();
 
 		//	...
-		if( $user ){
-			$_user = $user;
-			$dsn   = self::Dsn();
-			self::$_config[$dsn]['users'][$_user]['name'] = $_user;
+		if(!$user = $config['name'] ?? null ){
+			throw new \Exception('Has not been set user name. ([\'name\' => null])');
 		}
 
 		//	...
-		if( $password ){
-			self::Password($password);
-		}
-
-		if( $charset ){
-			$_charset = $charset;
-			self::$_config[$dsn]['users'][$_user]['charset'] = $_charset;
-		}
-
-		//	...
-		return $_user;
+		self::$_config[$dsn]['users'][$user]['name']     = $user;
+		self::$_config[$dsn]['users'][$user]['password'] = $config['password'] ?? null;
+		self::$_config[$dsn]['users'][$user]['charset']  = $config['charset']  ?? 'utf8';
 	}
 
 	/** Set privilege.
 	 *
-	 * @param	 string		 $user
-	 * @param	 string		 $database
-	 * @param	 string		 $table
-	 * @param	 string		 $privilege
-	 * @param	 string		 $column
+	 * @param	 array		 $config
 	 */
-	static function Privilege($user, $database, $table='*', $privilege='INSERT, SELECT, UPDATE, DELETE', $column='*')
+	static function Privilege($config)
 	{
+		//	...
+		$user = $database = $table = $privilege = $column = null;
+
+		//	...
+		foreach(['user','database','table','privilege','column'] as $key ){
+			//	...
+			if( empty($config[$key]) ){
+				throw new \Exception("Has not been set this value. ($key)");
+			};
+
+			//	...
+			${$key} = $config[$key];
+		};
+
 		//	...
 		$dsn = self::Dsn();
 
@@ -136,6 +121,7 @@ class Configer
 	 * @param	 string		 $password
 	 * @return	 string		 $password
 	 */
+	/*
 	static function Password($password=null)
 	{
 		static $_password;
@@ -149,23 +135,33 @@ class Configer
 		}
 		return $_password;
 	}
+	*/
 
 	/** Get/Set database config.
 	 *
-	 * @param	 string		 $database
-	 * @param	 string		 $charset
+	 * @param	 array		 $config
 	 * @return	 string		 $database
 	 */
-	static function Database($database=null, $charset='utf8')
+	static function Database($config=null)
 	{
 		static $_database;
-		if( $database ){
-			$_database = $database;
+
+		//	...
+		if( $config ){
+			//	...
+			$_database = $config['name'];
+			$charset   = $config['charset'] ?? 'utf8';
+
+			//	...
 			$dsn       = self::Dsn();
 			$collation = self::_Collate($charset);
-			self::$_config[$dsn]['databases'][$database]['name']      = $_database;
-			self::$_config[$dsn]['databases'][$database]['collation'] = $collation;
+
+			//	...
+			self::$_config[$dsn]['databases'][$_database]['name']      = $_database;
+			self::$_config[$dsn]['databases'][$_database]['collation'] = $collation;
 		}
+
+		//	...
 		return $_database;
 	}
 
@@ -238,17 +234,20 @@ class Configer
 
 	/** Set index config.
 	 *
-	 * @param	 string		 $name
-	 * @param	 string		 $type
-	 * @param	 string		 $column
-	 * @param	 string		 $comment
+	 * @param	 array		 $config
 	 */
-	static function Index($name, $type, $column, $comment)
+	static function Index($config)
 	{
 		//	...
 		$dsn      = self::Dsn();
 		$database = self::Database();
 		$table    = self::Table();
+		$name = $type = $column = $comment = null;
+		foreach(['name','type','column','comment'] as $key ){
+			if(!${$key} = $config[$key] ){
+				throw new \Exception("");
+			};
+		};
 
 		//	...
 		foreach( explode(',', $column) as $field ){

@@ -34,7 +34,7 @@ class Selftest
 	 *
 	 * @return \OP\UNIT\SELFTEST\Configer
 	 */
-	function Configer()
+	static function Configer()
 	{
 		return new \OP\UNIT\SELFTEST\Configer();
 	}
