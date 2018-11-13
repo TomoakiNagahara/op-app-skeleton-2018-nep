@@ -1,0 +1,19 @@
+<?php
+/**
+ * app-skeleton-2018-nep:/asset/bootstrap/php/mbstring-unix.phtml
+*
+* @creation  2018-11-13
+* @version   1.0
+* @package   app-skeleton
+* @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+* @copyright Tomoaki Nagahara All right reserved.
+*/
+//	...
+$redhat = file_exists('/etc/redhat-release') ?? false;
+$remi   = $v > 53 ? true: false;
+$repo   = $remi ? "--enablerepo=remi-php{$v}": ' ';
+?>
+<code><pre>
+sudo yum<?= $repo ?>install php-mbstring
+sudo service httpd restart
+</pre></code>
