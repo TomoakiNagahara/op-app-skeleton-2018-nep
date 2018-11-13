@@ -9,8 +9,19 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-OP\UNIT\SELFTEST\Configer::Dsn('localhost', 'mysql', '3306');
-OP\UNIT\SELFTEST\Configer::User('testcase', 'password', 'utf8');
+OP\UNIT\SELFTEST\Configer::Dsn([
+	'host'    => 'localhost',
+	'product' => 'mysql',
+	'port'    => '3306'
+
+]);
+
+//	...
+OP\UNIT\SELFTEST\Configer::User([
+	'name'     => 'testcase',
+	'password' => 'password',
+	'charset'  => 'utf8'
+]);
 
 //	...
 include('testcase@db.inc.php');

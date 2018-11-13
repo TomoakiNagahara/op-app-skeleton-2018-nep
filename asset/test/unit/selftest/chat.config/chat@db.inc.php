@@ -20,7 +20,7 @@ $configer->DSN([
 
 //  User configuration.
 $configer->User([
-	'user'     => 'chat',
+	'name'     => 'chat',
 	'password' => 'password',
 	'charset'  => 'utf8',
 ]);
