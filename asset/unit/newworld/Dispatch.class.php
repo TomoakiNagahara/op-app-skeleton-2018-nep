@@ -32,23 +32,27 @@ class Dispatch
 
 	/** Execute end-point and get end-point result.
 	 *
+	 * @param  string $endpoint
 	 * @return string
 	 */
-	static function Get()
+	static function Get($endpoint=null)
 	{
-		//	Execute app's end point. (app's controller)
-		$route = Router::Get();
+		//	Endpoint is not specified.
+		if(!$endpoint ){
+			//	Get default end-point.
+			$endpoint = Router::Get()[Router::_END_POINT_];
+		}
 
 		//	Get current directory.
 		$cdir = getcwd();
 
 		//	Change current directory.
-		chdir(dirname($route[Router::_END_POINT_]));
+		chdir(dirname($endpoint));
 
 		//	Execute content.
 		try{
 			//	Execute end-point.
-			$content = Template::Get($route[Router::_END_POINT_]);
+			$content = Template::Get($endpoint);
 		}catch( Exception $e ){
 			\Notice::Set($e);
 		}
