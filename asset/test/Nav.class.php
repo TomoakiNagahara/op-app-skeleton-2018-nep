@@ -78,7 +78,7 @@ class Nav
 			$label = $navi['label'];
 			$param = $navi['param'];
 			$merge = $navi['merge'];
-			printf('<span><a href="?%s">%s</a></span>', self::_query($param, $merge), $label);
+			printf('<span><a href="?%s">%s</a></span>', self::_Query($param, $merge), $label);
 		}
 		echo '</nav>'.PHP_EOL;
 	}
