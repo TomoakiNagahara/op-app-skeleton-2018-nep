@@ -11,10 +11,10 @@
 ?>
 <section id="testcase">
 	<h2>Notice of Core</h2>
-	<menu>
+	<div>
 		<span><a href="?dump=1">Dump of Notice</a></span>
 		<span><a href="<?= ConvertURL('testcase:/unit/notice') ?>">Unit of Notice</a></span>
-	</menu>
+	</div>
 	<hr/>
 </section>
 <?php
