@@ -53,7 +53,7 @@ class Dispatch
 		try{
 			//	Execute end-point.
 			$content = Template::Get($endpoint);
-		}catch( Exception $e ){
+		}catch( \Exception $e ){
 			\Notice::Set($e);
 		}
 
