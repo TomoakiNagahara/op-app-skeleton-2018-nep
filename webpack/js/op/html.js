@@ -28,3 +28,13 @@
 					.replace(/&gt;/g , '>');
 	};
 })();
+
+/*
+function EncodeHTML(html) {
+	return document.createElement('div').appendChild( document.createTextNode(html) ).innerHTML;
+}
+
+function DecodeHTML(html) {
+	return (document.createElement('textarea').value = html).value;
+}
+*/
