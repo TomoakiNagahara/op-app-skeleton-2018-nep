@@ -109,6 +109,7 @@
 
 	//	...
 	function __line(json){
+		//	...
 		var tds = {};
 			//	...
 			tds.file = document.createElement('td');
@@ -151,9 +152,11 @@
 			}
 
 		var tr = document.createElement('tr');
+		if( json.file ){ // Closure
 			tr.appendChild( tds.file );
 			tr.appendChild( tds.line );
 			tr.appendChild( tds.func );
+		};
 		return tr;
 	}
 
