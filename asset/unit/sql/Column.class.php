@@ -147,7 +147,7 @@ class Column
 			case 'MEDIUMINT':
 			case 'BIGINT':
 				$length = (int)$length;
-				break;
+			break;
 
 			case 'SET':
 			case 'ENUM':
@@ -159,7 +159,7 @@ class Column
 					}
 					$length = join(',', $join);
 				}
-				break;
+			break;
 
 			case 'CHAR':
 			case 'VARCHAR':
@@ -168,12 +168,12 @@ class Column
 				}else{
 					throw new \Exception("Has not been set length. ($field, $type)");
 				}
-				break;
+			break;
 
 			case 'TIMESTAMP':
 				$default = 'DEFAULT CURRENT_TIMESTAMP';
 				$extra   = 'ON UPDATE CURRENT_TIMESTAMP';
-				break;
+			break;
 
 			default:
 				//	Why use regx?
@@ -183,6 +183,7 @@ class Column
 				if( preg_match('/[^A-Z]/', $type) ){
 					\Notice::Set("Has not been support this type. ($type)");
 				}
+			break;
 		}
 
 		//	...
