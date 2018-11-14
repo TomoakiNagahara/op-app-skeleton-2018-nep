@@ -15,7 +15,7 @@
  */
 namespace OP\UNIT\ORM;
 
-/** ORM
+/** Record
  *
  * @created   2018-02-01
  * @version   1.0
@@ -277,8 +277,8 @@ class Record
 
 	/** Generate Form object.
 	 *
-	 * @param unknown $record
-	 * @return \OP\UNIT\Form
+	 * @param	 \OP\UNIT\ORM\Record $record
+	 * @return	 \OP\UNIT\Form
 	 */
 	function &Form()
 	{
