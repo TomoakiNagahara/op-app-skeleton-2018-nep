@@ -28,7 +28,7 @@ interface IF_ORM
 
 	/**
 	 *
-	 * @param unknown $record
+	 * @param array $record    
 	 */
 	public function Save($record);
 }
