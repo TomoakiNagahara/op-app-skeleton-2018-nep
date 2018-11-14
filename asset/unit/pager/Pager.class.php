@@ -32,7 +32,7 @@ class pager
 
 	/** Configurations.
 	 *
-	 * @var unknown
+	 * @var array
 	 */
 	private $_config;
 
