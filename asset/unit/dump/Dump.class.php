@@ -79,7 +79,7 @@ class Dump
 		self::_Escape($args);
 
 		//	...
-		switch( $mime = \Env::Mime() ){
+		switch( \Env::Mime() ){
 			case 'text/css':
 				self::MarkCss($args, $trace);
 				break;
@@ -204,7 +204,8 @@ class Dump
 	 */
 	static function MarkJson($value, $trace)
 	{
-		global $_JSON;
+		global $_JSON; // Why used global variable?
+		$mark = [];
 		$mark['message']   = $value;
 		$mark['backtrace'] = $trace;
 		$_JSON['admin']['mark'][] = $mark;
