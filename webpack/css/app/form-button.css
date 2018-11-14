@@ -17,7 +17,7 @@ body.body form.OP input[type="submit"] {
 	user-select: none;
 }
 
-body.body form.OP .button:hover:not(:disabled),
+body.body form.OP .button:hover:not([disabled]),
 body.body form.OP button:hover:not(:disabled),
 body.body form.OP input[type="submit"]:hover:not(:disabled) {
 	border-color:     #909090;
@@ -25,9 +25,10 @@ body.body form.OP input[type="submit"]:hover:not(:disabled) {
 	color: #000;
 }
 
-body.body form.OP .button:active,
+body.body form.OP .button:active:not([disabled]),
 body.body form.OP button:active,
 body.body form.OP input[type="submit"]:active {
+	color:red;
 	border-color:     #606060 !important;
 	background-color: #e0e0e0 !important;
 	outline: none !important;
@@ -46,7 +47,14 @@ body.body form.OP input[type="submit"]::-moz-focus-inner {
 	border :0px;
 }
 
-body.body form.OP .button:disabled,
+/** Disabled
+ *
+ * <input type="submit" value=" Submit " disabled />
+ * <button disabled> Button </button>
+ * <span class="button" disabled> Button </span>
+ *
+ */
+body.body form.OP .button[disabled],
 body.body form.OP button:disabled,
 body.body form.OP input[type="submit"]:disabled {
 	color: #999;
