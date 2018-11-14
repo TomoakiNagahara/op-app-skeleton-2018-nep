@@ -20,7 +20,9 @@ if( version_compare(PHP_VERSION, '7.0.0') < 0 ){
  *
  */
 if(!session_id()){
-	session_start();
+	if(!session_start() ){
+		exit("<h1>Session start was failed.</h1>");
+	}
 }
 
 /** Include custome functions.
