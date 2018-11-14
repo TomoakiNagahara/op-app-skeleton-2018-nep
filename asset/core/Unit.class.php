@@ -78,10 +78,22 @@ class Unit
 
 	/** Return new instance.
 	 *
+	 * This method is wrapper method of Instantiate.
+	 *
 	 * @param  string $name
 	 * @return object
 	 */
 	static function Instance($name)
+	{
+		return self::Instantiate($name);
+	}
+
+	/** Return new instance.
+	 *
+	 * @param  string $name
+	 * @return object
+	 */
+	static function Instantiate($name)
 	{
 		//	...
 		if(!self::Load($name)){
