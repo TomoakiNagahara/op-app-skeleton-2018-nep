@@ -37,7 +37,7 @@ class Notice
 	 */
 	static public function _Dump( $notice )
 	{
-		switch( $mime = \Env::Mime() ?? 'text/html' ){
+		switch( \Env::Mime() ?? 'text/html' ){
 			case 'text/html':
 				//	Escape is done with self::Shutdown().
 				//	$notice = Escape($notice);
@@ -110,9 +110,7 @@ class Notice
 		$mail->To($to);
 		$mail->Subject($subject);
 		$mail->Content($content, 'text/html');
-		if(!$io = $mail->Send() ){
-			return;
-		}
+		$mail->Send();
 	}
 
 	/** Callback of app shutdown.
