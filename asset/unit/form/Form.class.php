@@ -85,7 +85,7 @@ class Form
 	/** Initialize form config.
 	 *
 	 * @param	 string|array	 $form
-	 * @throws	 Exception		 $e
+	 * @throws	\Exception		 $e
 	 * @return	 boolean		 $io
 	 */
 	private function _InitForm($form)
