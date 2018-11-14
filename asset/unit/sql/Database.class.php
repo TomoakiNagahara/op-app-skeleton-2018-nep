@@ -29,18 +29,65 @@ class Database
 	 */
 	use \OP_CORE;
 
-	static function Create($DB, $database, $charset='utf8mb4', $collate='utf8mb4_general_ci')
+	/** Create database
+	 *
+	 * @created	 2017-12-13
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string
+	 */
+	static function Create(array $config, \IF_DATABASE $DB)
 	{
+		$config['verb'] = 'CREATE';
+		return self::Generate($config, $DB);
+	}
+
+	/** Change database
+	 *
+	 * @created	 2018-11-14
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string
+	 */
+	static function Change(array $config, \IF_DATABASE $DB)
+	{
+		$config['verb'] = 'ALTER';
+		return self::Generate($config, $DB);
+	}
+
+	/** Generate database SQL
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @throws	\Exception
+	 * @return	 string		 $sql
+	 */
+	static function Generate(array $config, \IF_DATABASE $DB)
+	{
+		//	...
+		$verb     = $config['verb']     ?? null;
+		$database = $config['database'] ?? null;
+		$charset  = $config['charset']  ?? 'utf8mb4';
+		$collate  = $config['collate']  ?? 'utf8mb4_general_ci';
+
+		//	...
+		if( $verb === 'CREATE' or $verb === 'ALTER' ){
+			//	OK
+		}else{
+			throw new \Exception("Has not been support this value. ($verb)");
+		}
+
+		//	...
+		if( empty($database) ){
+			throw new \Exception("Database name has empty.");
+		}
+
+		//	...
 		$database = $DB->Quote($database);
 		$charset  = $DB->Quote($charset);
 		$collate  = $DB->Quote($collate);
 
 		//	...
-		return "CREATE DATABASE $database DEFAULT CHARACTER SET $charset COLLATE $collate";
-	}
-
-	static function Change()
-	{
-		return "ALTER DATABASE {DB名} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci";
+		return "{$verb} DATABASE {$database} DEFAULT CHARACTER SET {$charset} COLLATE {$collate}";
 	}
 }
