@@ -21,6 +21,8 @@ $server_software = explode('/', $_SERVER['SERVER_SOFTWARE'])[0];
 			margin:0 1em;
 			padding:0.5em;
 			background-color:#dfdfdf;
+			border: 1px solid #cfcfcf;
+			border-radius: 0.25em;
 		}
 		</style>
 	</head>
