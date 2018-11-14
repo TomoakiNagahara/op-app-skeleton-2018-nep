@@ -30,6 +30,24 @@ interface IF_DATABASE
 	 */
 	public function PDO();
 
+	/** Get configuration.
+	 *
+	 * <pre>
+	 * //  Configuration.
+	 * $config = [];
+	 * $conifg['prod']     = 'mysql';
+	 * $conifg['host']     = 'localhost';
+	 * $conifg['port']     = '3306';
+	 * $conifg['user']     = 'username';
+	 * $conifg['password'] = 'password';
+	 * $conifg['charset']  = 'utf8';
+	 * </pre>
+	 *
+	 * @addition 2018-11-13
+	 * @return	 array		 $config
+	 */
+	public function Config();
+
 	/** Connect to database. And instantiate PDO.
 	 *
 	 * @addition 2018-04-20
