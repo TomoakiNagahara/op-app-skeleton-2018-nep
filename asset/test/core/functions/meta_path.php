@@ -13,5 +13,28 @@
 D( _GetRootsPath() );
 
 //	...
-Html( 'doc:'.ConvertURL('testcase:/') );
-Html( ConvertPath('testcase:/core/functions/GetRootsPath') );
+$source = 'app:/foo/bar';
+$temp[$source] = ConvertURL($source);
+
+//	...
+$source = 'app:/foo/bar?foo=bar';
+$temp[$source] = ConvertURL($source);
+
+//	...
+$source = 'app:/foo/bar/index.html';
+$temp[$source] = ConvertURL($source);
+
+//	...
+$source = 'app:/foo/bar/index.html?foo=bar';
+$temp[$source] = ConvertURL($source);
+
+//	...
+$source = 'app:/foo.bar';
+$temp[$source] = ConvertURL($source);
+
+//	...
+$source = 'app:/foo.bar/hoge';
+$temp[$source] = ConvertURL($source);
+
+//	...
+D($temp);
