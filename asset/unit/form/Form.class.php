@@ -64,6 +64,24 @@ class Form
 	 */
 	private $_is_token;
 
+	/** Construct
+	 *
+	 */
+	function __construct()
+	{
+
+	}
+
+	/** Destruct
+	 *
+	 */
+	function __destruct()
+	{
+		if( $name = $this->_form['name'] ?? null ){
+			$this->Session($name, $this->_session);
+		}
+	}
+
 	/** Initialize form config.
 	 *
 	 * @param	 string|array	 $form
@@ -250,24 +268,6 @@ class Form
 		}
 	}
 
-	/** Construct
-	 *
-	 */
-	function __construct()
-	{
-
-	}
-
-	/** Destruct
-	 *
-	 */
-	function __destruct()
-	{
-		if( $name = $this->_form['name'] ?? null ){
-			$this->Session($name, $this->_session);
-		}
-	}
-
 	/** Get/Set form configuration.
 	 *
 	 * @param  string $form
@@ -353,36 +353,6 @@ class Form
 		return $this->_is_token;
 	}
 
-	/** Get input value.
-	 *
-	 * @param  string $name
-	 * @return string $value
-	 */
-	function Get($name)
-	{
-		return $this->_form['input'][$name]['value'];
-	}
-
-	/** Set input value.
-	 *
-	 * @param  string  $name
-	 * @param  string  $value
-	 * @param  boolean $session Overwrite to saved session value.
-	 */
-	function Set($name, $value, $session=true)
-	{
-		//	...
-		$this->_form['input'][$name]['value'] = $value;
-
-		//	...
-		$this->_request[$name] = $value;
-
-		//	...
-		if( $session and !empty($this->_form['input'][$name]['session']) ){
-			$this->_session[$name] = $value;
-		}
-	}
-
 	/** Print form tag. (open)
 	 *
 	 * @param array $config
@@ -390,11 +360,15 @@ class Form
 	function Start($config=[])
 	{
 		//	...
-		$this->_is_start = true;
+		if( $this->_is_start ){
+			\Notice::Set("Form has already started. ({$this->_form['name']})");
+		}else{
+			$this->_is_start = true;
+		}
 
 		//	...
 		if(!$this->_form ){
-			throw new Exception("Has not been set configuration.");
+			throw new \Exception("Has not been set configuration.");
 		}
 
 		//	...
@@ -452,6 +426,15 @@ class Form
 		return $this->_form['input'][$name]['label'] ?? $name;
 	}
 
+	/** Print input label.
+	 *
+	 * @param string $name
+	 */
+	function Label($name)
+	{
+		echo $this->GetLabel($name);
+	}
+
 	/** Generate input tag.
 	 *
 	 * @param	 string			 $name
@@ -491,9 +474,52 @@ class Form
 		}
 	}
 
-	/** Get/Set value of input.
+	/** Print generated input tag.
 	 *
-	 * @param string $name
+	 * @param	 string	 $name
+	 * @param	 array	 $input
+	 */
+	function Input($name, $input=null)
+	{
+		//	...
+		if( $this->_is_start === null ){
+			$this->_is_start  =  false;
+			D("Start method was not called.");
+		}
+
+		//	...
+		if( $input ){
+			$this->SetInput($name, $input);
+		}
+
+		//	...
+		echo $this->GetInput($name);
+	}
+
+	/** Set input value.
+	 *
+	 * @param	 string		 $name
+	 * @param	 string		 $value
+	 * @param	 boolean	 $session Overwrite to saved session value.
+	 */
+	function SetValue($name, $value, $session=true)
+	{
+		//	...
+		$this->_form['input'][$name]['value'] = $value;
+
+		//	...
+		$this->_request[$name] = $value;
+
+		//	...
+		if( $session and !empty($this->_form['input'][$name]['session']) ){
+			$this->_session[$name] = $value;
+		}
+	}
+
+	/** Get value of input.
+	 *
+	 * @param	 string		 $name
+	 * @return	 string		 $value
 	 */
 	function GetValue($name)
 	{
@@ -528,112 +554,39 @@ class Form
 		return $value;
 	}
 
-	/** Set input config.
+	/** Get saved values.
 	 *
-	 * @param	 string	 $name
-	 * @param	 array	 $input
+	 * @return array
 	 */
-	function SetInput($name, $input)
+	function Values()
 	{
-		//	...
-		if( $this->_form['input'][$name] ?? true ){
-			\Notice::Set("Has not been set this input. ($name)");
-			return;
-		}
+		//	Get saved session value.
+		$saved_session_value = $this->_session;
 
-		//	...
-		foreach( $input as $key => $val ){
-			$this->_form['input'][$name][$key] = $val;
-		}
-	}
+		//	Remove token value.
+		unset($saved_session_value['token']);
 
-	/** Set input config.
-	 *
-	 * @param	 string	 $name
-	 * @param	 array	 $option
-	 */
-	function SetOption($name, $option)
-	{
-		//	...
-		if( empty($this->_form['input'][$name]) ){
-			\Notice::Set("Has not been set this input. ($name)");
-			return;
-		}
+		//	Generate result each input name.
+		foreach( $this->Config()['input'] as $name => $input ){
+			//	If not save to session.
+			if( $input['session'] ?? true ){
+				//	Calc value.
+				$value = $saved_session_value[$name] ?? $input['value'] ?? null;
 
-		//	...
-		$this->_form['input'][$name]['option'] = $option;
-	}
-
-	/** Get error.
-	 *
-	 * @param string $name
-	 */
-	function GetError($name)
-	{
-		return $this->_errors[$name] ?? [];
-	}
-
-	/** Print input label.
-	 *
-	 * @param string $name
-	 */
-	function Label($name)
-	{
-		echo $this->GetLabel($name);
-	}
-
-	/** Print generated input tag.
-	 *
-	 * @param	 string	 $name
-	 * @param	 array	 $input
-	 */
-	function Input($name, $input=null)
-	{
-		//	...
-		if( $this->_is_start === null ){
-			$this->_is_start  =  false;
-			D("Start method was not called.");
-		}
-
-		//	...
-		if( $input ){
-			$this->SetInput($name, $input);
-		}
-
-		//	...
-		echo $this->GetInput($name);
-	}
-
-	/** Display error message.
-	 *
-	 * @param string $name
-	 */
-	function Error($name, $format='<span class="error">$label is $rule error.</span>')
-	{
-		//	...
-		$config = $this->Config();
-
-		//	...
-		$format = $config['error'] ?? $format;
-
-		//	...
-		foreach( $this->GetError($name) as $rule => $var ){
-			//	...
-			if( $var === false ){
-				continue;
+				//	Set to result.
+				$result[$name] = $value;
+			}else{
+				//	Set currently sent value.
+				if( isset($this->_request[$name]) ){
+					$result[$name] = $this->_request[$name];
+					//	Do not set not sent input value.
+					//	$result[$name] = $this->_request[$name] ?? null;
+				}
 			}
-
-			//	...
-			$input = $config['input'][$name];
-			$label = $input['label'] ?? $name;
-
-			//	...
-			print str_replace(
-				['$label','$Name','$name','$Rule','$rule','$value'],
-				[$label, ucfirst($name), $name, ucfirst($rule), $rule, $var],
-				isset($input['error']) ? Decode($input['error']) : $format
-			);
 		}
+
+		//	...
+		return $result ?? [];
 	}
 
 	/** Display value at input name.
@@ -691,39 +644,110 @@ class Form
 		echo $value;
 	}
 
-	/** Get saved values.
+	/** Get error.
 	 *
-	 * @return array
+	 * @param string $name
 	 */
-	function Values()
+	function GetError($name)
 	{
-		//	Get saved session value.
-		$saved_session_value = $this->_session;
+		return $this->_errors[$name] ?? [];
+	}
 
-		//	Remove token value.
-		unset($saved_session_value['token']);
+	/** Display error message.
+	 *
+	 * @param string $name
+	 */
+	function Error($name, $format='<span class="error">$label is $rule error.</span>')
+	{
+		//	...
+		$config = $this->Config();
 
-		//	Generate result each input name.
-		foreach( $this->Config()['input'] as $name => $input ){
-			//	If not save to session.
-			if( $input['session'] ?? true ){
-				//	Calc value.
-				$value = $saved_session_value[$name] ?? $input['value'] ?? null;
+		//	...
+		$format = $config['error'] ?? $format;
 
-				//	Set to result.
-				$result[$name] = $value;
-			}else{
-				//	Set currently sent value.
-				if( isset($this->_request[$name]) ){
-					$result[$name] = $this->_request[$name];
-					//	Do not set not sent input value.
-					//	$result[$name] = $this->_request[$name] ?? null;
-				}
+		//	...
+		foreach( $this->GetError($name) as $rule => $var ){
+			//	...
+			if( $var === false ){
+				continue;
 			}
+
+			//	...
+			$input = $config['input'][$name];
+			$label = $input['label'] ?? $name;
+
+			//	...
+			print str_replace(
+					['$label','$Name','$name','$Rule','$rule','$value'],
+					[$label, ucfirst($name), $name, ucfirst($rule), $rule, $var],
+					isset($input['error']) ? Decode($input['error']) : $format
+					);
+		}
+	}
+
+	/** Clear saved session value.
+	 *
+	 */
+	function Clear()
+	{
+		//	...
+		if(!$this->_form ){
+			\Notice::Set("Has not been set form configuration.");
+			return;
 		}
 
 		//	...
-		return $result ?? [];
+		$token = $this->_session['token'];
+		$this->_session = [];
+		$this->_session['token'] = $token;
+		$this->Session($this->_form['name'], $this->_session);
+
+		//	...
+		\Cookie::Set($this->_form['name'], []);
+
+		//	...
+		$this->_request = null;
+
+		//	...
+		foreach( $this->_form['input'] as &$input ){
+			unset($input['value']);
+		}
+	}
+
+	/** Set input config.
+	 *
+	 * @param	 string	 $name
+	 * @param	 array	 $input
+	 */
+	function SetInput($name, $input)
+	{
+		//	...
+		if( $this->_form['input'][$name] ?? true ){
+			\Notice::Set("Has not been set this input. ($name)");
+			return;
+		}
+
+		//	...
+		foreach( $input as $key => $val ){
+			$this->_form['input'][$name][$key] = $val;
+		}
+	}
+
+	/** Set input config.
+	 *
+	 * @param	 string	 $name
+	 * @param	 array	 $option
+	 */
+	function SetOption($name, $option)
+	{
+		//	...
+		if( empty($this->_form['input'][$name]) ){
+			\Notice::Set("Has not been set this input. ($name)");
+			return;
+		}
+
+		//	...
+		$this->_form['input'][$name]['option'] = $option;
 	}
 
 	/** Validate
@@ -779,35 +803,6 @@ class Form
 		return (array_search(false, $_result, true) === false) ? true: false;
 	}
 
-	/** Clear saved session value.
-	 * 	Sessions are separated by form name.
-	 */
-	function Clear()
-	{
-		//	...
-		if(!$this->_form ){
-			\Notice::Set("Has not been set form configuration.");
-			return;
-		}
-
-		//	...
-		$token = $this->_session['token'];
-		$this->_session = [];
-		$this->_session['token'] = $token;
-		$this->Session($this->_form['name'], $this->_session);
-
-		//	...
-		\Cookie::Set($this->_form['name'], []);
-
-		//	...
-		$this->_request = null;
-
-		//	...
-		foreach( $this->_form['input'] as &$input ){
-			unset($input['value']);
-		}
-	}
-
 	/** Configuration test.
 	 *
 	 */
@@ -829,6 +824,7 @@ class Form
 
 	/** For developers debug information.
 	 *
+	 * @param	 null|string	 $message
 	 */
 	function Debug($message=null)
 	{
