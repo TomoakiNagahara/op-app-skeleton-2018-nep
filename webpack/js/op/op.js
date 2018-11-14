@@ -19,3 +19,12 @@
 if( $OP === undefined ){
 	var $OP = {};
 }
+
+/** Add trim function to String object.
+ *
+ */
+if(!String.prototype.trim ){
+	String.prototype.trim = function(){
+		return this.replace(/^\s+|\s+$/g,'');
+	};
+};
