@@ -52,7 +52,7 @@ class Layout
 
 		//	Check exists layout controller.
 		if(!file_exists($full_path)){
-			if( $io = file_exists( dirname($full_path) ) ){
+			if( file_exists( dirname($full_path) ) ){
 				$message = "Does not exists layout controller. ($full_path)";
 			}else{
 				$message = "Does not exists layout directory. ($layout_name)";
@@ -104,7 +104,7 @@ class Layout
 	{
 		if( $name ){
 			//	Get layout directory.
-			if(!$dir = self::Directory() ){
+			if(!self::Directory() ){
 				\Notice::Set("Has not been set layout directory.");
 			//	\Notice::Set("Has not been set layout name.");
 			}
