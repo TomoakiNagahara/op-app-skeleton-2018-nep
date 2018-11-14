@@ -60,7 +60,7 @@ if( $OP === undefined ){
 		//	...
 		var match = index.match(/\s/);
 		if( match ){
-			console.log('The index key of associative array included space character.', match);
+			console.log('The index key of associative array included space character.', match, index);
 		}
 
 		//	...
