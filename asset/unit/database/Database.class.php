@@ -72,7 +72,7 @@ class Database implements \IF_DATABASE
 		$options = [];
 
 		//	...
-		switch( $prod = strtolower($this->_config['prod']) ){
+		switch( strtolower($this->_config['prod']) ){
 			case 'mysql':
 				//	...
 				if(!defined('\PDO::MYSQL_ATTR_INIT_COMMAND') ){
@@ -125,7 +125,7 @@ class Database implements \IF_DATABASE
 	/** Connect database server.
 	 *
 	 * <pre>
-	 * //	Configuration.
+	 * //  Configuration.
 	 * $config = [];
 	 * $conifg['prod']     = 'mysql';
 	 * $conifg['host']     = 'localhost';
@@ -166,6 +166,7 @@ class Database implements \IF_DATABASE
 		}
 
 		//	...
+		$prod = $host = $user = $password = $database = null;
 		foreach( ['prod','host','port','user','password','database','charset'] as $key ){
 			$this->_config[$key] = ${$key} = ifset($config[$key]);
 		}
@@ -506,7 +507,7 @@ class Database implements \IF_DATABASE
 
 	/** Display debug information.
 	 *
-	 * @see IF_DATABASE::Debug()
+	 * @see \IF_DATABASE::Debug()
 	 */
 	function Debug()
 	{
