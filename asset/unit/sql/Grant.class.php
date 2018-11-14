@@ -36,8 +36,8 @@ class Grant
 	 * Has not been support to privilege to each column yet.
 	 * </pre>
 	 *
-	 * @param array $config
-	 * @param array $DB
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
 	 */
 	static function Privilege($config, $DB)
 	{

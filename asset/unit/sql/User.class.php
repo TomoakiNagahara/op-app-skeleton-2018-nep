@@ -30,6 +30,12 @@ class User
 	 */
 	use \OP_CORE;
 
+	/** Create user
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @return	 boolean|string
+	 */
 	static function Create($config, $DB)
 	{
 		//	...
@@ -63,6 +69,12 @@ class User
 		return "CREATE USER {$user}@{$host} IDENTIFIED $identified";
 	}
 
+	/** Set password
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @return	 boolean|string
+	 */
 	static function Password($config, $DB)
 	{
 		//	...

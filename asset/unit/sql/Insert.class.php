@@ -33,9 +33,9 @@ class Insert
 
 	/** Get insert sql statement.
 	 *
-	 * @param  array
-	 * @param  db
-	 * @return string
+	 * @param	 array
+	 * @param	\IF_DATABASE
+	 * @return	 string
 	 */
 	static function Get($args, $db=null)
 	{

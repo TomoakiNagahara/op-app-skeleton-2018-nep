@@ -76,9 +76,9 @@ class Select
 
 	/** Get column condition.
 	 *
-	 * @param  array $args
-	 * @param  PDO $pdo
-	 * @return string
+	 * @param	 array $args
+	 * @param	\PDO $pdo
+	 * @return	 string
 	 */
 	static private function _Column($args, $pdo)
 	{
@@ -133,9 +133,9 @@ class Select
 
 	/** Generate hashed password.
 	 *
-	 * @param  string      $password
-	 * @param  \OP\UNIT\DB $DB
-	 * @return string
+	 * @param	 string		 $password
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string
 	 */
 	static function Password($password, $DB)
 	{
