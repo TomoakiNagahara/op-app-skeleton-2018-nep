@@ -4,34 +4,37 @@ Advanced form management at JavaScript
 ## How to use
 
 ```
-<div>
+<form name="form-name">
   <input type="text"     name="input-name" value=""  />
   <input type="checkbox" name="checkbox"   value="A" data-option="{"":"","a":"A","b":"B"}" />
   <select name="select"></select>
-</div>
+</form>
 <script>
-//	Get input object.
-var input = $OP.Form('form-name').Input('input-name');
+//  Get form object.
+var form = $OP.Form('form-name');
 
-//	Get input value.
-var value = $input.Value();
+//  Get input object.
+var input = form.Input('input-name');
 
-//	Set input value.
+//  Get input value.
+var value = input.Value();
+
+//  Set input value.
 input.Value('new value');
 
 //	Event action.
 input.Event('change', function(e, input){
-    if( input.value ){
-        input.Form().Input('checkbox').Value({A:true});
-    }else{
-        input.Form().Input('checkbox').Value({A:false});
-    }
+  if( input.value ){
+    input.Form().Input('checkbox').Value({A:true});
+  }else{
+    input.Form().Input('checkbox').Value({A:false});
+  }
 });
 
-//	Generate dynamic select option by input data.
+//  Generate dynamic select option by input data.
 $OP.Form('form-name').Input('checkbox').Event('change', function(e, input){
-    var option = input.Data('option');
-    input.Form().Input('select').Option(option);
+  var option = input.Data('option');
+  input.Form().Input('select').Option(option);
 });
 </script>
 ```
