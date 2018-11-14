@@ -151,8 +151,5 @@ class Template
 		} catch ( \Throwable $e ) {
 			\Notice::Set($e);
 		}
-
-		//	...
-		return ifset($io) === false ? false: null;
 	}
 }
