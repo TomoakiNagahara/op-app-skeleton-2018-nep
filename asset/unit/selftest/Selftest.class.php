@@ -46,6 +46,7 @@ class Selftest
 	{
 		//	...
 		if(!$db = $this->Database() ){
+			include(__DIR__.'/form.phtml');
 			return;
 		};
 
@@ -54,7 +55,7 @@ class Selftest
 
 		//	...
 		if(!$io ){
-			$this->Form();
+			include(__DIR__.'/form.phtml');
 		}
 
 		//	...
@@ -91,9 +92,6 @@ class Selftest
 	 */
 	function Form()
 	{
-		//	...
-		include(__DIR__.'/form.phtml');
-
 		//	...
 		if( $_SERVER['REQUEST_METHOD'] !== 'POST' ){
 			return;

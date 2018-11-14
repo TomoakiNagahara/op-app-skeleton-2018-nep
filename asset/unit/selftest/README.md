@@ -9,7 +9,7 @@ Only this.
 //  Generate instance.
 $selftest = Unit::Instantiate('Selftest');
 
-//  Automatically do self test.
+//  Automatically do self test by configuration file.
 $selftest->Auto('database-config.json');
 ```
 
