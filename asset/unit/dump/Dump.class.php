@@ -93,6 +93,10 @@ class Dump
 				self::MarkJson($args, $trace);
 				break;
 
+			case 'text/plain':
+				self::MarkPlain($args, $trace);
+				break;
+
 			case 'text/html':
 			default:
 				//	...
@@ -166,6 +170,19 @@ class Dump
 		foreach( $later as $value ){
 			Json($value, 'OP_DUMP');
 		}
+	}
+
+	/** MarkPlain
+	 *
+	 * @param mixed $value
+	 * @param array $trace
+	 */
+	static function MarkPlain($value, $trace)
+	{
+		echo CompressPath($trace['file']);
+		echo ' #'.$trace['line'].PHP_EOL;
+		print_r($value);
+	//	var_dump($value);
 	}
 
 	/** MarkJS
