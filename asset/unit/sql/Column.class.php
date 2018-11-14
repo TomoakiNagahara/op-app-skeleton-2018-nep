@@ -253,7 +253,7 @@ class Column
 	{
 		//	...
 		if( empty($config['field']) or empty($config['key']) ){
-			return null;
+			throw new \Exception('Empty field name or index key type.');
 		}
 
 		//	...
