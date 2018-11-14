@@ -8,6 +8,10 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright 2016 (C) Tomoaki Nagahara All right reserved.
  */
+//	...
+if( false ){
+	$notice = null;
+}
 
 //	Use functions.
 include_once(__DIR__.'/notice.inc.php');
@@ -40,6 +44,7 @@ $scheme		 = ifset($_SERVER['HTTPS']) ? 'https':'http';
 $host		 = ifset($_SERVER['HTTP_HOST']      );
 $url		 = ifset($_SERVER['REQUEST_URI']    );
 $url		 = $scheme .'://'. $host . $url;
+
 ?>
 <div style="font-size:9pt;">
 	<div style="font-size:120%;">
