@@ -181,7 +181,7 @@ class Column
 					//	break
 				}else
 				if( preg_match('/[^A-Z]/', $type) ){
-					\Notice::Set("Has not been support this type. ($type)");
+					throw new \Exception("Has not been support this type. ($type)");
 				}
 			break;
 		}
