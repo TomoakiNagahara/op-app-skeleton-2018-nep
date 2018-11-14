@@ -12,7 +12,12 @@
 $args = App::Args();
 
 //	Get file name.
-$file = $args[0] ?? '404.png';
+$file = $args[0] ?? '404';
+
+//	Support default status image.
+if( $file === '403' or $file === '404' ){
+	$file .= '.png'; // Add file extension.
+}
 
 //	Convert to full file path from meta path.
 $path = ConvertPath("layout:/img/$file");
