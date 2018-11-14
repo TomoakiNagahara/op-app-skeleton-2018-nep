@@ -252,7 +252,7 @@ class Column
 	static function Index($config, $db)
 	{
 		//	...
-		if( empty($config['key']) ){
+		if( empty($config['field']) or empty($config['key']) ){
 			return null;
 		}
 
