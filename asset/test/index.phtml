@@ -11,6 +11,15 @@
 ?>
 <section id="testcase">
 	<h1>TEST CASE</h1>
-	<? App::Template('nav-right.phtml') ?>
-	<? App::Template($file) ?>
+	<?php
+	//	...
+	App::Template('nav-right.phtml');
+
+	//	...
+	if( $file ){
+		App::Template($file);
+	}else{
+		D( 'PHP version is ' . PHP_VERSION );
+	}
+	?>
 </section>
