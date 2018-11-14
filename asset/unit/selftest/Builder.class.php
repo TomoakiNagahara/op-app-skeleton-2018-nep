@@ -386,8 +386,8 @@ class Builder
 
 	/** Add missing grant.
 	 *
-	 * @param	 array		 $result
-	 * @param	\OP\UNIT\DB	 $DB
+	 * @param	 array			 $result
+	 * @param	\IF_DATABASE	 $DB
 	 */
 	static function Grant($results, $DB)
 	{
@@ -399,7 +399,7 @@ class Builder
 			}
 
 			//	...
-			$host = $DB->Host();
+			$host = $DB->Config()['host'];
 
 			//	...
 			if( empty($result['privileges']) ){

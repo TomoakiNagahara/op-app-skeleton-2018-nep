@@ -234,18 +234,24 @@ class Configer
 
 	/** Set index config.
 	 *
-	 * @param	 array		 $config
+	 * @param   array     $config
+	 * @param   string    $name
+	 * @param   string    $type
+	 * @param   string    $column
+	 * @param   string    $comment
+	 * @throws \Exception $e
 	 */
-	static function Index($config)
+	static function Index(array $config=[], string $name='', string $type='', string $column='', string $comment='')
 	{
 		//	...
 		$dsn      = self::Dsn();
 		$database = self::Database();
 		$table    = self::Table();
-		$name = $type = $column = $comment = null;
+
+		//	...
 		foreach(['name','type','column','comment'] as $key ){
-			if(!${$key} = $config[$key] ){
-				throw new \Exception("");
+			if(!${$key} = $config[$key] ?? ${$key} ){
+				throw new \Exception("Has not been set this key. ($key)");
 			};
 		};
 
