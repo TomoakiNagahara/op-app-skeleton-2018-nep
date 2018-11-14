@@ -66,9 +66,9 @@ class DML
 
 	/** Get set condition.
 	 *
-	 * @param  array
-	 * @param  db
-	 * @return string
+	 * @param	 array
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string
 	 */
 	static function Set($args, $db)
 	{

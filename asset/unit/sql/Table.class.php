@@ -29,6 +29,12 @@ class Table
 	 */
 	use \OP_CORE;
 
+	/** Create table
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @return	 boolean|string
+	 */
 	static function Create($config, $DB)
 	{
 		//	...

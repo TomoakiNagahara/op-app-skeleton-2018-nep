@@ -54,10 +54,10 @@ class Show
 
 	/** Show column list
 	 *
-	 * @param  DB     $DB
-	 * @param  string $database
-	 * @param  string $table
-	 * @return string $sql
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $database_name
+	 * @param	 string		 $table_name
+	 * @return	 string		 $sql
 	 */
 	static function Column($DB, $database, $table)
 	{
@@ -93,7 +93,7 @@ class Show
 
 	/** Show user list.
 	 *
-	 * @param	\OP\UNIT\Database $DB
+	 * @param	\IF_DATABASE $DB
 	 */
 	static function User($DB)
 	{
@@ -110,7 +110,7 @@ class Show
 
 	/** Show user grant.
 	 *
-	 * @param	\OP\UNIT\Database $DB
+	 * @param	\IF_DATABASE $DB
 	 * @param	 string		 $user
 	 * @param	 string		 $host
 	 * @return	 string		 $query
