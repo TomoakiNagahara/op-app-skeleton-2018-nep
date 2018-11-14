@@ -231,7 +231,7 @@ class ORM
 
 	/** Find multiple records.
 	 *
-	 * @return	 ORM\Records
+	 * @return	ORM\Records
 	 */
 	function Finds($qql, $option=[])
 	{
