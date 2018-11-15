@@ -11,38 +11,22 @@
 (function(){
 	//	...
 	ShadowDom.prototype.__Insert = function(){
-		//	Get SDOM.
+		//	Get shadow dom.
 		var sdom = __get_sdom(this.__sdom_name);
 
+		//	Get real dom.
+		var rdom = __get_rdom(document, this.__sdom_name, this.__attr_name);
+
 		//	Register private function.
-		for(let func_name in sdom.script){
-			let func = sdom.script[func_name];
+		for(var func_name in sdom.script){
+			var func = sdom.script[func_name];
 			$OP.SDOM.Action.Set(this.__sdom_name, func_name, func);
 		};
 
 		//	Insert style tag.
-		for(var tag_name of ['style'/* ,'script' */]){
-			//	...
-			var list = document.querySelectorAll(`${tag_name}[name=${this.__sdom_name}]`);
+		__insert_style_tag(this.__sdom_name, sdom['style']);
 
-			//	...
-			if( list.length !== 0 ){
-				return;
-			};
-
-			//	...
-			var dom = document.createElement(tag_name);
-				dom.innerHTML = sdom[tag_name];
-				dom.setAttribute('name', this.__sdom_name);
-
-			//	...
-			document.querySelector('body').appendChild(dom);
-		};
-
-		//	...
-		var rdom = __get_rdom(document, this.__sdom_name, this.__attr_name);
-
-		//	...
+		//	Why this logic?
 		var sdom_name = rdom.getAttribute('sdom-name');
 		var idnt_name = rdom.getAttribute('idnt-name');
 		var io = ( (sdom_name === this.__sdom_name) && (idnt_name === this.__attr_name) ) ? true: false;

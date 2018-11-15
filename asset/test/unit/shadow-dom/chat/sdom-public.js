@@ -27,11 +27,13 @@ ShadowDom.prototype.Json = function(index, value){
 };
 
 //	...
-ShadowDom.prototype.Insert = function(){
+ShadowDom.prototype.Insert = function(update){
 	//	...
 	if( this.__Insert() ){
 		//	...
-		this.__Update();
+		if( update !== false ){
+			this.__Update();
+		};
 	}
 };
 

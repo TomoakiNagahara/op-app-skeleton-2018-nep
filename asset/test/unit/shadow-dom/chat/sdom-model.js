@@ -49,6 +49,9 @@ function __get_sdom(sdom_name){
 				//	__sdom[sdom_name] = {"html":"...","style":"...","script":"..."}
 				__sdom[sdom_name] = __parse_sdom(sdom.innerHTML);
 
+				//
+				__sdom[sdom_name]['html'] = __replace_onevent(sdom_name, __sdom[sdom_name]['html']);
+
 				//	Parse of script to each functions.
 				__sdom[sdom_name]['script'] = __parse_script(__sdom[sdom_name]['script']);
 			};
@@ -57,6 +60,25 @@ function __get_sdom(sdom_name){
 
 	//	...
 	return __sdom[sdom_name];
+};
+
+//	...
+function __replace_onevent(sdom_name, html){
+	//	Create dom.
+	var dom = document.createElement('div');
+		dom.innerHTML = html;
+
+	//	Search at each event.
+	for(var attr of ['onclick','onmouseover','onmouseleave']){
+		for(var tag of dom.querySelectorAll(`[${attr}]`)){
+			var val = tag.getAttribute(attr).trim();
+				D(val);
+			tag.setAttribute(attr, `$OP.SDOM.Action.Exe('${sdom_name}', '${val}', this); return false;`);
+		};
+	};
+
+	//	Return replaced html source.
+	return dom.innerHTML;
 };
 
 //	...
@@ -98,7 +120,7 @@ function __parse_script(source){
 	var result = {};
 
 	//	...
-	let r = new RegExp(/\s*function\s*([-_a-z0-9]+)\(\)\s*\{/i);
+	var r = new RegExp(/\s*function\s*([-_a-z0-9]+)\(\)\s*\{/i);
 
 	//	...
 	do{
@@ -151,6 +173,28 @@ function __parse_script(source){
 
 	//	...
 	return result;
+};
+
+//	...
+function __insert_style_tag(sdom_name, style){
+	//	...
+	var tag_name  = 'style';
+
+	//	Get style tag list by sdom-name attribute.
+	var list = document.querySelectorAll(`${tag_name}[name=${sdom_name}]`);
+
+	//	If already exists.
+	if( list.length !== 0 ){
+		return;
+	};
+
+	//	Generate new style tag has sdom-name attribute.
+	var dom = document.createElement(tag_name);
+		dom.innerHTML = style;
+		dom.setAttribute('name', sdom_name);
+
+	//	Insert new style tag has sdom-name attribute.
+	document.querySelector('body').appendChild(dom);
 };
 
 //	...
@@ -232,8 +276,13 @@ function __if(sdom, rdom){
 
 		//	...
 		switch( parsed.value ){
+			case 'readonly':
 			case 'disabled':
-				rdom[parsed.value] = io;
+				if( io ){
+					rdom.setAttribute(parsed.value, parsed.value);
+				}else{
+					rdom.removeAttribute(parsed.value);
+				};
 			break;
 		}
 
