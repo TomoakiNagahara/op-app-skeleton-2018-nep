@@ -12,9 +12,21 @@
 <sdom name="chat">
 	<p>Please leave comment</p>
 	<form name="chat" class="OP">
-		<input type="text" name="nickname" value="" />
-		<input type="text" name="comment"  value="" />
-		<button if=" form.chat.nickname.value.length == 0 ? disabled "> submit </button>
+		<div>
+			<b>Nickname</b><br/>
+			<input type="text" name="nickname" value="" placeholder="nickname" />
+		</div>
+		<div>
+			<b>Comment</b><br/>
+			<input type="text" name="comment"  value="" placeholder="comment" />
+			<button if=" form.chat.nickname.value.length == 0 ? disabled " onclick=" onClick "> Post </button>
+			<span class="button"
+			      if=" form.chat.nickname.value.length == 0 ? disabled "
+			      onclick=" onClick "
+			      >
+				submit
+			</span>
+		</div>
 	</form>
 	<hr/>
 	<div for="this.json.chat">
@@ -69,6 +81,11 @@
 	//	...
 	function onDeleted(){
 		//	function onDelete()
+	};
+
+	//	...
+	function onClick(){
+		D('onClick is working!!');
 	};
 	</script>
 </sdom>
