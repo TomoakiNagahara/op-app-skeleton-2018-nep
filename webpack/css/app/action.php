@@ -14,6 +14,7 @@ return [
 	__DIR__.'/root',
 	__DIR__.'/body',
 	__DIR__.'/font',
+	__DIR__.'/font-size',
 	__DIR__.'/font-color',
 	__DIR__.'/a',
 	__DIR__.'/h',

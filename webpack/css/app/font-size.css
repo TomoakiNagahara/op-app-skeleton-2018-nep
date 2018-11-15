@@ -1,0 +1,30 @@
+/**
+ * app-skeleton-webpack:/css/app/font-size.css
+ *
+ * @creation  2018-11-15
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+/** For smartphone and tablet settings.
+ * 
+ * @creation  2018-11-15
+ */
+@media screen and (max-device-width: 800px) {
+	/** Auto calculate font size.
+	 *
+	 * Font-size range is  16px to  24px.
+	 * View-port range is 400px to 800px.
+	 *
+	 * @see https://coliss.com/articles/build-websites/operation/css/use-calc-to-change-the-height-of-a-hero-component.html
+	 * @creation  2018-11-15
+	 */
+	body.body * {
+		--font-size-min:  16;
+		--font-size-max:  24;
+		--font-size-base: 16px;
+		font-size: calc(var(--font-size-base) + (var(--font-size-max) - var(--font-size-min))*(100vw - 400px)/(800 - 400));
+	}
+}
