@@ -19,15 +19,12 @@
 		<div>
 			<b>Comment</b><br/>
 			<input type="text" name="comment"  value="" placeholder="comment" />
-			<button if=" form.chat.nickname.value.length == 0 ? disabled " onclick=" onClick "> Post </button>
-			<span class="button"
-			      if=" form.chat.nickname.value.length == 0 ? disabled "
-			      onclick=" onClick "
-			      >
-				submit
-			</span>
+			<button name="submit" if=" form.chat.nickname.value.length == 0 ? disabled " onclick=" onSubmit "> Post </button>
 		</div>
 	</form>
+	<div for=" this.json.errors " class="error">
+		<p>{ value }</p>
+	</div>
 	<hr/>
 	<div for="this.json.chat">
 		<div>
@@ -41,7 +38,7 @@
 	}
 	</style>
 	<script>
-	//	...
+	//	after inserted
 	function onInsert(){
 		//	...
 		var sdom_name = this.getAttribute('sdom-name');
@@ -55,37 +52,88 @@
 		$OP.Ajax.Post(url, data, function(json){
 			//	Set result of json.
 			var sdom = $OP.SDOM.Get(sdom_name, idnt_name);
+
+			//	...
+			if( json.result ){
 				sdom.Json('chat', json.result);
-				sdom.Update();
+			};
+
+			//	...
+			if( json.errors ){
+				sdom.Json('errors', json.errors);
+			};
+
+			//	...
+			sdom.Update();
 
 		}, function(e){
 			console.Error(e);
 		});
 	};
 
-	//	...
+	//	before update
 	function onUpdate(){
-		//	function onUpdate()
 	};
 
-	//	...
+	//	after update
 	function onUpdated(){
-		//	function onUpdate()
 	};
 
-	//	...
+	//	before delete
 	function onDelete(){
-		//	function onDelete()
 	};
 
-	//	...
+	//	after delete
 	function onDeleted(){
-		//	function onDelete()
 	};
 
 	//	...
-	function onClick(){
-		D('onClick is working!!');
+	function onSubmit(){
+		//	...
+		var url  = 'testcase:/api/chat/save';
+		var data = [];
+			data.nickname = $OP.Form('chat').Input('nickname').Value();
+			data.comment  = $OP.Form('chat').Input('comment').Value();
+
+		//	...
+		if( !data.nickname || !data.comment ){
+			return;
+		};
+
+		//	...
+		var button = document.querySelector('form[name=chat] button[name=submit]');
+			button.setAttribute('disabled', true);
+
+		//	...
+		$OP.Ajax.Post(url, data, function(json){
+			//	...
+			var result = json.result ? true: false;
+
+			//	...
+			release(result);
+
+		}, function(e){
+			//	...
+			release(false);
+
+			//	...
+			console.log(e);
+		});
+
+		//	...
+		var release = function(result){
+			//	...
+			if( result ){
+				$OP.Form('chat').Input('comment').Value('');
+			};
+
+			//	...
+			button.removeAttribute('disabled');
+		};
+	};
+
+	//	...
+	function onLoad(){
 	};
 	</script>
 </sdom>
