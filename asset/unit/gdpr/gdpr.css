@@ -1,0 +1,30 @@
+/**
+ * unit-gdpr:/gdpr.css
+ *
+ * @creation  2018-11-16
+ * @version   1.0
+ * @package   unit-gdpr
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body .GDPR {
+	margin:  0;
+	padding: 0.5em;
+	border: 1px solid var(--root-color-border);
+}
+
+body.body .GDPR .close {
+	float: right;
+}
+
+body.body .GDPR .close:after {
+	margin:  0;
+	margin-left: 0.1em;
+	padding: 0.1em;
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+	border: 1px solid var(--root-color-border);
+	content: "✕";
+	cursor: pointer;
+}
