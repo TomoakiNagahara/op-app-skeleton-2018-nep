@@ -11,4 +11,9 @@
 ?>
 <header>
 	<a href="<?= ConvertURL('app:/') ?>">onepiece-framework</a>
+	<?php
+	if( Unit::Load('GDPR') ){
+		OP\UNIT\GDPR::Html();
+	}
+	?>
 </header>
