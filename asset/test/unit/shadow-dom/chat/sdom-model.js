@@ -72,7 +72,6 @@ function __replace_onevent(sdom_name, html){
 	for(var attr of ['onclick','onmouseover','onmouseleave']){
 		for(var tag of dom.querySelectorAll(`[${attr}]`)){
 			var val = tag.getAttribute(attr).trim();
-				D(val);
 			tag.setAttribute(attr, `$OP.SDOM.Action.Exe('${sdom_name}', '${val}', this); return false;`);
 		};
 	};
@@ -221,6 +220,14 @@ function __for(sdom, rdom){
 
 	//	...
 	var m = json.match(/^ *(this\.json)\.(\w+) *$/);
+
+	//	...
+	if(!m ){
+		console.log(json);
+		return;
+	}
+
+	//	...
 	if( m[2] ){
 		json = sdom.Json(m[2]);
 	}else{
