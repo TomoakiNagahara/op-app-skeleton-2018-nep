@@ -10,4 +10,5 @@
 
 :root {
 	--root-hue: 50;
+	--root-color-border: hsl( var(--root-hue), 50%, 50%);
 }
