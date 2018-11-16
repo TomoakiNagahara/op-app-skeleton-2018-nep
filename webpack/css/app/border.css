@@ -11,5 +11,5 @@
 body.body .border {
 	border-width: 1px;
 	border-style: solid;
-	/* border-color setting is done at color.css */
+	borde-color: var(--root-color-border);
 }
