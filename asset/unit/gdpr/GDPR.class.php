@@ -34,7 +34,7 @@ class GDPR
 	 */
 	static function Confirmation()
 	{
-		return Cookie::Get( Hasha1(__DIR__) ) ? true: false;
+		return \Cookie::Get( Hasha1(__DIR__) ) ? true: false;
 	}
 
 	/** Get default description html.
