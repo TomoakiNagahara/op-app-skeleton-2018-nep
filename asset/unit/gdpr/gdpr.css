@@ -11,6 +11,7 @@
 body.body .GDPR {
 	margin:  0;
 	padding: 0.5em;
+	padding-right: 0.2em;
 	border: 1px solid var(--root-color-border);
 }
 
@@ -23,7 +24,7 @@ body.body .GDPR .close:after {
 	margin-left: 0.1em;
 	padding: 0.1em;
 	padding-left: 0.3em;
-	padding-right: 0.3em;
+	padding-right: 0.4em;
 	border: 1px solid var(--root-color-border);
 	content: "✕";
 	cursor: pointer;
