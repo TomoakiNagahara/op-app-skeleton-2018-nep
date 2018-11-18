@@ -9,7 +9,7 @@
  */
 setTimeout(function(){
 	//	...
-	var dom = document.querySelector('body.body .GDPR .close');
+	var dom = document.querySelector('#GDPR .close');
 	if(!dom){
 		return;
 	}
@@ -19,9 +19,14 @@ setTimeout(function(){
 		var key  = '<?= Hasha1(__DIR__) ?>';
 		var url  = 'app:/';
 		var data = [];
+			data.GDPR = 1;
 			data[key] = 1;
 		$OP.Ajax.Get(url, data, function(html){
-			D(html);
+			//	...
+			var gdpr = document.getElementById("GDPR");
+			if( gdpr.parentNode ){
+				gdpr.parentNode.removeChild(gdpr);
+			};
 		});
 	});
 }, 1000);
