@@ -40,7 +40,7 @@
 	 */
 	$OP.Arg = function(val, is_notice){
 		var span = document.createElement('span');
-		var type = val === null ? 'null': typeof val;
+		var type = (val === null) ? 'null': typeof val;
 
 		//	...
 		span.classList.add('arg');
@@ -80,13 +80,26 @@
 			//	...
 			if( type === 'null' ){
 				val = 'null';
-			}
+			}else
 
 			//	...
 			if( type === 'boolean' ){
 				span.classList.add( val ? 'true':'false' );
 				val = val ? 'true':'false';
-			}
+			}else
+
+			//	...
+			if( type === 'object' ){
+				span.dataset.json = JSON.stringify(val);
+				span.classList.add('pointer');
+				if( is_notice ){
+					span.classList.add('underline');
+				}
+				val = 'object';
+			}else
+
+			//	...
+			{  }
 
 			//	...
 			span.innerText = val;
