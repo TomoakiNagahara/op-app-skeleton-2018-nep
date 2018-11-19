@@ -9,7 +9,7 @@
  */
 //	...
 (function(){
-	//	...
+	//	Display the Notice at the bottom of the document.
 	$OP.Notice = function(div, i){
 		//	...
 		if(!div.innerText){
@@ -51,11 +51,19 @@
 		div.appendChild(temp);
 
 		//	...
+		for(var dom of div.querySelectorAll('.OP_NOTICE .arg.object') ){
+			dom.addEventListener('click', function(e){
+				console.log( JSON.parse(e.target.dataset.json) );
+			});
+		};
+
+		//	...
 		setTimeout(function(){
 			__notice(me1.innerText, me2.innerText);
 		}, 1000 * i);
 	}
 
+	//	Display the Notice on the upper left of the document.
 	function __notice(message, subtext){
 		//	...
 		console.error(message, subtext);
