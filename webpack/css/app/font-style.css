@@ -1,0 +1,21 @@
+/**
+ * app-skeleton-webpack:/css/app/font-style.css
+ *
+ * @creation  2018-11-19
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body .bold {
+	font-weight: bold;
+}
+
+body.body .italic {
+	font-style: italic;
+}
+
+body.body .underline {
+	text-decoration: underline;
+}
