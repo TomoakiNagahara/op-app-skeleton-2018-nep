@@ -12,6 +12,9 @@ Unit of Notice
  If you are not an administrator, In that case a e-mail will be sent.
  Set the administrator's IP address and e-mail address as follows.
 
+ Displayed of backtrace at the document footer.
+ That be traced back call of function and class method.
+
 ```
 <?php
 //  Set the administrator's IP address.
@@ -21,6 +24,12 @@ Env::Set(Env::_ADMIN_IP_,   '192.168.0.1');
 Env::Set(Env::_ADMIN_MAIL_, 'admin@example.com');
 ?>
 ```
+
+### More convenient usage
+
+ Please see displayed backtrace on footer of document.
+ Object of arguments are clickable.
+ Result is displayed in console.
 
 ## Technical information
 
