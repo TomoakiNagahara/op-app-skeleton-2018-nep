@@ -24,10 +24,6 @@ if(!$OP.URL ){
 	 * </pre>
 	 *
 	 * @creation  2018-11-01
-	 * @version   1.0
-	 * @package   app-skeleton-webpack
-	 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
-	 * @copyright Tomoaki Nagahara All right reserved.
 	 */
 	var __meta = {};
 		__meta.app = "<?= ConvertURL('app:/'); ?>";
@@ -39,10 +35,6 @@ if(!$OP.URL ){
 	 * </pre>
 	 *
 	 * @creation  2018-11-01
-	 * @version   1.0
-	 * @package   app-skeleton-webpack
-	 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
-	 * @copyright Tomoaki Nagahara All right reserved.
 	 */
 	$OP.URL.Meta = function(meta, path){
 		__meta[meta] = path;
@@ -56,10 +48,6 @@ if(!$OP.URL ){
 	 * </pre>
 	 *
 	 * @creation  2018-11-01
-	 * @version   1.0
-	 * @package   app-skeleton-webpack
-	 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
-	 * @copyright Tomoaki Nagahara All right reserved.
 	 */
 	$OP.URL.Convert = function(url){
 		//	...
