@@ -8,10 +8,6 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-//	...
-$t = explode('.', PHP_VERSION);
-$v = $t[0].$t[1];
-$server_software = explode('/', $_SERVER['SERVER_SOFTWARE'])[0];
 ?>
 <!doctype html>
 <html>
