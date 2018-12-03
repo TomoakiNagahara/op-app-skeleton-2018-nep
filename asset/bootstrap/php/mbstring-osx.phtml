@@ -8,6 +8,11 @@
 * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
 * @copyright Tomoaki Nagahara All right reserved.
 */
+//	...
+$t = explode('.', PHP_VERSION);
+$v = $t[0].$t[1];
+
+//	...
 if( preg_match('/apache/', PHP_SAPI) ){
 	$target = 'apache2';
 }else if( preg_match('/cgi/', PHP_SAPI) ){
@@ -19,13 +24,11 @@ if( preg_match('/apache/', PHP_SAPI) ){
 <p style="margin-left:1em;">
 	MacPorts
 </p>
-<code>
-<pre>
+<pre><code>
 sudo port install php<?= $v ?>-mbstring
 <?php if( $target ): ?>
 sudo port unload <?= $target.PHP_EOL ?>
 sudo port load <?= $target ?>
 <?php endif; ?>
-</pre>
-</code>
+</code></pre>
 <?php
