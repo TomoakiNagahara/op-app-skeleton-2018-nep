@@ -19,7 +19,7 @@ if(!$menu = ifset($_GET['menu'], 1) ){
 $dir = ConvertURL('testcase:/');
 
 //	...
-$list = App::Session('testcase-menu') ?? $list = ['core'=>[],'unit'=>[]];
+$list = App::Session('testcase-menu') ?? $list = ['core'=>[],'unit'=>[],'app'=>[]];
 
 //	Search directory recursively.
 $args = App::Args();
