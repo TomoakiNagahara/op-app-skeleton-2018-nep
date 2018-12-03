@@ -57,12 +57,13 @@ $href = $_SERVER['HTTP_REFERER'] ?? ConvertURL('app:/');
   </div>
   <div class="ground-wrapper"></div>
   <div class="button-container">
-    <p>Sorry! That page dosen't seem to exist</p><a class="button button--back" href="<?= $href ?>">Go Back
-      <div class="ghost">
+    <p>Sorry! That page dosen't seem to exist</p>
+    <a class="button button--back" href="<?= $href ?>">Go Back</a>
+      <div class="ghost" style="margin-left: calc(50vw - 3em);">
         <div class="ghost__hand"></div>
         <div class="ghost__face"></div>
         <div class="ghost__tail"></div>
-      </div></a>
+      </div>
   </div>
 </div>
 <style>
