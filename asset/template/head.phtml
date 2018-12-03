@@ -13,8 +13,10 @@
 $layout = App::Layout();
 
 //	Get webpack unique hash key.
-$hash_js  = \OP\UNIT\WebPack::Hash('js');
-$hash_css = \OP\UNIT\WebPack::Hash('css');
+if( Unit::Load('webpack') ){
+	$hash_js  = \OP\UNIT\WebPack::Hash('js');
+	$hash_css = \OP\UNIT\WebPack::Hash('css');
+}
 
 ?>
 <meta charset="utf-8" />
