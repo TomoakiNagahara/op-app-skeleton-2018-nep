@@ -19,16 +19,16 @@
  */
 interface IF_ORM
 {
-	/**
+	/** Find record at QQL.
 	 *
 	 * @param	 string	 $qql
 	 * @return
 	 */
 	public function Find($qql);
 
-	/**
+	/** Save array of record to database.
 	 *
-	 * @param array $record    
+	 * @param	 array	 $record
 	 */
 	public function Save($record);
 }
