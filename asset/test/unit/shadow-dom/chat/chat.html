@@ -19,7 +19,7 @@
 		<div>
 			<b>Comment</b><br/>
 			<input type="text" name="comment"  value="" placeholder="comment" />
-			<button name="submit" if=" form.chat.nickname.value.length == 0 ? disabled " onclick=" onSubmit "> Post </button>
+			<button name="submit" if=" this.onButtonEnable() " onclick=" onSubmit "> Post </button>
 		</div>
 	</form>
 	<div for=" this.json.errors " class="error">
@@ -85,6 +85,18 @@
 
 	//	after delete
 	function onDeleted(){
+	};
+
+	//	Button enable
+	function onButtonEnable(){
+		var result = true;
+
+		var nickname = $OP.Form('chat').Input('nickname').Value();
+		var comment  = $OP.Form('chat').Input('comment').Value();
+
+		D( nickname, comment, result );
+
+		return result;
 	};
 
 	//	...

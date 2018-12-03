@@ -16,6 +16,11 @@ var ShadowDom = function(sdom_name, attr_name){
 };
 
 //	...
+ShadowDom.prototype.Name = function(){
+	return this.__sdom_name;
+};
+
+//	...
 ShadowDom.prototype.Json = function(index, value){
 	//	...
 	if( value !== undefined ){

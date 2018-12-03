@@ -269,9 +269,50 @@ function __if_root(sdom, rdom){
 //...
 function __if(sdom, rdom){
 	//	...
+	var a = rdom.getAttribute('if');
+	var m = a.match(/^\s(\w+)\./);
+
+	//	...
+	switch( m[1] ){
+		case 'this':
+			__if_this(sdom, rdom);
+			break;
+
+		case 'form':
+			__if_form(sdom, rdom);
+			break;
+
+		default:
+			console.log(`This word is not define. (m[1])`);
+	};
+};
+
+//...
+function __if_this(sdom, rdom){
+	//	...
+	var attr = rdom.getAttribute('if');
+	var temp = attr.trim().split('.');
+
+	//	...
+	if( temp[0] !== 'this' ){
+		console.error('Not this.', attr, rdom);
+		return;
+	};
+
+	//	...
+	var sdom_name = sdom.Name();
+	var func_name = temp[1].substr(0, temp[1].length -2);
+
+	//	...
+	$OP.SDOM.Action.Exe(sdom_name, func_name, rdom);
+};
+
+//	...
+function __if_form(sdom, rdom){
+	//	...
 	var func = function(){
 		//	...
-		var parsed = __if_parser(rdom.getAttribute('if'));
+		var parsed = __if_form_parser(rdom.getAttribute('if'));
 
 		//	...
 		var ce = parsed.eval;
@@ -313,7 +354,7 @@ function __if(sdom, rdom){
 };
 
 //	...
-function __if_parser(str){
+function __if_form_parser(str){
 	//	...
 	var parsed = {};
 
