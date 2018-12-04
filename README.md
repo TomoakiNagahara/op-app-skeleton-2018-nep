@@ -1,9 +1,11 @@
 app-skeleton-2018-nep
 ===
 
-## Feature
-
  The onepiece-framework is insanely great!!
+ Windows environment is not considered.
+ Please develop at UNIX clone or Windows subsystem.
+
+## Feature
 
 ### Intuitive file path
 
@@ -73,15 +75,24 @@ app-skeleton-2018-nep
 
 ### asset/unit
 
- AAA unitizes each function.
+ The onepiece-framework is unitizes each function.
+ This directory stored that units.
 
 ### asset/test
 
+ This directory stored test files.
+
 ### asset/reference
+
+ This directory reference to reference files by each units.
 
 ### asset/cache
 
+ This directory stored cache files.
+
 ## What is that word?
+
+ We will write here that hint of word.
 
 ### End-Point
 
