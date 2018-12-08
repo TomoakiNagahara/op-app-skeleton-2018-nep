@@ -10,9 +10,12 @@
  */
 //	...
 include('menu.phtml');
+
+//	...
+$src = Env::isLocalhost() ? ConvertURL('app:/vendor/marked.min.js'):'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
 ?>
 <div id="reference" class="markdown">Pleasd wait...</div>
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="<?= $src ?>"></script>
 <script>
 //	...
 document.addEventListener('DOMContentLoaded', function(){
