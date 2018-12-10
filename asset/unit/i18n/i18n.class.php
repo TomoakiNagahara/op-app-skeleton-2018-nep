@@ -164,6 +164,11 @@ class i18n
 		}
 
 		//	...
+		if(!$this->_DB->isConnect() ){
+			return;
+		};
+
+		//	...
 		$hash = $this->_Hash($string);
 
 		//	...
