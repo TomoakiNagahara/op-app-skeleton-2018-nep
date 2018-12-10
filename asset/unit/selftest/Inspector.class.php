@@ -67,12 +67,18 @@ class Inspector
 	{
 		//	Include configuration file.
 		if( is_string($args) ){
-			if( file_exists($args) ){
-				$config = include($args);
-			}else{
-				self::Error("Does not exists this file name. ($args)");
-				return;
-			}
+			//	...
+			if(!file_exists($args) ){
+				throw new \Exception("Does not exists this file name. ($args)");
+			};
+
+			//	...
+			$config = include($args);
+
+			//	...
+			if(!is_array($config) ){
+				throw new \Exception("Empty return value. ($args)");
+			};
 		}else{
 			$config = $args;
 		}
