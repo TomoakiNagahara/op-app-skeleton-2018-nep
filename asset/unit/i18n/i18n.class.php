@@ -56,6 +56,8 @@ class i18n
 
 	/** Service
 	 *
+	 * Google, Bing, Other
+	 *
 	 * @var string
 	 */
 	private $_service;
@@ -134,11 +136,18 @@ class i18n
 
 	/** Set service.
 	 *
-	 * @param	 string	 $service
+	 * @param	 string		 $service
+	 * @param	 string|null $apikey
 	 * @return	 string
 	 */
-	function Service($service)
+	function Service($service, $apikey=null)
 	{
+		//	...
+		if( $apikey ){
+			$this->_apikey = $apikey;
+		};
+
+		//	...
 		return $this->_service = $service;
 	}
 
