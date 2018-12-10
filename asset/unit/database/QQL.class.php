@@ -106,6 +106,9 @@ class QQL
 	static private function _ParseField($field, $_db)
 	{
 		//	...
+		$join = [];
+
+		//	...
 		if( strpos($field, ',') ){
 			//	Many fields.
 			foreach( explode(',', $field) as $temp ){
@@ -122,6 +125,9 @@ class QQL
 
 	static private function _ParseFieldFunc($field, $_db)
 	{
+		//	...
+		$match = NULL;
+
 		//	...
 		if( preg_match('|([_a-z0-9]+)\(([_a-z0-9]+)\)|i', $field, $match) ){
 			$field = $match[1] .'('. $_db->Quote($match[2]) .')';
@@ -253,6 +259,9 @@ class QQL
 	 */
 	static function Select($select, $_db)
 	{
+		//	...
+		$database = $table = $field = $where = $order = $limit = $offset = $group = null;
+
 		//	...
 		foreach( ['database','table','field','where','order','limit','offset', 'group'] as $key ){
 			${$key} = $select[$key];
