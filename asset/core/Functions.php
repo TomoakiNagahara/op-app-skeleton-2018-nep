@@ -221,7 +221,7 @@ function Decode($value, $charset=null)
 	}
 
 	//	...
-	switch( $type = gettype($value) ){
+	switch( /* $type = */ gettype($value) ){
 		//	...
 		case 'string':
 			$value = DecodeString($value, $charset);
@@ -240,6 +240,7 @@ function Decode($value, $charset=null)
 
 		//	...
 		default:
+		//	Notice::Set("Has not been support this type. ($type)");
 	}
 
 	//	...
@@ -276,7 +277,7 @@ function Escape($var, $charset=null)
 	}
 
 	//	...
-	switch( $type = gettype($var) ){
+	switch( /* $type = */ gettype($var) ){
 		case 'string':
 			return _EscapeString($var, $charset);
 
@@ -292,6 +293,7 @@ function Escape($var, $charset=null)
 			break;
 
 		default:
+		//	Notice::Set("Has not been support this type. ($type)");
 	}
 
 	//	...
@@ -375,6 +377,7 @@ function Attribute(string $attr)
 {
 	//	...
 	$key = 'tag';
+	$result = null;
 
 	//	...
 	for($i=0, $len=strlen($attr); $i<$len; $i++){
@@ -453,6 +456,7 @@ function Html($string, $attr=null, $escape=true)
 	}
 
 	//	...
+	$tag = $id = $class = null;
 	foreach( ['tag','id','class'] as $key ){
 		${$key} = $attr[$key] ?? null;
 	}
