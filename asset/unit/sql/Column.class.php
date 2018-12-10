@@ -252,7 +252,12 @@ class Column
 	static function Index($config, $db)
 	{
 		//	...
-		if( empty($config['field']) or empty($config['key']) ){
+		if( empty($config['key']) ){
+			return null;
+		};
+
+		//	...
+		if( empty($config['field']) ){
 			throw new \Exception('Empty field name or index key type.');
 		}
 
