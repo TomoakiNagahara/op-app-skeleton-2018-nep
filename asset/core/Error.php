@@ -63,6 +63,7 @@ function _HandlerError($errno, $error, $file, $line, $context)
 function _HandlerException($e)
 {
 	//	...
+	$backtrace = [];
 	$backtrace['file']		 = $e->getFile();
 	$backtrace['line']		 = $e->getLine();
 	$backtrace['function']	 = null;
