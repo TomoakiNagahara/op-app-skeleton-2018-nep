@@ -76,7 +76,7 @@ class EMail
 	 */
 	function Bcc($addr)
 	{
-		$this->_set_addr($addr, $name, 'bcc');
+		$this->_set_addr($addr, '', 'bcc');
 	}
 
 	/** Set reply-to header.
@@ -130,6 +130,8 @@ class EMail
 			$this->_SetError("Mime was wrong. ($mime)");
 			return false;
 		}
+
+		$body = [];
 		$body['body'] = $content;
 		$body['mime'] = $mime;
 		$this->_body[] = $body;
@@ -162,6 +164,7 @@ class EMail
 			}
 		}
 
+		$body = [];
 		$body['body'] = $content;
 		$body['mime'] = $mime;
 		$body['name'] = $file_name;
@@ -495,6 +498,7 @@ class EMail
 	private function _set_addr($addr, $name, $key)
 	{
 		$addr = preg_replace('/\n/', '\n', $addr);
+		$head = [];
 		$head['addr'] = $addr;
 		$head['name'] = $name;
 		$this->_head[ucfirst(strtolower($key))][] = $head;
@@ -506,6 +510,7 @@ class EMail
 	 */
 	private function _set_error($message)
 	{
+		$error = [];
 		$error['message'] = $message;
 		$error['backtrace'] = debug_backtrace();
 		$this->_debug['errors'][] = $error;
