@@ -318,63 +318,92 @@ class Inspector
 		}
 
 		//	...
-		if(!$sql  = \OP\UNIT\SQL\Show::Grant($DB, $host, $user) ){
+		if(!$sql = \OP\UNIT\SQL\Show::Grant($DB, $host, $user) ){
 			return;
 		}
 
 		//	...
-		$grants = $DB->Query($sql, 'show');
+		$grants = [];
+		foreach( $DB->Query($sql, 'show') as $string ){
+			//	...
+			$match = [];
+			preg_match('/GRANT (.+) ON (.+)\.(.+) TO (.+)@([^\s]+)/', $string, $match);
+
+			//	...
+			$grant = [];
+			$grant['privilege'] = $match[1];
+			$grant['privilege'] = strtolower($grant['privilege']);
+			$grant['privilege'] = str_replace(' ', '', $grant['privilege']);
+			$database           = trim($match[2], '`');
+			$table              = trim($match[3], '`');
+		//	$grant['user']      = trim($match[4], "'");
+		//	$grant['host']      = trim($match[5], "'");
+			$grants[$database][$table] = $grant;
+		};
+
+		//	...
+		$result['database'] = true;
+		$result['table']    = true;
 
 		//	...
 		foreach( $configs['users'][$user]['privilege'] ?? [] as $database => $tables ){
+
+			//	...
+			$result['databases'][$database] = isset($grants[$database]);
+
+			//	...
+			if( $result['databases'][$database] === false ){
+				$result['database'] = false;
+				continue;
+			};
+
+			//	...
 			foreach( $tables as $table => $privileges ){
+
 				//	...
-				if(!isset($grants[$user][$host][$database][$table]) ){
-					$result['privileges'] = false;
+				$result['tables'][$database][$table] = isset($grants[$database][$table]);
+
+				//	...
+				if( $result['tables'][$database][$table] === false ){
+					$result['table'] = false;
+					continue;
+				};
+
+				//	...
+				if(!isset($grants[$database][$table]) ){
+					$result['privilege'] = false;
 					continue;
 				}
 
 				//	...
 				foreach( $privileges as $privilege => $columns ){
 					//	...
-					$temp = [];
+					$privilege = str_replace(' ', '', $privilege);
 
 					//	...
-					if( is_string($privilege) ){
-						foreach( explode(',', $privilege) as $key ){
-							$temp[trim($key)] = $columns;
-						}
-
-						//	...
-						$privilege = $temp;
-					}
+					$arr1 = explode(',', $privilege);
+					$arr2 = explode(',', $grants[$database][$table]['privilege']);
+					$base = array_unique( array_merge( $arr1, $arr2) );
 
 					//	...
-					foreach( $privilege as $key => $field ){
-						//	Anti eclipse notice. (un never used)
-						if(!$field){
-							D($field);
-						}
+					$dif1 = array_diff($base, $arr1);
+					$dif2 = array_diff($base, $arr2);
 
+					//	...
+					if( $dif1 or $dif2 ){
 						//	...
-						if( isset($grants[$user][$host][$database][$table][$key]) ){
-							continue;
-						}
+						$result['privilege'] = false;
+						$result['privileges'][$database][$table] = join(',', array_merge($dif1, $dif2));
+					};
 
-						//	...
-						$result['privileges'] = false;
-					}
+					//	...
+					if( false ){ D($columns); };
 				}
 			}
 		}
 
 		//	...
-		if( empty($result['privileges']) ){
-			$result['privileges'] = true;
-		}
-
-		//	...
-		return $result['privileges'] === true ? true: false;
+		return array_search(false, $result, true) ? false: true;
 	}
 
 	/** Inspect structures.
