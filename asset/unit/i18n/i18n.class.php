@@ -60,6 +60,14 @@ class i18n
 	 */
 	private $_service;
 
+	/** API-Key
+	 *
+	 * Use for service.
+	 *
+	 * @var string
+	 */
+	private $_apikey;
+
 	/** Database object.
 	 *
 	 * @var \OP\UNIT\Database
