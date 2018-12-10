@@ -153,6 +153,9 @@ class Env
 	{
 		static $_mime;
 		if( $mime ){
+			//	For Eclipse (Undefined error)
+			$file = $line = null;
+
 			//	...
 			if( headers_sent($file, $line) ){
 				Notice::Set("Header has already sent. ($file, $line)");
