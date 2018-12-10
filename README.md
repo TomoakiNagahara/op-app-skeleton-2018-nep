@@ -58,6 +58,13 @@ app-skeleton-2018-nep
 
  Write application-specific local settings.
 
+```
+<?php
+//	Admin settings.
+Env::Set(Env::_ADMIN_IP_,   '192.168.0.1');
+Env::Set(Env::_ADMIN_MAIL_, 'info@example.com');
+```
+
 ### asset/layout
 
  Layout is the design of the entire site.
