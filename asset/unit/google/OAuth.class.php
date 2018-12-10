@@ -96,6 +96,7 @@ class OAuth
 		$url = "https://accounts.google.com/o/oauth2/auth?$query";
 
 		//	...
+		$file = $line = null;
 		if( headers_sent($file, $line) ){
 			throw new \Exception("Header has already been sent. ($file, $line)");
 		}
