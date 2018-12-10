@@ -36,6 +36,12 @@ class i18n
 	 */
 	const _table_ = 't_i18n';
 
+	/** Length of hash key.
+	 *
+	 * @var integer
+	 */
+	const _hash_length_ = 10;
+
 	/** Target
 	 *
 	 * @var string
@@ -67,7 +73,7 @@ class i18n
 	 */
 	private function _Hash($str)
 	{
-		return substr(md5(join(', ', [$str, $this->_from, $this->_to])), 0, 10);
+		return substr(md5(join(', ', [$str, $this->_from, $this->_to])), 0, self::_hash_length_);
 	}
 
 	/** Construct
