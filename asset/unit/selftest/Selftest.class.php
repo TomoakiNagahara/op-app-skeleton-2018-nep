@@ -137,7 +137,7 @@ class Selftest
 	/** Error
 	 *
 	 */
-	function Error()
+	static function Error($error=null)
 	{
 		return \OP\UNIT\SELFTEST\Inspector::Error();
 	}
