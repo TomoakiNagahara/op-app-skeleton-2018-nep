@@ -210,6 +210,9 @@ class App
 	{
 		//	...
 		switch( $type = gettype($name) ){
+			case 'NULL':
+				break;
+
 			case 'boolean':
 				//	...
 				self::$_LAYOUT_::Execute($name);
@@ -223,14 +226,10 @@ class App
 			case 'string':
 				//	...
 				self::$_LAYOUT_::Name($name);
-
-				//	...
-				if( $name ){
-					self::$_LAYOUT_::Execute(true);
-				}
 				break;
 
 			default:
+				Notice::Set("Has not been support this type. ($type)");
 		}
 
 		//	...
