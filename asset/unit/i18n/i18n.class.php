@@ -180,8 +180,8 @@ class i18n
 			}
 
 			//	...
-			list($from) = explode('-', $this->_from.'-');
-			list($to  ) = explode('-', $this->_to  .'-');
+			list($from_lang, $from_country) = explode('-', $this->_from.'-');
+			list($to_lang,   $to_country  ) = explode('-', $this->_to  .'-');
 
 			//	...
 			if(!$translated = $google->Translate($to, $from, [$string])[0] ){
@@ -193,8 +193,10 @@ class i18n
 				'table' => $table,
 				'set' => [
 					'hash'         => $hash,
-					'from'       => $this->_from,
-					'to'         => $this->_to,
+					'from_lang'    => $from_lang,
+					'from_country' => $from_country,
+					'to_lang'      => $to_lang,
+					'to_country'   => $to_country,
 					'original'   => $string,
 					'translated' => $translated,
 				]
