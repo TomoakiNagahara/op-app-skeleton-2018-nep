@@ -37,6 +37,9 @@ if(!$sql = $sql->Insert($config, $db) ){
 };
 
 //	...
-if(!$result = $db->Query($sql) ){
+$result = $db->Query($sql);
+
+//	...
+if( $result === false ){
 	throw new Exception("Execute SQL query was failed.");
 };
