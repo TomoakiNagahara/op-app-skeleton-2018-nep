@@ -17,7 +17,7 @@ $selftest->Auto('database-config.json');
 
 ```
 //  Instantiate self-test configuration generator.
-$configer = Unit::Instantiate('SelftestConfiger');
+$configer = \OP\UNIT\Selftest::Configer();
 
 //  DSN configuration.
 $configer->DSN([
@@ -28,7 +28,7 @@ $configer->DSN([
 
 //  User configuration.
 $configer->User([
-  'user'     => 'testcase-user',
+  'name'     => 'testcase-user',
   'password' => 'my-password',
   'charset'  => 'utf8',
 ]);
@@ -50,15 +50,17 @@ $configer->Privilege([
 ]);
 
 //  Add table configuration.
-$configer->Table([
+$configer->Set('table', [
   'name'    => 't_table',
+  /* Can be omitted. To be inherited from database.
   'charset' => 'utf8',
   'collate' => 'utf8mb4_general_ci',
+  */
   'comment' => 'This is test table.',
 ]);
 
 //  Add auto incrment id column configuration.
-$configer->Column([
+$configer->Set('column', [
   'name'    =>  'id',
   'type'    => 'int',
   'length'  =>    11,
@@ -68,7 +70,7 @@ $configer->Column([
 ]);
 
 //  Add auto incrment id configuration.
-$configer->Index([
+$configer->Set('index', [
   'name'    => 'ai',
   'type'    => 'ai',
   'column'  => 'ai',
@@ -76,7 +78,7 @@ $configer->Index([
 ]);
 
 //  Add type of set column configuration.
-$configer->Column([
+$configer->Set('column', [
   'name'    => 'flags',
   'type'    => 'set',
   'length'  => 'a, b, c',
@@ -87,7 +89,7 @@ $configer->Column([
 ]);
 
 //  Add type of enum column configuration.
-$configer->Column([
+$configer->Set('column', [
   'name'    => 'choice',
   'type'    => 'enum',
   'length'  => 'a, b, c',
@@ -99,11 +101,13 @@ $configer->Column([
 ]);
 
 //  Add search index configuration.
-$configer->Index([
+$configer->Set('index', [
   'name'    => 'search index',
   'type'    => 'index',
   'column'  => 'flags, choice',
   'comment' => 'Indexed by two columns.',
 ]);
 
+//  Get selftest configuration.
+$config = $configer->Get();
 ```
