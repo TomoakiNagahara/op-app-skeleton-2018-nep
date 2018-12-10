@@ -65,6 +65,9 @@ class WebPack
 		//	Get session by extension.
 		$session = self::Session($ext);
 
+		//	For Eclipse (Undefined error)
+		$list = [];
+
 		//	Convert to array.
 		if( is_string($path) ){
 			//	String to array.
