@@ -15,6 +15,9 @@ Env::Mime('text/plain');
 App::Layout(false);
 
 //	...
+$args = App::Args();
+
+//	...
 switch( $args[0] ){
 	case 'core':
 		echo 'not ready yet...';
