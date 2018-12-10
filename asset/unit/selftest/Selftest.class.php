@@ -139,6 +139,17 @@ class Selftest
 	 */
 	static function Error($error=null)
 	{
-		return \OP\UNIT\SELFTEST\Inspector::Error();
+		//	...
+		static $_errors = [];
+
+		//	...
+		if( $error ){
+			//	...
+			$_errors[] = $error;
+		}else{
+			//	...
+		//	D( \OP\UNIT\SELFTEST\Inspector::Error() );
+			return $_errors;
+		}
 	}
 }
