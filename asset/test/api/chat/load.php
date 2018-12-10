@@ -10,6 +10,8 @@
  */
 /* @var $db  \OP\UNIT\Database */
 /* @var $sql \OP\UNIT\SQL      */
+//	...
+$request = App::Request();
 
 //	...
 $ai = $request['ai'] ?? 0;
