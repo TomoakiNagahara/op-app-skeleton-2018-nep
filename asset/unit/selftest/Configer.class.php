@@ -304,14 +304,13 @@ class Configer
 
 	/** Set index config.
 	 *
-	 * @param   array     $config
 	 * @param   string    $name
 	 * @param   string    $type
 	 * @param   string    $column
 	 * @param   string    $comment
 	 * @throws \Exception $e
 	 */
-	static function Index(array $config=[], string $name='', string $type='', string $column='', string $comment='')
+	static function Index(string $name, string $type, string $column, string $comment)
 	{
 		//	...
 		$dsn      = self::Dsn();
@@ -319,18 +318,19 @@ class Configer
 		$table    = self::Table();
 
 		//	...
-		foreach(['name','type','column','comment'] as $key ){
-			if(!${$key} = $config[$key] ?? ${$key} ){
-				throw new \Exception("Has not been set this key. ($key)");
-			};
-		};
-
-		//	...
+		$columns = [];
 		foreach( explode(',', $column) as $field ){
-			if( empty(self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][trim($field)]) ){
-				\Notice::Set("Set index was failed. Has not been set this column. ($database, $table, $column)");
+			//	...
+			$field = trim($field);
+
+			//	...
+			if( empty(self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$field]) ){
+				self::Error("Set index was failed. Has not been set this field name. ($dsn, $database, $table, $field)");
 				return;
-			}
+			};
+
+			//	...
+			$columns[] = $field;
 		}
 
 		//	...
@@ -345,9 +345,18 @@ class Configer
 			case 'ai':
 			case 'pri':
 			case 'pkey':
+				//	...
+				if( count($columns) !== 1 ){
+					\Notice::Set("Primary key is just only one column. ($column)");
+				};
+				//	...
 				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['key']   = 'pri';
-				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
 				self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['null']  = false;
+
+				//	...
+				if( $type === 'ai' or $type === 'auto_increment' ){
+					self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
+				}
 				break;
 		}
 
