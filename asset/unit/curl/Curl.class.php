@@ -73,8 +73,9 @@ class Curl
 		//	...
 		$scheme = 'http';
 		$host   = $_SERVER['HTTP_HOST']   ?? 'localhost';
-		list($path, $query) = explode('?', $_SERVER['REQUEST_URI'].'?');
-		$referer = "{$scheme}://{$host}{$path}";
+		$uri    = $_SERVER['REQUEST_URI'];
+	//	list($uri, $query) = explode('?', $uri.'?');
+		$referer = "{$scheme}://{$host}{$uri}";
 
 		//	...
 		$option = [
