@@ -42,6 +42,7 @@ class Grant
 	static function Privilege($config, $DB)
 	{
 		//	...
+		$host = $user = null;
 		foreach( ['host','user'] as $key ){
 			if( isset($config[$key]) ){
 				${$key} = $DB->PDO()->Quote($config[$key]);
@@ -52,6 +53,7 @@ class Grant
 		}
 
 		//	...
+		$database = $table = null;
 		foreach( ['database','table'] as $key ){
 			if( isset($config[$key]) ){
 				${$key} = $config[$key] === '*' ? '*': $DB->Quote($config[$key]);
@@ -75,6 +77,9 @@ class Grant
 				\Notice::Set("Has not been set this privilege type. ($type)");
 			return false;
 		}
+
+		//	...
+		$join = $m = null;
 
 		//	...
 		foreach( $privileges as $privilege ){

@@ -39,6 +39,9 @@ class Index
 	static function Create($DB, $config)
 	{
 		//	...
+		$join = [];
+
+		//	...
 		$database = ifset($config['database']);
 		$table    = ifset($config['table']   );
 		$name     = ifset($config['name']    );

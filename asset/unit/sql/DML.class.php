@@ -79,6 +79,9 @@ class DML
 		}
 
 		//	...
+		$join = [];
+
+		//	...
 		foreach( $args['set'] as $column => $value ){
 			//	...
 			$column	 = $db->Quote($column);
@@ -142,6 +145,9 @@ class DML
 			//	...
 			$column	 = $db->Quote($column);
 			$value	 = $db->PDO()->quote($value);
+
+			//	...
+			$join = [];
 
 			//	...
 			switch( $evalu = strtoupper($evalu) ){
@@ -232,6 +238,7 @@ class DML
 	 */
 	static function Order($args, $db)
 	{
+		$join = [];
 		foreach( explode(',', $args['order']) as $value ){
 			list($field, $order) = explode(' ', $value.' ');
 			$field  = $db->Quote($field);
