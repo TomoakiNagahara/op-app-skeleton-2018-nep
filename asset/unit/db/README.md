@@ -1,7 +1,7 @@
 UNIT DB
 ===
 
-# How to use
+## How to use
 
 ```
 <?php

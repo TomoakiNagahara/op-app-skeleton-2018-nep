@@ -52,6 +52,9 @@ class QQL
 		}
 
 		//	...
+		$result = null;
+
+		//	...
 		foreach(['limit','order','offset'] as $key){
 			$result[$key]  = empty($options[$key]) ? null: $options[$key];
 		}
@@ -209,11 +212,14 @@ class QQL
 	/** Execute Select.
 	 *
 	 * @param	 array		 $config
-	 * @param	\IF_DETABASE $DB
+	 * @param	\IF_DATABASE $DB
 	 * @return	 array		 $record
 	 */
 	static private function _Build($select, $_db)
 	{
+		//	...
+		$database = $table = $field = $where = $order = $limit = $offset = null;
+
 		//	...
 		foreach( ['database','table','field','where','order','limit','offset'] as $key ){
 			${$key} = $select[$key];

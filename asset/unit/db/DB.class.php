@@ -110,6 +110,7 @@ class DB
 		}
 
 		//	Initialize variable. (初始化变量, 初始化變量)
+		$driver = $host = $charset = null;
 		foreach(['driver','host','port','user','password','charset'] as $key){
 			if( isset($config[$key]) ){
 				$this->_config[$key] = ${$key} = $config[$key];
@@ -160,6 +161,7 @@ class DB
 		//	...
 		switch( $driver ){
 			case 'mysql':
+				$dsn = $user = $password = $options = null;
 				if(!self::_GetDsnMySQL($config, $dsn, $user, $password, $options) ){
 					return false;
 				}
