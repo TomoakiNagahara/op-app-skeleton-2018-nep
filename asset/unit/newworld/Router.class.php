@@ -79,7 +79,7 @@ class Router
 		//	Check url query.
 		if( $pos = strpos($full_path, '?') ){
 			//	Separate url query.
-			$query = substr($full_path, $pos+1);
+			/* $query = */ substr($full_path, $pos+1);
 			$full_path = substr($full_path, 0, $pos);
 		}
 
@@ -108,6 +108,9 @@ class Router
 
 		//	/foo/bar --> ['foo','bar']
 		$dirs = explode('/', $uri);
+
+		//	For Eclipse (Undefined error)
+		$dir = null;
 
 		//	...
 		do{
