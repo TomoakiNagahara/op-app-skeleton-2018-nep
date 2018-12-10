@@ -72,7 +72,17 @@ class Layout
 	 */
 	static function Execute($io=null)
 	{
-		return self::_Store(__METHOD__, $io);
+		//	...
+		static $_io = null;
+
+		//	...
+		if( $io !== null ){
+			//	...
+			$_io = $io;
+		};
+
+		//	...
+		return $_io;
 	}
 
 	/** Get/Set Layout directory.
@@ -83,16 +93,22 @@ class Layout
 	static function Directory($path=null)
 	{
 		//	...
+		static $_path = null;
+
+		//	...
 		if( $path ){
 			$path = ConvertPath($path);
 			$path = rtrim($path, '/') . '/';
 
 			//	...
 			_GetRootsPath('layout', $path);
+
+			//	...
+			$_path = $path;
 		}
 
 		//	...
-		return self::_Store(__METHOD__, $path);
+		return $_path;
 	}
 
 	/** Get/Set Layout name.
@@ -102,19 +118,31 @@ class Layout
 	 */
 	static function Name($name=null)
 	{
+		//	...
+		static $_name = null;
+
+		//	...
 		if( $name ){
 			//	Get layout directory.
-			if(!self::Directory() ){
+			if(!$dir = self::Directory() ){
 				\Notice::Set("Has not been set layout directory.");
-			//	\Notice::Set("Has not been set layout name.");
 			}
 
+			//	...
+			$_name = $name;
+
 			//	Reset meta path.
-			_GetRootsPath('layout', ConvertPath("layout:/$name"));
+			_GetRootsPath('layout', ConvertPath($dir . $_name));
 		}
 
 		//	...
-		return self::_Store(__METHOD__, $name);
+		if( $name !== null ){
+			//	...
+			self::Execute( $name ? true : false );
+		};
+
+		//	...
+		return $_name;
 	}
 
 	/** The content is wrapped in the Layout.
