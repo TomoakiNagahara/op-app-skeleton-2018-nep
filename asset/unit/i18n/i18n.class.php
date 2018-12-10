@@ -164,13 +164,16 @@ class i18n
 		}
 
 		//	...
-		$id = $this->_Hash($string);
+		$hash = $this->_Hash($string);
 
 		//	...
 		$table = self::_table_;
 
 		//	...
-		if(!$translated = $this->_DB->Quick(" translated <- {$table}.id = {$id} ", ['limit'=>1]) ){
+		$translated = $this->_DB->Quick(" translated <- {$table}.hash = {$hash} ", ['limit'=>1]);
+
+		//	...
+		if(!$translated ){
 			/* @var $google \OP\UNIT\Google */
 			if(!$google = \Unit::Singleton('Google') ){
 				return;
@@ -189,7 +192,7 @@ class i18n
 			$insert = [
 				'table' => $table,
 				'set' => [
-					'id'         => $id,
+					'hash'         => $hash,
 					'from'       => $this->_from,
 					'to'         => $this->_to,
 					'original'   => $string,
