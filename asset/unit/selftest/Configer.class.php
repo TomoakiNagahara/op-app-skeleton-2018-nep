@@ -44,6 +44,73 @@ class Configer
 		return self::$_config;
 	}
 
+	/** Wrap method.
+	 *
+	 * @param	 string	 $method
+	 * @param	 array	 $config
+	 */
+	static function Set($method, $config)
+	{
+		switch( strtolower($method) ){
+			case 'table':
+				//	...
+				$table_name = $config['table'] ?? $config['name'] ?? null;
+
+				//	...
+				if(!$table_name ){
+					\Notice::Set("Has not been set table name.");
+					return;
+				};
+
+				//	...
+				self::Table(
+					$table_name,
+					$config['comment']   ?? null,
+					$config['charset']   ?? null,
+					$config['collation'] ?? null
+				);
+				break;
+
+			case 'column':
+				//	...
+				$option = [];
+				$option['unsigned'] = $config['unsigned'] ?? null;
+
+				//	...
+				$column_name = $config['column'] ?? $config['field'] ?? $config['name'] ?? null;
+
+				//	...
+				if(!$column_name ){
+					\Notice::Set("Has not been set column name.");
+					return;
+				};
+
+				//	...
+				self::Column(
+					$column_name,
+					$config['type'],
+					$config['length']  ?? null,
+					$config['null']    ?? null,
+					$config['default'] ?? null,
+					$config['comment'] ?? null,
+					$option
+				);
+				break;
+
+			case 'index':
+				self::Index(
+					$config['name'],
+					$config['type'],
+					$config['column'],
+					$config['comment']
+				);
+				break;
+			default:
+				\Notice::Set("Has not been support this method. ($method)");
+				break;
+		}
+	}
+
 	/** Get DSN
 	 *
 	 * @param	 array		 $config
