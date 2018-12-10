@@ -98,7 +98,10 @@ class OAuthChild
 		$host = $_SERVER['HTTP_HOST'];
 
 		//	...
-		list($uri, $query) = explode('?', $_SERVER['REQUEST_URI']);
+		$uri = $_SERVER['REQUEST_URI'];
+
+		//	...
+	//	list($uri, $query) = explode('?', $uri);
 
 		//	...
 		return "{$scheme}://{$host}{$uri}";
