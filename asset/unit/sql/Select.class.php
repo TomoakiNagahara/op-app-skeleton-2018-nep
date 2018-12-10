@@ -76,9 +76,9 @@ class Select
 
 	/** Get column condition.
 	 *
-	 * @param	 array $args
-	 * @param	\PDO $pdo
-	 * @return	 string
+	 * @param	 array	 $args
+	 * @param	\PDO	 $pdo
+	 * @return	 string	 $sql
 	 */
 	static private function _Column($args, $pdo)
 	{
@@ -95,11 +95,15 @@ class Select
 				$val = trim($val);
 
 				//	...
+				$join = [];
+
+				//	...
 				if( $st = strpos($val, '(') and
 					$en = strpos($val, ')') ){
 					//	...
-					$func  = strtoupper( substr($val,     0, $st) );
-					$field = strtoupper( substr($val, $st+1,  -1) );
+					$leng  = $en - $st;
+					$func  = strtoupper( substr($val,     0, $st)  );
+					$field = strtoupper( substr($val, $st+1, $leng));
 					$field = $pdo->quote(trim($field));
 
 					//	...

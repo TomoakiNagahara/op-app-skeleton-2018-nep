@@ -104,6 +104,7 @@ class Show
 
 			default:
 				$sql = false;
+				\Notice::Set("This product has not been support yet. ($prod)");
 		}
 		return $sql;
 	}
