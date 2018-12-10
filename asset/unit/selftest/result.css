@@ -89,6 +89,14 @@
 	content: "PASSWORD";
 }
 
+#OP_SELFTEST .error > .error.database:after {
+	content: "DATABASE";
+}
+
+#OP_SELFTEST .error > .error.table:after {
+	content: "TABLE";
+}
+
 #OP_SELFTEST .error > .error.privilege:after {
 	content: "PRIVILEGE";
 }
@@ -105,6 +113,23 @@
 #OP_SELFTEST .arrow:after {
 	margin: 0.5em;
 	content: "→";
+}
+
+#OP_SELFTEST .lack {
+	margin-left: 0.5em;
+}
+
+#OP_SELFTEST .lack span:first-child:before {
+	content: "(";
+}
+
+#OP_SELFTEST .lack span:not(:first-child):after {
+	content: ",";
+	margin-left: 0.5em;
+}
+
+#OP_SELFTEST .lack span:last-child:after {
+	content: ")";
 }
 
 #OP_SELFTEST .modify {
