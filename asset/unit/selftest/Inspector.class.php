@@ -257,7 +257,7 @@ class Inspector
 		//	...
 		$host = $DB->Config()['host'];
 		$dsn  = self::_DSN($DB->Config());
-		$lists= [];
+		$lists = [];
 
 		//	...
 		if(!$sql  = \OP\UNIT\SQL\Show::User($DB) ){
@@ -266,7 +266,9 @@ class Inspector
 
 		//	...
 		foreach( $DB->Query($sql, 'select') as $record ){
-			$lists["{$record['user']}@{$record['host']}"] = $record;
+			$host = $record['host'];
+			$user = $record['user'];
+			$lists["{$user}@{$host}"] = $record;
 		}
 
 		//	...
