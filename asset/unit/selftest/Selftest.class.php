@@ -59,6 +59,13 @@ class Selftest
 		}
 
 		//	...
+		echo '<ol class="error">';
+		foreach( self::Error() as $error ){
+			Html($error, 'li');
+		};
+		echo '</ol>';
+
+		//	...
 		\OP\UNIT\SELFTEST\Inspector::Result();
 	}
 
