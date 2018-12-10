@@ -146,8 +146,11 @@ class Configer
 		$dsn = self::Dsn();
 
 		//	...
-		if(!$user = $config['name'] ?? null ){
-			throw new \Exception('Has not been set user name. ([\'name\' => null])');
+		$user = $config['user'] ?? $config['name'] ?? null;
+
+		//	...
+		if(!$user ){
+			throw new \Exception('Has not been set user name.');
 		}
 
 		//	...
