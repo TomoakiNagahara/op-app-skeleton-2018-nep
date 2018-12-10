@@ -189,7 +189,10 @@ class i18n
 			list($to_lang,   $to_country  ) = explode('-', $this->_to  .'-');
 
 			//	...
-			if(!$translated = $google->Translate($to, $from, [$string], $this->_apikey)[0] ){
+			$translated = $google->Translate($to_lang, $from_lang, [$string], $this->_apikey);
+
+			//	...
+			if( empty($translated[0]) ){
 				return $string;
 			}
 
@@ -206,7 +209,9 @@ class i18n
 					'translated' => $translated,
 				]
 			];
-			$result = $this->_DB->Insert($insert);
+
+			//	...
+			$this->_DB->Insert($insert);
 		}
 
 		//	...
