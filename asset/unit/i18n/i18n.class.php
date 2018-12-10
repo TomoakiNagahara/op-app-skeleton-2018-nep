@@ -83,16 +83,25 @@ class i18n
 	{
 		//	...
 		if(!$config = \Env::Get('i18n') ){
-			\Notice::Set("Has not been set i18n config.");
+			throw new \Exception('Has not been set i18n config.');
+
 		}
 
 		//	...
 		if(!$this->_DB = \Unit::Instance('Database') ){
-			return;
+			throw new \Exception('Instantiate Database object was failed.');
 		}
 
 		//	...
-		$this->_DB->Connect($config);
+		if(!$this->_DB->Connect($config['database']) ){
+			throw new \Exception('Connect database was failed.');
+		};
+
+		//	...
+		$this->_to      = $config['locale-to']   ?? null;
+		$this->_from    = $config['locale-from'] ?? null;
+		$this->_service = $config['service']     ?? null;
+		$this->_apikey  = $config['api-key']     ?? null;
 	}
 
 	/** Set to locale.
