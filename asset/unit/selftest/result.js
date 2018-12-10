@@ -79,10 +79,12 @@ setTimeout(function(){
 			var name   = document.createElement('span');
 			var error  = document.createElement('span');
 			var modify = document.createElement('span');
+			var lack   = document.createElement('span');
 			var item   = document.createElement('li');
 				item.classList = color;
 				item.appendChild(name);
 				item.appendChild(error);
+				item.appendChild(lack);
 				item.appendChild(modify);
 				list.appendChild(item);
 
@@ -91,16 +93,63 @@ setTimeout(function(){
 			name.classList = 'name';
 
 			//	...
+			lack.classList.add('lack');
+
+			//	...
 			error.classList.add('error');
 			if(!json[user]['exist']    ){ error.classList.add('exist')    }else
 			if(!json[user]['password'] ){ error.classList.add('password') }else
-			if(!json[user]['privilege']){ error.classList.add('privilege')}
+			if(!json[user]['database'] ){ error.classList.add('database') }else
+			if(!json[user]['table']    ){ error.classList.add('table')    }else
+			if(!json[user]['privilege']){ error.classList.add('privilege')};
+
+			//	...
+			if(!json[user]['database'] ){
+				//	...
+				for(var database_name in json[user]['databases'] ){
+					//	...
+					if( json[user]['databases'][database_name] ){
+						continue;
+					};
+					//	...
+					var span = document.createElement('span');
+						span.innerText = database_name;
+						lack.appendChild(span);
+				};
+			}else if(!json[user]['table'] ){
+				//	...
+				for(var database_name in json[user]['tables'] ){
+					var tables = json[user]['tables'][database_name];
+					//	...
+					for(var table_name in tables ){
+						//	...
+						if( tables[table_name] ){
+							//	...
+							var span = document.createElement('span');
+								span.innerText = `${database_name}.${table}`;
+								lack.appendChild(span);
+						};
+					};
+				};
+			}else if(!json[user]['privilege'] ){
+				//	...
+				for(var database_name in json[user]['privileges'] ){
+					var tables = json[user]['privileges'][database_name];
+					//	...
+					for(var table_name in tables ){
+						//	...
+						var span = document.createElement('span');
+							span.innerText = `Database: ${database_name}, Table: ${table_name}, Privilege: ${tables[table_name]}`;
+							lack.appendChild(span);
+					};
+				};
+			};
 
 			//	...
 			if( json[user]['modify'] ){
 				modify.innerText = json[user]['modify'];
 				modify.classList.add('modify');
-			}
+			};
 		}
 	}
 
