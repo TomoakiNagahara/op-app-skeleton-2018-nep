@@ -86,11 +86,14 @@ class ORM
 
 	/** Generate "Record" object.
 	 *
-	 * @param	 string				 $qql
-	 * @return	\OP\UNIT\ORM\Record	 $record
+	 * @param	 string		 $qql
+	 * @return	ORM\Record	 $record
 	 */
 	private function _Record($qql, $create)
 	{
+		//	...
+		$option = [];
+
 		//	Force single column record.
 		$option['limit'] = 1;
 
@@ -168,6 +171,7 @@ class ORM
 
 			//	...
 			if( isset($config['query']) ){
+				$query = null;
 				parse_str($config['query'], $query);
 				$config = array_merge($config, $query);
 			}
@@ -221,8 +225,8 @@ class ORM
 
 	/** Find single record.
 	 *
-	 * @param	 string				 $qql
-	 * @return	\OP\UNIT\ORM\Record	 $record
+	 * @param	 string		 $qql
+	 * @return	 ORM\Record	 $record
 	 */
 	function Find($qql)
 	{
@@ -231,7 +235,7 @@ class ORM
 
 	/** Find multiple records.
 	 *
-	 * @return	ORM\Records
+	 * @return	 ORM\Records
 	 */
 	function Finds($qql, $option=[])
 	{
@@ -248,8 +252,8 @@ class ORM
 	 *   string:  Unique primary id.
 	 * </pre>
 	 *
-	 * @param  ORM\Record $record
-	 * @return mixed
+	 * @param	 ORM\Record $record
+	 * @return	 mixed
 	 */
 	function Save(&$record)
 	{
@@ -326,7 +330,7 @@ class ORM
 
 	/** Generate self-test configuration.
 	 *
-	 * @param	 string	 $file
+	 * @param	 string		 $file
 	 */
 	function Selftest($file)
 	{

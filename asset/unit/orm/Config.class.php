@@ -83,7 +83,7 @@ class Config
 		}
 
 		//	...
-		switch( $type = strtolower($column['type']) ){
+		switch( /* $type = */ strtolower($column['type']) ){
 			case 'tinyint':
 				$is_int = true;
 				$min = empty($column['unsigned']) ? -128 :   0;

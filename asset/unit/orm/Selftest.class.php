@@ -43,6 +43,7 @@ class Selftest
 		//	...
 		foreach( $config as $dsn => $databases ){
 			//	...
+			$temp = null;
 			$dsn = parse_url($dsn);
 			parse_str($dsn['query'], $temp);
 			$dsn = array_merge($dsn, $temp);
@@ -64,6 +65,7 @@ class Selftest
 					//	...
 					foreach( $columns as $field => $column ){
 						//	...
+						$field = $type = $comment = null;
 						foreach( ['field','type','comment'] as $key ){
 							${$key} = $column[$key] ?? null;
 						}
@@ -107,7 +109,7 @@ class Selftest
 		$length = [];
 
 		//	...
-		foreach( $column['values'] as $index => $values ){
+		foreach( $column['values'] as /* $index => */ $values ){
 			//	...
 			if( is_string($values) ){
 				$length[] = $values;
@@ -149,6 +151,11 @@ class Selftest
 		while( $message = \OP\UNIT\SELFTEST\Inspector::Error() ){
 			printf('<p class="testcase selftest bold error">%s</p>', $message);
 		}
+
+		//	...
+		if(!$build ){
+			\Notice::Set('Build was failed.');
+		};
 
 		//	...
 		if( $failed !== false ){

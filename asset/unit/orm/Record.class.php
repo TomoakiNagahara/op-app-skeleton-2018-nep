@@ -277,8 +277,7 @@ class Record
 
 	/** Generate Form object.
 	 *
-	 * @param	 \OP\UNIT\ORM\Record $record
-	 * @return	 \OP\UNIT\Form
+	 * @return	 \IF_FORM
 	 */
 	function &Form()
 	{
@@ -380,6 +379,7 @@ class Record
 	 */
 	function Debug()
 	{
+		$info = [];
 		$info['database']= $this->_database;
 		$info['table']	 = $this->_table;
 		$info['record']	 = $this->_record;
