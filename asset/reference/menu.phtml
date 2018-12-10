@@ -22,6 +22,7 @@ App::Breadcrumbs(['href'=>'app:/'.$reference,'text'=>'Reference']);
 $args = [$reference];
 foreach( App::Args() as $arg ){
 	$args[] = $arg;
+	$list = [];
 	$list['text'] = ucfirst($arg);
 	$list['href'] = 'app:/'.join('/', $args);
 	App::Breadcrumbs($list);
