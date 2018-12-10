@@ -51,11 +51,19 @@ class Translate
 	 */
 	static private function _ApiKey()
 	{
-		$key = 'google-cloud-translation-api-key';
-		if(!$val = \Env::Get($key) ){
-			throw new \Exception('Has not been set '.$key.'. Please set to Env::Set("'.$key.'", $id)');
+		//	...
+		$google = \Env::Get('google');
+
+		//	...
+		$apikey = $google['translate']['apikey'] ?? $google['apikey'] ?? null;
+
+		//	...
+		if(!$apikey ){
+			throw new \Exception("Has not been set Google Translate API key. Please set to Env::Set('google', ['translate'=>['apikey'=>'xxxx']])");
 		}
-		return $val;
+
+		//	...
+		return $apikey;
 	}
 
 	/** Return error message.
@@ -87,9 +95,7 @@ class Translate
 	static function Language($config=[])
 	{
 		//	...
-		if(!$apikey = self::_ApiKey() ){
-			return false;
-		}
+		$apikey = $config['apikey'] ?? self::_ApiKey();
 
 		//	...
 		$domain = 'translation.googleapis.com';
@@ -167,10 +173,7 @@ class Translate
 	static function Translation($config)
 	{
 		//	...
-		if(!$apikey = self::_ApiKey() ){
-			self::_Error("Has not been set google cloud platform's api key.");
-			return false;
-		}
+		$apikey = $config['apikey'] ?? self::_ApiKey();
 
 		//	...
 		$domain = 'translation.googleapis.com';
