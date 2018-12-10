@@ -240,20 +240,25 @@ class Configer
 	 * @param	 string		 $table
 	 * @param	 string		 $comment
 	 * @param	 string		 $charset
-	 * @return	 string		 $table
+	 * @return	 string		 $table is current table name.
 	 */
-	static function Table($table=null, $comment=null, $charset='utf8')
+	static function Table($table=null, $comment=null, $charset='utf8', $collation=null)
 	{
+		//	...
 		static $_table;
+
+		//	...
 		if( $table ){
 			$_table    = $table;
 			$dsn       = self::Dsn();
 			$database  = self::Database();
-			$collation = self::_Collate($charset);
+			$collation = self::_Collate($charset, $collation);
 			self::$_config[$dsn]['databases'][$database]['tables'][$table]['name']      = $_table;
 			self::$_config[$dsn]['databases'][$database]['tables'][$table]['collation'] = $collation;
 			self::$_config[$dsn]['databases'][$database]['tables'][$table]['comment']   = $comment;
 		}
+
+		//	...
 		return $_table;
 	}
 
@@ -261,6 +266,9 @@ class Configer
 	 *
 	 * @param	 string		 $name
 	 * @param	 string		 $type
+	 * @param	 string|int	 $length
+	 * @param	 boolean	 $null
+	 * @param	 string|null $default
 	 * @param	 string		 $comment
 	 * @param	 array		 $option
 	 */
