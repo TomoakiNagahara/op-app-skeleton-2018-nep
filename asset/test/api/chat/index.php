@@ -55,7 +55,7 @@ try {
 			break;
 
 		default:
-			$json['errors'][] = 'Has not been set action.';
+			\OP\UNIT\Api::Error('Has not been set action.');
 	};
 
 	//	Enter result.
