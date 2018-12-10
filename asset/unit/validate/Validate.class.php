@@ -57,6 +57,7 @@ class Validate
 		}
 
 		//	...
+		$m = null;
 		if( preg_match('/([^-\._0-9a-z]+)/i', $addr, $m) ){
 			return $m[1];
 		}
@@ -79,6 +80,7 @@ class Validate
 	 */
 	static private function _Phone($value)
 	{
+		$m = null;
 		if( preg_match('/[^-0-9\.\+\ )]/i', $value, $m) ){
 			return true;
 		}
@@ -157,11 +159,14 @@ class Validate
 			if( $i = strpos($eval, '/', $i) ){
 				if( $i < $len and $eval[$i-1] !== '\\' ){
 					Notice::Set("Escape error. ($eval)");
-					$error[$key] = true;
+				//	$error[$key] = true;
 					return false;
 				}
 			}
 		}
+
+		//	...
+		$m = false;
 
 		//	...
 		if(!preg_match("{$eval}u", $value, $m) ){
@@ -244,7 +249,7 @@ class Validate
 
 		//	...
 		foreach( $configs as $key => $config ){
-			if(!$io = self::Evaluation($config, $values[$key] ?? null, $errors[$key], $values) ){
+			if(!self::Evaluation($config, $values[$key] ?? null, $errors[$key], $values) ){
 				$failed = true;
 			}
 		}
