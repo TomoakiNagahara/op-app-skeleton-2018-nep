@@ -56,23 +56,20 @@ class Google
 	 * @param	 string	 $to
 	 * @param	 string	 $from
 	 * @param	 array	 $strings
+	 * @param	 string|null $apikey
 	 * @return	 array	 $strings
 	 */
-	function Translate($to, $from, $strings)
+	function Translate(string $to, string $from, array $strings, $apikey=null)
 	{
-		//	...
-		if(!is_array($strings) ){
-			\Notice::Set("Strings is not array.");
-			return $strings;
-		}
-
 		//	...
 		include_once('Translate.class.php');
 
 		//	...
+		$config = [];
 		$config['target']  = $to;
 		$config['source']  = $from;
 		$config['strings'] = $strings;
+		$config['apikey']  = $apikey;
 
 		//	...
 		return GOOGLE\Translate::Translation($config);
