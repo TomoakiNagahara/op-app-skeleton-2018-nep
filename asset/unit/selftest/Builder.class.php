@@ -309,13 +309,35 @@ class Builder
 				//	...
 				if(!$qu = \OP\UNIT\SQL\User::Create($config, $DB) ){
 					throw new \Exception("Failed: $qu");
-				}
+				};
 
 				//	...
 				if(!$io = $DB->Query($qu) ){
 					throw new \Exception("Failed: $qu ($io)");
-				}
+				};
+			};
 
+			//	...
+			if(!ifset($result['password']) ){
+				//	...
+				$config = [];
+				$config['host'] = $host;
+				$config['user'] = $user;
+				$config['password'] = $configs[$user]['password'];
+
+				//	...
+				if(!$qu = \OP\UNIT\SQL\User::Password($config, $DB) ){
+					throw new \Exception("Failed: $qu");
+				};
+
+				//	...
+				if(!$io = $DB->Query($qu) ){
+					throw new \Exception("Failed: $qu ($io)");
+				};
+			};
+
+			//	...
+			if(!ifset($result['privilege']) ){
 				//	...
 				$config['database']  = '*';
 				$config['table']     = '*';
@@ -324,12 +346,12 @@ class Builder
 				//	USAGE
 				if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
 					throw new \Exception("Failed: $qu");
-				}
+				};
 
 				//	...
 				if(!$io = $DB->Query($qu) ){
 					throw new \Exception("Failed: $qu ($io)");
-				}
+				};
 
 				//	...
 				foreach( $configs[$user]['privilege'] as $database => $tables ){
@@ -346,35 +368,16 @@ class Builder
 							//	...
 							if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
 								throw new \Exception("Failed: $qu");
-							}
+							};
 
 							//	...
 							if(!$io = $DB->Query($qu) ){
 								throw new \Exception("Failed: $qu ($io)");
-							}
-						}
-					}
-				}
-			}
-
-			//	...
-			if(!ifset($result['password']) ){
-				//	...
-				$config = [];
-				$config['host'] = $host;
-				$config['user'] = $user;
-				$config['password'] = $configs[$user]['password'];
-
-				//	...
-				if(!$qu = \OP\UNIT\SQL\User::Password($config, $DB) ){
-					throw new \Exception("Failed: $qu");
-				}
-
-				//	...
-				if(!$io = $DB->Query($qu) ){
-					throw new \Exception("Failed: $qu ($io)");
-				}
-			}
+							};
+						};
+					};
+				};
+			};
 
 			/**
 			 * CREATE USER 'user_name'@'localhost' IDENTIFIED WITH mysql_native_password;
