@@ -80,6 +80,9 @@ class Cookie
 	 */
 	static function Set($key, $val, $expire=null, $option=null)
 	{
+		//	For Eclipse (Undefined error)
+		$file = $line = null;
+
 		//	Failed.
 		if( headers_sent($file, $line) ){
 			Notice::Set("Header has already been sent. ($file, $line)");
