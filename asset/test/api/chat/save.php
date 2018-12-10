@@ -8,6 +8,14 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	For Eclipse (Undefined error)
+if( false ){
+	$db = $sql = null;
+};
+
+//	...
+$request = App::Request();
+
 //	...
 $nickname = $request['nickname'] ?? null;
 $comment  = $request['comment']  ?? null;

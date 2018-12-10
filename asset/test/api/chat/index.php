@@ -48,9 +48,6 @@ try {
 			$result = [];
 
 			//	...
-			$request = App::Request();
-
-			//	...
 			include("{$action}.php");
 			break;
 
