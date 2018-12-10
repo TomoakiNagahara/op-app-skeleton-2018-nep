@@ -32,6 +32,9 @@ call_user_func(function(){
 		//	Reset entry point.
 		$_SERVER['SCRIPT_NAME'] = dirname($_SERVER['SCRIPT_NAME']);
 
+		//	For Eclipse (Never used error)
+		if( false ){ var_dump($_OP); };
+
 	} catch ( Throwable $e ){
 		$file    = $e->getFile();
 		$line    = $e->getLine();
