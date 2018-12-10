@@ -10,6 +10,18 @@ if(!$google = Unit::Instantiate('Google') ){
     return;
 }
 
+//  Add common configurations.
+Env::Set('google',
+  [
+    'google'=>[
+      'oauth'=>[
+        'client_id'=>'xxxx',
+        'crient_secret'=>'xxxx'
+      ]
+    ]
+  ]
+);
+
 //  Execute OAuth.
 $user_info = $google->OAuth('http://localhost/callback_url');
 D($user_info);
@@ -23,6 +35,17 @@ if(!$google = Unit::Instantiate('Google') ){
     //  Failed.
     return;
 }
+
+//  Add common configurations.
+Env::Set('google',
+  [
+    'google'=>[
+      'translation'=>[
+        'apikey'=>'xxxx'
+      ]
+    ]
+  ]
+);
 
 //  Execute OAuth.
 $to   = 'ja';
