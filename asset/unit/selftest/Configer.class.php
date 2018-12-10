@@ -340,4 +340,9 @@ class Configer
 		}
 		return $collate;
 	}
+
+	static function Error($error)
+	{
+		\OP\UNIT\Selftest::Error($error);
+	}
 }
