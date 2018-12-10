@@ -110,6 +110,7 @@ class Unit
 
 		}catch( Throwable $e ){
 			Notice::Set($e);
+			return false;
 		}
 	}
 
