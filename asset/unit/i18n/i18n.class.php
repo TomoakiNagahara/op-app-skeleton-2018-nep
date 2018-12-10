@@ -217,4 +217,13 @@ class i18n
 		//	...
 		return $translated;
 	}
+
+	/** Selftest
+	 *
+	 */
+	function Selftest()
+	{
+		include(__DIR__.'/Selftest.class.php');
+		I18N\Selftest::Auto();
+	}
 }
