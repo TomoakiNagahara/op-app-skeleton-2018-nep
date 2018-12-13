@@ -22,7 +22,8 @@ call_user_func(function(){
 
 		//	Check mbstring installed.
 		if(!function_exists('mb_language') ){
-			include(__DIR__.'/bootstrap/php/mbstring.php');
+			$module = 'mbstring';
+			include(__DIR__.'/bootstrap/php/index.phtml');
 		}
 
 		//	Reset application root.
@@ -33,7 +34,7 @@ call_user_func(function(){
 		$_SERVER['SCRIPT_NAME'] = dirname($_SERVER['SCRIPT_NAME']);
 
 		//	For Eclipse (Never used error)
-		if( false ){ var_dump($_OP); };
+		if( false ){ var_dump($_OP, $module); };
 
 	} catch ( Throwable $e ){
 		$file    = $e->getFile();
