@@ -22,3 +22,7 @@ OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template');
 
 //	Application settings.
 App::Title('app-skeleton-2018-nep');
+
+//	Overwrite headers.
+header('Server: httpd', true);
+header('X-Powered-By: onepiece-framework', true);
