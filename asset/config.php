@@ -1,7 +1,7 @@
 <?php
 /* vim: set expandtab sw=4 ts=4 sts=4: */
 /**
- * app-skeleton-2018-nep:/config.php
+ * app-skeleton-2018-nep:/asset/config.php
  *
  * @creation  2018-03-27
  * @version   1.0
