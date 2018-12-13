@@ -179,4 +179,12 @@ class Template
 		//	...
 		return self::$_args[$i][$key] ?? null;
 	}
+
+	/** For developer.
+	 *
+	 */
+	static function Debug()
+	{
+		D(self::$_args);
+	}
 }
