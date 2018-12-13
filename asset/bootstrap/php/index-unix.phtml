@@ -1,24 +1,31 @@
 <?php
 /**
- * app-skeleton-2018-nep:/asset/bootstrap/php/mbstring-unix.phtml
-*
-* @creation  2018-11-13
-* @version   1.0
-* @package   app-skeleton
-* @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
-* @copyright Tomoaki Nagahara All right reserved.
-*/
+ * app-skeleton-2018-nep:/asset/bootstrap/php/index-unix.phtml
+ *
+ * @creation  2018-11-13
+ * @version   1.0
+ * @package   app-skeleton
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	Correspond to  Eclipse undefined error.
+if( false ){
+	$module = null;
+};
+
 //	...
 $t = explode('.', PHP_VERSION);
 $v = $t[0].$t[1];
+
 //	...
 $redhat = file_exists('/etc/redhat-release') ?? false;
 $remi   = $v > 53 ? true: false;
 $repo   = $remi ? "--enablerepo=remi-php{$v}": ' ';
+
 ?>
 <pre><code>
 <?php if( $redhat ): ?>
-sudo yum<?= $repo ?>install php-mbstring
+sudo yum<?= $repo ?>install php-<?= $module.PHP_EOL ?>
 sudo service httpd restart
 <?php endif; ?>
 </code></pre>
