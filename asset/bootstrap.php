@@ -1,6 +1,6 @@
 <?php
 /**
- * app-skeleton-2018-nep:/app.php
+ * app-skeleton-2018-nep:/asset/bootstrap.php
  *
  * @creation  2018-03-27
  * @version   1.0
@@ -25,6 +25,12 @@ call_user_func(function(){
 			$module = 'mbstring';
 			include(__DIR__.'/bootstrap/php/index.phtml');
 		}
+
+		//	Check openssl installed.
+		if(!defined('OPENSSL_VERSION_NUMBER') ){
+			$module = 'openssl';
+			include(__DIR__.'/bootstrap/php/index.phtml');
+		};
 
 		//	Reset application root.
 		global $_OP;
