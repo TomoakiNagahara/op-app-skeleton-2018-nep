@@ -29,6 +29,12 @@ class Template
 	 */
 	use \OP_CORE;
 
+	/** Stack arguments.
+	 *
+	 * @var array
+	 */
+	private static $_args = [];
+
 	/** Return real file path from meta path.
 	 *
 	 * @param  string $meta_path
@@ -140,8 +146,14 @@ class Template
 					}
 				}
 
+				//	...
+				self::$_args[] = $args;
+
 				//	Execute file. (Do output)
 				include( basename($file_path) );
+
+				//	...
+				array_pop(self::$_args);
 
 			}, $file_path, $args);
 
@@ -151,5 +163,20 @@ class Template
 		} catch ( \Throwable $e ) {
 			\Notice::Set($e);
 		}
+	}
+
+	/** Get stacked arguments.
+	 *
+	 * @param  string  $key
+	 * @param  integer $deps
+	 * @return mixed
+	 */
+	static function Args( string $key, int $deps=0)
+	{
+		//	...
+		$i = count(self::$_args) - ($deps) -1;
+
+		//	...
+		return self::$_args[$i][$key] ?? null;
 	}
 }
