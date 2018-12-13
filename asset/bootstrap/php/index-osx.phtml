@@ -1,13 +1,18 @@
 <?php
 /**
- * app-skeleton-2018-nep:/asset/bootstrap/php/mbstring-osx.phtml
-*
-* @creation  2018-11-13
-* @version   1.0
-* @package   app-skeleton
-* @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
-* @copyright Tomoaki Nagahara All right reserved.
-*/
+ * app-skeleton-2018-nep:/asset/bootstrap/php/index-osx.phtml
+ *
+ * @creation  2018-11-13
+ * @version   1.0
+ * @package   app-skeleton
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	Correspond to  Eclipse undefined error.
+if( false ){
+	$module = null;
+};
+
 //	...
 $t = explode('.', PHP_VERSION);
 $v = $t[0].$t[1];
@@ -24,11 +29,12 @@ if( preg_match('/apache/', PHP_SAPI) ){
 <p style="margin-left:1em;">
 	MacPorts
 </p>
-<pre><code>
-sudo port install php<?= $v ?>-mbstring
+<pre><code><?= null /* PHP Zend Engine will remove EOL. */ ?>
+sudo port install php<?= $v ?>-<?= $module.PHP_EOL ?>
 <?php if( $target ): ?>
 sudo port unload <?= $target.PHP_EOL ?>
 sudo port load <?= $target ?>
 <?php endif; ?>
 </code></pre>
 <?php
+exit();
