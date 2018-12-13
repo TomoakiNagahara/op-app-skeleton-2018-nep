@@ -1,6 +1,6 @@
 <?php
 /**
- * app-skeleton-2018-nep:/app.php
+ * app-skeleton-2018-nep:/asset/app.php
  *
  * @creation  2018-03-27
  * @version   1.0
