@@ -124,14 +124,12 @@ class App
 			 *  If exists "Expires" header then subtraction from "Date" header. (Will to max-age)
 			 *  If has not been set both header then search "Last-modified" header. (Do automatic calculate)
 			 */
-			/*
 			$date   = time();
 			$time   = $date + $age;
 			$date   = gmdate('D, j M Y H:i:s ', $date) . 'GMT';
 			$expire = gmdate('D, j M Y H:i:s ', $time) . 'GMT';
 			header("Date: {$date}", true);
 			header("Expires: {$expire}", true);
-			*/
 		}
 
 		//	Submit Etag header.
