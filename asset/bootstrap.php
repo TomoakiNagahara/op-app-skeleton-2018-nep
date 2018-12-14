@@ -35,6 +35,7 @@ call_user_func(function(){
 		//	Reset application root.
 		global $_OP;
 		$_OP[APP_ROOT] = dirname(__DIR__).'/';
+		$_OP[ASSET_ROOT] = __DIR__.'/';
 
 		//	Reset entry point.
 		$_SERVER['SCRIPT_NAME'] = dirname($_SERVER['SCRIPT_NAME']);
