@@ -12,7 +12,7 @@
 $dbs = [];
 
 //	...
-foreach( ['mysql','sqlite'] as $prod ){
+foreach( ['mysql','sqlite','pgsql'] as $prod ){
 	$dbs[$prod] = include("{$prod}.php");
 };
 
