@@ -39,8 +39,8 @@ define('_OP_NAME_SPACE_', 'ONEPIECE', false);
  */
 define('_OP_APP_ID_', 'APP_ID', false);
 
-/** Use to salt.
+/** Used for encryption.
  *
  * @var string
  */
-define('_OP_SALT_', 'onepiece-framework', false);
+define('_OP_SALT_', __FILE__, false);
