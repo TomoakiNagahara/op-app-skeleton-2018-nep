@@ -123,4 +123,18 @@ class Cookie
 			Notice::Set("Set cookie was failed.");
 		}
 	}
+
+	/** Unique User ID.
+	 *
+	 * @return string
+	 */
+	static function UUID()
+	{
+		//	...
+		if(!$uuid = self::Get('uuid') ){
+			$uuid = Hasha1( $_SERVER['REMOTE_ADDR'] . microtime() );
+			self::Set('uuid', $uuid);
+		}
+		return $uuid;
+	}
 }
