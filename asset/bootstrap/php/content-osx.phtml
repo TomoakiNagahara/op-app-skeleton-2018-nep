@@ -26,13 +26,15 @@ if( preg_match('/apache/', PHP_SAPI) ){
 	$target = null;
 }
 ?>
-<p style="margin-left:1em;">
-	MacPorts
-</p>
-<pre><code><?= null /* PHP Zend Engine will remove EOL. */ ?>
+<?php if(file_exists('/opt/local/var/macports/pingtimes')): ?>
+	<section>
+		<h2 style="margin-left: 0.5em;">MacPorts</h2>
+		<pre><code><?= null /* PHP Zend Engine will remove EOL. */ ?>
 sudo port install php<?= $v ?>-<?= $module.PHP_EOL ?>
 <?php if( $target ): ?>
 sudo port unload <?= $target.PHP_EOL ?>
 sudo port load <?= $target ?>
 <?php endif; ?>
-</code></pre>
+		</code></pre>
+	</section>
+<?php endif; ?>
