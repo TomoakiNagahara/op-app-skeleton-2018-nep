@@ -20,18 +20,18 @@ if( false ){
 	switch( PHP_OS ){ // PHP 7.2.0 --> PHP_OS_FAMILY
 		case 'MacOS':
 		case 'Darwin':
-			include('index-osx.phtml');
+			include('content-osx.phtml');
 			break;
 
 		case 'WIN32':
 		case 'WINNT':
-			include('index-win.phtml');
+			include('content-win.phtml');
 			break;
 
 		case 'AIX':
 		case 'Linux':
 		case 'SunOS':
-			include('index-unix.phtml');
+			include('content-unix.phtml');
 			break;
 
 		default:
