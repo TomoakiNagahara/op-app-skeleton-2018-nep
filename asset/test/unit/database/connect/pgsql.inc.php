@@ -1,8 +1,8 @@
 <?php
 /**
- * unit-test:/unit/database/mysql.php
+ * unit-test:/unit/database/pgsql.php
  *
- * @creation  2018-12-11
+ * @creation  2018-12-14
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
@@ -13,12 +13,11 @@ $db = Unit::Instantiate('Database');
 
 //	...
 $config = [
-	'prod'	 => 'mysql',
-	'host'	 => 'localhost',
-	'port'	 => '3306',
-	'user'	 => 'testcase',
-	'password' => 'password',
-	'database' => 'testcase',
+	'prod'     => 'pgsql',
+	'host'     => 'localhost',
+	'port'     => '5432',
+	'role'     => 'postgres',
+	'password' => '',
 ];
 
 //	...

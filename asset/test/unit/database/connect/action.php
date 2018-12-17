@@ -13,7 +13,7 @@ $dbs = [];
 
 //	...
 foreach( ['mysql','sqlite','pgsql'] as $prod ){
-	$dbs[$prod] = include("{$prod}.php");
+	$dbs[$prod] = include("{$prod}.inc.php");
 };
 
 //	...
