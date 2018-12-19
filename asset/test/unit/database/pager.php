@@ -9,12 +9,30 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 /* @var $db OP\UNIT\Database */
-include('connect.php');
+include('_connect.php');
 
 //	...
 if(!$db->isConnect() ){
 	return;
 }
+
+/* @var $pager \OP\UNIT\Pager */
+$pager  = Unit::Instance('Pager');
+$config = $pager->Config(['database'=>'testcase', 'table'=>'t_orm'], $db);
+
+//  Display pager.
+$pager->Display();
+
+//  Select pagenation target record.
+$record = $db->Select($config);
+
+//	...
+D( $record );
+
+//	...
+return;
+
+/*
 
 //	...
 $config = [];
@@ -46,9 +64,6 @@ $config['limit']  = $ppr;
 $config['offset'] = $offset;
 
 //	...
-D( $db->Select($config) );
-
-//	...
 print '<div class="pager">'.PHP_EOL;
 printf('<span class="page"><a href="?%s"></a></span>'.PHP_EOL, http_build_query(array_merge($_GET, ['page'=>1])) );
 for( $i=1; $i<=$max; $i++ ){
@@ -66,3 +81,5 @@ D('total record number', $count);
 D('current page',		 $page);
 D('page per record',	 $ppr);
 D('maximum page',		 $max);
+
+*/
