@@ -1,0 +1,33 @@
+<?php
+/**
+ * unit-pager:/pager.phtml
+ *
+ * @creation  2018-12-19
+ * @version   1.0
+ * @package   unit-pager
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+if( false ){
+	$max          = null;
+	$current_page = null;
+	$key_name     = null;
+};
+?>
+<nav class="OP pager">
+	<!-- Forward page -->
+	<span class="page top"><a href="?<?= http_build_query( array_merge($_GET, [$key_name=>1]) ) ?>"></a></span>
+
+	<!-- Each page number -->
+	<?php for( $i=1; $i<=$max; $i++ ): ?>
+		<?php if( $i === $current_page ): ?>
+			<span class="page"><span class="current"><?= $i ?></span></span>
+		<?php else: ?>
+			<span class="page"><a href="?<?= http_build_query( array_merge($_GET, [$key_name=>$i])) ?>"><?= $i ?></a></span>
+		<?php endif; ?>
+	<?php endfor; ?>
+
+	<!-- Backward page -->
+	<span class="page last"><a href="?<?= http_build_query( array_merge($_GET, [$key_name=>$max]) ) ?>"></a></span>
+</nav>

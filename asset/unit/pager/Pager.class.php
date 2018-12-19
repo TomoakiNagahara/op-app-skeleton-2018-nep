@@ -67,15 +67,15 @@ class pager
 		//	Count total record number.
 		$this->_config['count'] = $db->Count($this->_config, 'count');
 
-		//	Get method variable name.
-		$this->_config['label'] = $config['label'] ?? 'page';
+		//	Get URL-Query key name.
+		$this->_config['url-query-key-name'] = $config['url-query-key-name'] ?? 'page';
 
 		//	Get current page.
-		$this->_config['page']  = (int)($config['page']  ?? $_GET[$this->_config['label']] ?? 1);
+		$this->_config['current-page-number']  = (int)($config['current-page-number']  ?? $_GET[$this->_config['url-query-key-name']] ?? 1);
 
 		//	Paging conditions.
-		$this->_config['limit']  = $config['limit'] ?? 10; // Page per record.
-		$this->_config['offset'] = $config['offset'] ?? (((int)$this->_config['page']) -1) * $this->_config['limit'];
+		$this->_config['limit']  = $config['limit']  ?? 10; // Page per record.
+		$this->_config['offset'] = $config['offset'] ?? (((int)$this->_config['current-page-number']) -1) * $this->_config['limit'];
 
 		//	...
 		if( $this->_config['limit'] > 100 ){
@@ -88,7 +88,7 @@ class pager
 		}
 
 		//	Return SQL config. (Remove pagination config)
-		return array_diff_key( $this->_config, ['label'=>null, 'page'=>null] );
+		return array_diff_key( $this->_config, ['url-query-key-name'=>null, 'current-page-number'=>null] );
 	}
 
 	/** Do display.
@@ -102,19 +102,17 @@ class pager
 		$max = (int)ceil($this->_config['count'] / $this->_config['limit']);
 
 		//	...
-		$current_page = ($this->_config['page'] > $max) ? $max: $this->_config['page'];
+		$current_page = ($this->_config['current-page-number'] > $max) ? $max: $this->_config['current-page-number'];
 
 		//	...
-		printf('<nav class="OP pager">'.PHP_EOL);
-		printf('<span class="page top"><a href="?%s"></a></span>'.PHP_EOL, http_build_query( array_merge($_GET, ['page'=>1]) ));
-		for($i=1;$i<=$max;$i++){
-			if( $i === $current_page ){
-				printf('<span class="page"><span class="current">%s</span></span>'.PHP_EOL, $i);
-			}else{
-				printf('<span class="page"><a href="?%s">%s</a></span>'.PHP_EOL, http_build_query( array_merge($_GET, ['page'=>$i])), $i);
-			}
-		}
-		printf('<span class="page last"><a href="?%s"></a></span>'.PHP_EOL, http_build_query( array_merge($_GET, ['page'=>$max]) ));
-		printf('</nav>'.PHP_EOL);
+		$key_name = $this->_config['url-query-key-name'];
+
+		//	...
+		include(__DIR__.'/pager.phtml');
+
+		//	...
+		if( false ){
+			var_dump($current_page, $key_name);
+		};
 	}
 }
