@@ -1,0 +1,83 @@
+<?php
+/**
+ * unit-pager:/pager.phtml
+ *
+ * @creation  2018-12-19
+ * @version   1.0
+ * @package   unit-pager
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+if( false ){
+	$total_pages  = null;
+	$current_page = null;
+	$option       = null;
+
+};
+
+//	...
+$wings = $option['wings'];
+
+//	...
+$is_omit = ($total_pages < ($wings * 2) +1) ? false: true;
+
+//	...
+$st = $current_page - $wings;
+$en = $current_page + $wings +1;
+
+//	...
+if( $st < 2 ){
+	$st = 2;
+};
+
+//	...
+if( $en >= $total_pages ){
+	$en  = $total_pages -1;
+};
+
+//	...
+D("st=$st, en=$en, total=$total_pages, omit=$is_omit");
+?>
+<nav class="OP pager">
+	<?php
+	//	Forward mark.
+	if( $current_page !== 1 ){
+		$i = 'forward';
+		include(__DIR__.'/pager-num.phtml');
+	};
+
+	//	Got to first page.
+	$i = 1;
+	include(__DIR__.'/pager-num.phtml');
+
+	//	To omit mark.
+	if( $is_omit and $st > 2 ){
+		$i  = 'omit';
+		include(__DIR__.'/pager-num.phtml');
+	};
+
+	//	Each pages.
+	if( $total_pages > 1 ){
+		for( $i=$st; $i<=$en; $i++ ){
+			include(__DIR__.'/pager-num.phtml');
+		};
+	};
+
+	//	To omit mark.
+	if( $is_omit and $en < $total_pages -1 ){
+		$i = 'omit';
+		include(__DIR__.'/pager-num.phtml');
+	};
+
+	//	Go to last page.
+	$i = $total_pages;
+	include(__DIR__.'/pager-num.phtml');
+
+	//	Backward mark.
+	if( $current_page !== $total_pages ){
+		$i = 'backward';
+		include(__DIR__.'/pager-num.phtml');
+	};
+	?>
+</nav>
