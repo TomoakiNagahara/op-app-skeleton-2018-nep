@@ -8,9 +8,6 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-//	Disable layout.
-App::Layout(false);
-
 //	Get route table.
 $args = App::Args();
 
@@ -28,9 +25,6 @@ switch( $ext ){
 	case 'css':
 		//	Generate MIME.
 		$mime = 'text/' . ($ext === 'js' ? 'javascript': $ext);
-
-		//	Change MIME.
-		Env::Mime($mime);
 
 		//	...
 		$app_path    = "./{$ext}/action.php";
@@ -54,6 +48,12 @@ switch( $ext ){
 if(!Unit::Load('webpack') ){
 	return;
 }
+
+//	Change MIME.
+Env::Mime($mime);
+
+//	Disable layout.
+App::Layout(false);
 
 //	Add to head of list.
 OP\UNIT\WebPack::Set($ext, $list, true);
