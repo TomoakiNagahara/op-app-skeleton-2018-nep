@@ -14,6 +14,56 @@ app-skeleton-2018-nep
  We this mechanism so call "NEW WORLD"!!
  That's so not "OLD WORLD"...
 
+### Admin settings
+
+ 1. Localhost.
+ 1. IP-Address.
+ 1. EMail sending.
+
+### Good error handling
+
+ 1. Forcibly catch all errors.
+ 1. Errors are output for easy to readable.
+ 1. If end user are not admin, not display error message and send e-mail.
+ 1. These functions are realized by Notice::Set().
+
+### Notice::Set()
+
+```
+Notice::Set('Error message.');
+```
+
+### Very secure
+
+ 1. XSS will not occur.
+ 1. SQL injection will not occur.
+
+### Cookie
+
+ 1. All keys and values are encrypted.
+ 1. Separated for each application.
+
+### Session
+
+ 1. Separated for each application.
+
+### Form
+
+ 1. Usage is flexible and intuitive.
+ 1. XSS will not occur even if the transmitted value is directly substitution.
+ 1. ORM is attached. Also, this is separate from ORM.
+
+### Database
+
+ 1. Usage is flexible and intuitive.
+ 1. SQL injection will not occur even if the transmitted value is directly substitution.
+ 1. ORM is attached. Also, this is separate from ORM.
+
+### ORM
+
+ 1. Usage is flexible and intuitive.
+ 1. XSS and SQL injection will not occur even if the transmitted value is directly substitution.
+
 ### HTML pass through
 
  HTML pass through is directly output html file.
