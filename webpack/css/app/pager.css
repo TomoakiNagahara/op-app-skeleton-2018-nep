@@ -23,19 +23,48 @@ body.body .OP.pager span.page span.current {
 	padding: 0.1em 0.2em;
 }
 
-body.body .OP.pager span.page span.current {
-	border: 1px solid #c0c0c0;
-	background-color: #f0f0f0;
-}
-
+/** Forward button.
+ *
+ */
 body.body .OP.pager span.forward:before {
 	content:"<";
 }
 
+/** Backward button.
+ *
+ */
 body.body .OP.pager span.backward:after {
 	content:">";
 }
 
+/** Omit mark.
+ *
+ */
 body.body .OP.pager span.omit:after {
 	content:"…";
+}
+
+/** Clickable page number block.
+ *
+ */
+body.body .OP.pager span.page span.number {
+	border: 1px solid #d0d0d0;
+	padding: 0.25em 0;
+	width: 2em;
+	display: inline-block;
+}
+
+/** A tag
+ *
+ */
+body.body .OP.pager a {
+	text-decoration: none;
+}
+
+/** Current page.
+ *
+ */
+body.body .OP.pager span.page span.current {
+	border: 1px solid #c0c0c0;
+	background-color: #f0f0f0;
 }
