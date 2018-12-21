@@ -28,10 +28,14 @@ body.body .OP.pager span.page span.current {
 	background-color: #f0f0f0;
 }
 
-body.body .OP.pager span.top a:before {
-	content:"<<";
+body.body .OP.pager span.forward:before {
+	content:"<";
 }
 
-body.body .OP.pager span.last a:after {
-	content:">>";
+body.body .OP.pager span.backward:after {
+	content:">";
+}
+
+body.body .OP.pager span.omit:after {
+	content:"…";
 }
