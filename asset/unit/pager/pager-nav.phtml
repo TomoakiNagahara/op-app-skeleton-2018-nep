@@ -17,27 +17,36 @@ if( false ){
 };
 
 //	...
-$wings = $option['wings'];
+$arm   = $option['wings'];
+$gibbon = ($arm * 2) +1;
 
 //	...
-$is_omit = ($total_pages < ($wings * 2) +1) ? false: true;
+$st = $current_page - $arm;
+$en = $current_page + $arm;
 
 //	...
-$st = $current_page - $wings;
-$en = $current_page + $wings +1;
+D("st=$st, en=$en, current_page=$current_page, total=$total_pages, gibbon=$gibbon, arm=$arm");
 
 //	...
 if( $st < 2 ){
 	$st = 2;
+	$en = $st + ($arm * 2);
+	if( $en >= $total_pages ){
+		$en  = $total_pages -1;
+	};
 };
 
 //	...
 if( $en >= $total_pages ){
 	$en  = $total_pages -1;
+	$st  = $en - ($arm * 2);
+	if( $st < 2 ){
+		$st = 2;
+	};
 };
 
 //	...
-D("st=$st, en=$en, total=$total_pages, omit=$is_omit");
+D("st=$st, en=$en");
 ?>
 <nav class="OP pager">
 	<?php
@@ -52,8 +61,8 @@ D("st=$st, en=$en, total=$total_pages, omit=$is_omit");
 	include(__DIR__.'/pager-num.phtml');
 
 	//	To omit mark.
-	if( $is_omit and $st > 2 ){
-		$i  = 'omit';
+	if( $st > 2 and $current_page > 2 ){
+		$i = 'omit';
 		include(__DIR__.'/pager-num.phtml');
 	};
 
@@ -65,7 +74,7 @@ D("st=$st, en=$en, total=$total_pages, omit=$is_omit");
 	};
 
 	//	To omit mark.
-	if( $is_omit and $en < $total_pages -1 ){
+	if( $current_page < $en and $en < $total_pages -1 ){
 		$i = 'omit';
 		include(__DIR__.'/pager-num.phtml');
 	};
