@@ -11,13 +11,14 @@ $db->Connect( Env::Get('database') );
 //  Generate pager unit.
 $pager  = Unit::Instance('Pager');
 $select = $pager->Config([
-  'database'=>$database,
-  'table'   =>$table,
+  'database'=> $database,
+  'table'   => $table,
   /*
   'where'   => ['deleted'=>null],
   'order'   => 'timestamp desc, id asc',
   'limit'   => 10,
-  'offset'  => 0,
+  'offset'  =>  0,
+  'wings'   =>  2,
   'url-query-key-name'  => 'page',
   'current-page-number' => 1,
   */

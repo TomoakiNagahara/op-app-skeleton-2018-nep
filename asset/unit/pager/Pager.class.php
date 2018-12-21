@@ -53,6 +53,8 @@ class pager
 		$this->_config['table'] = $config['table'] ?? null;
 		$this->_config['where'] = $config['where'] ?? null;
 		$this->_config['order'] = $config['order'] ?? null;
+		$this->_config['option'] = [];
+		$this->_config['option']['wings'] = $config['wings'] ?? 2;
 
 		//	If empty where case is generate where condition.
 		if(!$this->_config['where'] ){
@@ -64,18 +66,28 @@ class pager
 			}
 		}
 
-		//	Count total record number.
-		$this->_config['count'] = $db->Count($this->_config, 'count');
-
-		//	Get URL-Query key name.
+		//	URL-Query key name.
 		$this->_config['url-query-key-name'] = $config['url-query-key-name'] ?? 'page';
 
-		//	Get current page.
-		$this->_config['current-page-number']  = (int)($config['current-page-number']  ?? $_GET[$this->_config['url-query-key-name']] ?? 1);
+		//	Current page.
+		$this->_config['current-page']  = (int)($config['current-page']  ?? $_GET[$this->_config['url-query-key-name']] ?? 1);
 
-		//	Paging conditions.
-		$this->_config['limit']  = $config['limit']  ?? 10; // Page per record.
-		$this->_config['offset'] = $config['offset'] ?? (((int)$this->_config['current-page-number']) -1) * $this->_config['limit'];
+		//	Total record.
+		$this->_config['count'] = $db->Count($this->_config, 'count');
+
+		//	Page per record.
+		$this->_config['limit'] = $config['limit']  ?? 10;
+
+		//	Total pages.
+		$this->_config['total-pages'] = (int)ceil( $this->_config['count'] / $this->_config['limit'] );
+
+		//	Adjustment.
+		if( $this->_config['current-page'] > $this->_config['total-pages'] ){
+			$this->_config['current-page'] = $this->_config['total-pages'];
+		};
+
+		//	Start record positoin.
+		$this->_config['offset'] = $config['offset'] ?? (((int)$this->_config['current-page']) -1) * $this->_config['limit'];
 
 		//	...
 		if( $this->_config['limit'] > 100 ){
@@ -88,7 +100,7 @@ class pager
 		}
 
 		//	Return SQL config. (Remove pagination config)
-		return array_diff_key( $this->_config, ['url-query-key-name'=>null, 'current-page-number'=>null] );
+		return array_diff_key( $this->_config, ['url-query-key-name'=>null, 'current-page'=>null] );
 	}
 
 	/** Do display.
@@ -99,20 +111,31 @@ class pager
 	function Display()
 	{
 		//	...
-		$max = (int)ceil($this->_config['count'] / $this->_config['limit']);
+		$total_pages = $this->_config['total-pages'];
 
 		//	...
-		$current_page = ($this->_config['current-page-number'] > $max) ? $max: $this->_config['current-page-number'];
+		$current_page = $this->_config['current-page'];
 
 		//	...
 		$key_name = $this->_config['url-query-key-name'];
 
 		//	...
-		include(__DIR__.'/pager.phtml');
+		$option = $this->_config['option'];
+
+		//	...
+		include(__DIR__.'/pager-nav.phtml');
 
 		//	...
 		if( false ){
-			var_dump($current_page, $key_name);
+			var_dump($total_pages, $current_page, $key_name, $option);
 		};
+	}
+
+	/** For developer
+	 *
+	 */
+	function Debug()
+	{
+		D($this->_config);
 	}
 }

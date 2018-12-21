@@ -1,0 +1,52 @@
+<?php
+/**
+ * unit-pager:/pager-num.phtml
+ *
+ * @creation  2018-12-19
+ * @version   1.0
+ * @package   unit-pager
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+if( false ){
+	$current_page = null;
+	$key_name     = null;
+	$i            = null;
+};
+
+//	...
+$href    = null;
+$classes = [];
+
+//	...
+switch( $i ){
+	case ($i === $current_page):
+		$href = null;
+		$classes[] = 'current';
+		break;
+
+	case 'forward':
+	case 'backward':
+		$href = http_build_query( array_merge($_GET, [
+			$key_name => ($i==='forward') ? $current_page-1: $current_page+1,
+		]));
+	//	break;
+
+	case 'omit':
+		$classes[] = $i;
+		$i = null;
+		break;
+
+	default:
+		$href = http_build_query( array_merge($_GET, [$key_name=>$i]));
+};
+
+//	...
+$class = join(' ', $classes);
+?>
+<span class="page">
+	<?php if( $href ): ?><a href="?<?= $href ?>"><?php endif; ?>
+	<span class="<?= $class ?>"><?= $i ?></span>
+	<?php if( $href ): ?></a><?php endif; ?>
+</span>
