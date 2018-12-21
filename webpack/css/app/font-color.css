@@ -14,9 +14,9 @@ body.body .success {
 }
 
 body.body .red,
-body.body fail,
-body.body failed,
-body.body failure,
+body.body .fail,
+body.body .failed,
+body.body .failure,
 body.body .error {
 	color: red;
 }
