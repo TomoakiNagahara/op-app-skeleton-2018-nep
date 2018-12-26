@@ -50,7 +50,7 @@ D("st=$st, en=$en");
 ?>
 <nav class="OP pager">
 	<?php
-	//	Forward mark.
+	//	Got to forward page.
 	if( $current_page !== 1 ){
 		$i = 'forward';
 		include(__DIR__.'/pager-num.phtml');
@@ -62,7 +62,7 @@ D("st=$st, en=$en");
 
 	//	To omit mark.
 	if( $st > 2 and $current_page > 2 ){
-		$i = 'omit';
+		$i = ($st === 3) ? 2: 'omit';
 		include(__DIR__.'/pager-num.phtml');
 	};
 
@@ -75,7 +75,7 @@ D("st=$st, en=$en");
 
 	//	To omit mark.
 	if( $current_page < $en and $en < $total_pages -1 ){
-		$i = 'omit';
+		$i = ($en === $total_pages-2) ? $total_pages-1:'omit';
 		include(__DIR__.'/pager-num.phtml');
 	};
 
@@ -83,7 +83,7 @@ D("st=$st, en=$en");
 	$i = $total_pages;
 	include(__DIR__.'/pager-num.phtml');
 
-	//	Backward mark.
+	//	Go to backward page.
 	if( $current_page !== $total_pages ){
 		$i = 'backward';
 		include(__DIR__.'/pager-num.phtml');
