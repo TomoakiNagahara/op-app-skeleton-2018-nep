@@ -17,7 +17,7 @@ if( false ){
 };
 
 //	...
-$arm         = ($option['wings'] ?? 1) +1;
+$arm         = $option['wings'] ?? 2;
 $gibbon      = ($arm * 2) +1;
 $page_number = null;
 
@@ -61,22 +61,26 @@ if( $en >= $total_pages ){
 
 	//	To omit mark.
 	if( $st > 2 and $current_page > 2 ){
-	//	$page_number = ($st === 3) ? 2: 'omit';
-		$kind = 'omit';
+		if( $st === 3 ){
+			$page_number = 2;
+		}else{
+			$kind = 'omit';
+		}
 		include(__DIR__.'/pager-num.phtml');
 	};
 
 	//	Each pages.
-//	if( $total_pages /* > 1 */ ){
-		for( $page_number=$st; $page_number<=$en; $page_number++ ){
-			include(__DIR__.'/pager-num.phtml');
-		};
-//	};
+	for( $page_number=$st; $page_number<=$en; $page_number++ ){
+		include(__DIR__.'/pager-num.phtml');
+	};
 
 	//	To omit mark.
 	if( $current_page < $en and $en < $total_pages -1 ){
-	//	$page_number = ($en === $total_pages-2) ? $total_pages-1:'omit';
-		$kind = 'omit';
+		if( $en === $total_pages -2 ){
+			$page_number = $total_pages -1;
+		}else{
+			$kind = 'omit';
+		};
 		include(__DIR__.'/pager-num.phtml');
 	};
 
