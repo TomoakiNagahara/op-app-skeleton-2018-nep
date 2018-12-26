@@ -11,42 +11,76 @@
 //	...
 if( false ){
 	$current_page = null;
+	$total_pages  = null;
+	$page_number  = null;
 	$key_name     = null;
-	$i            = null;
+	$kind         = null;
+	$classes      = null;
 };
 
 //	...
-$href    = null;
-$classes = [];
+$href        = true;
+$view_number = $page_number;
 
 //	...
-switch( $i ){
-	case ($i === $current_page):
-		$href = null;
-		$classes[] = 'current';
-		break;
+if( $kind === null and $page_number === $current_page){
+	$kind = 'current';
+};
 
-	case 'forward':
-	case 'backward':
-		$href = http_build_query( array_merge($_GET, [
-			$key_name => ($i==='forward') ? $current_page-1: $current_page+1,
-		]));
-	//	break;
+//	...
+if( $kind ){
+	//	...
+	$classes[]   = $kind;
+	$view_number = false;
 
-	case 'omit':
-		$classes[] = $i;
-		$i = null;
-		break;
+	//	...
+	switch( $kind ){
+		case 'current':
+			$href = false;
+			$view_number = $page_number;
+			break;
 
-	default:
-		$href = http_build_query( array_merge($_GET, [$key_name=>$i]));
+		case 'omit':
+			break;
+
+		case 'forward':
+			if( $current_page > 1 ){
+				$page_number = $current_page - 1;
+			}else{
+				$href = false;
+			}
+			break;
+
+		case 'backward':
+			if( $current_page < $total_pages ){
+				$page_number = $current_page + 1;
+			}else{
+				$href = false;
+			};
+			break;
+
+		default:
+			\Notice::Set("Has not been support this kind. ($kind)");
+	};
+};
+
+//	...
+if( $href ){
+	$classes[] = 'page-number-'.$page_number;
+	$href = http_build_query( array_merge($_GET, [$key_name=>$page_number]));
 };
 
 //	...
 $class = join(' ', $classes);
+
+//	...
+$kind    = null;
+$classes = [];
 ?>
 <span class="page">
 	<?php if( $href ): ?><a href="?<?= $href ?>"><?php endif; ?>
-	<span class="number <?= $class ?>"><?= $i ?></span>
+	<span class="number <?= $class ?>">
+		<?php if( $view_number ){ echo $view_number; } ?>
+	</span>
 	<?php if( $href ): ?></a><?php endif; ?>
 </span>

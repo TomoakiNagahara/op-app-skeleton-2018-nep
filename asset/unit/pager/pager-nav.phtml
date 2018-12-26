@@ -13,19 +13,17 @@ if( false ){
 	$total_pages  = null;
 	$current_page = null;
 	$option       = null;
-
+	$kind         = null;
 };
 
 //	...
-$arm   = $option['wings'];
-$gibbon = ($arm * 2) +1;
+$arm         = $option['wings'];
+$gibbon      = ($arm * 2) +1;
+$page_number = null;
 
 //	...
 $st = $current_page - $arm;
 $en = $current_page + $arm;
-
-//	...
-D("st=$st, en=$en, current_page=$current_page, total=$total_pages, gibbon=$gibbon, arm=$arm");
 
 //	...
 if( $st < 2 ){
@@ -44,49 +42,48 @@ if( $en >= $total_pages ){
 		$st = 2;
 	};
 };
-
-//	...
-D("st=$st, en=$en");
 ?>
 <nav class="OP pager">
 	<?php
 	//	Got to forward page.
-	if( $current_page !== 1 ){
-		$i = 'forward';
-		include(__DIR__.'/pager-num.phtml');
-	};
+	$kind = 'forward';
+	include(__DIR__.'/pager-num.phtml');
 
 	//	Got to first page.
-	$i = 1;
+	$page_number = 1;
 	include(__DIR__.'/pager-num.phtml');
 
 	//	To omit mark.
 	if( $st > 2 and $current_page > 2 ){
-		$i = ($st === 3) ? 2: 'omit';
+	//	$page_number = ($st === 3) ? 2: 'omit';
+		$kind = 'omit';
 		include(__DIR__.'/pager-num.phtml');
 	};
 
 	//	Each pages.
 	if( $total_pages > 1 ){
-		for( $i=$st; $i<=$en; $i++ ){
+		for( $page_number=$st; $page_number<=$en; $page_number++ ){
 			include(__DIR__.'/pager-num.phtml');
 		};
 	};
 
 	//	To omit mark.
 	if( $current_page < $en and $en < $total_pages -1 ){
-		$i = ($en === $total_pages-2) ? $total_pages-1:'omit';
+	//	$page_number = ($en === $total_pages-2) ? $total_pages-1:'omit';
+		$kind = 'omit';
 		include(__DIR__.'/pager-num.phtml');
 	};
 
 	//	Go to last page.
-	$i = $total_pages;
+	$page_number = $total_pages;
 	include(__DIR__.'/pager-num.phtml');
 
 	//	Go to backward page.
-	if( $current_page !== $total_pages ){
-		$i = 'backward';
-		include(__DIR__.'/pager-num.phtml');
-	};
+	$kind = 'backward';
+	include(__DIR__.'/pager-num.phtml');
 	?>
 </nav>
+<?php
+if( 1 ){
+	D("st=$st, en=$en, current_page=$current_page, total=$total_pages, gibbon=$gibbon, arm=$arm, kind=$kind, page_number=$page_number");
+};
