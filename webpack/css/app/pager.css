@@ -19,8 +19,8 @@ body.body .OP.pager span.page {
 
 body.body .OP.pager span.page a,
 body.body .OP.pager span.page span.current {
-	margin:  0;
-	padding: 0.1em 0.2em;
+	_margin:  0;
+	_padding: 0.1em 0.2em;
 }
 
 /** Forward button.
