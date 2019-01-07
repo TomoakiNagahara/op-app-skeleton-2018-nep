@@ -73,7 +73,10 @@ if( $en >= $total_pages ){
 	};
 
 	//	Each pages.
-	for( $page_number=$st; $page_number<=$en; $page_number++ ){
+	for( $i=$st; $i<=$en; $i++ ){
+		//	Did separate page number from loop count.
+		$page_number = $i;
+
 		//	...
 		include(__DIR__.'/pager-num.phtml');
 	};
