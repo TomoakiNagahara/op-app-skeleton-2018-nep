@@ -17,7 +17,7 @@ if( false ){
 };
 
 //	...
-$arm         = ($option['wings'] ?? 1);
+$arm         = empty($option['wings']) ? 1: (int)$option['wings'];
 $gibbon      = ($arm * 2) +1;
 $page_number = null;
 
@@ -51,7 +51,7 @@ if( $en >= $total_pages ){
 ?>
 <nav class="OP pager">
 	<?php
-	//	Got to forward page.
+	//	Got to previous page
 	$kind = 'forward';
 	include(__DIR__.'/pager-num.phtml');
 
@@ -100,7 +100,7 @@ if( $en >= $total_pages ){
 		include(__DIR__.'/pager-num.phtml');
 	};
 
-	//	Go to backward page.
+	//	Go to next page.
 	$kind = 'backward';
 	include(__DIR__.'/pager-num.phtml');
 	?>
