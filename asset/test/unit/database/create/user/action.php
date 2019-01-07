@@ -9,6 +9,38 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-foreach( [] as $prod ){
-	include("{$prod}.inc.php");
+$result = [];
+
+//	...
+$dbs = include(ConvertPath('asset:/test/unit/database/connect/action.php'));
+
+//	...
+$config = [
+	'host'     => 'localhost',
+	'user'     => 'testcase',
+	'password' => 'password',
+];
+
+//	...
+foreach( ['mysql'] as $prod ){
+	/* @var $db \OP\UNIT\Database */
+	$db = $dbs[$prod];
+
+	//	...
+	$show = $db->Show(['user'=>true]);
+
+	//	...
+	$host = $config['host'];
+	$user = $config['user'];
+
+	//	...
+	if( $show[$host][$user] ?? true ){
+		$result[$prod] = $db->Drop()->User($config);
+	};
+
+	//	...
+	$result[$prod] = $db->Create()->User($config);
 };
+
+//	...
+D($result);
