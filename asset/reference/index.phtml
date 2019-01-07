@@ -12,7 +12,7 @@
 include('menu.phtml');
 
 //	...
-$src = Env::isLocalhost() ? ConvertURL('app:/vendor/marked.min.js'):'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+$src = Env::isLocalhost() ? ConvertURL('app:/vendor/marked/min.js'):'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
 ?>
 <div id="reference" class="markdown">Pleasd wait...</div>
 <script src="<?= $src ?>"></script>
