@@ -25,20 +25,20 @@ if(!session_id()){
 	}
 }
 
-/** Include custome functions.
+/** Include Error hendler.
  *
  */
-include_once(__DIR__.'/Functions.php');
+include_once(__DIR__.'/Error.php');
 
 /** Include defines.
  *
  */
 include_once(__DIR__.'/Defines.php');
 
-/** Include Error hendler.
+/** Include custome functions.
  *
  */
-include_once(__DIR__.'/Error.php');
+include_once(__DIR__.'/Functions.php');
 
 /** Include OP CORE.
  *
