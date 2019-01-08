@@ -14,7 +14,7 @@ $nav->Set('Debug (ON)' , ['debug'=>1]);
 $nav->Set('Debug (OFF)', ['debug'=>0]);
 $nav->Out();
 
-/* @var $db \OP\UNIT\Dataase */
+/* @var $db \OP\UNIT\Database */
 include('connect.php');
 
 /* @var $orm \OP\UNIT\ORM */
