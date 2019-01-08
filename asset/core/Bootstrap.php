@@ -51,18 +51,26 @@ include_once(__DIR__.'/OP_CORE.trait.php');
 $_SERVER['PHP_SELF_XSS'] = _EscapeString($_SERVER['PHP_SELF'], 'utf-8');
 $_SERVER['PHP_SELF'] = $_SERVER['SCRIPT_NAME'];
 
-/** OP_ROOT, APP_ROOT
+/** Calculate each root path.
  *
  */
-global $_OP;
-$_OP[OP_ROOT]  = __DIR__.'/';
-$_OP[APP_ROOT] = dirname($_SERVER['SCRIPT_FILENAME']).'/';
-$_OP[DOC_ROOT] = rtrim($_SERVER['DOCUMENT_ROOT'], '/').'/';
+(function(){
+	//	Call global variable.
+	global $_OP;
 
-/** For Eclipse (Never used error)
- *
- */
-if( false ){ var_dump($_OP); };
+	//	Decide the order.
+	$_OP = [
+	     OP_ROOT => null,
+	  ASSET_ROOT => null,
+	    APP_ROOT => null,
+	    DOC_ROOT => null,
+	];
+
+	//	Calculate each root path.
+	$_OP[ASSET_ROOT] = dirname($_SERVER['SCRIPT_FILENAME']).'/';
+	$_OP[   OP_ROOT] = $_OP[ASSET_ROOT].'core/';
+	$_OP[  DOC_ROOT] = rtrim($_SERVER['DOCUMENT_ROOT'], '/').'/';
+})();
 
 /** Register autoloader.
  *
