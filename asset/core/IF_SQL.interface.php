@@ -19,35 +19,40 @@
  */
 interface IF_SQL
 {
-	/** Generate INSERT SQL.
+	/** IF_DATABASE
 	 *
-	 * @addition 2018-04-20
-	 * @param	 array		 $config
-	 * @param	\IF_DATABASE $_DB
+	 * @var \IF_DATABASE
 	 */
-	public function Insert($config, $_DB);
+	private $_DB;
 
-	/** Generate SELECT SQL.
+	/** Construct.
 	 *
-	 * @addition 2018-04-20
-	 * @param	 array		 $config
+	 * @creation 2019-01-08
 	 * @param	\IF_DATABASE $_DB
 	 */
-	public function Select($config, $_DB);
+	public function __construct(\IF_DATABASE $_DB);
 
-	/** Generate UPDATE SQL.
+	/** Data Definition Language.
 	 *
-	 * @addition 2018-04-20
+	 * @creation 2019-01-08
 	 * @param	 array		 $config
-	 * @param	\IF_DATABASE $_DB
+	 * @return	\IF_SQL_DDL	 $_DDL
 	 */
-	public function Update($config, $_DB);
+	public function DDL($config);
 
-	/** Generate DELETE SQL.
+	/** Data Manipulation Language.
 	 *
-	 * @addition 2018-04-20
+	 * @creation 2019-01-08
 	 * @param	 array		 $config
-	 * @param	\IF_DATABASE $_DB
+	 * @return	\IF_SQL_DML	 $_DML
 	 */
-	public function Delete($config, $_DB);
+	public function DML($config);
+
+	/** Data Control Language
+	 *
+	 * @creation 2019-01-08
+	 * @param	 array		 $config
+	 * @return	\IF_SQL_DCL	 $_DCL
+	 */
+	public function DCL($config);
 }
