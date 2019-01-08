@@ -32,16 +32,15 @@ call_user_func(function(){
 			include(__DIR__.'/bootstrap/php/index.phtml');
 		};
 
-		//	Reset application root.
+		//	Set application root.
 		global $_OP;
-		$_OP[APP_ROOT] = dirname(__DIR__).'/';
-		$_OP[ASSET_ROOT] = __DIR__.'/';
+		$_OP[APP_ROOT] = dirname($_OP[ASSET_ROOT]).'/';
 
 		//	Reset entry point.
 		$_SERVER['SCRIPT_NAME'] = dirname($_SERVER['SCRIPT_NAME']);
 
 		//	For Eclipse (Never used error)
-		if( false ){ var_dump($_OP, $module); };
+		if( false ){ var_dump($module); };
 
 	} catch ( Throwable $e ){
 		$file    = $e->getFile();
