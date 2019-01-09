@@ -39,12 +39,17 @@ class Show
 	static function Get($records, $query)
 	{
 		//	...
-		$column = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
-		$index  = strpos($query, 'SHOW INDEX FROM')        === 0 ? true: false;
-		$user   = strpos($query, 'SELECT ')                === 0 ? true: false;
+		$database = strpos($query, 'SHOW DATABASES')         === 0 ? true: false;
+		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
+		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
+		$index    = strpos($query, 'SHOW INDEX FROM')        === 0 ? true: false;
+		$user     = strpos($query, 'SELECT ')                === 0 ? true: false;
 
 		//	...
-		if( $column ){
+		if( $database ){
+			//	...
+			return self::_Database($records);
+		}else if( $column ){
 			//	...
 			return self::_Column($records);
 		}else if( $index ){
@@ -57,6 +62,25 @@ class Show
 			//	...
 			return $records;
 		}
+	}
+
+	/** Database
+	 *
+	 * @param  array $records
+	 * @return array $result
+	 */
+	static private function _Database($records)
+	{
+		//	...
+		$result = [];
+
+		//	...
+		foreach( $records as $record ){
+			$result[] = $record['Database'];
+		};
+
+		//	...
+		return $result;
 	}
 
 	/** Column
