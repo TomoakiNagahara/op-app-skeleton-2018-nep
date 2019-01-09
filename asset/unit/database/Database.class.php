@@ -124,80 +124,37 @@ class Database implements \IF_DATABASE
 
 	/** Connect database server.
 	 *
-	 * <pre>
-	 * //  Configuration.
-	 * $config = [];
-	 * $conifg['prod']     = 'mysql';
-	 * $conifg['host']     = 'localhost';
-	 * $conifg['port']     = '3306';
-	 * $conifg['user']     = 'username';
-	 * $conifg['password'] = 'password';
-	 * $conifg['charset']  = 'utf8';
-	 *
-	 * //	Execute.
-	 * $io = $db->Connect($config);
-	 * </pre>
-	 *
 	 * @param	 array		 $config
 	 * @return	 boolean	 $io
 	 */
 	function Connect($config)
 	{
 		//	...
-		if( empty($config['prod']) ){
-			//	...
-			if( isset($config['driver']) ){
-				$config['prod'] = $config['driver'];
-			}
-			//	...
-			if( isset($config['scheme']) ){
-				$config['prod'] = $config['scheme'];
-			}
-		}
+		$config['prod'] = strtolower($config['prod']);
 
 		//	...
-		if( empty($config['password']) and isset($config['pass']) ){
-			$config['password'] = $config['pass'];
-		}
+		switch( $prod = $config['prod'] ){
+			case 'mysql':
+				include(__DIR__.'/SQL_MY.class.php');
+				$this->_config = DATABASE\MYSQL::Config($config);
+				$this->_PDO    = DATABASE\MYSQL::Connect($config);
+				break;
 
-		//	...
-		if( empty($config['charset']) ){
-			$config['charset'] = 'utf8';
-		}
+			case 'pgsql':
+				include(__DIR__.'/SQL_PG.class.php');
+				$this->_config = DATABASE\PGSQL::Config($config);
+				$this->_PDO    = DATABASE\PGSQL::Connect($config);
+				break;
 
-		//	...
-		$prod = $host = $user = $password = $database = null;
-		foreach( ['prod','host','port','user','password','database','charset'] as $key ){
-			$this->_config[$key] = ${$key} = ifset($config[$key]);
-		}
+			case 'sqlite':
+				include(__DIR__.'/SQL_LITE.class.php');
+				$this->_config = DATABASE\SQLITE::Config($config);
+				$this->_PDO    = DATABASE\SQLITE::Connect($config);
+				break;
 
-		//	...
-		foreach( ['prod','host','user','password'] as $key ){
-			if( empty(${$key}) ){
-				\Notice::Set("This value has not been set. ($key)");
-				return false;
-			}
-		}
-
-		//	Data Source Name
-		$dsn = "{$prod}:host={$host}";
-
-		//	Database
-		if( $database ){
-			$dsn .= ";dbname={$database}";
-		}
-
-		//	...
-		try{
-			//	...
-			$options = $this->_Options();
-
-			//	...
-			$this->_queries[] = $dsn;
-			$this->_PDO = new \PDO($dsn, $user, $password, $options);
-		}catch( \Throwable $e ){
-			\Notice::Set($e->getMessage() . " ($dsn, $user, $password)");
-		}
+			default:
+				\Notice::Set("Has not been this product. ($prod)");
+		};
 
 		//	...
 		return $this->_PDO ? true: false;
