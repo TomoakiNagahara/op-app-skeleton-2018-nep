@@ -39,77 +39,23 @@ class Show
 	static function Get($records, $query)
 	{
 		//	...
-		$result = [];
 		$column = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
 		$index  = strpos($query, 'SHOW INDEX FROM')        === 0 ? true: false;
+		$user   = strpos($query, 'SELECT ')                === 0 ? true: false;
 
 		//	...
-		foreach( $records as $temp ){
-			if( $column ){
-				$name = $temp['Field'];
-				foreach( $temp as $key => $val ){
-					//	...
-					if( $key === 'Collation' or $key === 'Default' ){
-						if( $val === null ){
-							continue;
-						}
-					}
-
-					//	...
-					$key = lcfirst($key);
-
-					//	...
-					if( $key === 'type' ){
-						//	Parse --> type unsigned --> type, unsigned
-						if( $pos = strpos($val, 'unsigned') ){
-							$val = substr($val, 0, $pos-1);
-							$result[$name]['unsigned'] = true;
-						}
-
-						//	Parse --> type(length) --> type, length
-						if( $st = strpos($val, '(') and $en = strpos($val, ')') ){
-							$type   = substr($val, 0, $st);
-							$length = substr($val, $st+1, $en - $st -1 );
-
-							//	...
-							if( is_numeric($length) ){
-								$length = (int)$length;
-							}
-
-							//	...
-							$result[$name]['type']   = $type;
-							$result[$name]['length'] = $length;
-
-							//	...
-							continue;
-						}
-					}
-
-					//	...
-					if( $key === 'null' ){
-						$val = $val === 'YES' ? true: false;
-					}
-
-					//	...
-					if( $key === 'key' ){
-						$val = strtolower($val);
-					}
-
-					//	...
-					$result[$name][$key] = $val;
-				}
-			}else if( $index ){
-				$name = $temp['Key_name'];
-				$seq  = $temp['Seq_in_index'];
-				$result[$name][$seq] = $temp;
-			}else{
-				foreach( $temp as $key => $val ){
-					$result[] = $val;
-				}
-			}
+		if( $column ){
+			//	...
+			return self::_Column($records);
+		}else if( $index ){
+			//	...
+			return self::_Index($records);
+		}else if( $user ){
+			//	...
+			return self::_User($records);
+		}else{
+			//	...
+			return $records;
 		}
-
-		//	...
-		return $result;
 	}
 }
