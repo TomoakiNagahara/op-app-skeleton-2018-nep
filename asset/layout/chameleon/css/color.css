@@ -22,11 +22,15 @@ body.body .border {
 }
 
 body.body .success {
-	color: hsl( calc(var(--root-hue) + 50), 75%, 45%);
+	/* color: hsl( calc(var(--root-hue) + 50), 75%, 45%); */
+	color: blue;
 }
 
-body.body .error {
-	color: hsl( calc(var(--root-hue) - 90), 100%, 50%);
+body.body .error,
+body.body .failed,
+body.body .failure {
+	/* color: hsl( calc(var(--root-hue) - 90), 100%, 50%); */
+	color: red;
 }
 
 body.body .transparency {
