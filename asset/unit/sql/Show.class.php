@@ -95,11 +95,15 @@ class Show
 	 *
 	 * @param	\IF_DATABASE $DB
 	 */
-	static function User($DB)
+	static function User($config, $DB)
 	{
 		switch( $prod = $DB->Config()['prod'] ){
 			case 'mysql':
 				$sql = "SELECT host, user, password FROM mysql.user";
+				break;
+
+			case 'pgsql':
+				$sql = "SELECT usename FROM pg_user";
 				break;
 
 			default:
