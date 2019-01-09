@@ -103,7 +103,7 @@ class Show
 				break;
 
 			case 'pgsql':
-				$sql = "SELECT usename FROM pg_user";
+				$sql = "SELECT * FROM pg_user";
 				break;
 
 			default:
