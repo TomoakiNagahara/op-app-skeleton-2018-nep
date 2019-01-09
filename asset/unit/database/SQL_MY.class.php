@@ -65,6 +65,19 @@ class MYSQL
 		//	...
 		$prod = $config['prod'];
 
+		/** Connect to an ODBC database using driver invocation
+		 *
+		 * @see http://php.net/manual/en/pdo.construct.php
+		 */
+		if( $uri = $config['uri'] ?? null ){
+			/*
+			if(!file_exists($uri) ){
+				throw new \Exception("File has not been exists. ($uri)");
+			};
+			*/
+			return "uri:file://{$uri}";
+		};
+
 		//	...
 		if(!$host = $config['host'] ?? null ){
 			throw new \Exception("Has not been set host.");
@@ -121,9 +134,9 @@ class MYSQL
 		try{
 			//	...
 			$dsn      = self::DSN($config);
-			$option  = self::Option($config);
-			$user     = $config['user'];
-			$password = $config['password'];
+			$option   = self::Option($config);
+			$user     = $config['user']     ?? null;
+			$password = $config['password'] ?? null;
 
 			//	...
 			return new \PDO($dsn, $user, $password, $option);
