@@ -12,9 +12,12 @@
 $dbs = [];
 
 //	...
-foreach( ['mysql','sqlite','pgsql'] as $prod ){
+foreach( ['mysql','pgsql','sqlite'] as $prod ){
 	$dbs[$prod] = include("{$prod}.inc.php");
 };
+
+//	...
+Html('Each connection');
 
 //	...
 foreach( $dbs as $prod => $db ){
@@ -25,5 +28,5 @@ foreach( $dbs as $prod => $db ){
 	Html("{$prod} = {$label}", $class);
 };
 
-D(ini_get('upload_max_filesize'));
-D(ini_get('pdo_mysql.default_socket'));
+//	...
+return $dbs;
