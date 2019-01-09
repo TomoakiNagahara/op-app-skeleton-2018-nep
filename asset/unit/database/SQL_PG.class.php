@@ -108,10 +108,8 @@ class PGSQL
 			return new \PDO($dsn, $role, $password, $option);
 
 		}catch( \PDOException $e ){
-			switch( $e->getCode() ){
-				default:
-					\Notice::Set($e);
-			};
+			require_once(__DIR__.'/SQL_PHP_PDO_Error.class.php');
+			SQL_PHP_PDO_Error::Auto('mysql', $e);
 		}catch( \Exception $e ){
 			\Notice::Set($e->getMessage() . " ($dsn, $role, $password)");
 		};

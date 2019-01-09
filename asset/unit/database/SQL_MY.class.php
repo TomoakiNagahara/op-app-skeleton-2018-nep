@@ -129,20 +129,8 @@ class MYSQL
 			return new \PDO($dsn, $user, $password, $option);
 
 		}catch( \PDOException $e ){
-			switch( $e->getCode() ){
-				case '2002':
-					$key = 'pdo_mysql.default_socket';
-					$ini = ini_get($key);
-					$str = $e->getMessage();
-					if( $ini ){
-						\Notice::Set("{$str} ({$ini})");
-					}else{
-						\Notice::Set("Has not been set '{$key}'.");
-					};
-					break;
-				default:
-					\Notice::Set($e);
-			};
+			require_once(__DIR__.'/SQL_PHP_PDO_Error.class.php');
+			SQL_PHP_PDO_Error::Auto('mysql', $e);
 		}catch( \Exception $e ){
 			\Notice::Set($e->getMessage() . " ($dsn, $user, $password)");
 		};
