@@ -403,6 +403,18 @@ class Database implements \IF_DATABASE
 		return $l.trim($value).$r;
 	}
 
+	/** SQL is execute.
+	 *
+	 * @see		\IF_DATABASE::SQL()
+	 * @param	 string		 $query
+	 * @param	 string		 $type
+	 * @return	 array		 $record
+	 */
+	function SQL(string $sql, string $type)
+	{
+		return $this->Query($sql, $type);
+	}
+
 	/** Execute SQL statement.
 	 *
 	 * @see		\IF_DATABASE::Query()
