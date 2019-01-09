@@ -495,16 +495,6 @@ class Database implements \IF_DATABASE
 		return isset($result) ? $result: [];
 	}
 
-	/** Get past stacked queries.
-	 *
-	 * @see		\IF_DATABASE::Queries()
-	 * @return	 array		 $queries
-	 */
-	function Queries()
-	{
-		return $this->_queries;
-	}
-
 	/** Display debug information.
 	 *
 	 * @see \IF_DATABASE::Debug()
