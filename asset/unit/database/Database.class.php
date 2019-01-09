@@ -353,7 +353,11 @@ class Database implements \IF_DATABASE
 	 */
 	function Show($config)
 	{
-		return $this->Query($this->_SQL->Show($config, $this), 'show');
+		//	Generate SQL.
+		$sql = $this->_SQL->Show($config, $this);
+
+		//	Execute SQL.
+		return $this->SQL($sql, 'show');
 	}
 
 	/** Get field name of primary key.
