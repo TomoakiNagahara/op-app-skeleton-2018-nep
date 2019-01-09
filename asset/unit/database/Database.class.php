@@ -210,6 +210,7 @@ class Database implements \IF_DATABASE
 	 */
 	function Database(string $database=null)
 	{
+		//	...
 		if( $database ){
 			//	...
 			$this->_config['database'] = $database;
@@ -231,7 +232,7 @@ class Database implements \IF_DATABASE
 	 * @param	 string		 $function
 	 * @return	 mixed		 $result
 	 */
-	function SQL($config, $function)
+	function _SQL($config, $function)
 	{
 		//	...
 		if(!$this->_SQL ){
@@ -253,7 +254,7 @@ class Database implements \IF_DATABASE
 	 */
 	function Count($config)
 	{
-		$count = $this->SQL($config, __FUNCTION__);
+		$count = $this->_SQL($config, __FUNCTION__);
 		return empty($count) ? 0: (int)$count;
 	}
 
@@ -276,7 +277,7 @@ class Database implements \IF_DATABASE
 	 */
 	function Select($config)
 	{
-		return $this->SQL($config, __FUNCTION__);
+		return $this->_SQL($config, __FUNCTION__);
 	}
 
 	/** Insert new record.
@@ -297,7 +298,7 @@ class Database implements \IF_DATABASE
 	 */
 	function Insert($config)
 	{
-		return $this->SQL($config, __FUNCTION__);
+		return $this->_SQL($config, __FUNCTION__);
 	}
 
 	/** Update record at conditions.
@@ -320,7 +321,7 @@ class Database implements \IF_DATABASE
 	 */
 	function Update($config)
 	{
-		return $this->SQL($config, __FUNCTION__);
+		return $this->_SQL($config, __FUNCTION__);
 	}
 
 	/** Delete record at conditions.
@@ -342,7 +343,7 @@ class Database implements \IF_DATABASE
 	 */
 	function Delete($config)
 	{
-		return $this->SQL($config, __FUNCTION__);
+		return $this->_SQL($config, __FUNCTION__);
 	}
 
 	/** Get database or table or user.
