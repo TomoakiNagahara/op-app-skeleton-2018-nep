@@ -421,22 +421,24 @@ class Database implements \IF_DATABASE
 
 	/** Execute SQL statement.
 	 *
-	 * @see		\IF_DATABASE::Query()
 	 * @param	 string		 $query
 	 * @param	 string		 $type
 	 * @return	 array		 $record
 	 */
-	function Query($query, $type=null)
+	function Query(string $query, string $type='')
 	{
 		//	...
+		$type = strtolower($type);
+
+		//	...
 		if(!$query){
-			return $type==='Select' ? []: false;
+			return ($type === 'select') ? []: false;
 		}
 
 		//	Check of PDO instantiate.
 		if(!$this->_PDO ){
 			\Notice::Set("Has not been instantiate PDO.", debug_backtrace(false));
-			return $type==='Select' ? []: false;
+			return ($type === 'select') ? []: false;
 		}
 
 		//	Remove space.
@@ -452,7 +454,7 @@ class Database implements \IF_DATABASE
 		if(!$statement ){
 			include_once(__DIR__.'/ErrorInfo.class.php');
 			DATABASE\ErrorInfo::Set( $this->_PDO->errorInfo(), debug_backtrace(false) );
-			return [];
+			return ($type === 'select') ? []: false;
 		}
 
 		//	Check of SQL type.
@@ -461,7 +463,7 @@ class Database implements \IF_DATABASE
 		}
 
 		//	Generate result value by type.
-		switch( strtolower($type) ){
+		switch( $type ){
 			case 'select':
 				$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 				if( strpos($query.' ', ' LIMIT 1 ') and $result ){
@@ -494,6 +496,7 @@ class Database implements \IF_DATABASE
 			case 'alter':
 			case 'grant':
 			case 'create':
+			case 'drop':
 				$result = true;
 				break;
 
