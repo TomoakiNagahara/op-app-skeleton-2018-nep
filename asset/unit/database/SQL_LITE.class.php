@@ -88,15 +88,8 @@ class SQLITE
 			return new \PDO($dsn);
 
 		}catch( \PDOException $e ){
-			switch( $e->getCode() ){
-				case 0:
-					$module = 'sqlite';
-					\Notice::Set("php-{$module} is not installed.");
-					include( ConvertPath('asset:/bootstrap/php/content.phtml') );
-					break;
-				default:
-					\Notice::Set($e);
-			};
+			require_once(__DIR__.'/SQL_PHP_PDO_Error.class.php');
+			SQL_PHP_PDO_Error::Auto('mysql', $e);
 		}catch( \Exception $e ){
 			\Notice::Set($e->getMessage() . " ($dsn)");
 		};
