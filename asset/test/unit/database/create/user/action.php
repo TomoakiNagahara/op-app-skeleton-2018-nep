@@ -22,7 +22,7 @@ $config = [
 ];
 
 //	...
-foreach( ['mysql'] as $prod ){
+foreach( ['mysql','pgsql'] as $prod ){
 	/* @var $db \OP\UNIT\Database */
 	$db = $dbs[$prod];
 
@@ -34,13 +34,15 @@ foreach( ['mysql'] as $prod ){
 	$user = $config['user'];
 
 	//	...
-	if( $show[$host][$user] ?? true ){
-		$result[$prod] = $db->Drop()->User($config);
+	if( $show[$host][$user] ?? null ){
+		$result[$prod]['drop'] = $db->Drop()->User($config);
 	};
 
 	//	...
-	$result[$prod] = $db->Create()->User($config);
+	$result[$prod]['create'] = $db->Create()->User($config);
 };
 
 //	...
+Html('','hr');
+Html('Create, Drop');
 D($result);
