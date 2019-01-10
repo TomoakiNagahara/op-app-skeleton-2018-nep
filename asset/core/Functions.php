@@ -109,6 +109,9 @@ function ConvertURL($url)
 	//	...
 	global $_OP;
 
+	//	...
+	$result = $url;
+
 	//	Full path.
 	$rewrite_base = rtrim($_OP[DOC_ROOT], '/');
 
