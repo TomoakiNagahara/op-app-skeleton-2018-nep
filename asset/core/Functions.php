@@ -137,20 +137,24 @@ function ConvertURL($url)
 		$result = substr($url, strlen($rewrite_base));
 
 	}else{
-		//	What is this?
+		//	What is this? <-- Checking if value is meta path.
 		$key = ':/';
 
-		//	???
+		//	Search meta path label.
 		$len = strpos($url, $key) + strlen($key);
 
-		//	Why?
+		//
+		if( $len ){
+		//	Why? <-- Replace meta path label.
 		foreach( _GetRootsPath() as $key => $dir ){
 			//	match
 			if( strpos($url, $key) === 0 ){
 				//	Convert
 				$result = ConvertURL( CompressPath($dir . substr($url, $len)) );
+				break;
 			}
 		}
+		};
 	}
 
 	/** Add slash to URL tail.
