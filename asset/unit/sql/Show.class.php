@@ -114,11 +114,11 @@ class Show
 	{
 		switch( $prod = $DB->Config()['prod'] ){
 			case 'mysql':
-				$sql = "SELECT host, user, password FROM mysql.user";
+				$sql = "SELECT `host`, `user`, `password` FROM `mysql`.`user`";
 				break;
 
 			case 'pgsql':
-				$sql = "SELECT * FROM pg_user";
+				$sql = 'SELECT * FROM "pg_shadow"';
 				break;
 
 			default:
