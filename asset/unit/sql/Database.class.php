@@ -42,6 +42,19 @@ class Database
 		return self::Generate($config, $DB);
 	}
 
+	/** Drop database
+	 *
+	 * @created	 2019-01-09
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string
+	 */
+	static function Drop(array $config, \IF_DATABASE $DB)
+	{
+		$config['verb'] = 'DROP';
+		return self::Generate($config, $DB);
+	}
+
 	/** Change database
 	 *
 	 * @created	 2018-11-14
