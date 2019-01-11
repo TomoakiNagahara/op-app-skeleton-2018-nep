@@ -73,8 +73,6 @@ class Create
 		//	...
 		$result = $this->_DB->Query($sql, 'create');
 
-		D($sql, $result);
-
 		//	...
 		return empty($result) ? false: true;
 	}

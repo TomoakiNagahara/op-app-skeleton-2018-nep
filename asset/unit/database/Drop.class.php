@@ -73,9 +73,6 @@ class Drop
 		//	...
 		$result = $this->_DB->Query($sql, 'drop');
 
-
-		D($sql, $result);
-
 		//	...
 		return empty($result) ? false: true;
 	}
