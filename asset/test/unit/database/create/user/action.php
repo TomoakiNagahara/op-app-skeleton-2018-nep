@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-test:/unit/database/create/user.php
+ * unit-test:/unit/database/create/user/action.php
  *
  * @creation  2018-12-17
  * @version   1.0
@@ -23,6 +23,11 @@ $config = [
 
 //	...
 foreach( ['mysql','pgsql'] as $prod ){
+	//	...
+	if(!empty($_GET['prod']) and $_GET['prod'] !== $prod ){
+		continue;
+	};
+
 	/* @var $db \OP\UNIT\Database */
 	$db = $dbs[$prod];
 
@@ -44,5 +49,5 @@ foreach( ['mysql','pgsql'] as $prod ){
 
 //	...
 Html('','hr');
-Html('Create, Drop');
+Html('User: Create, Drop');
 D($result);
