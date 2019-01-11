@@ -86,7 +86,7 @@ class Show
 
 		//	...
 		foreach( $records as $record ){
-			$result[] = $record['Database'];
+			$result[] = $record['Database'] ?? $record['datname'] ?? 'empty database name';
 		};
 
 		//	...
