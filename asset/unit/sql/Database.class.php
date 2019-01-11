@@ -79,28 +79,97 @@ class Database
 	{
 		//	...
 		$verb     = $config['verb']     ?? null;
-		$database = $config['database'] ?? null;
-		$charset  = $config['charset']  ?? 'utf8mb4';
-		$collate  = $config['collate']  ?? 'utf8mb4_general_ci';
+		$database = $config['database'] ?? $config['name']     ??  null;
 
 		//	...
-		if( $verb === 'CREATE' or $verb === 'ALTER' ){
-			//	OK
+		if( $database ){
+			$database = $DB->Quote($database);
 		}else{
-			throw new \Exception("Has not been support this value. ($verb)");
-		}
-
-		//	...
-		if( empty($database) ){
 			throw new \Exception("Database name has empty.");
 		}
 
 		//	...
-		$database = $DB->Quote($database);
-		$charset  = $DB->Quote($charset);
-		$collate  = $DB->Quote($collate);
+		switch( $verb ){
+			case 'CREATE':
+			case 'ALTER':
+				//	...
+				$encoding = $config['encoding'] ?? 'utf8';
+				$charset  = $config['charset']  ?? 'utf8mb4';
+				$collate  = $config['collate']  ?? null;
+
+				//	...
+				$charset  = $DB->Quote($charset);
+				$encoding = $DB->Quote($encoding);
+				if( $collate ){
+					$collate = $DB->Quote($collate);
+				};
+
+				break;
+
+			case 'DROP':
+				break;
+
+			default:
+				throw new \Exception("Has not been support this value. ($verb)");
+		};
 
 		//	...
-		return "{$verb} DATABASE {$database} DEFAULT CHARACTER SET {$charset} COLLATE {$collate}";
+		if( $verb === 'DROP' ){
+			$option = null;
+		}else{
+			switch( $prod = $DB->Config()['prod'] ){
+				case 'mysql':
+					//	...
+					if(!$collate ){
+						$collate = substr($charset, 1, -1) . "_general_ci";
+						$collate = $DB->Quote($collate);
+					};
+
+					//	...
+					if( $verb !== 'DROP' ){
+						$option = "DEFAULT CHARACTER SET {$charset} COLLATE {$collate}";
+					};
+					break;
+
+				case 'pgsql':
+					//	...
+					if( $owner = $config['owner'] ?? null ){
+						$owner = $DB->Quote($owner);
+					};
+
+					//	...
+					if( $locale  = $config['locale'] ?? null ){
+						$collate = $DB->Quote($locale .'.'. $encoding);
+					//	$type    = $DB->Quote($locale .'.'. $encoding);
+					};
+
+					//	...
+					if( $verb !== 'DROP' ){
+						$option = "ENCODING {$encoding}";
+					//	$option = "ENCODING {$encoding} OWNER={$owner} LC_COLLATE = {$collate} LC_CTYPE = $type";
+					};
+					break;
+
+				default:
+					throw new \Exception("Has not been support this product. ($prod)");
+			};
+		};
+
+		//	...
+		return "{$verb} DATABASE {$database} {$option}";
+
+		/** PostgreSQL
+		 *
+		 * @see https://www.postgresql.jp/document/9.4/html/sql-createdatabase.html
+		 *
+		 * CREATE DATABASE name
+		 * [ [ WITH ] [ OWNER [=] user_name ]
+		 * 		[ TEMPLATE [=] template ]
+		 * 		[ ENCODING [=] encoding ]
+		 * 		[ LC_COLLATE [=] lc_collate ]
+		 * 		[ LC_CTYPE [=] lc_ctype ]
+		 * 		[ TABLESPACE [=] tablespace_name ]
+		 * 		[ CONNECTION LIMIT [=] connlimit ] ]
+		 */
 	}
 }
