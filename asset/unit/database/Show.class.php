@@ -43,7 +43,17 @@ class Show
 		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
 		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
 		$index    = strpos($query, 'SHOW INDEX FROM')        === 0 ? true: false;
-		$user     = strpos($query, 'SELECT ')                === 0 ? true: false;
+		$select   = strpos($query, 'SELECT ')                === 0 ? true: false;
+		$user     = null;
+
+		//	...
+		if( $select ){
+			if( strpos($query, 'FROM `mysql`.`user`') or strpos($query, 'FROM "pg_shadow"') ){
+				$user     = true;
+			}else{
+				$database = true;
+			};
+		}
 
 		//	...
 		if( $database ){
