@@ -95,7 +95,7 @@ class SQL
 		}
 
 		//	...
-		return SQL\Show::Database();
+		return SQL\Show::Database($DB);
 	}
 
 	/** Generate update sql statement.
