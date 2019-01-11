@@ -33,11 +33,26 @@ class Show
 
 	/** Show database list.
 	 *
+	 * @param	\IF_DATABASE $DB
 	 * @return	 string		 $sql
 	 */
-	static function Database()
+	static function Database(\IF_DATABASE $DB)
 	{
-		return 'SHOW DATABASES';
+		//	...
+		switch( $prod = $DB->Config()['prod'] ){
+			case 'mysql':
+				$sql = 'SHOW DATABASES';
+				break;
+
+			case 'pgsql':
+				$sql = 'SELECT * FROM "pg_database"';
+				break;
+
+			default:
+				throw new \Exception("Has not been support this product. ($prod)");
+		};
+
+		return $sql;
 	}
 
 	/** Show table list.
