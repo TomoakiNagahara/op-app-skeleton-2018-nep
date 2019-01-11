@@ -358,12 +358,19 @@ class Database implements \IF_DATABASE
 	function Quote($value)
 	{
 		//	...
-		switch( $this->_config['prod'] ){
+		switch( $prod = $this->_config['prod'] ){
 			case 'mysql':
 				$l = '`';
 				$r = '`';
 				break;
+
+			case 'pgsql':
+				$l = '"';
+				$r = '"';
+				break;
+
 			default:
+				throw new \Exception("Has not been support this product. ($prod)");
 		}
 
 		//	...
