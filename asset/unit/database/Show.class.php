@@ -40,6 +40,7 @@ class Show
 	{
 		//	...
 		$database = strpos($query, 'SHOW DATABASES')         === 0 ? true: false;
+		$table    = strpos($query, 'SHOW TABLES')            === 0 ? true: false;
 		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
 		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
 		$index    = strpos($query, 'SHOW INDEX FROM')        === 0 ? true: false;
@@ -59,6 +60,8 @@ class Show
 		if( $database ){
 			//	...
 			return self::_Database($records);
+		}else if( $table ){
+			return self::_Table($records);
 		}else if( $column ){
 			//	...
 			return self::_Column($records);
@@ -87,6 +90,25 @@ class Show
 		//	...
 		foreach( $records as $record ){
 			$result[] = $record['Database'] ?? $record['datname'] ?? 'empty database name';
+		};
+
+		//	...
+		return $result;
+	}
+
+	/** Table
+	 *
+	 * @param  array $records
+	 * @return array $result
+	 */
+	static private function _Table($records)
+	{
+		//	...
+		$result = [];
+
+		//	...
+		foreach( $records as $record ){
+			$result[] = $record['Tables_in_testcase'];
 		};
 
 		//	...
