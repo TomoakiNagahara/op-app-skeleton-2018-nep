@@ -90,7 +90,7 @@ class SQL
 		}
 
 		//	...
-		if( isset($args['database']) ){
+		if( isset($args['table']) ){
 			return SQL\Show::Table($DB, $args['database']);
 		}
 
