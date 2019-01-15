@@ -52,6 +52,7 @@ class Show
 				throw new \Exception("Has not been support this product. ($prod)");
 		};
 
+		//	...
 		return $sql;
 	}
 
@@ -61,10 +62,25 @@ class Show
 	 * @param	 string		 $database
 	 * @return	 string		 $sql
 	 */
-	static function Table($db, $database)
+	static function Table(\IF_DATABASE $DB, $database)
 	{
-		$database = $db->Quote($database);
-		return "SHOW TABLES FROM {$database}";
+		//	...
+		switch( $prod = $DB->Config()['prod'] ){
+			case 'mysql':
+				$database = $DB->Quote($database);
+				$sql = "SHOW TABLES FROM {$database}";
+				break;
+
+			case 'pgsql':
+				$sql = 'SELECT * FROM "pg_stat_user_tables"';
+				break;
+
+			default:
+				throw new \Exception("Has not been support this product. ($prod)");
+		};
+
+		//	...
+		return $sql;
 	}
 
 	/** Show column list
