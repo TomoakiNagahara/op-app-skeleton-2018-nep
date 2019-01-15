@@ -51,6 +51,8 @@ class Show
 		if( $select ){
 			if( strpos($query, 'FROM `mysql`.`user`') or strpos($query, 'FROM "pg_shadow"') ){
 				$user     = true;
+			}else if( strpos($query, 'FROM "pg_stat_user_tables"') ){
+				$table    = true;
 			}else{
 				$database = true;
 			};
@@ -108,7 +110,7 @@ class Show
 
 		//	...
 		foreach( $records as $record ){
-			$result[] = $record['Tables_in_testcase'];
+			$result[] = $record['Tables_in_testcase'] ?? $record['relname'] ?? 'empty table name';
 		};
 
 		//	...
