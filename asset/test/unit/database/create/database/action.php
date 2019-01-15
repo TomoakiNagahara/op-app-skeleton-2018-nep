@@ -43,7 +43,7 @@ foreach( $names as $prod ){
 	$name = $config['name'];
 
 	//	...
-	if( array_search($name, $show) ?? null ){
+	if( array_search($name, $show) !== false ){
 		if( $prod === 'mysql' ){
 			$config['if_not_exists'] = true;
 		}else{
