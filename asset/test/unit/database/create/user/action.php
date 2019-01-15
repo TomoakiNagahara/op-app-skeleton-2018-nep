@@ -40,7 +40,7 @@ foreach( ['mysql','pgsql'] as $prod ){
 
 	//	...
 	if( $show[$host][$user] ?? null ){
-		$result[$prod]['drop'] = $db->Drop()->User($config);
+		$result[$prod]['create'] = true;
 	};
 
 	//	...
@@ -49,5 +49,5 @@ foreach( ['mysql','pgsql'] as $prod ){
 
 //	...
 Html('','hr');
-Html('User: Create, Drop');
+Html('User: Create');
 D($result);
