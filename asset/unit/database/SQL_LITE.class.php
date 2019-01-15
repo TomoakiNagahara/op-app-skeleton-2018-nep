@@ -77,7 +77,7 @@ class SQLITE
 	 * @throws	\Exception	 $e
 	 * @return	\PDO		 $pdo
 	 */
-	static function Connect($config)
+	static function Connect(array $config)
 	{
 		//	...
 		try{
@@ -93,5 +93,24 @@ class SQLITE
 		}catch( \Exception $e ){
 			\Notice::Set($e->getMessage() . " ($dsn)");
 		};
+	}
+
+	/** Create database
+	 *
+	 * @param	 array	 $config
+	 * @return	 boolean
+	 */
+	static function Create(array $config)
+	{
+		//	...
+		if(!$path = $config['path'] ?? null ){
+			return false;
+		};
+
+		//	...
+		`touch $path`;
+
+		//	...
+		return file_exists($path);
 	}
 }
