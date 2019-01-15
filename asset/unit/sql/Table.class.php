@@ -38,6 +38,7 @@ class Table
 	static function Create($config, $DB)
 	{
 		//	...
+		$prod    = $DB->Config()['prod'];
 		$database= ifset($config['database']);
 		$table   = ifset($config['table']   );
 		$engine  = ifset($config['engine']  , 'InnoDB'            );
@@ -47,8 +48,12 @@ class Table
 		//	...
 		if( isset($config['fields']) ){
 			$fields = $config['fields'];
+		}else if( isset($config['field']) ){
+			$fields = $config['field'];
 		}else if( isset($config['columns']) ){
 			$fields = $config['columns'];
+		}else if( isset($config['column']) ){
+			$fields = $config['column'];
 		}else{
 			\Notice::Set("Has not been set field. ($database, $table)");
 			return false;
@@ -76,7 +81,30 @@ class Table
 		$collate  = $DB->Quote($collate);
 
 		//	...
-		return "CREATE TABLE $database.$table ($columns) ENGINE=$engine DEFAULT CHARSET=$charset COLLATE $collate";
+		switch( $prod ){
+			case 'mysql':
+				//	...
+				$table = "{$database}.{$table}";
+
+				//	...
+				$option = "ENGINE=$engine DEFAULT CHARSET=$charset COLLATE $collate";
+				break;
+
+			case 'pgsql':
+				$option = null;
+				break;
+
+			default:
+				$option = null;
+		};
+
+		//	...
+		if( $config['if_not_exists'] ?? null ){
+			$table = "IF NOT EXISTS {$table}";
+		};
+
+		//	...
+		return "CREATE TABLE $table ($columns) $option";
 	}
 
 	/** Change table
