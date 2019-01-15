@@ -16,13 +16,18 @@ $dbs = include(ConvertPath('asset:/test/unit/database/connect/action.php'));
 
 //	...
 $config = [
-	'name'    => 'testcase_test',
+	'name'    => 'testcase',
 	'charset' => 'utf8mb4',
 	'collate' => 'utf8mb4_general_ci',
 ];
 
 //	...
-foreach( ['mysql','pgsql'] as $prod ){
+$names = [];
+$names[] = 'mysql';
+$names[] = 'pgsql';
+
+//	...
+foreach( $names as $prod ){
 	//	...
 	if(!empty($_GET['prod']) and $_GET['prod'] !== $prod ){
 		continue;
@@ -39,14 +44,26 @@ foreach( ['mysql','pgsql'] as $prod ){
 
 	//	...
 	if( array_search($name, $show) ?? null ){
-		$result[$prod]['drop'] = $db->Drop()->Database($config);
+		if( $prod === 'mysql' ){
+			$config['if_not_exists'] = true;
+		}else{
+			$result[$prod] = true;
+			continue;
+		}
 	};
 
 	//	...
-	$result[$prod]['create'] = $db->Create()->Database($config);
+	$result[$prod] = $db->Create()->Database($config);
 };
 
 //	...
 Html('','hr');
-Html('Database: Create, Drop');
+Html('Database: Create');
 D($result);
+
+//	...
+foreach( $names as $prod ){
+	if( ($result[$prod] ?? true) === false ){
+		$dbs[$prod]->Debug();
+	};
+};
