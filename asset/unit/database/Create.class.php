@@ -63,10 +63,16 @@ class Create
 
 	/** Create database.
 	 *
-	 * @param  array       $config
+	 * @param	 array	 $config
 	 */
 	function Database($config)
 	{
+		//	...
+		if( $this->_DB->Config()['prod'] === 'sqlite' ){
+			require_once(__DIR__.'/SQL_LITE.class.php');
+			return SQLITE::Create($config);
+		};
+
 		//	...
 		$sql = \OP\UNIT\SQL\Database::Create($config, $this->_DB);
 
@@ -79,7 +85,7 @@ class Create
 
 	/** Create table.
 	 *
-	 * @param  array       $config
+	 * @param	 array	 $config
 	 */
 	function Table($config)
 	{
@@ -88,8 +94,6 @@ class Create
 
 		//	...
 		$result = $this->_DB->Query($sql, 'create');
-
-		D($sql, $result);
 
 		//	...
 		return empty($result) ? false: true;
