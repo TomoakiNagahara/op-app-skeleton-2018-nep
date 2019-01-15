@@ -129,6 +129,11 @@ class Database
 					if( $verb !== 'DROP' ){
 						$option = "DEFAULT CHARACTER SET {$charset} COLLATE {$collate}";
 					};
+
+					//	...
+					if( $config['if_not_exists'] ?? null ){
+						$database = 'IF NOT EXISTS ' . $database;
+					};
 					break;
 
 				case 'pgsql':
@@ -149,6 +154,9 @@ class Database
 					//	$option = "ENCODING {$encoding} OWNER={$owner} LC_COLLATE = {$collate} LC_CTYPE = $type";
 					};
 					break;
+
+				case 'sqlite':
+					throw new \Exception("Please use sqlite3 command --&gt; sqlite3 <database name>");
 
 				default:
 					throw new \Exception("Has not been support this product. ($prod)");
