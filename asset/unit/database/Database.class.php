@@ -134,17 +134,8 @@ class Database implements \IF_DATABASE
 	 */
 	function Create()
 	{
-		//	...
-		static $_create;
-
-		//	...
-		if(!$_create ){
-			include('Create.class.php');
-			$_create = new \OP\UNIT\DATABASE\Create($this);
-		};
-
-		//	...
-		return $_create;
+		require_once(__DIR__.'/Create.class.php');
+		return new \OP\UNIT\DATABASE\Create($this);
 	}
 
 	/** Drop
@@ -153,17 +144,8 @@ class Database implements \IF_DATABASE
 	 */
 	function Drop()
 	{
-		//	...
-		static $_drop;
-
-		//	...
-		if(!$_drop ){
-			include('Drop.class.php');
-			$_drop = new \OP\UNIT\DATABASE\Drop($this);
-		};
-
-		//	...
-		return $_drop;
+		require_once(__DIR__.'/Drop.class.php');
+		return new \OP\UNIT\DATABASE\Drop($this);
 	}
 
 	/** Set/Get last time used database name.
@@ -491,6 +473,6 @@ class Database implements \IF_DATABASE
 	 */
 	function Debug()
 	{
-		D($this->_queries);
+		D( $this->_config, $this->_queries);
 	}
 }
