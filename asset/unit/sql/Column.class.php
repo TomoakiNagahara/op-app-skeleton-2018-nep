@@ -105,7 +105,27 @@ class Column
 	 */
 	static function Field($config, $DB)
 	{
-		//	...
+		switch( $prod = $DB->Config()['prod'] ){
+			case 'mysql':
+				return self::_Field_MySQL($config, $DB);
+
+			case 'pgsql':
+				return self::_Field_PgSQL($config, $DB);
+
+			default:
+				throw new \Exception("This product has not been support. ($prod)");
+		};
+	}
+
+	/** Generate MySQL Field.
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @throws	\Exception	 $e
+	 * @return	 string		 $query
+	 */
+	static private function _Field_MySQL($config, $DB)
+	{
 		$field   = ifset($config['field']  );
 		$type    = ifset($config['type']   );
 		$unsigned= ifset($config['unsigned']);
@@ -201,6 +221,29 @@ class Column
 
 		//	...
 		return "$field $type $charset $default $extra $null COMMENT $comment";
+	}
+
+	/** Generate PgSQL Field.
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @throws	\Exception	 $e
+	 * @return	 string		 $query
+	 */
+	static private function _Field_PgSQL($config, $DB)
+	{
+		//	...
+		$field   = ifset($config['field']  );
+		$type    = ifset($config['type']   );
+		$length  = ifset($config['length'] );
+
+		//	...
+		$field   = $DB->Quote($field);
+		$type    = strtoupper($type);
+		$length  = (int)($length);
+
+		//	...
+		return "$field $type";
 	}
 
 	/** Get column charset
