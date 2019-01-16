@@ -85,12 +85,17 @@ class SQL
 	function Show($args=null, $DB)
 	{
 		//	...
-		if( isset($args['user']) ){
+		if(!empty($args['user']) ){
 			return SQL\Show::User($args, $DB);
 		}
 
 		//	...
-		if( isset($args['table']) ){
+		if(!empty($args['field']) or !empty($args['column']) ){
+			return SQL\Show::Column($DB, $args['database'], $args['table']);
+		}
+
+		//	...
+		if(!empty($args['table']) ){
 			return SQL\Show::Table($DB, $args['database']);
 		}
 
