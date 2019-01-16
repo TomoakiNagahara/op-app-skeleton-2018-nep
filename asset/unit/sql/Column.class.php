@@ -62,9 +62,44 @@ class Column
 		return self::Generate($database, $table, $column, $config, $DB, 'MODIFY');
 	}
 
+	/** Generate Alter SQL.
+	 *
+	 * @param	 string		 $database
+	 * @param	 string		 $table
+	 * @param	 string		 $field
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $verb
+	 * @return	 string
+	 */
 	static function Generate($database, $table, $field, $config, $DB, $verb)
 	{
 		//	...
+		switch( $prod = $DB->Config()['prod'] ){
+			case 'mysql':
+				return self::_Generate_MySQL($database, $table, $field, $config, $DB, $verb);
+
+			case 'pgsql':
+				return self::_Generate_PgSQL($database, $table, $field, $config, $DB, $verb);
+
+			default:
+				throw new \Exception("This product has not been support. ($prod)");
+		};
+
+	}
+
+	/** Generate Alter MySQL.
+	 *
+	 * @param	 string		 $database
+	 * @param	 string		 $table
+	 * @param	 string		 $field
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $verb
+	 * @return	 string
+	 */
+	static private function _Generate_MySQL($database, $table, $field, $config, $DB, $verb)
+	{
 		$database = $DB->Quote($database);
 		$table    = $DB->Quote($table);
 		$field    = $DB->Quote($field);
@@ -79,8 +114,8 @@ class Column
 		}
 
 		//	...
-		$common = self::Field($config, $DB);
-		$index  = self::Index($config, $DB);
+		$common = self::Field($config, $DB, $verb);
+		$index  = self::Index($config, $DB, $verb);
 
 		//	"PRIMARY KEY" can not been change.
 		if( $verb === 'MODIFY' and strpos($index, 'PRIMARY KEY') === 0 ){
@@ -96,21 +131,67 @@ class Column
 		return "ALTER TABLE $database.$table $verb $common $first $after $index";
 	}
 
+	/** Generate Alter PostgreSQL.
+	 *
+	 * @param	 string		 $database
+	 * @param	 string		 $table
+	 * @param	 string		 $field
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $verb
+	 * @return	 string
+	 */
+	static private function _Generate_PgSQL($database, $table, $field, $config, $DB, $verb)
+	{
+		//	...
+		$database = $DB->Quote($database);
+		$table    = $DB->Quote($table);
+		$field    = $DB->Quote($field);
+
+		//	...
+		$common   = self::Field($config, $DB, $verb);
+
+		//	...
+		switch( $verb ){
+			case 'ADD':
+				break;
+
+			case 'MODIFY':
+				$verb = 'ALTER COLUMN';
+				break;
+
+			case 'RENAME':
+				break;
+		};
+
+		/**
+		 * Change:
+		 * ALTER TABLE "t_testcase" ALTER COLUMN "text" INT
+		 * ALTER TABLE テーブル名     ALTER COLUMN カラム名 TYPE データ型
+		 * ALTER TABLE table_name ALTER COLUMN column_name TYPE numeric(10,2);
+		 *
+		 * Rename:
+		 * ALTER TABLE table_name RENAME COLUMN old_name TO new_name;
+		 */
+		return "ALTER TABLE $table $verb $common";
+	}
+
 	/** Generate each field SQL.
 	 *
 	 * @param	 array		 $config
 	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $verb
 	 * @throws	\Exception	 $e
 	 * @return	 string		 $query
 	 */
-	static function Field($config, $DB)
+	static function Field($config, $DB, $verb)
 	{
 		switch( $prod = $DB->Config()['prod'] ){
 			case 'mysql':
-				return self::_Field_MySQL($config, $DB);
+				return self::_Field_MySQL($config, $DB, $verb);
 
 			case 'pgsql':
-				return self::_Field_PgSQL($config, $DB);
+				return self::_Field_PgSQL($config, $DB, $verb);
 
 			default:
 				throw new \Exception("This product has not been support. ($prod)");
@@ -121,10 +202,11 @@ class Column
 	 *
 	 * @param	 array		 $config
 	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $verb
 	 * @throws	\Exception	 $e
 	 * @return	 string		 $query
 	 */
-	static private function _Field_MySQL($config, $DB)
+	static private function _Field_MySQL($config, $DB, $verb)
 	{
 		$field   = ifset($config['field']  );
 		$type    = ifset($config['type']   );
@@ -230,7 +312,7 @@ class Column
 	 * @throws	\Exception	 $e
 	 * @return	 string		 $query
 	 */
-	static private function _Field_PgSQL($config, $DB)
+	static private function _Field_PgSQL($config, $DB, $verb)
 	{
 		//	...
 		$field   = ifset($config['field']  );
@@ -241,6 +323,18 @@ class Column
 		$field   = $DB->Quote($field);
 		$type    = strtoupper($type);
 		$length  = (int)($length);
+
+		//	...
+		if( $length ){
+			$type = "$type($length)";
+		};
+
+		/**
+		 * @see https://qiita.com/seiro/items/ade4c220dfe4acb0ef4b
+		 */
+		if( $verb === 'MODIFY' ){
+			$type = "TYPE $type";
+		};
 
 		//	...
 		return "$field $type";
