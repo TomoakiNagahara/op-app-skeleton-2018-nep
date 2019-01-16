@@ -29,7 +29,7 @@ $config = [
 
 //	...
 $names = [];
-//$names[] = 'mysql';
+$names[] = 'mysql';
 $names[] = 'pgsql';
 
 //	...
@@ -47,8 +47,8 @@ foreach( $names as $prod ){
 
 	//	...
 	foreach( $db->SQL("SELECT * FROM information_schema.columns WHERE table_name = 't_testcase'", 'select') as $record ){
-		$table = $record['table_name'];
-		$field = $record['column_name'];
+		$table = $record['table_name']  ?? $record['TABLE_NAME']  ?? null;
+		$field = $record['column_name'] ?? $record['COLUMN_NAME'] ?? null;
 		//	...
 		$show[$field] = $record;
 	};
@@ -56,7 +56,7 @@ foreach( $names as $prod ){
 	//	...
 	$database = $config['database'];
 	$table    = $config['table'];
-	$field   = $config['field'];
+	$field    = $config['field'];
 
 	//	...
 	if( empty($show[$config['field']]) ){
