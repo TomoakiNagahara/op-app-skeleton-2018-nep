@@ -1,0 +1,25 @@
+<?php
+/**
+ * unit-test:/breadcrumb.phtml
+ *
+ * @creation  2019-01-16
+ * @version   1.0
+ * @package   unit-test
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$args = [];
+
+//	...
+echo '<div id="breadcrumb">'.PHP_EOL;
+
+//	...
+foreach( \App::Args() as $arg ){
+	$args[] = $arg;
+	$href = ConvertURL('testcase:/' . join('/', $args));
+	printf('  <span><a href="%s">%s</a></span>'.PHP_EOL, $href, $arg);
+};
+
+//	...
+echo '</div>'.PHP_EOL;
