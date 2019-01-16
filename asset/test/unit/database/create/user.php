@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-test:/unit/database/create/user/action.php
+ * unit-test:/unit/database/create/user.php
  *
  * @creation  2018-12-17
  * @version   1.0
