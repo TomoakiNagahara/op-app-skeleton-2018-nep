@@ -101,11 +101,7 @@ class Show
 		}
 
 		//	...
-		$database = $DB->Quote($database);
-		$table    = $DB->Quote($table);
-
-		//	...
-		return $_cache[$database][$table] = "SHOW FULL COLUMNS FROM {$database}.{$table}";
+		return $_cache[$database][$table] = sprintf("SHOW FULL COLUMNS FROM %s.%s", $DB->Quote($database), $DB->Quote($table));
 	}
 
 	/** Show index list.
