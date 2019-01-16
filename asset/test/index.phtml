@@ -8,12 +8,17 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	...
+$file = \OP\UNIT\NEWWORLD\Template::Args('file');
 ?>
 <section id="testcase">
 	<h1>TEST CASE</h1>
 	<?php
 	//	...
 	App::Template('nav-right.phtml');
+
+	//	...
+	App::Template('breadcrumb.phtml');
 
 	//	...
 	if( $file ){
