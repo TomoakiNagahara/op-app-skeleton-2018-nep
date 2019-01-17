@@ -46,10 +46,7 @@ class Insert
 		}
 
 		//	TABLE
-		if( $table = ifset($args['table']) ){
-			$table = $db->Quote($table);
-		}else{
-			\Notice::Set("Has not been set table name.");
+		if(!$table = DML::Table($args, $db) ){
 			return false;
 		}
 
