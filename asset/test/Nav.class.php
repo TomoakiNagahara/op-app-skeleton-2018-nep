@@ -53,6 +53,7 @@ class Nav
 	 */
 	static function Set(string $label, array $param, $merge=true )
 	{
+		$navi = [];
 		$navi['label'] = $label;
 		$navi['param'] = $param;
 		$navi['merge'] = $merge;
@@ -65,7 +66,7 @@ class Nav
 	 */
 	static function Get()
 	{
-		return $this->_navs;
+		return self::_navs;
 	}
 
 	/** Out is display.
