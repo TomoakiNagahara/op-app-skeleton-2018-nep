@@ -15,13 +15,20 @@ $sql = Unit::Instance('SQL');
 
 ```
 //  Select configuration.
-$config = [
-  'table' = 'table_name',
-  'limit' = 1,
-  'where' = [
-    'id' = 1,
-  ],
-];
+$config = [];
+$config['table'] = 'table_name';
+$config['limit'] =  1;
+$config['offset']=  0;
+$config['order'] = 'year desc, month asc, day desc';
+$config['where'][] = 'deleted is  null';
+$config['where'][] = 'updated not null';
+$config['where'][] = 'score >= 1';
+$config['where'][] = 'score < 10';
+$config['where'][] = 'updated between 2010-01-01, 2020-12-31 24:00:00';
+$config['where'][] = 'fruit in apple, banana, mango';
+$config['where'][] = 'color notin green, red';
+$config['where'][] = 'comment like This%';
+$config['where'][] = 'comment notlike This is%';
 
 //  Generate SQL query.
 $query = $sql->Select($config, $db);
