@@ -82,10 +82,12 @@ class Column
 			case 'pgsql':
 				return self::_Generate_PgSQL($database, $table, $field, $config, $DB, $verb);
 
+			case 'sqlite':
+				return self::_Generate_SQLite($database, $table, $field, $config, $DB, $verb);
+
 			default:
 				throw new \Exception("This product has not been support. ($prod)");
 		};
-
 	}
 
 	/** Generate Alter MySQL.
@@ -176,6 +178,43 @@ class Column
 		return "ALTER TABLE $table $verb $common";
 	}
 
+	/** Generate Alter SQLite.
+	 *
+	 * @param	 string		 $database
+	 * @param	 string		 $table
+	 * @param	 string		 $field
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $verb
+	 * @return	 string
+	 */
+	static private function _Generate_SQLite($database, $table, $field, $config, $DB, $verb)
+	{
+		//	...
+		$database = $DB->Quote($database);
+		$table    = $DB->Quote($table);
+		$field    = $DB->Quote($field);
+
+		//	...
+		$common   = self::Field($config, $DB, $verb);
+
+		//	...
+		switch( $verb ){
+			case 'ADD':
+				break;
+
+			case 'MODIFY':
+				throw new \Exception("SQLite can not change the definition of a column.");
+				break;
+
+			case 'RENAME':
+				break;
+		};
+
+		//	...
+		return "ALTER TABLE $table $verb $common";
+	}
+
 	/** Generate each field SQL.
 	 *
 	 * @param	 array		 $config
@@ -192,6 +231,9 @@ class Column
 
 			case 'pgsql':
 				return self::_Field_PgSQL($config, $DB, $verb);
+
+			case 'sqlite':
+				return self::_Field_SQLite($config, $DB, $verb);
 
 			default:
 				throw new \Exception("This product has not been support. ($prod)");
@@ -332,6 +374,38 @@ class Column
 		/**
 		 * @see https://qiita.com/seiro/items/ade4c220dfe4acb0ef4b
 		 */
+		if( $verb === 'MODIFY' ){
+			$type = "TYPE $type";
+		};
+
+		//	...
+		return "$field $type";
+	}
+
+	/** Generate SQLite Field.
+	 *
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $DB
+	 * @throws	\Exception	 $e
+	 * @return	 string		 $query
+	 */
+	static private function _Field_SQLite($config, $DB, $verb)
+	{
+		//	...
+		$field   = ifset($config['field']  );
+		$type    = ifset($config['type']   );
+		$length  = ifset($config['length'] );
+
+		//	...
+		$field   = $DB->Quote($field);
+		$type    = strtoupper($type);
+		$length  = (int)($length);
+
+		//	...
+		if( $length ){
+			$type = "$type($length)";
+		};
+
 		if( $verb === 'MODIFY' ){
 			$type = "TYPE $type";
 		};
