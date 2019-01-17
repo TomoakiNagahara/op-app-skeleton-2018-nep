@@ -139,7 +139,7 @@ class DML
 
 			//	...
 			if( $value === null ){
-				$evalu = $evalu === '=' ? 'IS NULL':'IS NOT NULL';
+				$evalu = ($evalu === '=') ? 'IS NULL':'IS NOT NULL';
 			}
 
 			//	...
