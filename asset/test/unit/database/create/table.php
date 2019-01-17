@@ -30,6 +30,7 @@ $config = [
 $names = [];
 $names[] = 'mysql';
 $names[] = 'pgsql';
+$names[] = 'sqlite';
 
 //	...
 foreach( $names as $prod ){
@@ -42,7 +43,7 @@ foreach( $names as $prod ){
 	$db = $dbs[$prod];
 
 	//	...
-	$show = $db->Show($config);
+	$show = $db->Show(['table'=>true, 'database'=>$config['database']]);
 
 	//	...
 	$name = $config['table'];
