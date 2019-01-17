@@ -450,6 +450,7 @@ class Database implements \IF_DATABASE
 			case 'grant':
 			case 'create':
 			case 'drop':
+			case 'pragma':
 				$result = true;
 				break;
 
