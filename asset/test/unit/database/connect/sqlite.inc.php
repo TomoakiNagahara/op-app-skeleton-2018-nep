@@ -14,7 +14,8 @@ $db = Unit::Instantiate('Database');
 //	...
 $config = [
 	'prod' => 'sqlite',
-	'path' => ':memory:',
+//	'path' => ':memory:',
+	'path' => ConvertPath('asset:/.cache/testcase.sqlite3'),
 ];
 
 //	...
