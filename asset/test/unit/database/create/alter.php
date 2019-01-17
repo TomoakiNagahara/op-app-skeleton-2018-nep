@@ -31,6 +31,7 @@ $config = [
 $names = [];
 $names[] = 'mysql';
 $names[] = 'pgsql';
+$names[] = 'sqlite';
 
 //	...
 foreach( $names as $prod ){
@@ -43,15 +44,7 @@ foreach( $names as $prod ){
 	$db = $dbs[$prod];
 
 	//	...
-	$show = [];
-
-	//	...
-	foreach( $db->SQL("SELECT * FROM information_schema.columns WHERE table_name = 't_testcase'", 'select') as $record ){
-		$table = $record['table_name']  ?? $record['TABLE_NAME']  ?? null;
-		$field = $record['column_name'] ?? $record['COLUMN_NAME'] ?? null;
-		//	...
-		$show[$field] = $record;
-	};
+	$show = $db->Show(['column'=>true,'table'=>$config['table'], 'database'=>$config['database']]);
 
 	//	...
 	$database = $config['database'];
@@ -63,6 +56,12 @@ foreach( $names as $prod ){
 		//	Create
 		$sql = \OP\UNIT\SQL\Column::Create($database, $table, $field, $config, $db);
 	}else{
+		//	...
+		if( $prod === 'sqlite' ){
+			$result[$prod] = null;
+			continue;
+		};
+
 		//	Change
 		$sql = \OP\UNIT\SQL\Column::Change($database, $table, $field, $config, $db);
 	};
