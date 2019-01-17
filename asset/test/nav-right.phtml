@@ -10,13 +10,10 @@
  */
 
 //	...
-if(!$menu = ifset($_GET['menu'], 1) ){
+if(!ifset($_GET['menu'], 1) ){
 	echo '<!-- menu is hidden -->'.PHP_EOL;
 	return;
 }
-
-//	...
-$dir = ConvertURL('testcase:/');
 
 //	...
 $list = App::Session('testcase-menu') ?? $list = ['core'=>[],'unit'=>[],'app'=>[]];
@@ -26,6 +23,9 @@ $args = App::Args();
 
 //	...
 $target = &$list;
+
+//	...
+$join = [];
 
 //	...
 while( $arg = array_shift($args) ){
