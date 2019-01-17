@@ -64,7 +64,7 @@ class Table
 		foreach( $fields as $name => $field ){
 			//	...
 			$field['field'] = $name;
-			$col[] = Column::Field($field, $DB);
+			$col[] = Column::Field($field, $DB, null);
 
 			//	...
 			if( isset($field['key']) /* or isset($field['index']) */ ){
