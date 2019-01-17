@@ -46,8 +46,25 @@ class SQLITE
 		//	...
 		if( $path === ':memory:' ){
 			//	OK
-		}else if(!file_exists($path) ){
-			throw new \Exception("File has not been exists. ($path)");
+		}else{
+			if( file_exists($path) ){
+				/*
+				//	Parent directory.
+				$file = basename($path);
+				$perm = substr(sprintf('%o', fileperms($file)), -4);
+				if( '0777' !== $perm ){
+
+				};
+
+				//	Database file.
+				$perm = substr(sprintf('%o', fileperms($path)), -4);
+				if( '0666' !== $perm ){
+
+				};
+				*/
+			}else{
+				throw new \Exception("Database file has not been exists. ($path)");
+			}
 		};
 
 		//	...
@@ -108,9 +125,11 @@ class SQLITE
 		};
 
 		//	...
-		`touch $path`;
+		if( $io = touch($path) ){
+			$io = chmod($path, 0666);
+		}
 
 		//	...
-		return file_exists($path);
+		return $io;
 	}
 }
