@@ -41,16 +41,18 @@ class Show
 		//	...
 		$database = strpos($query, 'SHOW DATABASES')         === 0 ? true: false;
 		$table    = strpos($query, 'SHOW TABLES')            === 0 ? true: false;
-		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
-		$column   = strpos($query, 'SHOW FULL COLUMNS FROM') === 0 ? true: false;
 		$index    = strpos($query, 'SHOW INDEX FROM')        === 0 ? true: false;
 		$select   = strpos($query, 'SELECT ')                === 0 ? true: false;
 		$user     = null;
+		$column   =(strpos($query, 'SHOW FULL COLUMNS FROM') === 0 or
+					strpos($query, 'PRAGMA TABLE_INFO')      === 0)? true: false;
 
 		//	...
 		if( $select ){
 			if( strpos($query, 'FROM `mysql`.`user`') or strpos($query, 'FROM "pg_shadow"') ){
 				$user     = true;
+			}else if( strpos($query, 'FROM information_schema.columns') ){
+				$column   = true;
 			}else if( strpos($query, 'FROM "pg_stat_user_tables"') or strpos($query, "FROM 'sqlite_master'") ){
 				$table    = true;
 			}else{
@@ -130,7 +132,7 @@ class Show
 		//	...
 		foreach( $records as $record ){
 			//	...
-			$name = $record['Field'];
+			$name = $record['Field'] ?? $record['column_name'] ?? $record['name'] ?? null;
 
 			//	...
 			foreach( $record as $key => $val ){
