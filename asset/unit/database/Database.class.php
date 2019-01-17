@@ -347,6 +347,7 @@ class Database implements \IF_DATABASE
 				break;
 
 			case 'pgsql':
+			case 'sqlite':
 				$l = '"';
 				$r = '"';
 				break;
