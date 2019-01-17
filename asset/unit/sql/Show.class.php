@@ -75,6 +75,10 @@ class Show
 				$sql = 'SELECT * FROM "pg_stat_user_tables"';
 				break;
 
+			case 'sqlite':
+				$sql = "SELECT * FROM 'sqlite_master' WHERE type='table'";
+				break;
+
 			default:
 				throw new \Exception("Has not been support this product. ($prod)");
 		};
@@ -93,15 +97,29 @@ class Show
 	static function Column($DB, $database, $table)
 	{
 		//	...
-		static $_cache;
+		switch( $prod = $DB->Config()['prod'] ){
+			case 'mysql':
+				$database = $DB->Quote($database);
+				$table    = $DB->Quote($table);
+				$sql = "SHOW FULL COLUMNS FROM {$database}.{$table}";
+				break;
+
+			case 'pgsql':
+				$table    = $DB->PDO()->quote($table);
+				$sql = "SELECT * FROM information_schema.columns WHERE table_name = {$table}";
+				break;
+
+			case 'sqlite':
+				$table    = $DB->Quote($table);
+				$sql = "PRAGMA TABLE_INFO({$table})";
+				break;
+
+			default:
+				throw new \Exception("This product has not been support. ($prod)");
+		};
 
 		//	...
-		if( isset( $_cache[$database][$table]) ){
-			return $_cache[$database][$table];
-		}
-
-		//	...
-		return $_cache[$database][$table] = sprintf("SHOW FULL COLUMNS FROM %s.%s", $DB->Quote($database), $DB->Quote($table));
+		return $sql;
 	}
 
 	/** Show index list.
