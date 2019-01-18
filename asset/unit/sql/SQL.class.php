@@ -90,6 +90,11 @@ class SQL
 		}
 
 		//	...
+		if(!empty($args['index']) ){
+			return SQL\Show::Index($DB, $args['database'], $args['table']);
+		}
+
+		//	...
 		if(!empty($args['field']) or !empty($args['column']) ){
 			return SQL\Show::Column($DB, $args['database'], $args['table']);
 		}
