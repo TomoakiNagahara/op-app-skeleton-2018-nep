@@ -25,13 +25,27 @@
 		Please enjoy this non stress and comfortable world.
 	</p>
 </section>
-<style>
 
+<hr/>
+
+<?php if( Env::isLocalhost() ): ?>
+<section>
+	<?php
+	$asset_root = (ConvertPath('app:/asset/') === ConvertPath('asset:/')) ? './asset/':ConvertPath('asset:/');
+	?>
+	<h2>Example</h2>
+	<code>
+	cd <?= ConvertPath("app:/\n") ?>
+	ln -s <?= $asset_root.'test' ?> _testcase
+	ln -s <?= $asset_root.'reference' ?> _reference
+	</code>
+</section>
+<?php endif; ?>
+<style>
 #welcome img {
 	float: left;
 	width: 10em;
 	margin-right:  1em;
 	margin-bottom: 1em;
 }
-
 </style>
