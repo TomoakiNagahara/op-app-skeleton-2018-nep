@@ -32,8 +32,8 @@ $config = [
 
 //	...
 $names = [];
-//$names[] = 'mysql';
-//$names[] = 'pgsql';
+$names[] = 'mysql';
+$names[] = 'pgsql';
 $names[] = 'sqlite';
 
 //	...
