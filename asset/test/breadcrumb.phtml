@@ -23,3 +23,26 @@ foreach( \App::Args() as $arg ){
 
 //	...
 echo '</div>'.PHP_EOL;
+
+//	...
+$args = App::Args();
+$path = ConvertPath('testcase:/'.join('/', $args));
+$href = ConvertURL($path);
+$file = $path . '/action.php';
+
+//	...
+if(!file_exists($file) and is_dir($path) ){
+	echo '<ol>'.PHP_EOL;
+	foreach( scandir($path) as $file ){
+		//	...
+		list($file, $ext) = explode('.', $file);
+		if( $ext !== 'php' ){
+			continue;
+		};
+
+		//	...
+		printf('  <li><a href="%s">%s</a></li>'.PHP_EOL, $href.$file, $file);
+	};
+	echo '</ol>'.PHP_EOL;
+};
+
