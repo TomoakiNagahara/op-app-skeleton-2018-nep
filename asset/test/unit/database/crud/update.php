@@ -18,12 +18,10 @@ $dbs = include(ConvertPath('asset:/test/unit/database/connect/action.php'));
 $config = [
 	'database' => 'testcase',
 	'table'    => 't_testcase',
-	'limit'    =>  1,
-	'order'    => 'timestamp desc',
 	'where'    => [
 		'ai'   => [
-			'value' =>  null,
-			'evalu' => '!=',
+			'value' =>  9,
+			'evalu' => '=',
 		],
 	],
 	'set'      => [
@@ -34,8 +32,8 @@ $config = [
 //	...
 $names = [];
 $names[] = 'mysql';
-//$names[] = 'pgsql';
-//$names[] = 'sqlite';
+$names[] = 'pgsql';
+$names[] = 'sqlite';
 
 //	...
 foreach( $names as $prod ){
@@ -48,9 +46,21 @@ foreach( $names as $prod ){
 	$db = $dbs[$prod];
 
 	//	...
-	$result[$prod] = $db->Update($config);
+	switch( $prod ){
+		case 'pgsql':
+		case 'sqlite':
+			unset($config['limit']);
+			unset($config['order']);
+		break;
 
-	$db->Debug();
+		default:
+			$config['limit'] = 1;
+			$config['order'] = 'timestamp asc';
+		break;
+	};
+
+	//	...
+	$result[$prod] = $db->Update($config);
 };
 
 //	...

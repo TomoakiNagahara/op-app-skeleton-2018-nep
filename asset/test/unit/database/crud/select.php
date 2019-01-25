@@ -31,8 +31,8 @@ $config = [
 //	...
 $names = [];
 $names[] = 'mysql';
-//$names[] = 'pgsql';
-//$names[] = 'sqlite';
+$names[] = 'pgsql';
+$names[] = 'sqlite';
 
 //	...
 foreach( $names as $prod ){
