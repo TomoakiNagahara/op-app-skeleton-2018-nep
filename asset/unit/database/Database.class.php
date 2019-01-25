@@ -23,7 +23,7 @@ namespace OP\UNIT;
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-class Database implements \IF_DATABASE
+class Database implements \IF_DATABASE, \IF_UNIT
 {
 	/** trait
 	 *
