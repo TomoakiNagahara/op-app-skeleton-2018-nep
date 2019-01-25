@@ -22,7 +22,7 @@ interface IF_DATABASE
 	/** Return PDO instance.
 	 *
 	 * <pre>
-	 * $db->PDO()->Query();
+	 * $this->PDO()->Query();
 	 * </pre>
 	 *
 	 * @addition 2018-04-20
@@ -41,6 +41,7 @@ interface IF_DATABASE
 	 * $conifg['user']     = 'username';
 	 * $conifg['password'] = 'password';
 	 * $conifg['charset']  = 'utf8';
+	 * $conifg['database'] = 'databasename';
 	 * </pre>
 	 *
 	 * @addition 2018-11-13
@@ -113,5 +114,5 @@ interface IF_DATABASE
 	 * @param	 string	 $type
 	 * @return	 array	 $record
 	 */
-	public function SQL($SQL, $type);
+	public function SQL(string $SQL, string $type);
 }
