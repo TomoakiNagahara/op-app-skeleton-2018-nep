@@ -119,18 +119,21 @@ interface IF_DATABASE
 	/** Begin transaction.
 	 *
 	 * @addition 2019-01-25
+	 * @return	 boolean
 	 */
 	public function Transaction();
 
 	/** Commit transaction.
 	 *
 	 * @addition 2019-01-25
+	 * @return	 boolean
 	 */
 	public function Commit();
 
 	/** Rollback transaction.
 	 *
 	 * @addition 2019-01-25
+	 * @return	 boolean
 	 */
 	public function Rollback();
 }
