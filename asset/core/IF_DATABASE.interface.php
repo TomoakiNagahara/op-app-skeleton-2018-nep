@@ -115,4 +115,22 @@ interface IF_DATABASE
 	 * @return	 array	 $record
 	 */
 	public function SQL(string $SQL, string $type);
+
+	/** Begin transaction.
+	 *
+	 * @addition 2019-01-25
+	 */
+	public function Transaction();
+
+	/** Commit transaction.
+	 *
+	 * @addition 2019-01-25
+	 */
+	public function Commit();
+
+	/** Rollback transaction.
+	 *
+	 * @addition 2019-01-25
+	 */
+	public function Rollback();
 }
