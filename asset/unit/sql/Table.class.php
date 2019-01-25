@@ -115,4 +115,21 @@ class Table
 		//	ALTER DATABASE {DB名} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 		//	ALTER TABLE テーブル名 MODIFY カラム名 値 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 	}
+
+	/** Drop table
+	 *
+	 * @param	 array	 $config
+	 * @return	 string	 $sql
+	 */
+	static function Drop($config)
+	{
+		//	...
+		if(!$table = $config['table'] ?? null ){
+			\Notice::Set("Has not been set table name.");
+			return false;
+		};
+
+		//	...
+		return "DROP TABLE {$table}";
+	}
 }

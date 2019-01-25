@@ -397,15 +397,32 @@ class Column
 		$length  = ifset($config['length'] );
 
 		//	...
+		if( $config['ai'] ?? null ){
+			$type = 'ai';
+		};
+
+		//	...
 		$field   = $DB->Quote($field);
 		$type    = strtoupper($type);
 		$length  = (int)($length);
+
+		//	...
+		if( $type === 'AI' ){
+			$type   = 'INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL';
+			$length = null;
+		};
+
+		//	...
+		if( $config['created'] ?? null ){
+			$type = "DATETIME DEFAULT CURRENT_TIMESTAMP";
+		};
 
 		//	...
 		if( $length ){
 			$type = "$type($length)";
 		};
 
+		//	...
 		if( $verb === 'MODIFY' ){
 			$type = "TYPE $type";
 		};
