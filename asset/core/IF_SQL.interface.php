@@ -38,7 +38,7 @@ interface IF_SQL
 	 * @param	 array		 $config
 	 * @return	\IF_SQL_DDL	 $_DDL
 	 */
-	public function DDL($config);
+	public function DDL(array $config);
 
 	/** Data Manipulation Language.
 	 *
@@ -46,7 +46,7 @@ interface IF_SQL
 	 * @param	 array		 $config
 	 * @return	\IF_SQL_DML	 $_DML
 	 */
-	public function DML($config);
+	public function DML(array $config);
 
 	/** Data Control Language
 	 *
@@ -54,5 +54,37 @@ interface IF_SQL
 	 * @param	 array		 $config
 	 * @return	\IF_SQL_DCL	 $_DCL
 	 */
-	public function DCL($config);
+	public function DCL(array $config);
+
+	/** Class of abstracting at database relation.
+	 *
+	 * @creation 2019-01-17
+	 * @param	 array		 $config
+	 * @return	\IF_SQL_AS_DATABASE
+	 */
+	public function Database(array $config);
+
+	/** Class of abstracting at table relation.
+	 *
+	 * @creation 2019-01-17
+	 * @param	 array		 $config
+	 * @return	\IF_SQL_AS_TABLE
+	 */
+	public function Table(array $config);
+
+	/** Class of abstracting at column relation.
+	 *
+	 * @creation 2019-01-17
+	 * @param	 array		 $config
+	 * @return	\IF_SQL_AS_COLUMN
+	 */
+	public function Column(array $config);
+
+	/** Class of abstracting at index relation.
+	 *
+	 * @creation 2019-01-17
+	 * @param	 array		 $config
+	 * @return	\IF_SQL_AS_INDEX
+	 */
+	public function Index(array $config);
 }
