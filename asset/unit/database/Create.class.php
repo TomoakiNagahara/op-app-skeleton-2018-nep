@@ -86,6 +86,7 @@ class Create
 	/** Create table.
 	 *
 	 * @param	 array	 $config
+	 * @return	 boolean
 	 */
 	function Table($config)
 	{
@@ -93,9 +94,76 @@ class Create
 		$sql = \OP\UNIT\SQL\Table::Create($config, $this->_DB);
 
 		//	...
-		$result = $this->_DB->Query($sql, 'create');
+		if( $result = $this->_DB->Query($sql, 'create') ){
+			//	...
+			if( $this->_DB->Config()['prod'] === 'sqlite' ){
+				$result = $this->_SQLite($config);
+			};
+		};
 
 		//	...
 		return empty($result) ? false: true;
+	}
+
+	/** Search field config.
+	 *
+	 * @param	 array $config
+	 * @return	 array
+	 */
+	private function _Field(array $config)
+	{
+		//	...
+		foreach( ['field','fields','column','columns'] as $key ){
+			if( isset($config[$key]) ){
+				return $config[$key];
+			};
+		};
+	}
+
+	/** Generate trigger.
+	 *
+	 * @param	 array	 $config
+	 * @return	 boolean
+	 */
+	private function _SQLite(array $config):bool
+	{
+		//	...
+		$statement = '';
+
+		//	...
+		$table = $this->_DB->Quote($config['table']);
+
+		//	...
+		foreach( $this->_Field($config) as $name => $column ){
+			//	...
+			$field = $column['name'] ?? $column['field'] ?? $name;
+			$field = $this->_DB->Quote($field);
+
+			//	...
+			if( ($column['ai'] ?? null) or ($column['pkey'] ?? null) ){
+				$pkey = $field;
+			};
+
+			//	...
+			if( $column['timestamp'] ?? null ){
+				//	...
+				$statement .= "  UPDATE {$table} SET {$field} = DATETIME(\"now\",\"localtime\") WHERE {$pkey} = old.{$pkey};\n";
+			};
+		};
+
+		//	...
+		$sql  = "CREATE TRIGGER ON_TIMESTAMP_{$table} AFTER UPDATE on {$table} \n"; // FOR EACH ROW <- for mysql
+		$sql .= "BEGIN \n";
+		$sql .= $statement;
+		$sql .= "END \n";
+
+		//	...
+		$pdo = $this->_DB->PDO();
+		$pdo->query('DELIMITER $$');
+		$pdo->query($sql);
+		$pdo->query('DELIMITER ;');
+
+		//	...
+		return true;
 	}
 }
