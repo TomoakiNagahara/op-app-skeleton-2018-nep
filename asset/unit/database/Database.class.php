@@ -451,6 +451,7 @@ class Database implements \IF_DATABASE
 			case 'create':
 			case 'drop':
 			case 'pragma':
+			case 'trigger':
 				$result = true;
 				break;
 
@@ -469,9 +470,51 @@ class Database implements \IF_DATABASE
 		return isset($result) ? $result: [];
 	}
 
+	/** Begin transactoin.
+	 *
+	 * @see		\IF_DATABASE::Transaction()
+	 * @see		\PDO::beginTransaction()
+	 * @return	 bool
+	 */
+	function Transaction()
+	{
+		return $this->_PDO->beginTransaction();
+	}
+
+	/** Commit transactoin.
+	 *
+	 * @see		\IF_DATABASE::Commit()
+	 * @see		\PDO::commit()
+	 * @return	 bool
+	 */
+	function Commit()
+	{
+		return $this->_PDO->commit();
+	}
+
+	/** Rollback transactoin.
+	 *
+	 * @see		\IF_DATABASE::Rollback()
+	 * @see		\PDO::rollBack()
+	 * @return	 bool
+	 */
+	function Rollback()
+	{
+		return $this->_PDO->rollBack();
+	}
+
+	/** Display how to use.
+	 *
+	 * @see		\IF_DATABASE::Help()
+	 */
+	function Help()
+	{
+
+	}
+
 	/** Display debug information.
 	 *
-	 * @see \IF_DATABASE::Debug()
+	 * @see		\IF_DATABASE::Debug()
 	 */
 	function Debug()
 	{
