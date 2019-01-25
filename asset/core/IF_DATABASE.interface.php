@@ -114,11 +114,4 @@ interface IF_DATABASE
 	 * @return	 array	 $record
 	 */
 	public function SQL($SQL, $type);
-
-	/** Display debug information.
-	 *
-	 * @addition 2018-04-20
-	 * @param	 array	 $config
-	 */
-	public function Debug();
 }
