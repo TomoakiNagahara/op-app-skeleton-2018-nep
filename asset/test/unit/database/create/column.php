@@ -1,8 +1,8 @@
 <?php
 /**
- * unit-test:/unit/database/create/table.php
+ * unit-test:/unit/database/create/column.php
  *
- * @creation  2019-01-11
+ * @creation  2019-01-23
  * @version   1.0
  * @package   unit-test
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
@@ -18,22 +18,17 @@ $dbs = include(ConvertPath('asset:/test/unit/database/connect/action.php'));
 $config = [
 	'database' => 'testcase',
 	'table'    => 't_testcase',
-	'charset'  => 'utf8mb4',
-	'collate'  => 'utf8mb4_general_ci',
-	'field' => [
-		'ai'        => ['type'=>'int', 'ai'=>true],
+	'field'    => [
+		'ai'        => ['type'=>'int'],
 		'text'      => ['type'=>'text'],
-		'created'   => ['type'=>'datetime', 'created'=>true],
-		'updated'   => ['type'=>'datetime', 'updated'=>true],
-		'deleted'   => ['type'=>'datetime'],
 		'timestamp' => ['type'=>'timestamp'],
 	],
 ];
 
 //	...
 $names = [];
-//$names[] = 'mysql';
-//$names[] = 'pgsql';
+$names[] = 'mysql';
+$names[] = 'pgsql';
 $names[] = 'sqlite';
 
 //	...
@@ -47,18 +42,11 @@ foreach( $names as $prod ){
 	$db = $dbs[$prod];
 
 	//	...
-	$show = $db->Show(['table'=>true, 'database'=>$config['database']]);
+	$show = $db->Show(['column'=>true, 'table'=>$config['table'], 'database'=>$config['database']]);
+	D($show);
 
 	//	...
-	$name = $config['table'];
-
-	//	...
-	if( array_search($name, $show) !== false ){
-		$config['if_not_exists'] = true;
-	};
-
-	//	...
-	$result[$prod] = $db->Create()->Table($config);
+	$result[$prod] = $db->Create()->Column($config);
 };
 
 //	...

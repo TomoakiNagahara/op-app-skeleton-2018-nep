@@ -40,11 +40,12 @@ foreach( ['mysql','pgsql'] as $prod ){
 
 	//	...
 	if( $show[$host][$user] ?? null ){
-		$result[$prod]['create'] = true;
+		$result[$prod] = null;
+		continue;
 	};
 
 	//	...
-	$result[$prod]['create'] = $db->Create()->User($config);
+	$result[$prod] = $db->Create()->User($config);
 };
 
 //	...
