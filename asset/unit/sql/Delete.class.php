@@ -55,26 +55,32 @@ class Delete
 			return false;
 		}
 
-		//	LIMIT
-		if(!$limit = DML::limit($args, $db)){
-			return false;
-		}
-
-		//	ORDER
-		$order = null;
-		if( isset($args['order']) ){
-			if( $db->Config()['prod'] === 'mysql' ){
-				$order = DML::Order($args,  $db);
-			}else{
-				\Notice::Set("Could not used ORDER for DELETE SQL. (Except MYSQL)");
-			}
-		}
-
 		//	OFFSET
 		if( isset($args['offset']) ){
-			\Notice::Set("Could not used OFFSET for DELETE SQL. ($table)");
+			\Notice::Set("OFFSET can not be used in DELETE.");
 			return false;
-		}
+		};
+
+		//	...
+		if( 'mysql' === ($prod = $db->Config()['prod']) ){
+			//	LIMIT
+			if(($limit = DML::Limit($args, $db)) === false ){
+				return false;
+			};
+
+			//	ORDER
+			if(($order = DML::Order($args, $db)) === false ){
+				return false;
+			};
+		}else{
+			//	...
+			if( isset($args['limit']) or isset($args['order']) ){
+				\Notice::Set("This product has not been support LIMIT and ORDER. ({$prod})");
+			};
+
+			//	...
+			$order = $limit = null;
+		};
 
 		return "DELETE FROM {$table} WHERE {$where} {$order} {$limit}";
 	}

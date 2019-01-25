@@ -37,31 +37,66 @@ class DML
 	 * @param  \IF_DATABASE
 	 * @return  string
 	 */
-	static function Table($args, $db)
+	static function Table(array $args, \IF_DATABASE $db)
 	{
 		//	...
-		$database = ifset($args['database']);
-
-		//	...
-		if( $table = ifset($args['table']) ){
-			//	test.t_test
+		if( $table = $args['table'] ?? null ){
+			//	database_name.table_name
 			if( $pos = strpos($table, '.') ){
-				//	test.t_test --> test, t_test
+				//	database_name.table_name --> database_name, table_name
 				$database = substr($table, 0, $pos);
 				$table    = substr($table, $pos+1);
-			}
-
-			//	...
-			$database = $database ? $db->Quote($database).'.': null;
+			};
 
 			//	...
 			$table = $db->Quote($table);
+
+			//	...
+			if( $db->Config()['prod'] === 'mysql' and empty($database) ){
+				$database = $args['database'] ?? null;
+			};
+
+			//	...
+			if(!empty($database) ){
+				$table = $db->Quote($database).'.'.$table;
+			};
 		}else{
 			\Notice::Set("Has not been set table name.");
 		}
 
 		//	...
-		return $database.$table;
+		return $table;
+	}
+
+	/** Get VALUES
+	 *
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return 	 array		 $sql
+	 */
+	static function Values(array $args, \IF_DATABASE $db): array
+	{
+		//	...
+		if( empty($args['values']) ){
+			\Notice::Set("Has not been set values. ({$args['table']})");
+			return [];
+		};
+
+		//	...
+		$fields = $values = [];
+
+		//	...
+		foreach( $args['values'] as $field => $value ){
+			$fields[] = $db->Quote($field);
+			$values[] = $db->PDO()->Quote($value);
+		};
+
+		//	...
+		$fields =         '('.join(', ', $fields).')';
+		$values = ' VALUES ('.join(', ', $values).')';
+
+		//	...
+		return [$fields, $values];
 	}
 
 	/** Get set condition.
@@ -104,7 +139,7 @@ class DML
 		}
 
 		//	...
-		return join(', ', $join);
+		return 'SET '.join(', ', $join);
 	}
 
 	/** Get where condition.
@@ -209,35 +244,57 @@ class DML
 	/** Generate limit condition.
 	 *
 	 * @param	 array
+	 * @param	\IF_DATABASE
 	 * @return	 string
 	 */
-	static function Limit($args)
+	static function Limit($args, $db)
 	{
+		//	...
 		if(!isset($args['limit']) ){
-			\Notice::Set("Has not been set LIMIT condition. ({$args['table']})");
-			return false;
-		}
-		return 'LIMIT '.(int)$args['limit'];
+			\Notice::Set("Has not been set limit. ({$args['table']})");
+		};
+
+		//	...
+		$limit = (int)$args['limit'];
+
+		//	...
+		return "LIMIT {$limit}";
 	}
 
 	/** Generate offset condition.
 	 *
-	 * @param	 array	 $args
-	 * @return	 string
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $sql
 	 */
-	static function Offset($args)
+	static function Offset($args, $db)
 	{
-		return 'OFFSET ' . (int)$args['offset'];
+		//	...
+		if(!isset($args['offset']) ){
+			return null;
+		};
+
+		//	...
+		$offset = (int)$args['offset'];
+
+		//	...
+		return "OFFSET {$offset}";
 	}
 
 	/** Generate order condition.
 	 *
-	 * @param	 array
-	 * @param	\IF_DATABASE
-	 * @return	 string
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $sql
 	 */
 	static function Order($args, $db)
 	{
+		//	...
+		if(!isset($args['order']) ){
+			return null;
+		};
+
+		//	...
 		$join = [];
 		foreach( explode(',', $args['order']) as $value ){
 			list($field, $order) = explode(' ', $value.' ');

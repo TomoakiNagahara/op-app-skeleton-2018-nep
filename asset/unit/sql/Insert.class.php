@@ -37,7 +37,7 @@ class Insert
 	 * @param	\IF_DATABASE
 	 * @return	 string
 	 */
-	static function Get($args, $db=null)
+	static function Get(array $args, \IF_DATABASE $db=null)
 	{
 		//	...
 		if(!$db){
@@ -50,14 +50,33 @@ class Insert
 			return false;
 		}
 
-		//	SET
-		if(!$set = DML::set($args, $db)){
-			\Notice::Set("Has not been set condition. ($table)");
-			return false;
-		}
+		//	...
+		$set = $fields = $values = null;
+
+		//	...
+		if( $db->Config()['prod'] === 'mysql' ){
+			//	SET
+			if(!$set = DML::Set($args, $db)){
+				return false;
+			};
+		}else{
+			//	...
+			if( empty($args['values']) and isset($args['set']) ){
+				$args['values'] = $args['set'];
+				unset($args['set']);
+			};
+
+			//	VALUES
+			list($fields, $values) = DML::Values($args, $db);
+
+			//	...
+			if( empty($fields) or empty($values) ){
+				return false;
+			};
+		};
 
 		//	ON DUPLICATE KEY UPDATE
-		if( $update = ifset($args['update']) ){
+		if( $update = $args['update'] ?? null ){
 			if(!is_string($update) ){
 				\Notice::Set('The "ON DUPLICATE KEY UPDATE" is not string. (Please set of field name)');
 				return false;
@@ -72,6 +91,6 @@ class Insert
 		}
 
 		//	...
-		return "INSERT INTO {$table} SET {$set} {$update}";
+		return "INSERT INTO {$table}{$fields}{$values}{$set} {$update}";
 	}
 }

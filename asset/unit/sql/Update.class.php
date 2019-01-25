@@ -43,44 +43,51 @@ class Update
 		if(!$db){
 			\Notice::Set("Has not been set database object.");
 			return false;
-		}
+		};
 
 		//	TABLE
-		if(!$table = DML::table($args, $db) ){
+		if(!$table = DML::Table($args, $db) ){
 			return false;
-		}
+		};
 
 		//	SET
-		if(!$set = DML::set($args, $db)){
+		if(!$set = DML::Set($args, $db)){
 			return false;
-		}
+		};
 
 		//	WHERE
-		if(!$where = DML::where($args, $db) ){
+		if(!$where = DML::Where($args, $db) ){
 			return false;
-		}
-
-		//	LIMIT
-		if(!$limit = DML::limit($args, $db)){
-			return false;
-		}
-
-		//	ORDER
-		$order = null;
-		if( isset($args['order']) ){
-			if( $db->Config()['prod'] === 'mysql' ){
-				$order = DML::Order($args,  $db);
-			}else{
-				\Notice::Set("Could not used ORDER for UPDATE SQL. (Except MYSQL)");
-			}
-		}
+		};
 
 		//	OFFSET
 		if( isset($args['offset']) ){
-			\Notice::Set("Could not used OFFSET for UPDATE SQL. ($table)");
+			\Notice::Set("OFFSET can not be used in UPDATE.");
 			return false;
-		}
+		};
 
-		return "UPDATE {$table} SET {$set} WHERE {$where} {$order} {$limit}";
+		//	...
+		if( 'mysql' === ($prod = $db->Config()['prod']) ){
+			//	LIMIT
+			if(($limit = DML::Limit($args, $db)) === false ){
+				return false;
+			};
+
+			//	ORDER
+			if(($order = DML::Order($args, $db)) === false ){
+				return false;
+			};
+		}else{
+			//	...
+			if( isset($args['limit']) or isset($args['order']) ){
+				\Notice::Set("This product has not been support LIMIT and ORDER. ({$prod})");
+			};
+
+			//	...
+			$order = $limit = null;
+		};
+
+		//	...
+		return "UPDATE {$table} {$set} WHERE {$where} {$order} {$limit}";
 	}
 }
