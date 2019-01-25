@@ -35,7 +35,7 @@ if(!file_exists($file) and is_dir($path) ){
 	echo '<ol>'.PHP_EOL;
 	foreach( scandir($path) as $file ){
 		//	...
-		list($file, $ext) = explode('.', $file);
+		list($file, $ext) = explode('.', $file.'.');
 		if( $ext !== 'php' ){
 			continue;
 		};
@@ -45,4 +45,3 @@ if(!file_exists($file) and is_dir($path) ){
 	};
 	echo '</ol>'.PHP_EOL;
 };
-
