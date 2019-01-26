@@ -382,51 +382,6 @@ function ifset(&$check, $alternate=null)
 	return isset($check) ? $check : $alternate;
 }
 
-/** Parse html tag attribute from string to array.
- *
- * @param  string $attr
- * @return array  $result
- */
-function Attribute(string $attr)
-{
-	//	...
-	$key = 'tag';
-	$result = null;
-
-	//	...
-	for($i=0, $len=strlen($attr); $i<$len; $i++){
-		//	...
-		switch( $attr[$i] ){
-			case '.':
-				$key = 'class';
-				if(!empty($result[$key]) ){
-					$result[$key] .= ' ';
-				}
-				continue 2;
-
-			case '#':
-				$key = 'id';
-				continue 2;
-
-			case ' ':
-				continue 2;
-
-			default:
-		}
-
-		//	...
-		if( empty($result[$key]) ){
-			$result[$key] = '';
-		}
-
-		//	...
-		$result[$key] .= $attr[$i];
-	}
-
-	//	...
-	return $result;
-}
-
 /** Output secure JSON.
  *
  * @param	 array	 $json
@@ -459,36 +414,11 @@ function Json($json, $attr)
  */
 function Html($string, $attr=null, $escape=true)
 {
-	//	Escape tag and quote.
-	if( $escape ){
-		$string = Escape($string);
+	//	...
+	if(!Unit::Load('html') ){
+		return false;
 	}
 
 	//	...
-	if( $attr ){
-		$attr = Attribute($attr);
-	}
-
-	//	...
-	$tag = $id = $class = null;
-	foreach( ['tag','id','class'] as $key ){
-		${$key} = $attr[$key] ?? null;
-	}
-
-	//	...
-	if( empty($tag) ){
-		$tag = 'div';
-	}
-
-	//	...
-	$attr = $id    ? " id='$id'"      :'';
-	$attr.= $class ? " class='$class'":'';
-
-	//	...
-	if( $tag === 'a' ){
-		$attr = ' href="' . $string . '"';
-		printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
-	}else{
-		printf('<%s%s>%s</%s>'.PHP_EOL, $tag, $attr, $string, $tag);
-	}
-}
+	echo \OP\UNIT\Html::Generate($string, $attr, $escape);
+};
