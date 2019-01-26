@@ -17,37 +17,60 @@
  */
 function _GetRootsPath($meta=null, $path=null)
 {
-	//	...
-	static $root;
+	return RootPath($meta, $path);
+}
 
+/** Get/Set meta root path.
+ *
+ * @param	 string		 $meta is label name.
+ * @param	 string		 $path is full file path.
+ * @return	 array
+ */
+function RootPath($meta=null, $path=null)
+{
 	//	...
-	if(!$root or ($meta and $path) ){
+	static $_root;
+
+	//	Init $_root
+	if( empty($_root) ){
 		//	...
 		global $_OP;
 
-		//	...
-		if( $meta and $path ){
-			//	...
-			$temp = strtoupper($meta) . '_ROOT';
-
-			//	...
-			$_OP[$temp] = $path;
-		}
-
-		//	...
-		$root = [];
-
-		//	...
+		/** Why want to rebuild?
+		 *  $_OP['OP_ROOT'] --> $_root['op:/']
+		 */
 		foreach( $_OP as $key => $val ){
+			//	...
 			list($key1, $key2) = explode('_', $key);
+
+			//	...
 			if( $key2 === 'ROOT' ){
-				$root[ strtolower($key1) . ':/' ] = rtrim($val, '/').'/';
-			}
-		}
+				$_root[ strtolower($key1) . ':/' ] = rtrim($val, '/').'/';
+			};
+		};
+	};
+
+	//	...
+	if( $meta and $path ){
+		/*
+		//	...
+		$temp = strtoupper($meta) . '_ROOT';
+
+		//	...
+		$_OP[$temp] = $path;
+		*/
+
+		//	...
+		if(!file_exists($path)){
+			throw new \Exception("This file path has not been exists. ($path)");
+		};
+
+		//	...
+		$_root[ strtolower($meta) . ':/' ] = rtrim($path, '/').'/';
 	}
 
 	//	...
-	return $root;
+	return $_root;
 }
 
 /** Compress to meta path from local file path.
@@ -61,7 +84,7 @@ function _GetRootsPath($meta=null, $path=null)
  */
 function CompressPath($path)
 {
-	foreach( _GetRootsPath() as $key => $var ){
+	foreach( RootPath() as $key => $var ){
 		if( strpos($path, $var) === 0 ){
 			$path = substr($path, strlen($var));
 			return $key . ltrim($path,'/');
@@ -81,7 +104,7 @@ function CompressPath($path)
  */
 function ConvertPath($path)
 {
-	foreach( _GetRootsPath() as $key => $var ){
+	foreach( RootPath() as $key => $var ){
 		if( strpos($path, $key) === 0 ){
 			$path = substr($path, strlen($key));
 			return $var.$path;
@@ -146,7 +169,7 @@ function ConvertURL($url)
 		//
 		if( $len ){
 		//	Why? <-- Replace meta path label.
-		foreach( _GetRootsPath() as $key => $dir ){
+		foreach( RootPath() as $key => $dir ){
 			//	match
 			if( strpos($url, $key) === 0 ){
 				//	Convert
