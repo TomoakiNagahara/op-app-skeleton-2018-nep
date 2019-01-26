@@ -389,17 +389,13 @@ function ifset(&$check, $alternate=null)
  */
 function Json($json, $attr)
 {
-	//	Decode
-	$json = Decode($json);
-
-	//	Convert to json.
-	$json = json_encode($json);
-
-	//	Encode XSS. (Not escape quote)
-	$json = htmlentities($json, ENT_NOQUOTES, 'utf-8');
+	//	...
+	if(!Unit::Load('html') ){
+		return false;
+	}
 
 	//	...
-	Html($json, 'div.'.$attr, false);
+	echo \OP\UNIT\Html::Json($json, $attr);
 }
 
 /** Display HTML.
