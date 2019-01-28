@@ -190,14 +190,42 @@ class Inspector
 
 	/** Automatically do inspection and building.
 	 *
-	 * @param array $args
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $DB
 	 */
-	static function Auto($args, $DB)
+	static function Auto($args, $DB=null)
 	{
 		//	...
 		if(!$config = self::_Config($args) ){
 			return;
 		}
+
+		//	...
+		if( $DB === null ){
+			//	...
+			if(!$DB = \Unit::Instantiate('Database') ){
+				self::$_failure = true;
+				return !self::Failed();
+			};
+
+			//	...
+			if(!empty($_POST) ){
+				$conf = [];
+				foreach( ['prod','host','port','user','password','charset',] as $key ){
+					$conf[$key] = $_POST[$key] ?? null;
+				};
+
+				//	...
+				$DB->Connect($conf);
+			};
+
+			//	...
+			if(!$DB->isConnect() ){
+				self::Form();
+				self::$_failure = true;
+				return !self::Failed();
+			};
+		};
 
 		//	...
 		self::Inspection($config, $DB);
@@ -220,6 +248,11 @@ class Inspector
 		if( self::$_failure === null ){
 			self::$_failure  =  false;
 		}
+
+		//	...
+		if( self::$_failure ){
+			self::Form();
+		};
 
 		//	...
 		return !self::Failed();
@@ -652,12 +685,12 @@ class Inspector
 
 	/** Inspect index each table.
 	 *
-	 * @param  \OP\UNIT\DB $DB
-	 * @param   string     $database
-	 * @param   string     $table
-	 * @param   array      $indexes
-	 * @param  &array      $_result
-	 * @return  boolean    $result
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $database
+	 * @param	 string		 $table
+	 * @param	 array		 $indexes
+	 * @param	&array		 $_result
+	 * @return	 boolean	 $result
 	 */
 	static function Indexes($DB, $database, $table, $indexes, &$_result)
 	{
@@ -674,11 +707,14 @@ class Inspector
 		//	`ALTER TABLE ``t_test`` DROP PRIMARY KEY;
 	}
 
-	/** Print default html form.
+	/** Display default form.
 	 *
 	 */
 	static function Form()
 	{
+		//	...
+		\OP\UNIT\WebPack::JS( __DIR__.'/form');
+		\OP\UNIT\WebPack::Css(__DIR__.'/form');
 		\App::Template(__DIR__.'/form.phtml');
 	}
 
@@ -751,6 +787,6 @@ class Inspector
 	 */
 	static function Debug()
 	{
-		D(__METHOD__, self::_DB()->Queries(), self::$_result);
+		D(self::$_result);
 	}
 }
