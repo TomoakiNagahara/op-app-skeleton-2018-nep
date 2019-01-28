@@ -266,7 +266,7 @@ class Inspector
 		$lists = [];
 
 		//	...
-		if(!$sql  = \OP\UNIT\SQL\Show::User($DB) ){
+		if(!$sql  = \OP\UNIT\SQL\Show::User([], $DB) ){
 			return;
 		}
 
@@ -312,7 +312,7 @@ class Inspector
 
 	/** Check privilege.
 	 *
-	 * @param	\OP\UNIT\DB	 $DB
+	 * @param	\IF_DATABASE $DB
 	 * @param	 string		 $host
 	 * @param	 string		 $user
 	 * @param	 array		 $configs
@@ -430,9 +430,9 @@ class Inspector
 
 	/** Inspect databases.
 	 *
-	 * @param \OP\UNIT\DB $DB
-	 * @param  array      $databases
-	 * @param &array      $_result
+	 * @param	\IF_DATABASE $DB
+	 * @param	 array		 $databases
+	 * @param	&array		 $_result
 	 */
 	static function Databases($DB, $databases, &$_result)
 	{
