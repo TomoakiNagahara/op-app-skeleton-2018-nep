@@ -9,7 +9,8 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-$config = [];
+$config  = [];
+$configs = [];
 
 //	database
 $database = 'testcase';
