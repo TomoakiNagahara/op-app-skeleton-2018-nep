@@ -412,7 +412,7 @@ class Database implements \IF_DATABASE, \IF_UNIT
 
 		//	Check of SQL type.
 		if(!$type){
-			$type = substr($query, 0, strpos($query, ' '));
+			$type = strtolower(substr($query, 0, strpos($query, ' ')));
 		}
 
 		//	Generate result value by type.
