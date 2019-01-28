@@ -57,6 +57,13 @@ interface IF_DATABASE
 	 */
 	public function Connect($config);
 
+	/** Is connected.
+	 *
+	 * @addition 2019-01-28
+	 * @return	 boolean
+	 */
+	public function isConnect();
+
 	/** Count number of records at SELECT conditions.
 	 *
 	 * @addition 2018-04-20
