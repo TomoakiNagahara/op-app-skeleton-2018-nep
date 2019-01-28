@@ -354,6 +354,11 @@ class Builder
 				};
 
 				//	...
+				if( empty($configs[$user]['privilege']) ){
+					$configs[$user]['privilege'] = [];
+				};
+
+				//	...
 				foreach( $configs[$user]['privilege'] as $database => $tables ){
 					foreach( $tables as $table => $privileges ){
 						foreach( $privileges as $privilege => $column ){
