@@ -10,13 +10,13 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-OP\UNIT\SELFTEST\Configer::DSN('localhost', 'mysql', '3306');
+OP\UNIT\SELFTEST\Configer::DSN(['host'=>'localhost','prod'=>'mysql']);
 
 //	...
-OP\UNIT\SELFTEST\Configer::User('testcase', 'password', false, 'utf8');
+OP\UNIT\SELFTEST\Configer::User(['name'=>'testcase', 'password'=>'password']);
 
 //	...
-OP\UNIT\SELFTEST\Configer::Database('testcase');
+OP\UNIT\SELFTEST\Configer::Database(['name'=>'testcase']);
 
 //	...
 //include(__DIR__.'/testcase@t_test.inc.php');
