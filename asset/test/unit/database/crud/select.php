@@ -21,10 +21,10 @@ $config = [
 	'limit'    =>  3,
 	'order'    => 'timestamp desc',
 	'where'    => [
-		'ai'   => [
-			'value' =>  0,
-			'evalu' => '>',
-		],
+		'ai not null',
+		'ai >= 1',
+		'text  = This is test.',
+	//	'flag != delete',
 	],
 ];
 
@@ -47,6 +47,7 @@ foreach( $names as $prod ){
 	//	...
 	$result[$prod] = $db->Select($config);
 
+	//	...
 	$db->Debug();
 };
 
