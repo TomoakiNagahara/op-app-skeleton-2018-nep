@@ -46,6 +46,7 @@ class Show
 		$user     = null;
 		$column   =(strpos($query, 'SHOW FULL COLUMNS FROM') === 0 or
 					strpos($query, 'PRAGMA TABLE_INFO')      === 0)? true: false;
+		$grant    = strpos($query, 'SHOW GRANTS FOR ')       === 0 ? true: false;
 
 		//	...
 		if( $select ){
@@ -75,6 +76,9 @@ class Show
 		}else if( $user ){
 			//	...
 			return self::_User($records);
+		}else if( $grant ){
+			//	...
+			return self::_Grant($records);
 		}else{
 			//	...
 			return $records;
@@ -233,6 +237,27 @@ class Show
 
 			//	...
 			$result[$host][$user] = true;
+		}
+
+		//	...
+		return $result;
+	}
+
+	/** Grant
+	 *
+	 * @param  array $records
+	 * @return array $result
+	 */
+	static private function _Grant(array $records)
+	{
+		//	...
+		$result = [];
+
+		//	...
+		foreach( $records as $record ){
+			foreach( $record as $grant ){
+				$result[] = $grant;
+			};
 		}
 
 		//	...
