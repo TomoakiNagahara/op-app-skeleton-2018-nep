@@ -40,6 +40,14 @@ interface IF_SQL_DDL_CREATE
 	 */
 	public function User(array $config);
 
+	/** Generate Create role SQL.
+	 *
+	 * @creation 2019-01-28
+	 * @param	 array		 $config
+	 * @return	 string		 $sql
+	 */
+	public function Role(array $config);
+
 	/** Generate Create database SQL.
 	 *
 	 * @creation 2019-01-08
