@@ -50,12 +50,12 @@ class Selftest
 
 			//	...
 			\OP\UNIT\SELFTEST\Configer::DSN( $dsn['host'], $dsn['scheme'], $dsn['port']);
-			\OP\UNIT\SELFTEST\Configer::User($dsn['user'], $dsn['pass']  , $dsn['charset'] ?? 'utf8');
+			\OP\UNIT\SELFTEST\Configer::User(['name'=>$dsn['user'],'password'=>$dsn['pass'],'charset'=>$dsn['charset'] ?? 'utf8']);
 
 			//	...
 			foreach( $databases as $database => $tables ){
 				//	...
-				\OP\UNIT\SELFTEST\Configer::Database($database);
+				\OP\UNIT\SELFTEST\Configer::Database(['name'=>$database]);
 
 				//	...
 				foreach( $tables as $table => $columns ){
@@ -64,17 +64,20 @@ class Selftest
 
 					//	...
 					foreach( $columns as $field => $column ){
+						/*
 						//	...
-						$field = $type = $comment = null;
-						foreach( ['field','type','comment'] as $key ){
+						$field = $type = $length = $null = $default = $comment = null;
+						foreach( ['field','type','length','null','default','comment'] as $key ){
 							${$key} = $column[$key] ?? null;
 						}
+						*/
 
 						//	...
 						self::_length($column);
 
 						//	...
-						\OP\UNIT\SELFTEST\Configer::Column($field, $type, $comment, $column);
+						\OP\UNIT\SELFTEST\Configer::Set('column', $column);
+					//	\OP\UNIT\SELFTEST\Configer::Column($field, $type, $length, $null, $default, $comment, $column);
 
 						//	...
 						if( ($column['ai'] ?? false) ){
@@ -141,25 +144,11 @@ class Selftest
 		$config = self::_Config($file);
 
 		//	Set configuration.
-		\OP\UNIT\SELFTEST\Inspector::Auto( $config );
-
-		//	Get result.
-		$build  = \OP\UNIT\SELFTEST\Inspector::Build();
-		$failed = \OP\UNIT\SELFTEST\Inspector::Failed();
+		\OP\UNIT\SELFTEST\Inspector::Auto($config, null);
 
 		//	...
 		while( $message = \OP\UNIT\SELFTEST\Inspector::Error() ){
 			printf('<p class="testcase selftest bold error">%s</p>', $message);
-		}
-
-		//	...
-		if(!$build ){
-			\Notice::Set('Build was failed.');
-		};
-
-		//	...
-		if( $failed !== false ){
-			\OP\UNIT\SELFTEST\Inspector::Form();
 		}
 
 		//	...
