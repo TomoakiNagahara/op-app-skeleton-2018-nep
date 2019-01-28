@@ -106,6 +106,6 @@ if( $en >= $total_pages ){
 	?>
 </nav>
 <?php
-if( 1 ){
+if( $_GET['debug'] ?? null ){
 	D("st=$st, en=$en, current_page=$current_page, total=$total_pages, gibbon=$gibbon, arm=$arm, kind=$kind, page_number=$page_number");
 };
