@@ -8,10 +8,6 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-
-/* @var $db \OP\UNIT\Database */
-include('../connect.php');
-
 //	Load selftest unit.
 if(!Unit::Load('selftest') ){
 	return;
