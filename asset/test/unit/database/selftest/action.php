@@ -9,7 +9,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 /* @var $db \OP\UNIT\Database */
-include('../connect.php');
+$dbs = include('../connect/action.php');
 
 //	Load selftest unit.
 if(!Unit::Load('selftest') ){
@@ -20,10 +20,10 @@ if(!Unit::Load('selftest') ){
 include('testcase@db.inc.php');
 
 //	Set configuration.
-\OP\UNIT\SELFTEST\Inspector::Auto( OP\UNIT\SELFTEST\Configer::Get() );
+\OP\UNIT\SELFTEST\Inspector::Auto( OP\UNIT\SELFTEST\Configer::Get(), $dbs['mysql'] );
 
 //	Get result.
-$build  = \OP\UNIT\SELFTEST\Inspector::Build();
+          \OP\UNIT\SELFTEST\Inspector::Build();
 $failed = \OP\UNIT\SELFTEST\Inspector::Failed();
 
 //	...
@@ -32,11 +32,16 @@ while( $message = \OP\UNIT\SELFTEST\Inspector::Error() ){
 }
 
 //	...
+$navies = [];
+
+//	...
+$navi = [];
 $navi['label'] = 'Debug(ON)';
 $navi['url']   = '?debug=1';
 $navies[] = $navi;
 
 //	...
+$navi = [];
 $navi['label'] = 'Debug(OFF)';
 $navi['url']   = '?debug=0';
 $navies[] = $navi;
