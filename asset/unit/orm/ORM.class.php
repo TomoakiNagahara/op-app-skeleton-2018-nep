@@ -168,6 +168,8 @@ class ORM
 
 			//	...
 			$config = parse_url($config);
+			$config['prod']     = $config['scheme'];
+			$config['password'] = $config['pass'];
 
 			//	...
 			if( isset($config['query']) ){
