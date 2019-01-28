@@ -163,6 +163,11 @@ class DML
 		}
 
 		//	...
+		if( isset($args['where'][0]) ){
+			return self::Where2($args, $db);
+		};
+
+		//	...
 		foreach( $args['where'] as $column => $condition ){
 			if( is_array($condition) ){
 				$evalu = ifset($condition['evalu'], '=');
@@ -238,6 +243,96 @@ class DML
 					$join[] = "{$column} = {$value}";
 			}
 		}
+		return '('.join(' AND ', $join).')';
+	}
+
+	/** Get where condition version 2.
+	 *
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $where
+	 */
+	static function Where2(array $args, \IF_DATABASE $db)
+	{
+		//	...
+		$join  = [];
+		$match = null;
+
+		//	...
+		foreach($args['where'] as $str){
+			//	...
+			if(!preg_match('/(\w+)\s+([^\s]+)\s+(.+)/i', $str, $match) ){
+				\Notice::Set("Does not match format. ($str)");
+				continue;
+			};
+
+			//	...
+			$field = $match[1];
+			$evalu = $match[2];
+			$value = $match[3];
+			$crude = trim($value);
+
+			//	...
+			$field = $db->Quote($field);
+			$value = $db->PDO()->quote($value);
+
+			//	...
+			switch( $evalu = strtoupper($evalu) ){
+				//	NULL
+				case '!IS':
+				case 'NOT':
+					$evalu = 'IS NOT';
+				//	break;
+				case 'IS':
+					if( 'NULL' === strtoupper($crude) ){
+						$value = 'NULL';
+					};
+					break;
+
+				//	IN
+				case '!IN':
+				case 'NOTIN':
+					$evalu = 'NOT IN';
+					//	break;
+				case 'IN':
+					$j = [];
+					foreach( explode(',', $value) as $v ){
+						$v = $db->PDO()->quote(trim($v));
+					};
+					$value = '('.join(',', $j).')';
+					break;
+
+				//	LIKE
+				case '!LIKE':
+				case 'NOTLIKE':
+					$evalu = 'NOT LIKE';
+					//	break;
+				case 'LIKE':
+					break;
+
+				//	BETWEEN
+				case 'BETWEEN':
+					break;
+
+				//	...
+				case '=':
+				case '>':
+				case '<':
+				case '>=':
+				case '<=':
+					break;
+
+				//	...
+				default:
+					\Notice::Set("This evaluation was not supported. ($evalu)");
+					return false;
+			};
+
+			//	...
+			$join[] = "{$field} {$evalu} {$value}";
+		};
+
+		//	...
 		return '('.join(' AND ', $join).')';
 	}
 
