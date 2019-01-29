@@ -182,4 +182,34 @@ class Time
 			self::$_time = $time;
 		}
 	}
+
+	/** Get year.
+	 *
+	 * @param	 string		 $calc
+	 * @return	 integer
+	 */
+	static function Year($calc=null)
+	{
+		return (int)self::Format('Y', $calc);
+	}
+
+	/** Get month.
+	 *
+	 * @param	 string		 $calc
+	 * @return	 integer
+	 */
+	static function Month($calc=null)
+	{
+		return (int)self::Format('n', $calc);
+	}
+
+	/** Get day.
+	 *
+	 * @param	 string		 $calc
+	 * @return	 integer
+	 */
+	static function Day($calc=null)
+	{
+		return (int)self::Format('j', $calc);
+	}
 }
