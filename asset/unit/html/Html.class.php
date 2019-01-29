@@ -120,4 +120,24 @@ class Html
 		//	...
 		return $result;
 	}
+
+	/** Return secure json string at wrapped div tag.
+	 *
+	 * @param	 array		 $json
+	 * @param	 string		 $attr
+	 */
+	static function Json($json, $attr=null)
+	{
+		//	Decode
+		$json = Decode($json);
+
+		//	Convert to json.
+		$json = json_encode($json);
+
+		//	Encode XSS. (Not escape quote)
+		$json = htmlentities($json, ENT_NOQUOTES, 'utf-8');
+
+		//	...
+		return self::Generate($json, 'div.'.$attr, false);
+	}
 }
