@@ -620,6 +620,14 @@ class Inspector
 
 				//	...
 				case 'null':
+					//	...
+					if( isset($column[$key]) ){
+						$io = ($column[$key] === $fact[$key]) ? true: false;
+					}else{
+						$io = $fact[$key] ? true: false;
+					};
+					break;
+
 				case 'extra':
 					$io = ifset($column[$key]) == ifset($fact[$key]) ? true: false;
 					break;
