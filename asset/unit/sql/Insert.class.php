@@ -78,7 +78,7 @@ class Insert
 		//	ON DUPLICATE KEY UPDATE
 		if( $update = $args['update'] ?? null ){
 			if(!is_string($update) ){
-				\Notice::Set('The "ON DUPLICATE KEY UPDATE" is not string. (Please set of field name)');
+				\Notice::Set('"ON DUPLICATE KEY UPDATE" is not string. (Please set of field name)');
 				return false;
 			}
 			$dml = [];
@@ -87,7 +87,7 @@ class Insert
 				$key = trim($key);
 				$dml['set'][$key] = $args['set'][$key];
 			}
-			$update = "ON DUPLICATE KEY UPDATE " . DML::Set($dml, $db);
+			$update = "ON DUPLICATE KEY UPDATE " . DML::_Set($dml, $db);
 		}
 
 		//	...

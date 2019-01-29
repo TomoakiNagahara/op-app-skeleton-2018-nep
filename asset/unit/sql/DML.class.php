@@ -105,14 +105,8 @@ class DML
 	 * @param	\IF_DATABASE $DB
 	 * @return	 string
 	 */
-	static function Set($args, $db)
+	static function _Set($args, $db)
 	{
-		//	...
-		if( empty($args['set']) ){
-			\Notice::Set("Has not been set SET condition. ({$args['table']})");
-			return false;
-		}
-
 		//	...
 		$join = [];
 
@@ -139,7 +133,25 @@ class DML
 		}
 
 		//	...
-		return 'SET '.join(', ', $join);
+		return join(', ', $join);
+	}
+
+	/** Get set condition.
+	 *
+	 * @param	 array
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string
+	 */
+	static function Set($args, $db)
+	{
+		//	...
+		if( empty($args['set']) ){
+			\Notice::Set("Has not been set SET condition. ({$args['table']})");
+			return false;
+		}
+
+		//	...
+		return 'SET ' . self::_Set($args, $db);
 	}
 
 	/** Get where condition.
