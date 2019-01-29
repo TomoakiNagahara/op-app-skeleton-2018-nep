@@ -40,15 +40,21 @@ $query = $sql->Select($config, $db);
 //  Insert configuration.
 $config = [
   'table' = 'table_name',
-  'set'  = [
-    'nickname' = 'Hoge',
-    'comment'  = 'Hello',
+  'set'[
+    'nickname = The World',
+    'comment  = Hello, world!',
   ],
+  //	ON DUPLICATE KEY UPDATE
+  'update' = 'nickname, comment',
 ];
 
 //  Generate SQL query.
 $query = $sql->Insert($config, $db);
 ```
+
+#### Notice
+
+ "ON DUPLICATE KEY UPDATE" is consume autoincrement id number.
 
 ### Update
 
