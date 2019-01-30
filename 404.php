@@ -9,7 +9,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-if( Time::Format('n') === '10' ){
+if( Time::Month() === 10 ){
 	$path = '404-Halloween.phtml';
 }else{
 	$path = '404_not_found.phtml';
