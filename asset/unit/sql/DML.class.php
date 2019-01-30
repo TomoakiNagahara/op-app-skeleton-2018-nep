@@ -101,12 +101,17 @@ class DML
 
 	/** Get set condition.
 	 *
-	 * @param	 array
+	 * @param	 array		 $args
 	 * @param	\IF_DATABASE $DB
-	 * @return	 string
+	 * @return	 string		 $sql
 	 */
 	static function _Set($args, $db)
 	{
+		//	...
+		if( isset($args['set'][0]) ){
+			return self::_Set0($args, $db);
+		};
+
 		//	...
 		$join = [];
 
@@ -131,6 +136,33 @@ class DML
 			//	...
 			$join[] = "{$column} = {$value}";
 		}
+
+		//	...
+		return join(', ', $join);
+	}
+
+	/** Get set condition.
+	 *
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $DB
+	 * @return	 string		 $sql
+	 */
+	static function _Set0($args, $db)
+	{
+		//	...
+		$join  = [];
+		$match = null;
+
+		//	...
+		foreach( $args['set'] as $str ){
+			if( preg_match('/([_a-z0-9]+)\s*=\s*(.+)/i', ltrim($str), $match) ){
+				$field  = $db->Quote($match[1]);
+				$value  = $db->PDO()->quote($match[2]);
+				$join[] = "{$field} = {$value}";
+			}else{
+				\Notice::Set("Unmatch format. ($str)");
+			};
+		};
 
 		//	...
 		return join(', ', $join);
