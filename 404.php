@@ -17,3 +17,8 @@ if( Time::Format('n') === '10' ){
 
 //	...
 App::Template($path);
+
+//	...
+if( Unit::Load('NotFound') ){
+	OP\UNIT\NotFound::Auto();
+};
