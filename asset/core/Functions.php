@@ -240,6 +240,7 @@ function Decode($value, $charset=null)
 
 		//	...
 		default:
+			//	Does infinite loop.
 		//	Notice::Set("Has not been support this type. ($type)");
 	}
 
@@ -340,11 +341,12 @@ function _EscapeString($var, $charset='utf-8')
  *
  * This function is convert to fixed length unique string from long or short strings.
  *
- * @param  null|integer|float|string|array|object $var
- * @param  integer $length
- * @return string  $hash
+ * @param	 null|integer|float|string|array|object $var
+ * @param	 integer	 $length
+ * @param	 string|null $salt
+ * @return	 string		 $hash
  */
-function Hasha1($var, $length=8){
+function Hasha1($var, $length=8, $salt=null){
 	//	...
 	if( is_string($var) ){
 		//	...
@@ -353,7 +355,12 @@ function Hasha1($var, $length=8){
 	}
 
 	//	...
-	return substr(sha1($var . _OP_SALT_), 0, $length);
+	if( $salt === null ){
+		$salt = _OP_SALT_;
+	};
+
+	//	...
+	return substr(sha1($var . $salt), 0, $length);
 }
 
 /** ifset
