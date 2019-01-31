@@ -32,9 +32,9 @@ class Select
 
 	/** Get select sql statement.
 	 *
-	 * @param   array       $config
-	 * @param  \IF_DATABASE $DB
-	 * @return  string      $SQL
+	 * @param	 array		 $config
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $sql
 	 */
 	static function Get($args, $db=null)
 	{
@@ -49,10 +49,18 @@ class Select
 			return false;
 		}
 
+		/*
 		//	COLUMN
 		if(!$column = self::_Column($args, $db)){
 			return false;
 		}
+		*/
+
+		//	Field
+		if(!$field = self::_Field($args, $db) ){
+			$field = '*';
+		};
+
 
 		//	WHERE
 		if(!$where = DML::Where($args, $db) ){
@@ -71,16 +79,57 @@ class Select
 		$offset = isset($args['offset']) ? DML::Offset($args, $db): null;
 
 		//	...
-		return "SELECT {$column} FROM {$table} WHERE {$where} {$order} {$limit} {$offset}";
+		return "SELECT {$field} FROM {$table} WHERE {$where} {$order} {$limit} {$offset}";
+	}
+
+	/** Get field condition.
+	 *
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $sql
+	 */
+	static private function _Field(array $args, \IF_DATABASE $db)
+	{
+		//	...
+		$join = null;
+
+		//	...
+		foreach( $args['field'] ?? [] as $field ){
+			//	...
+			list($field, $alias) = explode(' as ', $field . ' as ');
+
+			//	If has table name.
+			if( strpos($field, '.') ){
+				//	Has table name.
+				list($table, $field) = explode('.', $field);
+				$table = $db->Quote(trim($table));
+				$field = $db->Quote(trim($field));
+				$field = "{$table}.{$field}";
+			}else{
+				//	Field name only.
+				$field = $db->Quote(trim($field));
+			};
+
+			//	If has alias name.
+			if( $alias ){
+				$alias = $db->Quote(trim($alias));
+			};
+
+			//	...
+			$join[] = $alias ? "$field AS $alias": $field;
+		};
+
+		//	...
+		return count($join) ? join(', ', $join): null;
 	}
 
 	/** Get column condition.
 	 *
-	 * @param	 array	 $args
-	 * @param	\PDO	 $pdo
-	 * @return	 string	 $sql
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $sql
 	 */
-	static private function _Column($args, $pdo)
+	static private function _Column(array $args, \IF_DATABASE $db)
 	{
 		//	...
 		if( $column = ifset($args['column']) ){
@@ -104,7 +153,7 @@ class Select
 					$leng  = $en - $st;
 					$func  = strtoupper( substr($val,     0, $st)  );
 					$field = strtoupper( substr($val, $st+1, $leng));
-					$field = $pdo->quote(trim($field));
+					$field = $db->quote(trim($field));
 
 					//	...
 					$join[] = "$func($field)";

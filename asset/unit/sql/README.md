@@ -91,3 +91,21 @@ $config = [
 //  Generate SQL query.
 $query = $sql->Delete($config, $db);
 ```
+
+### Table Join
+
+ Use QQL.
+
+```
+<?php
+$config = [
+  'table' => 't_user.name_id <= t_name.id, t_user.group_id <= t_group.id',
+  'limit' => 1,
+  'where' => [
+    'id = 1',
+  ],
+];
+
+//  Generate SQL query.
+$query = $sql->Select($config, $db);
+```
