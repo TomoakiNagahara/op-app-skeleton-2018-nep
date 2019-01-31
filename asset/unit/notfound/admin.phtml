@@ -40,6 +40,9 @@ if( $host = $form->GetValue('host') ){
 	$config['limit'] = 100;
 	$config['order'] = 'count';
 	$config['where'][] = "host = $ai";
+	$config['field'][] = "t_notfound.ai  as ai  ";
+	$config['field'][] = "t_uri.uri      as uri ";
+	$config['field'][] = "t_ua.ua        as ua  ";
 	$record = $db->Select($config);
 	D($record);
 };
