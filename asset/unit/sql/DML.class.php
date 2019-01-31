@@ -47,7 +47,7 @@ class DML
 
 		//	...
 		if( strpos($args['table'], '=') ){
-			return self::_TableJoin($args, $db);
+			return self::_TableJoins($args, $db);
 		}else{
 			return self::_Table($args, $db);
 		};
@@ -82,11 +82,8 @@ class DML
 		return $table;
 	}
 
-	static private function _TableJoin(array $args, \IF_DATABASE $db)
+	static private function _TableJoin(string $table, \IF_DATABASE $db, $flag)
 	{
-		//	...
-		$table = $args['table'];
-
 		//	...
 		$join = $match = null;
 
@@ -121,7 +118,24 @@ class DML
 		$field2 = $db->Quote($join['right'][1]);
 
 		//	...
-		return "$table1 $eval JOIN $table2 ON $table1.$field1 = $table2.$field2";
+		$table0 = $flag ? null: $table1;
+
+		//	...
+		return "$table0 $eval JOIN $table2 ON $table1.$field1 = $table2.$field2";
+	}
+
+	static private function _TableJoins(array $args, \IF_DATABASE $db)
+	{
+		//	...
+		$join = [];
+
+		//	...
+		foreach( explode(',', $args['table']) as $table ){
+			$join[] = self::_TableJoin($table, $db, count($join));
+		};
+
+		//	...
+		return join(' ', $join);
 	}
 
 	/** Get VALUES
