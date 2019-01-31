@@ -1,10 +1,10 @@
 <?php
 /**
- * unit-NotFound:/index.php
+ * unit-notfound:/index.php
  *
  * @creation  2019-01-29
  * @version   1.0
- * @package   unit-NotFound
+ * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */

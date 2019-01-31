@@ -1,10 +1,10 @@
 <?php
 /**
- * unit-NotFound:/NotFound.class.php
+ * unit-notfound:/NotFound.class.php
  *
  * @creation  2019-01-29
  * @version   1.0
- * @package   unit-NotFound
+ * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
@@ -61,7 +61,7 @@ class NotFound implements \IF_UNIT
 	 *
 	 * @return \IF_DATABASE
 	 */
-	static private function _DB()
+	static function _DB()
 	{
 		//	...
 		static $_DB;
@@ -94,6 +94,11 @@ class NotFound implements \IF_UNIT
 		self::_NotFound($host, $uri, $ua);
 	}
 
+	static function Hash(string $str):string
+	{
+		return Hasha1($str, 10, '');
+	}
+
 	static private function _Host(string $host):int
 	{
 		//	...
@@ -105,7 +110,7 @@ class NotFound implements \IF_UNIT
 		$table = 't_host';
 
 		//	...
-		$hash = Hasha1($host, 10, '');
+		$hash = self::Hash($host);
 
 		//	...
 		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
@@ -136,7 +141,7 @@ class NotFound implements \IF_UNIT
 		$table = 't_uri';
 
 		//	...
-		$hash = Hasha1($uri, 10, '');
+		$hash = $hash = self::Hash($uri);
 
 		//	...
 		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
@@ -167,7 +172,7 @@ class NotFound implements \IF_UNIT
 		$table = 't_ua';
 
 		//	...
-		$hash = Hasha1($ua, 10, '');
+		$hash = $hash = self::Hash($ua);
 
 		//	...
 		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
@@ -185,6 +190,46 @@ class NotFound implements \IF_UNIT
 
 		//	...
 		return $ai;
+	}
+
+	static function _OS($ua)
+	{
+		//	...
+		$result = null;
+
+		//	...
+		foreach( ['Macintosh','Windows','Linux','BSD','iOS','Android'] as $name ){
+			D($name);
+		};
+
+		//	...
+		return $result;
+	}
+
+	static function _Browser($ua)
+	{
+		//	...
+		$result = null;
+
+		//	...
+		foreach( ['Firefox','Chrome','Safari'] as $name ){
+			if( $pos = strpos($ua, $name) ){
+				$len = strlen($name);
+
+				//	...
+				list($v1, $v2) = explode('.', substr($ua, $pos + $len +1 ));
+
+				//	...
+				$result['name']    = strtolower($name);
+				$result['version'] = "{$v1}.{$v2}";
+
+				//	...
+				break;
+			};
+		};
+
+		//	...
+		return $result;
 	}
 
 	static function _NotFound(int $host, int $uri, int $ua)
@@ -231,14 +276,19 @@ class NotFound implements \IF_UNIT
 		return $count;
 	}
 
-	function Help()
+	static function Admin()
+	{
+		\App::Template(__DIR__.'/admin.phtml');
+	}
+
+	function Help($topic=null)
 	{
 		echo '<pre><code>';
 		echo file_get_contents(__DIR__.'/README.md');
 		echo '</code></pre>';
 	}
 
-	function Debug()
+	function Debug($topic=null)
 	{
 		D();
 	}
