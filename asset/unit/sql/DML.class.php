@@ -40,32 +40,88 @@ class DML
 	static function Table(array $args, \IF_DATABASE $db)
 	{
 		//	...
-		if( $table = $args['table'] ?? null ){
-			//	database_name.table_name
-			if( $pos = strpos($table, '.') ){
-				//	database_name.table_name --> database_name, table_name
-				$database = substr($table, 0, $pos);
-				$table    = substr($table, $pos+1);
-			};
-
-			//	...
-			$table = $db->Quote($table);
-
-			//	...
-			if( $db->Config()['prod'] === 'mysql' and empty($database) ){
-				$database = $args['database'] ?? null;
-			};
-
-			//	...
-			if(!empty($database) ){
-				$table = $db->Quote($database).'.'.$table;
-			};
-		}else{
+		if( empty($args['table']) ){
 			\Notice::Set("Has not been set table name.");
-		}
+			return false;
+		};
+
+		//	...
+		if( strpos($args['table'], '=') ){
+			return self::_TableJoin($args, $db);
+		}else{
+			return self::_Table($args, $db);
+		};
+	}
+
+	static private function _Table(array $args, \IF_DATABASE $db)
+	{
+		//	...
+		$table = $args['table'];
+
+		//	database_name.table_name
+		if( $pos = strpos($table, '.') ){
+			//	database_name.table_name --> database_name, table_name
+			$database = substr($table, 0, $pos);
+			$table    = substr($table, $pos+1);
+		};
+
+		//	...
+		$table = $db->Quote($table);
+
+		//	...
+		if( $db->Config()['prod'] === 'mysql' and empty($database) ){
+			$database = $args['database'] ?? null;
+		};
+
+		//	...
+		if(!empty($database) ){
+			$table = $db->Quote($database).'.'.$table;
+		};
 
 		//	...
 		return $table;
+	}
+
+	static private function _TableJoin(array $args, \IF_DATABASE $db)
+	{
+		//	...
+		$table = $args['table'];
+
+		//	...
+		$join = $match = null;
+
+		//	...
+		preg_match("/([\w\.]+)\s*([<>=]+)\s*([\w\.]+)/", $table, $match);
+
+		//	...
+		$join['left']  = explode('.', $match[1]);
+		$join['right'] = explode('.', $match[3]);
+
+		//	...
+		switch( $match[2] ){
+			case '=':
+			case '<=':
+				$eval = 'LEFT';
+				break;
+			case '=>':
+				$eval = 'RIGHT';
+				break;
+			case '>=<':
+				$eval = 'INNER';
+				break;
+			case '<=>':
+				$eval = 'OUTER';
+				break;
+		};
+
+		//	...
+		$table1 = $db->Quote($join['left'][0] );
+		$field1 = $db->Quote($join['left'][1] );
+		$table2 = $db->Quote($join['right'][0]);
+		$field2 = $db->Quote($join['right'][1]);
+
+		//	...
+		return "$table1 $eval JOIN $table2 ON $table1.$field1 = $table2.$field2";
 	}
 
 	/** Get VALUES
