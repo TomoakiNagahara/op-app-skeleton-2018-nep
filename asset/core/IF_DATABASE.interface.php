@@ -100,20 +100,6 @@ interface IF_DATABASE
 	 */
 	public function Delete($config);
 
-	/** Execute Quick Query Language string.
-	 *
-	 * @addition 2018-04-20
-	 * @param	 array	 $config
-	 */
-	public function Quick($config, $options);
-
-	/** Quote to SQL at each product.
-	 *
-	 * @addition 2018-04-20
-	 * @param	 array	 $config
-	 */
-	public function Quote($config);
-
 	/** Execute to SQL query string. And return records array.
 	 *
 	 * @addition 2018-04-20
@@ -122,6 +108,20 @@ interface IF_DATABASE
 	 * @return	 array	 $record
 	 */
 	public function SQL(string $SQL, string $type);
+
+	/** Execute Quick Query Language string.
+	 *
+	 * @addition 2018-04-20
+	 * @param	 string	 $qql
+	 */
+	public function QQL($qql, $options);
+
+	/** Quote to SQL at each product.
+	 *
+	 * @addition 2018-04-20
+	 * @param	 array	 $config
+	 */
+	public function Quote($config);
 
 	/** Begin transaction.
 	 *
