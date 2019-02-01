@@ -61,7 +61,6 @@ class Select
 			$field = '*';
 		};
 
-
 		//	WHERE
 		if(!$where = DML::Where($args, $db) ){
 			return false;
@@ -72,6 +71,9 @@ class Select
 			return false;
 		}
 
+		//	GROUP
+		$group  = isset($args['group'])  ? DML::Group($args,  $db): null;
+
 		//	ORDER
 		$order  = isset($args['order'])  ? DML::Order($args,  $db): null;
 
@@ -79,7 +81,7 @@ class Select
 		$offset = isset($args['offset']) ? DML::Offset($args, $db): null;
 
 		//	...
-		return "SELECT {$field} FROM {$table} WHERE {$where} {$order} {$limit} {$offset}";
+		return "SELECT {$field} FROM {$table} WHERE {$where} {$group} {$order} {$limit} {$offset}";
 	}
 
 	/** Get field condition.
