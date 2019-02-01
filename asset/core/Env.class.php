@@ -118,7 +118,7 @@ class Env
 
 	/** Get/Set charset.
 	 *
-	 * This charset is end user land charset.
+	 * This charset is just html only.
 	 * For developers charset is not yet consider.
 	 * Source code is always UTF-8.
 	 *
@@ -153,7 +153,7 @@ class Env
 	{
 		static $_mime;
 		if( $mime ){
-			//	For Eclipse (Undefined error)
+			//	...
 			$file = $line = null;
 
 			//	...
