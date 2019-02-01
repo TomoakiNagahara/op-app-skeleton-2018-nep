@@ -98,6 +98,12 @@ class Select
 			//	...
 			list($field, $alias) = explode(' as ', $field . ' as ');
 
+			//	Separate function.
+			if( $pos1 = strpos($field, '(') and $pos2 = strpos($field, ')') ){
+				$func = substr($field,       0,         $pos1);
+				$field= substr($field, $pos1+1, $pos2-$pos1-1);
+			};
+
 			//	If has table name.
 			if( strpos($field, '.') ){
 				//	Has table name.
@@ -108,6 +114,12 @@ class Select
 			}else{
 				//	Field name only.
 				$field = $db->Quote(trim($field));
+			};
+
+			//	If has function.
+			if( isset($func) ){
+				$func  = strtoupper($func);
+				$field = "{$func}($field)";
 			};
 
 			//	If has alias name.
