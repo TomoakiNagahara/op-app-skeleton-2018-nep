@@ -26,7 +26,7 @@ interface IF_UNIT
 	 * @creation 2019-01-25
 	 * @param	 array	 $config
 	 */
-	public function Help();
+	public function Help($config=null);
 
 	/** Display debug information.
 	 *
@@ -35,5 +35,5 @@ interface IF_UNIT
 	 * @creation 2019-01-25
 	 * @param	 array	 $config
 	 */
-	public function Debug();
+	public function Debug($config=null);
 }
