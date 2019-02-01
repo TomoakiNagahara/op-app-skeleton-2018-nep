@@ -184,7 +184,7 @@ class Select
 				if( is_string($key) ){
 					$join[] = strtoupper($key)."($val)";
 				}else{
-					$join[] = $pdo->quote(trim($val));
+					$join[] = $db->quote(trim($val));
 				}
 			}
 
