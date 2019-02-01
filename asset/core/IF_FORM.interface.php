@@ -53,6 +53,20 @@ interface IF_FORM
 	 */
 	public function Input($name);
 
+	/** Display each radio tag by value.
+	 *
+	 * @addition 2019-02-01
+	 * @param	 string		 $name
+	 */
+	public function Radio($name, $value);
+
+	/** Display each checkbox tag by value.
+	 *
+	 * @addition 2019-02-01
+	 * @param	 string		 $name
+	 */
+	public function Checkbox($name, $value);
+
 	/** Display submitted value.
 	 *
 	 * @addition 2018-04-20
