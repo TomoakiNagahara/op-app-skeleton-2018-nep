@@ -104,7 +104,11 @@ class Builder
 			$collate = ifset($config['databases'][$database]['collate']) ?? null;
 
 			//	...
-			$sql = \OP\UNIT\SQL\Database::Create($DB, $database, $charset, $collate);
+			$conf = [];
+			$conf['database'] = $database;
+			$conf['charset']  = $charset;
+			$conf['collate']  = $collate;
+			$sql = \OP\UNIT\SQL\Database::Create($conf, $DB);
 			if(!$DB->Query($sql) ){
 
 				D($database, $config['databases'][$database]);
