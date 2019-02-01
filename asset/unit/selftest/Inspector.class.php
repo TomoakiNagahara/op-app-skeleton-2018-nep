@@ -424,6 +424,8 @@ class Inspector
 					//	...
 					$arr1 = explode(',', $privilege);
 					$arr2 = explode(',', $grants[$database][$table]['privilege']);
+					$arr1 = array_map(function($s){ return strtoupper($s); }, $arr1);
+					$arr2 = array_map(function($s){ return strtoupper($s); }, $arr2);
 					$base = array_unique( array_merge( $arr1, $arr2) );
 
 					//	...
