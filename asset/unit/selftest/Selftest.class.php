@@ -108,7 +108,7 @@ class Selftest
 		$config = [];
 
 		//	...
-		foreach(['driver','host','port','user','password','charset'] as $key){
+		foreach(['prod','host','port','user','password','charset'] as $key){
 			//	...
 			if(!$val = $_POST[$key] ?? null ){
 				return false;
