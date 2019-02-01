@@ -144,7 +144,10 @@ class Show
 	{
 		switch( $prod = $DB->Config()['prod'] ){
 			case 'mysql':
+				//	MySQL 5.6
 				$sql = "SELECT `host`, `user`, `password` FROM `mysql`.`user`";
+				//	MySQL 5.7
+			//	$sql = "SELECT `host`, `user`             FROM `mysql`.`user`";
 				break;
 
 			case 'pgsql':
