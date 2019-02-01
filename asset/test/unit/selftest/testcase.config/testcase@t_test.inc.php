@@ -25,9 +25,9 @@ OP\UNIT\SELFTEST\Configer::Column(  'deleted', 'datetime', null,  true, null, 'D
 OP\UNIT\SELFTEST\Configer::Column('timestamp','timestamp', null, false, null, 'Auto update current timestamp.');
 
 //	...
-OP\UNIT\SELFTEST\Configer::Index([],     'ai',      'ai', 'ai', 'auto incrment');
-OP\UNIT\SELFTEST\Configer::Index([],     'id',  'unique', 'id', 'unique 8byte hash id');
-OP\UNIT\SELFTEST\Configer::Index([], 'search',   'index', 'tag, weight', 'search index');
+OP\UNIT\SELFTEST\Configer::Index(     'ai',      'ai', 'ai', 'auto incrment');
+OP\UNIT\SELFTEST\Configer::Index(     'id',  'unique', 'id', 'unique 8byte hash id');
+OP\UNIT\SELFTEST\Configer::Index( 'search',   'index', 'tag, weight', 'search index');
 
 //	...
 OP\UNIT\SELFTEST\Configer::Collate('id', 'ascii');
