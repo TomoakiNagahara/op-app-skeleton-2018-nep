@@ -19,12 +19,6 @@ $form->Label('host');
 $form->Input('host');
 echo '<br/>';
 
-//	...
-$form->Input('submit');
-
-//	...
-$form->Finish();
-
 /* @var $db   IF_DATABASE */
 $db = \OP\UNIT\NotFound::_DB();
 
@@ -38,7 +32,7 @@ if( $host = $form->GetValue('host') ){
 	$config = [];
 	$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';
 	$config['limit'] = 100;
-	$config['order'] = 'ai';
+	$config['order'] = 'sum desc';
 	$config['group'] = 't_notfound.uri';
 	$config['where'][] = "host = $ai";
 	$config['field'][] = "t_notfound.ai  as ai     ";
@@ -47,12 +41,48 @@ if( $host = $form->GetValue('host') ){
 	$config['field'][] = "t_uri.uri      as uri    ";
 //	$config['field'][] = "t_ua.ua        as ua     ";
 	$config['field'][] = "sum(t_notfound.count) as sum ";
-	$record = $db->Select($config);
-	D($record);
+
+	//	...
+	if( $records = $db->Select($config) ){
+		//	...
+		$name  = 'uri';
+		$input = [];
+		$input['name'] = $name;
+		$input['type'] = 'radio';
+
+		//	...
+		foreach( $records as $record ){
+			$option = [];
+			$option['value'] = $record['uri_ai'];
+			$option['label'] = $record['uri'] . " ({$record['sum']})";
+			$input['option'][] = $option;
+		};
+
+		//	...
+		$form->SetInput($input);
+		$form->Input($name);
+	};
 };
 
-return;
+//	...
+$form->Input('submit');
 
 //	...
-$form->Help();
-$form->Debug();
+$form->Finish();
+
+echo '<hr/>';
+
+D($records);
+
+//	...
+if( $_GET['debug'] ?? null ){
+	$form->Help();
+	$form->Debug();
+};
+?>
+<style>
+body.body label:after {
+	content: "\A" ;
+	white-space: pre ;
+}
+</style>
