@@ -320,7 +320,7 @@ class Database implements \IF_DATABASE, \IF_UNIT
 
 	/** Do QQL.
 	 *
-	 * @see		\IF_DATABASE::Quick()
+	 * @see		\IF_DATABASE::QQL()
 	 * @param	 string		 $qql
 	 * @param	 array		 $options
 	 * @return	 array		 $record
@@ -329,6 +329,18 @@ class Database implements \IF_DATABASE, \IF_UNIT
 	{
 		include_once(__DIR__.'/QQL.class.php');
 		return Database\QQL::Execute($qql, $options, $this);
+	}
+
+	/** Do QQL.
+	 *
+	 * @see		\IF_DATABASE::QQL()
+	 * @param	 string		 $qql
+	 * @param	 array		 $options
+	 * @return	 array		 $record
+	 */
+	function QQL($qql, $options=[])
+	{
+		return $this->Quick($qql, $options);
 	}
 
 	/** Do Quote by each product.
