@@ -325,7 +325,7 @@ class Inspector
 				$password = $DB->Query($sql, 'password');
 
 				//	Check password match.
-				if(!$result['password'] = ($lists[$key]['password'] === $password) ){
+				if(!$result['password'] = ($password === ($lists[$key]['password'] ?? null)) ){
 					$result['modify']   = $user['password'];
 				}
 			}
