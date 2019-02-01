@@ -9,8 +9,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 
-/**
- * Unit
+/** Unit
  *
  * <pre>
  * //	Set unit directory.
@@ -44,8 +43,8 @@ class Unit
 
 	/** Get/Set unit directory.
 	 *
-	 * @param  null|string         $dir
-	 * @return null|string|boolean $dir
+	 * @param  string|null         $dir
+	 * @return string|null|boolean $dir
 	 */
 	static function Directory($dir=null)
 	{
