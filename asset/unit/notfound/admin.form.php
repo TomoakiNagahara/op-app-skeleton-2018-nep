@@ -16,8 +16,8 @@ $form->Config(__DIR__.'/config.form.php');
 
 //	...
 if( Env::isAdmin() ){
-	if(!$io = $form->Test() ){
-		D($io);
+	if(!$form->Test() ){
+		D('$form->Test() was failed.');
 	};
 };
 
