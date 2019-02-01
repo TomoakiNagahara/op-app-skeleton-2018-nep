@@ -10,4 +10,11 @@
 
 body.body code {
 	font-family: "Courier New", Consolas, monospace;
+	margin:  0;
+	padding: 0.5em 1em;
+	border-radius: 0.2em;
+	border: 1px solid #F0F0F0;
+	background-color: #F6F6F6;
+	white-space: pre;
+	display: block;
 }
