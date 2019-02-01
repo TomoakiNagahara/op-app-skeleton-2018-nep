@@ -11,3 +11,20 @@
 body.body p {
 	text-indent: 1em;
 }
+
+/**
+ * @see http://phiary.me/css-tips-certainly-line-break/
+ */
+body.body p {
+	word-wrap:   break-word;
+	white-space: normal;
+	display:     block;
+}
+
+/**
+ * @see https://lab.syncer.jp/Web/CSS/Snippet/4/
+ */
+body.body p.br::after {
+	content: "\A" ;
+	white-space: pre;
+}
