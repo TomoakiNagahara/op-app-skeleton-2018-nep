@@ -515,4 +515,33 @@ class DML
 		//	...
 		return "ORDER BY ".join(', ', $join);
 	}
+
+	/** Generate group condition.
+	 *
+	 * @param	 array		 $args
+	 * @param	\IF_DATABASE $db
+	 * @return	 string		 $sql
+	 */
+	static function Group($args, $db)
+	{
+		//	...
+		if(!$group = $args['group'] ?? null ){
+			return null;
+		};
+
+		//	If has table name.
+		if( strpos($group, '.') ){
+			//	Has table name.
+			list($table, $field) = explode('.', $group);
+			$table = $db->Quote(trim($table));
+			$field = $db->Quote(trim($field));
+			$group = "{$table}.{$field}";
+		}else{
+			//	Field name only.
+			$group = $db->Quote(trim($group));
+		};
+
+		//	...
+		return "GROUP BY {$group}";
+	}
 }
