@@ -519,16 +519,16 @@ class Database implements \IF_DATABASE, \IF_UNIT
 	 *
 	 * @see		\IF_DATABASE::Help()
 	 */
-	function Help()
+	function Help($topic=null)
 	{
-
+		Html('$db-&gtHelp($topic) -- Topic --&gt Connect, Insert, Select, Update, Delete, SQL, QQL');
 	}
 
 	/** Display debug information.
 	 *
 	 * @see		\IF_DATABASE::Debug()
 	 */
-	function Debug()
+	function Debug($config=null)
 	{
 		D( $this->_config, $this->_queries);
 	}
