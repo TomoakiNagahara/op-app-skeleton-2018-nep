@@ -1,4 +1,4 @@
-onepiece-framework's core for PHP7
+The onepiece-framework's Core for PHP7
 ===
 
 ## The generations as changed.
@@ -10,7 +10,7 @@ onepiece-framework's core for PHP7
  * PHP version 4 and 5 code.
  * feature phone.
 
-## The NewWorld is the new world.
+## The NewWorld is a new world.
 
  * Intuitive file structure
  * Html path through
@@ -31,5 +31,3 @@ onepiece-framework's core for PHP7
 ## License
 
  What would be good? Please tell me!!
-
-Copyright 2017 onepiece-framework.com
