@@ -55,7 +55,9 @@ class Selftest
 
 		//	...
 		if(!$io ){
+			/*
 			include(__DIR__.'/form.phtml');
+			*/
 		}
 
 		//	...
@@ -111,7 +113,9 @@ class Selftest
 		foreach(['prod','host','port','user','password','charset'] as $key){
 			//	...
 			if(!$val = $_POST[$key] ?? null ){
+				/*
 				return false;
+				*/
 			}
 
 			//	...
