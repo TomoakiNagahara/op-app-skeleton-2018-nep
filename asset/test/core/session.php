@@ -25,6 +25,7 @@ switch( $action = $_GET['action'] ?? null ){
 		break;
 
 	default:
+		Notice::Set("This action has not been set. ($action)");
 }
 
 //	...
