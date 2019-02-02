@@ -18,7 +18,7 @@ include('index.inc.php');
 include('Nav.class.php');
 
 //	Set "testcase" meta URL.
-_GetRootsPath('testcase', ConvertPath('app:/_testcase'));
+RootPath('testcase', ConvertPath('app:/_testcase'));
 
 //	...
 App::WebPack('testcase:/index.css');
