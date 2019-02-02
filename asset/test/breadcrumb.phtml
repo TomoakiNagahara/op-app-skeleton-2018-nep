@@ -35,13 +35,15 @@ if(!file_exists($file) and is_dir($path) ){
 	echo '<ol>'.PHP_EOL;
 	foreach( scandir($path) as $file ){
 		//	...
-		list($file, $ext) = explode('.', $file.'.');
-		if( $ext !== 'php' ){
+		list($name, $ext) = explode('.', $file.'.');
+
+		//	...
+		if( $ext !== 'php' or $file === 'index.php' ){
 			continue;
 		};
 
 		//	...
-		printf('  <li><a href="%s">%s</a></li>'.PHP_EOL, $href.$file, $file);
+		printf('  <li><a href="%s">%s</a></li>'.PHP_EOL, $href.$name, $name);
 	};
 	echo '</ol>'.PHP_EOL;
 };
