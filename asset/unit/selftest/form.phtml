@@ -8,6 +8,8 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	...
+$build = OP\UNIT\NEWWORLD\Template::Args('build');
 ?>
 <section id="UNIT_SELFTEST">
 	<form action="" method="post" class="OP">
@@ -68,7 +70,9 @@
 
 				</div>
 				<div>
-					<input type="checkbox" name="build" value="1" />Build
+					<label>
+					<input type="checkbox" name="build" value="<?= $build ?>" />Build,<?= $build ?>
+					</label>
 				</div>
 			</div>
 			<? endif; ?>

@@ -28,7 +28,7 @@ class Inspector
 	/** trait
 	 *
 	 */
-	use \OP_CORE;
+	use \OP_CORE, \OP_SESSION;
 
 	/** Build
 	 *
@@ -230,8 +230,17 @@ class Inspector
 		//	...
 		self::Inspection($config, $DB);
 
+		//	Check build value.
+		$build = [];
+		$build['request'] = $_POST['build'] ?? null;
+		$build['session'] = self::Session('build');
+		$build['result']  = $build['request'] === $build['session'];
+
+		//	Change build value.
+		self::Session('build', Hasha1(microtime()));
+
 		//	...
-		if( self::$_failure and $_POST['build'] ?? false ){
+		if( self::$_failure and $build['result'] ){
 			//	...
 			Builder::Auto($config, self::$_result, $DB);
 
@@ -723,9 +732,12 @@ class Inspector
 	static function Form()
 	{
 		//	...
+		$build = self::Session('build');
+
+		//	...
 		\OP\UNIT\WebPack::JS( __DIR__.'/form');
 		\OP\UNIT\WebPack::Css(__DIR__.'/form');
-		\App::Template(__DIR__.'/form.phtml');
+		\App::Template(__DIR__.'/form.phtml', ['build'=>$build]);
 	}
 
 	/** Return one stacked error.
