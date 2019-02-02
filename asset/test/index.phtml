@@ -24,7 +24,12 @@ $file = \OP\UNIT\NEWWORLD\Template::Args('file');
 	if( $file ){
 		App::Template($file);
 	}else{
+		//	...
 		D( 'PHP version is ' . PHP_VERSION );
-	}
+
+		//	...
+		Html( ConvertPath('testcase:/') );
+		Html( ConvertURL('testcase:/')  );
+	};
 	?>
 </section>
