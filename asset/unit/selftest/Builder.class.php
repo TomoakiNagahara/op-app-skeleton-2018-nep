@@ -135,6 +135,25 @@ class Builder
 	static function Table($configs, $result, $DB)
 	{
 		//	...
+		if( empty($result['tables']) ){
+			//	Adjust table result.
+			foreach( $configs['databases'] as $database_name => $database ){
+				//	...
+				foreach( $database['tables'] as $table_name => $table ){
+					/*
+					//	...
+					if( $result['databases'][$database_name]['result'] ){
+						continue;
+					};
+					*/
+
+					//	...
+					$result['tables'][$database_name][$table_name]['result'] = false;
+				};
+			};
+		};
+
+		//	...
 		foreach( $result['tables'] as $database => $tables ){
 			foreach( $tables as $table => $temp ){
 				if( $temp['result'] ){
