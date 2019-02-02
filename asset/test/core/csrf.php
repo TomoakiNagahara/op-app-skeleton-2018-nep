@@ -13,7 +13,7 @@ $session_id  = session_id();
 
 //$session_id = null;
 
-list($uri, $query) = explode('?', $_SERVER['REQUEST_URI'].'?');
+/* list($uri, $query) = */ explode('?', $_SERVER['REQUEST_URI'].'?');
 $host = $_SERVER['SERVER_NAME'] === $_SERVER['SERVER_ADDR'] ? 'localhost':$_SERVER['SERVER_ADDR'];
 $referer = $_SERVER['HTTP_REFERER'] ?? null;
 $ua   = $_SERVER['HTTP_USER_AGENT'] ?? null;
@@ -33,6 +33,7 @@ if( ifset($_GET['execute']) ){
 if( isset($_GET['menu']) ){
 	App::Layout(false);
 }else{
+	$d = [];
 	$d[] = $session_id;
 	$d[] = $referer;
 	$d[] = $ua;
