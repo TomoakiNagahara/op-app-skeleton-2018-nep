@@ -145,8 +145,9 @@ class Unit
 		//	...
 		$name = strtolower($name);
 
-		//	...
-		$hash = Hasha1($name);
+		//	Why?
+	//	$hash = Hasha1($name);
+		$hash = $name;
 
 		//	...
 		if( isset( $_result[$hash] ) ){
