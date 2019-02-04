@@ -328,7 +328,7 @@ class NotFound implements \IF_UNIT
 	{
 		//	...
 		if( $db = self::_DB() ){
-			include(__DIR__.'/Admin.class.php');
+			include(__DIR__.'/admin/Admin.class.php');
 			NOTFOUND\Admin::Auto($db);
 		};
 	}

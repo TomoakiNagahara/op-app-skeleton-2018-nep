@@ -52,7 +52,15 @@ class Admin implements \IF_UNIT
 		\Cookie::Set(__METHOD__, true, 60*60*24);
 
 		//	...
-		\App::Template(__DIR__.'/admin.phtml', ['db'=>$db]);
+		include(__DIR__.'/admin.phtml');
+	}
+
+	/** Form
+	 *
+	 */
+	static function Form()
+	{
+		return include(__DIR__.'/admin.form.php');
 	}
 
 	/** Will execute automatically of Selftest.

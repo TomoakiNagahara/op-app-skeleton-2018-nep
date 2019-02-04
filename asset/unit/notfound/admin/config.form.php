@@ -9,12 +9,6 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-if( false ){
-	/* @var $db IF_DATABASE */
-	$db = null;
-};
-
-//	...
 $form = [];
 $form['name'] = 'notfound';
 
