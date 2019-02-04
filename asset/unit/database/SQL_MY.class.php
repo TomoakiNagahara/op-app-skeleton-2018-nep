@@ -178,6 +178,10 @@ class MYSQL
 				*/
 
 				//	...
+				$database   = trim($database, '`');
+				$table      = trim($table   , '`');
+
+				//	...
 				foreach( explode(',', $privileges.',') as $privilege ){
 					if( $privilege ){
 						$result[$database][$table][] = trim($privilege);

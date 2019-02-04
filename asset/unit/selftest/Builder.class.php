@@ -436,8 +436,23 @@ class Builder
 
 			//	...
 			foreach( $configs[$user]['privilege'] as $database => $tables ){
+
+				//	...
+				$sql        = \OP\UNIT\SQL\Show::Table($DB, $database);
+				$table_list = $DB->Query($sql);
+
+				//	...
 				foreach( $tables as $table_names => $privileges ){
+
+					//	...
 					foreach( explode(',', str_replace(' ', '', $table_names )) as $table_name ){
+
+						//	...
+						if( array_search($table_name, $table_list) === false ){
+							continue;
+						};
+
+						//	...
 						foreach( $privileges as $privilege => $column ){
 							//	...
 							$config = [];
@@ -447,7 +462,6 @@ class Builder
 							$config['table']     = $table_name;
 							$config['privileges']= $privilege;
 							$config['field']     = $column;
-							D($config);
 
 							//	...
 							$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB);

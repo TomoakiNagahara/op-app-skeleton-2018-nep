@@ -362,8 +362,6 @@ class Inspector
 	 */
 	static function Privilege($DB, $host, $user, $configs, &$result)
 	{
-		//	D( $configs['users'][$user]['privilege'] );
-
 		//	...
 		$success = true;
 
