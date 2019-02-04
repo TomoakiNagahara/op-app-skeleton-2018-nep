@@ -22,10 +22,22 @@ $configer->DSN([
 
 //  User configuration.
 $configer->User([
-	'name'     => 'notfound',
-	'password' => 'password',
+		'name'     => 'notfound',
+		'password' => 'password',
+		'charset'  => 'utf8',
+]);
+/*
+$configer->User([
+	'name'     => 'notfound-insert',
+	'password' => Hasha1(__FILE__.':'.__LINE__),
 	'charset'  => 'utf8',
 ]);
+$configer->User([
+	'name'     => 'notfound-admin',
+	'password' => Hasha1(__FILE__.':'.__LINE__),
+	'charset'  => 'utf8',
+]);
+*/
 
 //  Privilege configuration.
 $configer->Privilege([
@@ -35,6 +47,22 @@ $configer->Privilege([
 	'privilege'=> 'insert, select, update, delete',
 	'column'   => '*',
 ]);
+/*
+$configer->Privilege([
+		'user'     => 'notfound-insert',
+		'database' => 'onepiece',
+		'table'    => 't_host, t_uri, t_ua, t_notfound',
+		'privilege'=> 'insert, select, update, delete',
+		'column'   => '*',
+]);
+$configer->Privilege([
+		'user'     => 'notfound-admin',
+		'database' => 'onepiece',
+		'table'    => 't_host, t_uri, t_ua, t_notfound',
+		'privilege'=> 'select, update, delete',
+		'column'   => '*',
+]);
+*/
 
 //  Database configuration.
 $configer->Database([

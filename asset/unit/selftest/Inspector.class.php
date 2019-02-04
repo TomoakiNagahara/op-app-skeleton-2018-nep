@@ -376,17 +376,43 @@ class Inspector
 
 		//	...
 		foreach( $real as $database => $tables ){
+			//	...
 			foreach( $tables as $table => $privileges ){
+				//	...
+				$config = [];
+
+				//	...
+				if( $database === '*' ){
+					D("database={$database}");
+				}else{
+					//	...
+					foreach( $configs['users'][$user]['privilege'][$database] as $keys => $vals ){
+						//	...
+						if( strpos($keys, ',') !== false ){
+							//	...
+							foreach( explode(',', str_replace(' ', '', $keys)) as $key ){
+								$config[$key] = $vals;
+							};
+						}else{
+							$config[$keys] = $vals;
+						};
+					};
+				};
+
+				//	...
 				foreach( $privileges as $privilege ){
 					//	...
-					if( $privilege === 'USAGE' ){
-						$success = false;
-						$result['privilege'] = false;
-						$result['privileges'][$database][$table] = $privilege;
-					};
+				//	$success = false;
+				//	$result['privilege'] = false;
+					$result['privileges'][$database][$table][] = $privilege;
 				};
 			};
 		};
+
+		//	...
+		D('config', $config);
+		D($configs['users'][$user]['privilege']);
+		D($result);
 
 		//	...
 		return $success;
