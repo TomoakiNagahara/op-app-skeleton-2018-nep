@@ -401,7 +401,7 @@ class Inspector
 							continue;
 						};
 
-						D( $diff, $base, $comm );
+						D( $diff, $base, $comm, $columns );
 
 						//	...
 						$success = false;

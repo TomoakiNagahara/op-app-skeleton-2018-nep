@@ -71,7 +71,7 @@ class Selftest implements \IF_UNIT
 		\OP\UNIT\SELFTEST\Inspector::Result();
 
 		//	...
-		return \OP\UNIT\SELFTEST\Inspector::Failed();
+		return !\OP\UNIT\SELFTEST\Inspector::Failed();
 	}
 
 	/** Get the unit of Database.

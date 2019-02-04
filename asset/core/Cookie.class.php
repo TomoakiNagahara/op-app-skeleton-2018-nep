@@ -32,6 +32,12 @@ class Cookie
 	 */
 	use OP_CORE;
 
+	/** Debug information.
+	 *
+	 * @var array
+	 */
+	static $_debug;
+
 	/** Initialize App ID.
 	 *
 	 */
@@ -55,7 +61,16 @@ class Cookie
 	 */
 	static function _Key($key)
 	{
-		return Hasha1($key.', '.self::_AppID());
+		//	...
+		$hash = Hasha1($key.', '.self::_AppID());
+
+		//	...
+		if( Env::isAdmin() ){
+			self::$_debug['keys'][$key]['hash'] = $hash;
+		};
+
+		//	...
+		return $hash;
 	}
 
 	/** Get cookie value of key.
@@ -93,9 +108,21 @@ class Cookie
 		$key = self::_Key($key);
 
 		//	...
+		$time = Time::Get();
+
+		//	...
 		if( $expire === null ){
-			$expire = Time::Get() + (60*60*24*365*10);
-		}
+			$expire = $time + (60*60*24*365*10);
+		}else{
+			//	...
+			if( is_string($expire) ){
+				//	Convert to integer from string.
+			}else if( is_int($expire) ){
+				if( $expire <  $time ){
+					$expire += $time;
+				};
+			};
+		};
 
 		//	...
 		$path = ifset( $option['path'], '/');
@@ -136,5 +163,32 @@ class Cookie
 			self::Set('uuid', $uuid);
 		}
 		return $uuid;
+	}
+
+	/** For developers.
+	 *
+	 * @param	 null	$config
+	 */
+	static function Debug($config=null)
+	{
+		//	...
+		$info = [];
+
+		//	...
+		foreach( self::$_debug['keys'] as $key => $val ){
+			//	...
+			$hash = $val['hash'];
+			$orig = Cookie::Get($key);
+
+			//	...
+			$temp = [];
+			$temp['key']   = $key;
+			$temp['hash']  = $hash;
+			$temp['value'] = $orig;
+			$info[] = $temp;
+		};
+
+		//	...
+		D( $info );
 	}
 }

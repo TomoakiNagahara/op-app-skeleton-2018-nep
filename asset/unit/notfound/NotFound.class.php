@@ -280,15 +280,12 @@ class NotFound implements \IF_UNIT
 		//	...
 		if(!$io = \Cookie::Get(__METHOD__) ){
 			if(!$io = self::Selftest() ){
-				return;
-			}
+				return $io;
+			};
 		};
 
 		//	Save selftest result.
 		\Cookie::Set(__METHOD__, true, 60*60*24);
-
-		//	...
-		D(__METHOD__, $io);
 
 		//	...
 		$db = \OP\UNIT\NotFound::_DB();
@@ -305,13 +302,18 @@ class NotFound implements \IF_UNIT
 		};
 
 		/* @var $selftest \OP\UNIT\Selftest */
-		$selftest = \Unit::Instantiate('Selftest');
-		$selftest->Auto(__DIR__.'/config.selftest.php');
-	//	$selftest->Help();
-		$selftest->Debug();
+		if( $io = $selftest = \Unit::Instantiate('Selftest') ){
+			$io = $selftest->Auto(__DIR__.'/config.selftest.php');
+		};
 
-		D( \OP\UNIT\SELFTEST\Inspector::Failed() );
-		D(__METHOD__);
+		//	...
+		if( false ){
+		//	$selftest->Help();
+		//	$selftest->Debug();
+		};
+
+		//	...
+		return $io;
 	}
 
 	function Help($topic=null)
