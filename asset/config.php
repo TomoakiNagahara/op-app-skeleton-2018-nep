@@ -13,12 +13,17 @@
 Time::Timezone('Asia/Tokyo');
 
 //	Layout settigs.
-OP\UNIT\NEWWORLD\Layout::Directory(__DIR__.'/layout');
+OP\UNIT\NEWWORLD\Layout::Directory(__DIR__.'/layout/');
 OP\UNIT\NEWWORLD\Layout::Execute(true);
 OP\UNIT\NEWWORLD\Layout::Name('white');
+Env::Set('layout', ['directory'=>__DIR__.'/template/', 'execute'=>true, 'name'=> 'white']);
 
 //	Template settings.
-OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template');
+OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template/');
+Env::Set('template', ['directory'=>__DIR__.'/template/']);
+
+//	Cache settings.
+Env::Set('cache', ['directory'=>__DIR__.'/.cache/']);
 
 //	Application settings.
 App::Title('app-skeleton-2018-nep');

@@ -199,25 +199,9 @@ class Configer
 		//	...
 		$dsn = self::Dsn();
 
-		/*
 		//	...
-		$tables = [];
-		foreach( explode(',', $table.',') as $table ){
-			if( $table = trim($table) ){
-				$tables[] = $table;
-			};
-		};
-
-		//	...
-		$privileges = [];
-		foreach( explode(',', $privilege.',') as $privilege ){
-			if( $privilege = trim($privilege) ){
-				$privileges[] = $privilege;
-			};
-		};
-
-		D($tables, $privileges);
-		*/
+		$table     = str_replace(' ', '', $table    );
+		$privilege = str_replace(' ', '', $privilege);
 
 	//	...
 		self::$_config[$dsn]['users'][$user]['privilege'][$database][$table][$privilege] = $column;

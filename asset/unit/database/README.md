@@ -101,6 +101,10 @@ $query = $sql->Select($config);
 $records = $db->Query($query);
 ```
 
+### SQL
+
+### QQL
+
 ### How to debug
 
 ```

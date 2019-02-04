@@ -430,7 +430,8 @@ class Builder
 		//	...
 		foreach( $results as $user => $result ){
 			//	...
-			if( $result['privilege'] ){
+			if( $result['privilege'] ?? null ){
+				D('privilege is null', $result);
 				continue;
 			};
 

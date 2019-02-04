@@ -121,7 +121,10 @@ class Database implements \IF_DATABASE, \IF_UNIT
 				break;
 
 			default:
-				\Notice::Set("Has not been this product. ($prod)");
+				if( empty($prod) ){
+					$prod = 'empty';
+				};
+				\Notice::Set("Has not been support this product. ($prod)");
 		};
 
 		//	...
@@ -146,6 +149,16 @@ class Database implements \IF_DATABASE, \IF_UNIT
 	{
 		require_once(__DIR__.'/Drop.class.php');
 		return new \OP\UNIT\DATABASE\Drop($this);
+	}
+
+	/** Alter
+	 *
+	 * @return \OP\UNIT\DATABASE\Alter
+	 */
+	function Alter()
+	{
+		require_once(__DIR__.'/Alter.class.php');
+		return new \OP\UNIT\DATABASE\Alter($this);
 	}
 
 	/** Set/Get last time used database name.

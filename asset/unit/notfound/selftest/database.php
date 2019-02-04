@@ -22,9 +22,9 @@ $configer->DSN([
 
 //  User configuration.
 $configer->User([
-		'name'     => 'notfound',
-		'password' => 'password',
-		'charset'  => 'utf8',
+	'name'     => 'notfound',
+	'password' => 'password',
+	'charset'  => 'utf8',
 ]);
 /*
 $configer->User([
@@ -34,6 +34,12 @@ $configer->User([
 ]);
 $configer->User([
 	'name'     => 'notfound-admin',
+	'password' => Hasha1(__FILE__.':'.__LINE__),
+	'charset'  => 'utf8',
+]);
+$configer->User([
+	'name'     => 'notfound-admin-select',
+	'host'     => '192.168.1.%',
 	'password' => Hasha1(__FILE__.':'.__LINE__),
 	'charset'  => 'utf8',
 ]);
@@ -49,18 +55,26 @@ $configer->Privilege([
 ]);
 /*
 $configer->Privilege([
-		'user'     => 'notfound-insert',
-		'database' => 'onepiece',
-		'table'    => 't_host, t_uri, t_ua, t_notfound',
-		'privilege'=> 'insert, select, update, delete',
-		'column'   => '*',
+	'user'     => 'notfound-insert',
+	'database' => 'onepiece',
+	'table'    => 't_host, t_uri, t_ua, t_notfound',
+	'privilege'=> 'insert, select, update, delete',
+	'column'   => '*',
 ]);
 $configer->Privilege([
-		'user'     => 'notfound-admin',
-		'database' => 'onepiece',
-		'table'    => 't_host, t_uri, t_ua, t_notfound',
-		'privilege'=> 'select, update, delete',
-		'column'   => '*',
+	'user'     => 'notfound-admin',
+	'database' => 'onepiece',
+	'table'    => 't_host, t_uri, t_ua, t_notfound',
+	'privilege'=> 'select, update, delete',
+	'column'   => '*',
+]);
+$configer->Privilege([
+	'user'     => 'notfound-admin-select',
+	'host'     => '192.168.1.%',
+	'database' => 'onepiece',
+	'table'    => 't_host, t_uri, t_ua, t_notfound',
+	'privilege'=> 'select, update, delete',
+	'column'   => '*',
 ]);
 */
 

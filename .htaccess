@@ -69,3 +69,10 @@ Options +FollowSymLinks +ExecCGI -Indexes
 <Files ~ "\.(gif|jpe?g|png|ico)$">
 	Header set Cache-Control "s-maxage=86400, public"
 </Files>
+
+##
+# Google mSpeed Hacks Digital Sheeters Packet JP Jul18_v01 HR.pdf
+# @see http://na-ab22.marketo.com/rs/343-QLB-570/images/Google%20mSpeed%20Hacks%20Digital%20Sheeters%20Packet%20JP%20Jul18_v01%20HR.pdf
+SetOutputFilter DEFLATE
+SetEnvIfNoCase  Request_URI "\.(?:gif|jpe?g|png)$" no-gzip
+

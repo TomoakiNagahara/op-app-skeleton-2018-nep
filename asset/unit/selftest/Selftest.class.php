@@ -91,8 +91,13 @@ class Selftest implements \IF_UNIT
 		};
 
 		//	...
+		if(!$config['prod'] ){
+			return false;
+		};
+
+		//	...
 		if(!$db->Connect($config) ){
-			return;
+			return false;
 		};
 
 		//	...

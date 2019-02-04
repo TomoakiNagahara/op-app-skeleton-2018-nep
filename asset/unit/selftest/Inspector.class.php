@@ -327,28 +327,42 @@ class Inspector
 			//	...
 			$result = &self::$_result[$dsn]['users'][$user_name];
 
-			//	Check user exist.
-			if( $result['exist'] = isset($lists[$key]) ){
-				//	Generate mysql hashed password.
-				$sql = \OP\UNIT\SQL\Select::Password($user['password'], $DB);
-				$password = $DB->Query($sql, 'password');
+			//	...
+			$result['result']    = false;
+			$result['exist']     = null;
+			$result['password']  = null;
+			$result['privilege'] = null;
 
-				//	Check password match.
-				if(!$result['password'] = ($password === ($lists[$key]['password'] ?? null)) ){
-					$result['modify']   = $user['password'];
-				}
-			}
+			//	Check user exist.
+			if(!$result['exist'] = isset($lists[$key]) ){
+				continue;
+			};
+
+			//	Generate mysql hashed password.
+			$sql = \OP\UNIT\SQL\Select::Password($user['password'], $DB);
+			$password = $DB->Query($sql, 'password');
+
+			//	Check password match.
+			if(!$result['password'] = ($password === ($lists[$key]['password'] ?? null)) ){
+				$result['modify']   = $user['password'];
+				self::$_failure = true;
+				continue;
+			};
 
 			//	Check passowrd.
 			if(!$result['result'] = ( $result['exist'] and $result['password'] ) ){
 				self::$_failure = true;
+				continue;
 			}
 
 			//	Privilege
-			if(!self::Privilege($DB, $host, $user_name, $configs, $result) ){
+			if(!$result['privilege'] = self::Privilege($DB, $host, $user_name, $configs, self::$_result[$dsn]['privileges']) ){
 				self::$_failure = true;
-				$result['result'] = false;
+				continue;
 			}
+
+			//	...
+			$result['result'] = true;
 		}
 	}
 
@@ -366,53 +380,40 @@ class Inspector
 		$success = true;
 
 		//	...
-		if( $result['exist'] === false ){
-			return;
-		};
-
-		//	...
 		$sql  = \OP\UNIT\SQL\Show::Grant($DB, $host, $user);
 		$real = $DB->Query($sql, 'show');
 
 		//	...
-		foreach( $real as $database => $tables ){
+		foreach( $configs['users'][$user]['privilege'] as $database => $databases ){
 			//	...
-			foreach( $tables as $table => $privileges ){
+			foreach( $databases as $tables => $privileges ){
 				//	...
-				$config = [];
-
-				//	...
-				if( $database === '*' ){
-					D("database={$database}");
-				}else{
+				foreach( explode(',',$tables) as $table ){
 					//	...
-					foreach( $configs['users'][$user]['privilege'][$database] as $keys => $vals ){
+					foreach( $privileges as $privilege => $columns ){
 						//	...
-						if( strpos($keys, ',') !== false ){
-							//	...
-							foreach( explode(',', str_replace(' ', '', $keys)) as $key ){
-								$config[$key] = $vals;
-							};
-						}else{
-							$config[$keys] = $vals;
-						};
-					};
-				};
+						$base = explode(',',strtoupper($privilege));
+						$comm = array_intersect( $base, $real[$database][$table] );
+						$diff = array_diff($base, $comm);
 
-				//	...
-				foreach( $privileges as $privilege ){
-					//	...
-				//	$success = false;
-				//	$result['privilege'] = false;
-					$result['privileges'][$database][$table][] = $privilege;
+						//	...
+						if( count($diff) === 0 ){
+							continue;
+						};
+
+						D( $diff, $base, $comm );
+
+						//	...
+						$success = false;
+					};
 				};
 			};
 		};
 
-		//	...
-		D('config', $config);
-		D($configs['users'][$user]['privilege']);
-		D($result);
+	//	D('real', $real);
+	//	D('pickup config', $config);
+	//	D('original configs',$configs['users'][$user]['privilege']);
+	//	D('result', $result);
 
 		//	...
 		return $success;
@@ -777,6 +778,6 @@ class Inspector
 	 */
 	static function Debug()
 	{
-		D(self::$_result);
+		D('self::$_result', self::$_result);
 	}
 }
