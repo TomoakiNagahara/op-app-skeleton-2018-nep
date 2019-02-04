@@ -64,8 +64,8 @@ class Builder
 			self::Index   ($config, $result, $DB);
 
 			//	...
-			self::User($configs[$dsn]['users'], $result['users'], $DB);
-			self::Grant($result['users'], $DB);
+			self::User( $configs[$dsn]['users'], $result['users'], $DB);
+			self::Grant($configs[$dsn]['users'], $result['users'], $DB);
 		} catch ( \Throwable $e ){
 			\Notice::Set($e);
 		}
@@ -254,9 +254,9 @@ class Builder
 						$io  = $_db->Query($sql, 'alter');
 
 						//	...
-						if(!$io ){
-							throw new \Exception("Failed: $field ($io)");
-						}
+						if( false ){
+							D($field, $io);
+						};
 
 						//	...
 						break;
@@ -376,6 +376,7 @@ class Builder
 					throw new \Exception("Failed: $qu ($io)");
 				};
 
+				/*
 				//	...
 				if( empty($configs[$user]['privilege']) ){
 					$configs[$user]['privilege'] = [];
@@ -405,6 +406,7 @@ class Builder
 						};
 					};
 				};
+				*/
 			};
 
 			/**
@@ -420,22 +422,53 @@ class Builder
 	 * @param	 array			 $result
 	 * @param	\IF_DATABASE	 $DB
 	 */
-	static function Grant($results, $DB)
+	static function Grant($configs, $results, $DB)
 	{
+		//	...
+		$host = $DB->Config()['host'];
+
 		//	...
 		foreach( $results as $user => $result ){
 			//	...
-			if( ifset($result['privileges']) === true ){
+			if( $result['privilege'] ){
 				continue;
-			}
+			};
 
 			//	...
-			$host = $DB->Config()['host'];
+			foreach( $configs[$user]['privilege'] as $database => $tables ){
+				foreach( $tables as $table_names => $privileges ){
+					foreach( explode(',', str_replace(' ', '', $table_names )) as $table_name ){
+						foreach( $privileges as $privilege => $column ){
+							//	...
+							$config = [];
+							$config['host']      = $host;
+							$config['user']      = $user;
+							$config['database']  = $database;
+							$config['table']     = $table_name;
+							$config['privileges']= $privilege;
+							$config['field']     = $column;
+							D($config);
+
+							//	...
+							$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB);
+							$io = $DB->Query($qu);
+						};
+					};
+				};
+
+				continue;
+
+			};
+
+
+
 
 			//	...
-			if( empty($result['privileges']) ){
-				continue;
-			}
+			continue;
+
+			D($user, $result, $configs);
+
+			continue;
 
 			//	...
 			foreach( $result['privileges'] as $database => $tables ){

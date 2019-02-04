@@ -30,23 +30,22 @@ class NotFound implements \IF_UNIT
 	 */
 	use \OP_CORE;
 
+	static private $_debug;
+
 	static private function _Config()
 	{
 		//	...
 		$config = \Env::Get(__CLASS__);
 
 		//	...
-		foreach([
-			'prod'     => 'mysql',
-			'host'     => 'localhost',
-			'user'     => 'notfound',
-			'password' => 'password',
-			'database' => 'onepiece',
-		] as $key => $val ){
-			//	If not set.
-			if(!isset($config[$key]) ){
-				//	Set default value.
-				$config[$key] = $val;
+		if( empty($config) ){
+			//	...
+			foreach( $config = include(__DIR__.'/config.db.php') as $key => $val ){
+				//	If not set.
+				if(!isset($config[$key]) ){
+					//	Set default value.
+					$config[$key] = $val;
+				};
 			};
 		};
 
@@ -278,7 +277,41 @@ class NotFound implements \IF_UNIT
 
 	static function Admin()
 	{
-		\App::Template(__DIR__.'/admin.phtml');
+		//	...
+		if(!$io = \Cookie::Get(__METHOD__) ){
+			if(!$io = self::Selftest() ){
+				return;
+			}
+		};
+
+		//	Save selftest result.
+		\Cookie::Set(__METHOD__, true, 60*60*24);
+
+		//	...
+		D(__METHOD__, $io);
+
+		//	...
+		$db = \OP\UNIT\NotFound::_DB();
+
+		//	...
+		\App::Template(__DIR__.'/admin.phtml', ['db'=>$db]);
+	}
+
+	static function Selftest()
+	{
+		//	...
+		if(!\Unit::Load('selftest') ){
+			return;
+		};
+
+		/* @var $selftest \OP\UNIT\Selftest */
+		$selftest = \Unit::Instantiate('Selftest');
+		$selftest->Auto(__DIR__.'/config.selftest.php');
+	//	$selftest->Help();
+		$selftest->Debug();
+
+		D( \OP\UNIT\SELFTEST\Inspector::Failed() );
+		D(__METHOD__);
 	}
 
 	function Help($topic=null)
@@ -290,6 +323,6 @@ class NotFound implements \IF_UNIT
 
 	function Debug($topic=null)
 	{
-		D();
+		D( self::$_debug );
 	}
 }

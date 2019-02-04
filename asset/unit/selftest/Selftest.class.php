@@ -23,7 +23,7 @@ namespace OP\UNIT;
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-class Selftest
+class Selftest implements \IF_UNIT
 {
 	/** trait
 	 *
@@ -69,6 +69,9 @@ class Selftest
 
 		//	...
 		\OP\UNIT\SELFTEST\Inspector::Result();
+
+		//	...
+		return \OP\UNIT\SELFTEST\Inspector::Failed();
 	}
 
 	/** Get the unit of Database.
@@ -162,5 +165,18 @@ class Selftest
 		//	D( \OP\UNIT\SELFTEST\Inspector::Error() );
 			return $_errors;
 		}
+	}
+
+	function Help($config=null)
+	{
+		$readme = file_get_contents(__DIR__.'/README.md');
+		echo '<dir class="border">';
+		echo nl2br($readme);
+		echo '</dir>';
+	}
+
+	function Debug($config=null)
+	{
+		\OP\UNIT\SELFTEST\Inspector::Debug();
 	}
 }

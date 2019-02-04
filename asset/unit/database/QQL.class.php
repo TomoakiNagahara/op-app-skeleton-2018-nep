@@ -277,9 +277,16 @@ class QQL
 		$record = $_db->Query($query, 'select');
 
 		//	QQL is " name <- t_table.id = $id " and limit is 1.
-		if( $limit === 1 and count($record) === 1 ){
-			return array_shift($record);
-		}
+		if( $limit === 1 ){
+			//	In case of empty.
+			if( count($record) === 0 ){
+				//	Empty.
+				$record = null;
+			}else{
+				//	Has value.
+				$record = array_shift($record);
+			};
+		};
 
 		//	...
 		return $record;

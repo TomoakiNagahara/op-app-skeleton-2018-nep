@@ -148,4 +148,45 @@ class MYSQL
 			\Notice::Set($e->getMessage() . " ($dsn, $user, $password)");
 		};
 	}
+
+	/** Parse grant
+	 *
+	 */
+	static function Grant($records)
+	{
+		//	...
+		$result = [];
+
+		//	...
+		foreach( $records as $record ){
+			foreach( $record as $sql ){
+			//	$preg = "GRANT (.+) ON (.+)\.(.+) TO '(.+)'@'(.+)' IDENTIFIED BY PASSWORD '(.+)'";
+				$preg = "GRANT (.+) ON (.+)\.(.+) TO '(.+)'@'(.+)'";
+				$m    = null;
+				if(!preg_match("/$preg/i", $sql, $m) ){
+					\Notice::Set("Unmatch: {$preg} → {$sql}");
+				};
+
+				//	...
+				$privileges = $m[1];
+				$database   = $m[2];
+				$table      = $m[3];
+				/*
+				$user       = $m[4];
+				$host       = $m[5];
+				$password   = $m[6];
+				*/
+
+				//	...
+				foreach( explode(',', $privileges.',') as $privilege ){
+					if( $privilege ){
+						$result[$database][$table][] = trim($privilege);
+					};
+				};
+			};
+		};
+
+		//	...
+		return $result;
+	}
 }

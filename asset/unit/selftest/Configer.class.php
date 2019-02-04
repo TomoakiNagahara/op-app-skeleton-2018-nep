@@ -86,15 +86,32 @@ class Configer
 				};
 
 				//	...
+				if( $ai = $config['ai'] ?? null ){
+					//	...
+					$type = 'int';
+					$option['unsigned'] = true;
+				};
+
+				//	...
 				self::Column(
 					$column_name,
-					$config['type'],
+					$config['type']    ?? $type,
 					$config['length']  ?? null,
 					$config['null']    ?? null,
 					$config['default'] ?? null,
 					$config['comment'] ?? null,
 					$option
 				);
+
+				//	auto increment
+				if( $ai ){
+					self::Index(
+						$column_name,
+						'ai',
+						$column_name,
+						'auto incremant id'
+					);
+				};
 				break;
 
 			case 'index':
@@ -182,7 +199,27 @@ class Configer
 		//	...
 		$dsn = self::Dsn();
 
+		/*
 		//	...
+		$tables = [];
+		foreach( explode(',', $table.',') as $table ){
+			if( $table = trim($table) ){
+				$tables[] = $table;
+			};
+		};
+
+		//	...
+		$privileges = [];
+		foreach( explode(',', $privilege.',') as $privilege ){
+			if( $privilege = trim($privilege) ){
+				$privileges[] = $privilege;
+			};
+		};
+
+		D($tables, $privileges);
+		*/
+
+	//	...
 		self::$_config[$dsn]['users'][$user]['privilege'][$database][$table][$privilege] = $column;
 	}
 
@@ -365,7 +402,7 @@ class Configer
 				if( $type === 'ai' or $type === 'auto_increment' ){
 					self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
 				}
-				break;
+			break;
 		}
 
 		//	...

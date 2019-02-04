@@ -99,10 +99,11 @@ setTimeout(function(){
 			error.classList.add('error');
 			if(!json[user]['exist']    ){ error.classList.add('exist')    }else
 			if(!json[user]['password'] ){ error.classList.add('password') }else
-			if(!json[user]['database'] ){ error.classList.add('database') }else
-			if(!json[user]['table']    ){ error.classList.add('table')    }else
+		//	if(!json[user]['database'] ){ error.classList.add('database') }else
+		//	if(!json[user]['table']    ){ error.classList.add('table')    }else
 			if(!json[user]['privilege']){ error.classList.add('privilege')};
 
+			/*
 			//	...
 			if(!json[user]['database'] ){
 				//	...
@@ -116,7 +117,8 @@ setTimeout(function(){
 						span.innerText = database_name;
 						lack.appendChild(span);
 				};
-			}else if(!json[user]['table'] ){
+			}else
+			if(!json[user]['table'] ){
 				//	...
 				for(var database_name in json[user]['tables'] ){
 					var tables = json[user]['tables'][database_name];
@@ -131,7 +133,9 @@ setTimeout(function(){
 						};
 					};
 				};
-			}else if(!json[user]['privilege'] ){
+			}else
+			*/
+			if(!json[user]['privilege'] ){
 				//	...
 				for(var database_name in json[user]['privileges'] ){
 					var tables = json[user]['privileges'][database_name];

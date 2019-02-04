@@ -362,100 +362,36 @@ class Inspector
 	 */
 	static function Privilege($DB, $host, $user, $configs, &$result)
 	{
+		//	D( $configs['users'][$user]['privilege'] );
+
+		//	...
+		$success = true;
+
 		//	...
 		if( $result['exist'] === false ){
 			return;
-		}
-
-		//	...
-		if(!$sql = \OP\UNIT\SQL\Show::Grant($DB, $host, $user) ){
-			return;
-		}
-
-		//	...
-		$grants = [];
-		foreach( $DB->Query($sql, 'show') as $string ){
-			//	...
-			$match = [];
-			preg_match('/GRANT (.+) ON (.+)\.(.+) TO (.+)@([^\s]+)/', $string, $match);
-
-			//	...
-			$grant = [];
-			$grant['privilege'] = $match[1];
-			$grant['privilege'] = strtolower($grant['privilege']);
-			$grant['privilege'] = str_replace(' ', '', $grant['privilege']);
-			$database           = trim($match[2], '`');
-			$table              = trim($match[3], '`');
-		//	$grant['user']      = trim($match[4], "'");
-		//	$grant['host']      = trim($match[5], "'");
-			$grants[$database][$table] = $grant;
 		};
 
 		//	...
-		$result['database'] = true;
-		$result['table']    = true;
+		$sql  = \OP\UNIT\SQL\Show::Grant($DB, $host, $user);
+		$real = $DB->Query($sql, 'show');
 
 		//	...
-		foreach( $configs['users'][$user]['privilege'] ?? [] as $database => $tables ){
-
-			//	...
-			$result['databases'][$database] = isset($grants[$database]);
-
-			//	...
-			if( $result['databases'][$database] === false ){
-				$result['database'] = false;
-				continue;
-			};
-
-			//	...
+		foreach( $real as $database => $tables ){
 			foreach( $tables as $table => $privileges ){
-
-				//	...
-				$result['tables'][$database][$table] = isset($grants[$database][$table]);
-
-				//	...
-				if( $result['tables'][$database][$table] === false ){
-					$result['table'] = false;
-					continue;
-				};
-
-				//	...
-				if(!isset($grants[$database][$table]) ){
-					$result['privilege'] = false;
-					continue;
-				}
-
-				//	...
-				foreach( $privileges as $privilege => $columns ){
+				foreach( $privileges as $privilege ){
 					//	...
-					$privilege = str_replace(' ', '', $privilege);
-
-					//	...
-					$arr1 = explode(',', $privilege);
-					$arr2 = explode(',', $grants[$database][$table]['privilege']);
-					$arr1 = array_map(function($s){ return strtoupper($s); }, $arr1);
-					$arr2 = array_map(function($s){ return strtoupper($s); }, $arr2);
-					$base = array_unique( array_merge( $arr1, $arr2) );
-
-					//	...
-					$dif1 = array_diff($base, $arr1);
-					$dif2 = array_diff($base, $arr2);
-
-					//	...
-					if( $dif1 or $dif2 ){
-						//	...
+					if( $privilege === 'USAGE' ){
+						$success = false;
 						$result['privilege'] = false;
-						$result['privileges'][$database][$table] = join(',', array_merge($dif1, $dif2));
+						$result['privileges'][$database][$table] = $privilege;
 					};
-
-					//	...
-					if( false ){ D($columns); };
-				}
-			}
-		}
+				};
+			};
+		};
 
 		//	...
-		return array_search(false, $result, true) ? false: true;
+		return $success;
 	}
 
 	/** Inspect structures.
@@ -520,11 +456,11 @@ class Inspector
 
 	/** Inspect each table.
 	 *
-	 * @param  \OP\UNIT\DB $DB
-	 * @param   string     $database
-	 * @param   string     $table
-	 * @param  &array      $_result
-	 * @return  boolean    $result
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $database
+	 * @param	 string		 $table
+	 * @param	&array		 $_result
+	 * @return	 boolean	 $result
 	 */
 	static function Tables($DB, $database, $tables, &$_result)
 	{
@@ -550,12 +486,13 @@ class Inspector
 			$_result['tables'][$database][$table_name]['result'] = $io;
 			if(!$io ){
 				self::$_failure = true;
+				D($io);
 				continue;
 			}
 
 			//	...
-			self::Fields($DB, $database, $table_name, ifset($table['columns'], []), $_result);
-			self::Indexes($DB, $database, $table_name, ifset($table['indexes'], []), $_result);
+			self::Fields( $DB, $database, $table_name, ($table['columns'] ?? []), $_result);
+			self::Indexes($DB, $database, $table_name, ($table['indexes'] ?? []), $_result);
 		}
 
 		//	...
@@ -714,16 +651,18 @@ class Inspector
 	static function Indexes($DB, $database, $table, $indexes, &$_result)
 	{
 		//	...
-		if(!$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table) ){
-			throw new \Exception("Failed: $sql");
-		}
+		$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table);
+		$real = $DB->Query($sql);
 
 		//	...
-		if(!$list = $DB->Query($sql) ){
-			throw new \Exception("Failed: $sql ($list)");
-		}
-
-		//	`ALTER TABLE ``t_test`` DROP PRIMARY KEY;
+		foreach( $indexes as $index_name => $index ){
+			//	Each index.
+			$io = isset($real[$index_name]) ? true: false;
+			$_result['indexes'][$database][$table][$index_name]['result'] = $io;
+			if( false ){
+				D($index);
+			};
+		};
 	}
 
 	/** Display default form.
@@ -802,6 +741,11 @@ class Inspector
 		//	...
 		\App::WebPack(__DIR__.'/result.js');
 		\App::WebPack(__DIR__.'/result.css');
+	}
+
+	static function Help()
+	{
+
 	}
 
 	/** For developers

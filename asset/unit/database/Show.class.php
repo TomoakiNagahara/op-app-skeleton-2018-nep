@@ -13,7 +13,7 @@
  *
  * @created   2018-05-14
  */
-namespace OP\UNIT\Database;
+namespace OP\UNIT\DATABASE;
 
 /** Show
  *
@@ -116,7 +116,9 @@ class Show
 
 		//	...
 		foreach( $records as $record ){
-			$result[] = $record['Tables_in_testcase'] ?? $record['relname'] ?? $record['tbl_name'] ?? 'empty table name';
+			foreach( $record as $table_name ){
+				$result[] = $table_name;
+			};
 		};
 
 		//	...
@@ -250,17 +252,6 @@ class Show
 	 */
 	static private function _Grant(array $records)
 	{
-		//	...
-		$result = [];
-
-		//	...
-		foreach( $records as $record ){
-			foreach( $record as $grant ){
-				$result[] = $grant;
-			};
-		}
-
-		//	...
-		return $result;
+		return MYSQL::Grant($records);
 	}
 }
