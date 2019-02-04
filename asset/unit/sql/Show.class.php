@@ -131,9 +131,25 @@ class Show
 	 */
 	static function Index($db, $database, $table)
 	{
-		$database = $db->Quote($database);
-		$table    = $db->Quote($table);
-		return "SHOW INDEX FROM {$database}.{$table}";
+		if( 1 ){
+			$database = $db->Quote($database);
+			$table    = $db->Quote($table);
+			return "SHOW INDEX FROM {$database}.{$table}";
+		}else{
+			//	...
+			if( $database ){
+				$database = 'table_schema='.$db->PDO()->Quote($database);
+			};
+
+			//	...
+			if( $table ){
+				$database.= ' AND ';
+				$database.= 'table_name='  .$db->PDO()->Quote($table);
+			};
+
+			//	...
+			return "SELECT * FROM information_schema.statistics WHERE {$database}";
+		};
 	}
 
 	/** Show user list.

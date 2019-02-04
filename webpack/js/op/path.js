@@ -42,12 +42,17 @@ $OP.Path.Convert = function( path ){
  * @copyright Tomoaki Nagahara All right reserved.
  */
 (function(){
+	/** Local scope value.
+	 *
+	 */
 	var __meta = {};
-//	<?php if( Env::isAdmin() ): ?>
-		__meta.op  = "<?= ConvertPath('op:/' ); ?>";
-		__meta.app = "<?= ConvertPath('app:/'); ?>";
-		__meta.doc = "<?= ConvertPath('doc:/'); ?>";
-//	<?php endif; ?>
+
+	/** Register meta path.
+	 *
+	 */
+	$OP.Path.Register = function( meta, path ){
+		__meta[meta] = path;
+	};
 
 	/** Compress path.
 	 *
@@ -72,4 +77,13 @@ $OP.Path.Convert = function( path ){
 		//	...
 		return path;
 	};
+
+	/** Add meta path.
+	 *
+	 */
+	/* <?php if( \Env::isAdmin() ): ?> */
+	//	Execute just admin only.
+	$OP.Path.Register('app'  , "<?= ConvertPath('app:/') ?>"  );
+	$OP.Path.Register('alias', "<?= ConvertPath('alias:/') ?>");
+	/* <?php endif; ?> */
 })();

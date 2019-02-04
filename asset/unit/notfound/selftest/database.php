@@ -9,9 +9,6 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 /* @var $configer \OP\UNIT\SELFTEST\Configer */
-if( false ){
-	$configer = Unit::Instantiate('Selftest')->Configer();
-};
 
 //  DSN configuration.
 $configer->DSN([
@@ -19,64 +16,6 @@ $configer->DSN([
 	'product'  => 'mysql',
 	'port'     => '3306',
 ]);
-
-//  User configuration.
-$configer->User([
-	'name'     => 'notfound',
-	'password' => 'password',
-	'charset'  => 'utf8',
-]);
-/*
-$configer->User([
-	'name'     => 'notfound-insert',
-	'password' => Hasha1(__FILE__.':'.__LINE__),
-	'charset'  => 'utf8',
-]);
-$configer->User([
-	'name'     => 'notfound-admin',
-	'password' => Hasha1(__FILE__.':'.__LINE__),
-	'charset'  => 'utf8',
-]);
-$configer->User([
-	'name'     => 'notfound-admin-select',
-	'host'     => '192.168.1.%',
-	'password' => Hasha1(__FILE__.':'.__LINE__),
-	'charset'  => 'utf8',
-]);
-*/
-
-//  Privilege configuration.
-$configer->Privilege([
-	'user'     => 'notfound',
-	'database' => 'onepiece',
-	'table'    => 't_host, t_uri, t_ua, t_notfound',
-	'privilege'=> 'insert, select, update, delete',
-	'column'   => '*',
-]);
-/*
-$configer->Privilege([
-	'user'     => 'notfound-insert',
-	'database' => 'onepiece',
-	'table'    => 't_host, t_uri, t_ua, t_notfound',
-	'privilege'=> 'insert, select, update, delete',
-	'column'   => '*',
-]);
-$configer->Privilege([
-	'user'     => 'notfound-admin',
-	'database' => 'onepiece',
-	'table'    => 't_host, t_uri, t_ua, t_notfound',
-	'privilege'=> 'select, update, delete',
-	'column'   => '*',
-]);
-$configer->Privilege([
-	'user'     => 'notfound-admin-select',
-	'host'     => '192.168.1.%',
-	'database' => 'onepiece',
-	'table'    => 't_host, t_uri, t_ua, t_notfound',
-	'privilege'=> 'select, update, delete',
-	'column'   => '*',
-]);
-*/
 
 //  Database configuration.
 $configer->Database([

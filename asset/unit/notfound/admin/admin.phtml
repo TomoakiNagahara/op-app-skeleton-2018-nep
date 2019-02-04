@@ -25,7 +25,9 @@ if( $host = $form->GetValue('host') ){
 	//	...
 	$hash = \OP\UNIT\NotFound::Hash($host);
 	$ai   = $db->Quick(" ai <- t_host.hash = $hash ", ['limit'=>1]);
+}
 
+if( $ai ?? null ){
 	//	...
 	$config = [];
 	$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';
@@ -70,7 +72,7 @@ $form->Finish();
 
 echo '<hr/>';
 
-D($records);
+D($records ?? null);
 
 //	...
 if( $_GET['debug'] ?? null ){

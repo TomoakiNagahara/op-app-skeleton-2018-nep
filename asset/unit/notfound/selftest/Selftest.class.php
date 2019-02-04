@@ -1,6 +1,6 @@
 <?php
 /**
- * unit-notfound:/Admin.class.php
+ * unit-notfound:/Selftest.class.php
  *
  * @creation  2019-02-04
  * @version   1.0
@@ -15,9 +15,7 @@
  */
 namespace OP\UNIT\NOTFOUND;
 
-use OP\UNIT\NotFound;
-
-/** Admin
+/** Selftest
  *
  * @creation  2019-02-04
  * @version   1.0
@@ -25,7 +23,7 @@ use OP\UNIT\NotFound;
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-class Admin implements \IF_UNIT
+class Selftest implements \IF_UNIT
 {
 	/** trait.
 	 *
@@ -38,51 +36,29 @@ class Admin implements \IF_UNIT
 	 */
 	static private $_debug;
 
-	/** Will execute automatically of Admin.
+	/** Will execute automatically of Selftest.
 	 *
 	 */
 	static function Auto(\IF_DATABASE $db)
 	{
 		//	...
-		if( $_GET['selftest'] ?? null ){
-			return self::Selftest($db);
+		if(!\Unit::Load('selftest') ){
+			return;
+		};
+
+		/* @var $selftest \OP\UNIT\Selftest */
+		if( $io = $selftest = \Unit::Instantiate('Selftest') ){
+			$io = $selftest->Auto(__DIR__.'/../selftest/config.php');
 		};
 
 		//	...
-		if(!$io = \Cookie::Get(__METHOD__) ){
-			if(!$io = self::Selftest($db) ){
-				return $io;
-			};
+		if( 1 ){
+		//	$selftest->Help();
+			$selftest->Debug();
 		};
 
-		//	Save selftest result.
-		\Cookie::Set(__METHOD__, true, 60*60*24);
-
 		//	...
-		include(__DIR__.'/admin.phtml');
-	}
-
-	/** Form
-	 *
-	 */
-	static function Form()
-	{
-		return include(__DIR__.'/admin.form.php');
-	}
-
-	/** Will execute automatically of Selftest.
-	 *
-	 * @return boolean
-	 */
-	static function Selftest(\IF_DATABASE $db)
-	{
-		//	...
-		if(!include(__DIR__.'/../selftest/Selftest.class.php') ){
-			return false;
-		}
-
-		//	...
-		return NOTFOUND\Selftest::Auto($db);
+		return $io;
 	}
 
 	/** For developers.

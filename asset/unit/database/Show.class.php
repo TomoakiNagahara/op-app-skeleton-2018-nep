@@ -211,9 +211,26 @@ class Show
 		//	...
 		foreach( $records as $record ){
 			//	...
-			$name = $record['Key_name'];
-			$seq  = $record['Seq_in_index'];
-			$result[$name][$seq] = $record;
+			$database_name=                             $record['TABLE_SCHEMA']  ?? null;
+		//	$database_name=                             $record['INDEX_SCHEMA']  ?? null;
+			$table_name   = $record['Table']         ?? $record['TABLE_NAME']    ?? null;
+			$key_name     = $record['Key_name']      ?? $record['INDEX_NAME']    ?? null;
+			$key_type     = $record['Index_type']    ?? $record['INDEX_TYPE']    ?? null;
+		//	$sequence     = $record['Seq_in_index']  ?? $record['SEQ_IN_INDEX']  ?? null;
+			$column_name  = $record['Column_name']   ?? $record['COLUMN_NAME']   ?? null;
+			$comment1     = $record['Comment']       ?? $record['COMMENT']       ?? null;
+			$comment2     = $record['Index_comment'] ?? $record['INDEX_COMMENT'] ?? null;
+			$unique       = $record['Non_unique']    ?? $record['NON_UNIQUE']    ?? null;
+			$unique       = $unique ? false: true;
+
+			//	...
+			$result[$key_name]['database']  = $database_name;
+			$result[$key_name]['table']     = $table_name;
+			$result[$key_name]['primary']   = $key_name === 'PRIMARY' ? true: false;
+			$result[$key_name]['unique']    = $unique;
+			$result[$key_name]['type']      = $key_type;
+			$result[$key_name]['columns'][] = $column_name;
+			$result[$key_name]['comment']   = $comment1 . $comment2;
 		}
 
 		//	...

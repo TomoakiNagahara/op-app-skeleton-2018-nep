@@ -45,6 +45,9 @@ setTimeout(function(){
 		__user(list, json[dsn]['users']);
 
 		//	...
+		__privilege(list, json[dsn]['privileges']);
+
+		//	...
 		var list = document.createElement('ul');
 		var item = document.createElement('li');
 			item.innerText = 'Databases';
@@ -86,6 +89,7 @@ setTimeout(function(){
 				item.appendChild(error);
 				item.appendChild(lack);
 				item.appendChild(modify);
+				item.dataset.user = user;
 				list.appendChild(item);
 
 			//	...
@@ -134,7 +138,6 @@ setTimeout(function(){
 					};
 				};
 			}else
-			*/
 			if(!json[user]['privilege'] ){
 				//	...
 				for(var database_name in json[user]['privileges'] ){
@@ -148,6 +151,7 @@ setTimeout(function(){
 					};
 				};
 			};
+			*/
 
 			//	...
 			if( json[user]['modify'] ){
@@ -156,6 +160,52 @@ setTimeout(function(){
 			};
 		}
 	}
+	function __privilege(root, json){
+		//	...
+		var area = document.createElement('div');
+		var ol   = document.createElement('ol');
+		var p    = document.createElement('p');
+			p.innerText = 'privilege';
+			area.appendChild(p);
+			area.appendChild(ol);
+
+		//	...
+		var fail = false;
+
+		//	...
+		for(var user in json ){
+			for(var host in json[user]){
+				//	...
+				var ol = document.createElement('ol');
+
+				//	...
+				for(var table in json[user][host]){
+					var result = json[user][host][table]['result'];
+					var exist  = json[user][host][table]['exist'];
+
+					//	...
+					if( result && exist ){
+						continue;
+					};
+
+					//	...
+					var li = document.createElement('li');
+						li.innerText = table;
+					ol.appendChild(li);
+				};
+
+				//	...
+				if( ol.childElementCount ){
+					root.querySelector('[data-user="'+user+'"]').appendChild(ol);
+				};
+			};
+		};
+
+		//	...
+		if( fail ){
+			root.appendChild(fail);
+		};
+	};
 
 	//	...
 	function __database(root, json){

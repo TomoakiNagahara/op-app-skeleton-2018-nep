@@ -349,20 +349,19 @@ class Inspector
 				continue;
 			};
 
-			//	Check passowrd.
-			if(!$result['result'] = ( $result['exist'] and $result['password'] ) ){
-				self::$_failure = true;
-				continue;
-			}
-
 			//	Privilege
-			if(!$result['privilege'] = self::Privilege($DB, $host, $user_name, $configs, self::$_result[$dsn]['privileges']) ){
+			if(!$result['privilege'] = self::Privilege($DB, $host, $user_name, $configs, self::$_result[$dsn]) ){
 				self::$_failure = true;
 				continue;
 			}
 
 			//	...
 			$result['result'] = true;
+
+			//	...
+			if( false ){
+				D($result);
+			};
 		}
 	}
 
@@ -374,7 +373,7 @@ class Inspector
 	 * @param	 array		 $configs
 	 * @param	 array		 $result
 	 */
-	static function Privilege($DB, $host, $user, $configs, &$result)
+	static function Privilege($DB, $host, $user, $configs, &$results)
 	{
 		//	...
 		$success = true;
@@ -390,6 +389,19 @@ class Inspector
 				//	...
 				foreach( explode(',',$tables) as $table ){
 					//	...
+					$result = &$results['privileges'][$user][$host][$table];
+
+					//	...
+					$result['result'] = false;
+
+					//	...
+					if(!$result['exist'] = isset($real[$database][$table]) ){
+						$results['tables'][$database][$table]['exist'] = false;
+						$success = false;
+						continue;
+					};
+
+					//	...
 					foreach( $privileges as $privilege => $columns ){
 						//	...
 						$base = explode(',',strtoupper($privilege));
@@ -397,23 +409,21 @@ class Inspector
 						$diff = array_diff($base, $comm);
 
 						//	...
-						if( count($diff) === 0 ){
+						if( count($diff) !== 0 ){
+							$success = false;
 							continue;
 						};
 
-						D( $diff, $base, $comm, $columns );
-
 						//	...
-						$success = false;
+						$result['result']  = true;
+						$result['columns'] = $columns;
+						if( false ){
+							D($result);
+						};
 					};
 				};
 			};
 		};
-
-	//	D('real', $real);
-	//	D('pickup config', $config);
-	//	D('original configs',$configs['users'][$user]['privilege']);
-	//	D('result', $result);
 
 		//	...
 		return $success;
@@ -511,7 +521,6 @@ class Inspector
 			$_result['tables'][$database][$table_name]['result'] = $io;
 			if(!$io ){
 				self::$_failure = true;
-				D($io);
 				continue;
 			}
 
@@ -678,12 +687,25 @@ class Inspector
 		//	...
 		$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table);
 		$real = $DB->Query($sql);
+		D($real);
 
 		//	...
 		foreach( $indexes as $index_name => $index ){
+
+			D($index_name, $index);
+
 			//	Each index.
 			$io = isset($real[$index_name]) ? true: false;
+
+			//	...
 			$_result['indexes'][$database][$table][$index_name]['result'] = $io;
+
+			//	...
+			if(!$io ){
+				$_result['tables'][$database][$table]['result'] = $io;
+				$_result['tables'][$database][$table]['index']  = $io;
+			};
+
 			if( false ){
 				D($index);
 			};
