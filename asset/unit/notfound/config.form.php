@@ -8,8 +8,11 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-/* @var $db   IF_DATABASE */
-$db = \OP\UNIT\NotFound::_DB();
+//	...
+if( false ){
+	/* @var $db IF_DATABASE */
+	$db = null;
+};
 
 //	...
 $form = [];

@@ -8,6 +8,7 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+/* @var $db   IF_DATABASE */
 /* @var $form IF_FORM */
 $form = include('admin.form.php');
 
@@ -19,15 +20,12 @@ $form->Label('host');
 $form->Input('host');
 echo '<br/>';
 
-/* @var $db   IF_DATABASE */
-$db = \OP\UNIT\NotFound::_DB();
-
 //	...
 if( $host = $form->GetValue('host') ){
 	//	...
 	$hash = \OP\UNIT\NotFound::Hash($host);
 	$ai   = $db->Quick(" ai <- t_host.hash = $hash ", ['limit'=>1]);
-	D($ai);
+
 	//	...
 	$config = [];
 	$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';

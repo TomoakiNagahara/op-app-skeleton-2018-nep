@@ -19,7 +19,7 @@ namespace OP\UNIT;
  *
  * @creation  2019-01-29
  * @version   1.0
- * @package   unit-NotFound
+ * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
@@ -30,8 +30,16 @@ class NotFound implements \IF_UNIT
 	 */
 	use \OP_CORE;
 
+	/** Debug.
+	 *
+	 * @var array
+	 */
 	static private $_debug;
 
+	/** Get configuration.
+	 *
+	 * @return string|number|boolean|array|object
+	 */
 	static private function _Config()
 	{
 		//	...
@@ -56,11 +64,11 @@ class NotFound implements \IF_UNIT
 		return $config;
 	}
 
-	/**
+	/** Get IF_DATABASE object.
 	 *
 	 * @return \IF_DATABASE
 	 */
-	static function _DB()
+	static private function _DB()
 	{
 		//	...
 		static $_DB;
@@ -75,6 +83,9 @@ class NotFound implements \IF_UNIT
 		return $_DB->isConnect() ? $_DB: false;
 	}
 
+	/** Will execute automatically.
+	 *
+	 */
 	static function Auto()
 	{
 		//	...
@@ -93,11 +104,21 @@ class NotFound implements \IF_UNIT
 		self::_NotFound($host, $uri, $ua);
 	}
 
+	/** Generate common hash.
+	 *
+	 * @param	 string		 $str
+	 * @return	 string		 $hash
+	 */
 	static function Hash(string $str):string
 	{
 		return Hasha1($str, 10, '');
 	}
 
+	/** Get host name auto increment id.
+	 *
+	 * @param	 string	 $host
+	 * @return	 int	 $ai
+	 */
 	static private function _Host(string $host):int
 	{
 		//	...
@@ -129,6 +150,11 @@ class NotFound implements \IF_UNIT
 		return $ai;
 	}
 
+	/** Get URI auto increment id.
+	 *
+	 * @param	 string	 $host
+	 * @return	 int	 $ai
+	 */
 	static private function _URI(string $uri):int
 	{
 		//	...
@@ -160,6 +186,11 @@ class NotFound implements \IF_UNIT
 		return $ai;
 	}
 
+	/** Get user agent auto increment id.
+	 *
+	 * @param	 string	 $host
+	 * @return	 int	 $ai
+	 */
 	static private function _UA(string $ua):int
 	{
 		//	...
@@ -191,7 +222,12 @@ class NotFound implements \IF_UNIT
 		return $ai;
 	}
 
-	static function _OS($ua)
+	/** Get OS auto increment id.
+	 *
+	 * @param	 string	 $host
+	 * @return	 int	 $ai
+	 */
+	static private function _OS($ua)
 	{
 		//	...
 		$result = null;
@@ -205,7 +241,12 @@ class NotFound implements \IF_UNIT
 		return $result;
 	}
 
-	static function _Browser($ua)
+	/** Get Browser auto increment id.
+	 *
+	 * @param	 string	 $host
+	 * @return	 int	 $ai
+	 */
+	static private function _Browser($ua)
 	{
 		//	...
 		$result = null;
@@ -231,7 +272,12 @@ class NotFound implements \IF_UNIT
 		return $result;
 	}
 
-	static function _NotFound(int $host, int $uri, int $ua)
+	/** Count of notfound record.
+	 *
+	 * @param	 string	 $host
+	 * @return	 int	 $ai
+	 */
+	static private function _NotFound(int $host, int $uri, int $ua)
 	{
 		//	...
 		if(!$db = self::_DB() ){
@@ -275,47 +321,24 @@ class NotFound implements \IF_UNIT
 		return $count;
 	}
 
+	/** Will execute automatically of Admin.
+	 *
+	 */
 	static function Admin()
 	{
 		//	...
-		if(!$io = \Cookie::Get(__METHOD__) ){
-			if(!$io = self::Selftest() ){
-				return $io;
-			};
+		if( $db = self::_DB() ){
+			include(__DIR__.'/Admin.class.php');
+			NOTFOUND\Admin::Auto($db);
 		};
-
-		//	Save selftest result.
-		\Cookie::Set(__METHOD__, true, 60*60*24);
-
-		//	...
-		$db = \OP\UNIT\NotFound::_DB();
-
-		//	...
-		\App::Template(__DIR__.'/admin.phtml', ['db'=>$db]);
 	}
 
-	static function Selftest()
-	{
-		//	...
-		if(!\Unit::Load('selftest') ){
-			return;
-		};
-
-		/* @var $selftest \OP\UNIT\Selftest */
-		if( $io = $selftest = \Unit::Instantiate('Selftest') ){
-			$io = $selftest->Auto(__DIR__.'/config.selftest.php');
-		};
-
-		//	...
-		if( false ){
-		//	$selftest->Help();
-		//	$selftest->Debug();
-		};
-
-		//	...
-		return $io;
-	}
-
+	/** For developers.
+	 *
+	 *
+	 * @see \IF_UNIT::Help()
+	 * @param	 string		 $topic
+	 */
 	function Help($topic=null)
 	{
 		echo '<pre><code>';
@@ -323,6 +346,11 @@ class NotFound implements \IF_UNIT
 		echo '</code></pre>';
 	}
 
+	/** For developers.
+	 *
+	 * @see \IF_UNIT::Debug()
+	 * @param	 string		 $topic
+	 */
 	function Debug($topic=null)
 	{
 		D( self::$_debug );
