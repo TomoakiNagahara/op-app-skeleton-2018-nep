@@ -272,31 +272,64 @@ class Builder
 	 * @param array $result
 	 * @param \OP\UNIT\DB $DB
 	 */
-	static function Index($config, &$result, $DB)
+	static function Index($configs, &$results, $DB)
 	{
 		//	...
-		foreach( ifset($result['indexes'], []) as $database => $tables ){
+		foreach( ifset($results['indexes'], []) as $database => $tables ){
 			//	...
-			$database = $DB->Quote($database);
+		//	$database = $DB->Quote($database);
 
 			//	...
 			foreach( $tables as $table => $indexes ){
-				//	...
-				$table = $DB->Quote($table);
 
 				//	...
-				foreach( $indexes as $column => $index ){
+			//	$table = $DB->Quote($table);
+
+				//	...
+				foreach( $indexes as $name => $index ){
+
+					D($name, $index);
+				//	D($configs);
 					//	...
-					$column = $DB->Quote($column);
+					$config = $configs['databases'][$database]['tables'][$table]['indexes'][$name];
+					$result = $results['indexes'][$database][$table][$name]['result'];
+
+					D($result, $config);
+					continue;
 
 					//	...
-					$index = $index === 'uni' ? 'UNIQUE': 'INDEX';
+				//	$comment = $index['comment'];
+					$name    = $index['name'] ?? $name;
+					$type    = $index['type'];
+					$columns = $index['column'];
+
+					//	...
+					switch( $type = strtoupper($type) ){
+						case 'UNI':
+						case 'UNIQUE':
+							break;
+						default:
+							$index = 'INDEX';
+					};
+
+					//	...
+					$join = [];
+					if( is_string($columns) ){
+						$columns = explode(',', $columns);
+					};
+					foreach( $columns as $column ){
+						$join[] = $DB->Quote( trim($column) );
+					};
+					$columns = join(',',$join);
+
+					//	...
+					$name = $DB->Quote($name);
 
 					//	...
 					$modifier = 'ADD';
 
 					//	...
-					if(!$sql = "ALTER TABLE {$database}.{$table} {$modifier} $index($column)" ){
+					if(!$sql = "ALTER TABLE {$database}.{$table} {$modifier} $type($columns)" ){
 						throw new \Exception("Failed: $sql");
 					}
 

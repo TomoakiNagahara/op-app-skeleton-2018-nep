@@ -1,8 +1,8 @@
 <?php
 /**
- * unit-notfound:/selftest/t_host.php
+ * unit-notfound:/selftest/t_ua_os.php
  *
- * @creation  2019-02-04
+ * @creation  2019-02-05
  * @version   1.0
  * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
@@ -12,7 +12,7 @@
 
 //  Table configuration.
 $configer->Set('table', [
-	'name'    => 't_host',
+	'name'    => 't_ua_os',
 	'charset' => 'utf8',
 	'collate' => 'utf8mb4_general_ci',
 	'comment' => 'Stack each host name.',
@@ -42,9 +42,9 @@ $configer->Set('column', [
 	'unique'  =>   true,
 ]);
 
-//  Host name.
+//  OS.
 $configer->Set('column', [
-	'name'    => 'host',
+	'name'    => 'os',
 	'type'    => 'text',
 	'null'    =>  false,
 	'collate' => 'ascii_general_ci',

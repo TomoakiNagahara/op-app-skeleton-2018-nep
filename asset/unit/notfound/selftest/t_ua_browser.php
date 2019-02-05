@@ -1,8 +1,8 @@
 <?php
 /**
- * unit-notfound:/selftest/t_host.php
+ * unit-notfound:/selftest/t_ua_browser.php
  *
- * @creation  2019-02-04
+ * @creation  2019-02-05
  * @version   1.0
  * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
@@ -12,7 +12,7 @@
 
 //  Table configuration.
 $configer->Set('table', [
-	'name'    => 't_host',
+	'name'    => 't_ua_browser',
 	'charset' => 'utf8',
 	'collate' => 'utf8mb4_general_ci',
 	'comment' => 'Stack each host name.',
@@ -31,24 +31,34 @@ $configer->Set('column', [
 	'comment' => 'Auto increment id.',
 ]);
 
-//  Hash key.
+//  Reference of t_ua.ai.
 $configer->Set('column', [
-	'name'    => 'hash',
-	'type'    => 'char',
-	'length'  =>     10,
-	'null'    =>  false,
-	'collate' => 'ascii_general_ci',
-	'comment' => 'Hash by host name.',
-	'unique'  =>   true,
+	'name'      => 'ua',
+	'type'      => 'int',
+	'unsigned'  =>  true,
+	'null'      =>  false,
+	'comment'   => 'Reference of t_ua.ai.',
+	'reference' => 't_ua.ai'
 ]);
 
-//  Host name.
+//  Browser name.
 $configer->Set('column', [
-	'name'    => 'host',
-	'type'    => 'text',
-	'null'    =>  false,
+	'name'    => 'browser',
+	'type'    => 'enum',
+	'length'  => 'ie, edge, chrome, firefox, safari, opera, vivaldi, other',
+	'null'    =>  true,
 	'collate' => 'ascii_general_ci',
 	'comment' => 'host name.',
+]);
+
+//  Browser version.
+$configer->Set('column', [
+	'name'      => 'version',
+	'type'      => 'float',
+	'unsigned'  =>  true,
+	'null'      =>  false,
+	'comment'   => 'Reference of t_ua.ai.',
+	'reference' => 't_ua.ai'
 ]);
 
 //  Timestamp.
@@ -64,12 +74,4 @@ $configer->Set('index', [
 	'type'    => 'ai',
 	'column'  => 'ai',
 	'comment' => 'auto incrment',
-]);
-
-//  Search unique index key.
-$configer->Set('index', [
-	'name'    => 'hash',
-	'type'    => 'unique',
-	'column'  => 'hash',
-	'comment' => 'unique index key',
 ]);

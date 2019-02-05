@@ -15,7 +15,14 @@ $configer = Unit::Instantiate('Selftest')->Configer();
 include(__DIR__.'/database.php');
 include(__DIR__.'/user.php');
 include(__DIR__.'/privilege.php');
+/*
 include(__DIR__.'/t_host.php');
+include(__DIR__.'/t_uri.php');
+include(__DIR__.'/t_ua.php');
+include(__DIR__.'/t_ua_os.php');
+include(__DIR__.'/t_ua_browser.php');
+*/
+include(__DIR__.'/t_notfound.php');
 
 //	...
 return $configer->Get();

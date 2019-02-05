@@ -253,10 +253,7 @@ class Inspector
 			self::Inspection($config, $DB);
 		}
 
-		//	...
-		if( self::$_failure === null ){
-			self::$_failure  =  false;
-		}
+		D(self::$_failure);
 
 		//	...
 		if( self::$_failure ){
@@ -481,11 +478,13 @@ class Inspector
 			//	...
 			if( empty($database_name) ){
 				self::Error("Has not been set database name in the configuration.");
-				return;
+				continue;
 			}
 
 			//	...
-			self::tables($DB, $database_name, $database['tables'], $_result);
+			if( self::tables($DB, $database_name, $database['tables'], $_result) ){
+				self::$_failure = true;
+			};
 		}
 	}
 
@@ -513,14 +512,12 @@ class Inspector
 			//	...
 			if( empty($table_name) ){
 				self::Error("Has not been set table name in the configuration.");
-				return;
+				continue;
 			}
 
 			//	...
-			$io = array_search($table_name, $list) === false ? false: true;
-			$_result['tables'][$database][$table_name]['result'] = $io;
-			if(!$io ){
-				self::$_failure = true;
+			$_result['tables'][$database][$table_name]['result'] = (array_search($table_name, $list) === false) ? false: true;
+			if(!$_result['tables'][$database][$table_name]['result'] ){
 				continue;
 			}
 
@@ -528,6 +525,11 @@ class Inspector
 			self::Fields( $DB, $database, $table_name, ($table['columns'] ?? []), $_result);
 			self::Indexes($DB, $database, $table_name, ($table['indexes'] ?? []), $_result);
 		}
+
+		//	...
+		if(!$_result['tables'][$database][$table_name]['result'] ){
+			self::$_failure = true;
+		};
 
 		//	...
 		return $_result['tables'][$database][$table_name]['result'];
@@ -648,6 +650,13 @@ class Inspector
 								$join[] = trim($temp, "'");
 							}
 							$fact['length'] = join(',', $join);
+
+							//	...
+							$join = [];
+							foreach( explode(',', $column[$key]) as $temp ){
+								$join[] = trim($temp);
+							};
+							$column[$key] = join(',', $join);
 						break;
 					}
 					$io = ifset($column[$key]) === ifset($fact[$key]) ? true: false;
@@ -687,29 +696,52 @@ class Inspector
 		//	...
 		$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table);
 		$real = $DB->Query($sql);
-		D($real);
+
+		//	...
+		$success = true;
 
 		//	...
 		foreach( $indexes as $index_name => $index ){
+			//	...
+			$io = null;
 
-			D($index_name, $index);
-
-			//	Each index.
-			$io = isset($real[$index_name]) ? true: false;
+			//	...
+			switch( $type = strtolower($index['type']) ){
+				case 'primary':
+				case 'ai':
+					if( isset($real['PRIMARY']) ){
+						$io = (join(',',$real['PRIMARY']['columns'])) === str_replace(' ', '', $index['column']);
+					};
+					break;
+				case 'index':
+					if( $io = isset($real[$index_name]['unique']) ){
+						$io =!$real[$index_name]['unique'];
+					};
+					break;
+				case 'unique':
+					if( $io = isset($real[$index_name]['unique']) ){
+						$io = $real[$index_name]['unique'];
+					};
+					break;
+				default:
+					\Notice::Set("Has not been support this type. ($type)");
+			};
 
 			//	...
 			$_result['indexes'][$database][$table][$index_name]['result'] = $io;
 
 			//	...
-			if(!$io ){
-				$_result['tables'][$database][$table]['result'] = $io;
-				$_result['tables'][$database][$table]['index']  = $io;
-			};
-
-			if( false ){
-				D($index);
+			if(!$io){
+				$success = false;
 			};
 		};
+
+		//	...
+	//	$_result['tables'][$database][$table]['result'] = $success;
+		$_result['tables'][$database][$table]['index']  = $success;
+
+		//	...
+		return $success;
 	}
 
 	/** Display default form.
@@ -721,8 +753,10 @@ class Inspector
 		$build = self::Session('build');
 
 		//	...
-		\OP\UNIT\WebPack::JS( __DIR__.'/form');
-		\OP\UNIT\WebPack::Css(__DIR__.'/form');
+		if( \Unit::Load('webpack') ){
+			\OP\UNIT\WebPack::JS( __DIR__.'/form');
+			\OP\UNIT\WebPack::Css(__DIR__.'/form');
+		};
 		\App::Template(__DIR__.'/form.phtml', ['build'=>$build]);
 	}
 
