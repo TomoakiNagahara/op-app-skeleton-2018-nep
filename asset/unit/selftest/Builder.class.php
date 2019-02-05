@@ -156,12 +156,16 @@ class Builder
 		//	...
 		foreach( $result['tables'] as $database => $tables ){
 			foreach( $tables as $table => $temp ){
-				if( $temp['result'] ){
+				if( $temp['result'] ?? null ){
 					continue;
 				}
 
 				//	...
-				$args = $configs['databases'][$database]['tables'][$table];
+				if(!$args = $configs['databases'][$database]['tables'][$table] ?? null ){
+					continue;
+				};
+
+				//	...
 				$args['database'] = $database;
 				$args['table']    = $table;
 
@@ -272,74 +276,27 @@ class Builder
 	 * @param array $result
 	 * @param \OP\UNIT\DB $DB
 	 */
-	static function Index($configs, &$results, $DB)
+	static function Index($_configs, &$_results, $DB)
 	{
 		//	...
-		foreach( ifset($results['indexes'], []) as $database => $tables ){
+		foreach( $_configs['databases'] as $database_name => $database ){
 			//	...
-		//	$database = $DB->Quote($database);
-
-			//	...
-			foreach( $tables as $table => $indexes ){
-
+			foreach( $database['tables'] as $table_name => $table ){
 				//	...
-			//	$table = $DB->Quote($table);
-
-				//	...
-				foreach( $indexes as $name => $index ){
-
-					D($name, $index);
-				//	D($configs);
+				foreach( $table['indexes'] as $index_name => $config ){
 					//	...
-					$config = $configs['databases'][$database]['tables'][$table]['indexes'][$name];
-					$result = $results['indexes'][$database][$table][$name]['result'];
-
-					D($result, $config);
-					continue;
-
-					//	...
-				//	$comment = $index['comment'];
-					$name    = $index['name'] ?? $name;
-					$type    = $index['type'];
-					$columns = $index['column'];
-
-					//	...
-					switch( $type = strtoupper($type) ){
-						case 'UNI':
-						case 'UNIQUE':
-							break;
-						default:
-							$index = 'INDEX';
-					};
-
-					//	...
-					$join = [];
-					if( is_string($columns) ){
-						$columns = explode(',', $columns);
-					};
-					foreach( $columns as $column ){
-						$join[] = $DB->Quote( trim($column) );
-					};
-					$columns = join(',',$join);
-
-					//	...
-					$name = $DB->Quote($name);
-
-					//	...
-					$modifier = 'ADD';
-
-					//	...
-					if(!$sql = "ALTER TABLE {$database}.{$table} {$modifier} $type($columns)" ){
-						throw new \Exception("Failed: $sql");
+					if( $_results['indexes'][$database_name][$table_name][$index_name]['result'] ){
+						continue;
 					}
 
 					//	...
-					if(!$io  = $DB->Query($sql, 'alter') ){
-						throw new \Exception("Failed: $io");
-					}
-				}
-			}
-		}
+					$config['database'] = $database_name;
+					$config['table']    = $table_name;
+					$sql = \OP\UNIT\SQL\Index::Create($DB, $config);
+					$DB->Query($sql, 'alter');
+				};
+			};
+		};
 	}
 
 	/** Build user.
