@@ -21,7 +21,14 @@ body.body form.OP .button {
 body.body form.OP input:not([type="radio"]):not([type="checkbox"]),
 body.body form.OP textarea {
 	width: 16em;
+	/**
+	 * @see http://shiru-web.com/2017/05/03/01-36/
+	 */
+	font-size: 16px;
+	transform: scale(0.8);
+	/*
 	font-size: inherit;
+	*/
 }
 
 body.body form.OP textarea {
