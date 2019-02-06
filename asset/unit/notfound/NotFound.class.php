@@ -74,7 +74,7 @@ class NotFound implements \IF_UNIT
 		static $_DB;
 
 		//	...
-		if(!$_DB){
+		if(!$_DB ){
 			$_DB = \Unit::Instantiate('Database');
 			$_DB->Connect( self::_Config() );
 		};

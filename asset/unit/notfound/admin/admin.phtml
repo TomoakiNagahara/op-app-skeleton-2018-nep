@@ -23,9 +23,6 @@ if( $_GET['selftest'] ?? null ){
 };
 
 //	...
-$form = include(__DIR__.'/admin.form.php');
-
-//	...
 $form->Start();
 
 //	...
@@ -37,6 +34,15 @@ echo '<br/>';
 if( $host   = $form->GetValue('host') ){
 	$record = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost($host);
 };
+
+//	...
+$form->Input('submit');
+
+//	...
+$form->Finish();
+
+//	...
+return;
 
 //	...
 if( $host = $form->GetValue('host') ){
@@ -82,11 +88,7 @@ if( $ai ?? null ){
 	};
 };
 
-//	...
-$form->Input('submit');
 
-//	...
-$form->Finish();
 
 echo '<hr/>';
 

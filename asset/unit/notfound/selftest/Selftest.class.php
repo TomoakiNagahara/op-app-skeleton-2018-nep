@@ -52,6 +52,11 @@ class Selftest implements \IF_UNIT
 		};
 
 		//	...
+		if( $config = $_GET['debug'] ?? null ){
+			self::Debug($config, $selftest ?? null);
+		};
+
+		//	...
 		return $io;
 	}
 
@@ -73,8 +78,8 @@ class Selftest implements \IF_UNIT
 	 * @see \IF_UNIT::Debug()
 	 * @param	 string		 $topic
 	 */
-	function Debug($topic=null)
+	function Debug($topic=null, $selftest=null)
 	{
-		D( self::$_debug );
+		D( self::$_debug, $selftest->Debug() );
 	}
 }

@@ -15,8 +15,6 @@
  */
 namespace OP\UNIT\NOTFOUND;
 
-use OP\UNIT\NotFound;
-
 /** Admin
  *
  * @creation  2019-02-04
@@ -52,6 +50,9 @@ class Admin implements \IF_UNIT
 
 		//	Save selftest result.
 		\Cookie::Set(__METHOD__, true, 60*60*24);
+
+		/* @var $form \IF_FORM */
+		$form = self::Form();
 
 		//	...
 		return include(__DIR__.'/admin.phtml');

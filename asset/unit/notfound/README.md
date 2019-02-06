@@ -5,7 +5,7 @@ Unit of NotFound
 
 # Usage
 
- Added 404.php.
+ Add to 404.php.
 
 ```
 <?php
@@ -14,7 +14,7 @@ if( Unit::Load('NotFound') ){
 };
 ```
 
- Added admin.php
+ Add to admin.php
 
 ```
 <?php
