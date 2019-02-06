@@ -31,7 +31,28 @@ class Notice
 	 */
 	const _NAME_SPACE_ = 'STORE';
 
+	/** Pop last time notice array.
+	 *  Last in First out.
+	 *
+	 * @return array
+	 */
+	static function Pop()
+	{
+		//	Get
+		$session = self::Session(self::_NAME_SPACE_);
+
+		//	Shift
+		$notice  = array_pop($session);
+
+		//	Set
+		self::Session(self::_NAME_SPACE_, $session);
+
+		//	Return
+		return $notice;
+	}
+
 	/** Get notice array.
+	 *  First in First out.
 	 *
 	 * @return array
 	 */
