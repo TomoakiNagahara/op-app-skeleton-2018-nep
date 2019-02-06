@@ -59,6 +59,10 @@ div.OP_NOTICE td.line {
 	text-align: right;
 }
 
+div.OP_NOTICE td.function {
+	white-space: nowrap;
+}
+
 div.OP_NOTICE td.function span.args:before {
 	content: '(';
 }
