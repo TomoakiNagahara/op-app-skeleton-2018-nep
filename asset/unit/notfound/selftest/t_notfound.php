@@ -90,16 +90,28 @@ $configer->Set('index', [
 $configer->Set('index', [
 	'name'    => 'host-uri-ua',
 	'type'    => 'unique',
+	/*
+	'type'    => 'index',
+	'unique'  =>  true,
+	*/
 	'column'  => 'host, uri, ua',
 	'comment' => 'Compound index.',
 ]);
 
-//  Group index.
+//  Use to GROUP.
 $configer->Set('index', [
 	'name'    => 'uri',
 	'type'    => 'index',
 	'column'  => 'uri',
 	'comment' => 'Use for grouprize.',
+]);
+
+//  Always use WHERE.
+$configer->Set('index', [
+	'name'    => 'host',
+	'type'    => 'index',
+	'column'  => 'host',
+	'comment' => 'User agent.',
 ]);
 
 //  ...

@@ -97,7 +97,7 @@ class Configer
 					$column_name,
 					$config['type']    ?? $type,
 					$config['length']  ?? null,
-					$config['null']    ?? null,
+					$config['null']    ?? true,
 					$config['default'] ?? null,
 					$config['comment'] ?? null,
 					$option

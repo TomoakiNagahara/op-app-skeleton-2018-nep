@@ -493,7 +493,7 @@ class Column
 		$field = $db->Quote($config['field']);
 
 		//	...
-		$key = Index::Type($config['type'], $config['key']);
+		$key = Index::Type($config['key'], $config['type']);
 
 		//	...
 		return "$key($field)";

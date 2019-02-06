@@ -51,16 +51,9 @@ class Selftest implements \IF_UNIT
 		};
 
 		//	...
-		$io = \OP\UNIT\SELFTEST\Inspector::Auto($config, $db);
+		\OP\UNIT\SELFTEST\Inspector::Auto($config, $db);
 
-		//	...
-		if(!$io ){
-			/*
-			include(__DIR__.'/form.phtml');
-			*/
-		}
-
-		//	...
+		//	Internal notice.
 		echo '<ol class="error">';
 		foreach( self::Error() as $error ){
 			Html($error, 'li');

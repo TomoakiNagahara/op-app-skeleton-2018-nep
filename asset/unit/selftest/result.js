@@ -63,6 +63,9 @@ setTimeout(function(){
 
 		//	...
 		__columns(list, json[dsn]['columns']);
+
+		//	...
+		__index(list, json[dsn]['indexes']);
 	}
 
 	//	...
@@ -368,5 +371,44 @@ setTimeout(function(){
 		if( json.modify  === null || json.modify.length ){
 			modify .classList.add('empty');
 		}
+	};
+
+	//	...
+	function __index(root, json){
+		//	...
+		for(let database in json ){
+			//	..
+			for(let table in json[database] ){
+				//	...
+				for(let index in json[database][table] ){
+					let result = json[database][table][index];
+					if( result.result ){
+						continue;
+					}
+
+					//	...
+					let column = result.column;
+					let type   = result.type;
+
+					//	...
+					for(let field of column.split(',') ){
+						//	...
+						let item = document.createElement('li');
+							item.innerText = type;
+							item.classList.add('error');
+
+						//	...
+						let list = document.createElement('ul');
+							list.appendChild(item);
+
+						//	...
+						root.querySelector('[data-database="'+database+'"]')
+							.querySelector('[data-table="'+table+'"]')
+							.querySelector('[data-field="'+field+'"]')
+							.appendChild(list);
+					};
+				};
+			};
+		};
 	};
 }, 0);

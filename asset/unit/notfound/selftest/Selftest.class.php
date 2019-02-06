@@ -52,12 +52,6 @@ class Selftest implements \IF_UNIT
 		};
 
 		//	...
-		if( 1 ){
-		//	$selftest->Help();
-			$selftest->Debug();
-		};
-
-		//	...
 		return $io;
 	}
 

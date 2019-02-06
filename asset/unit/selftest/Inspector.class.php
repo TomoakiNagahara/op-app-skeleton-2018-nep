@@ -253,8 +253,6 @@ class Inspector
 			self::Inspection($config, $DB);
 		}
 
-		D(self::$_failure);
-
 		//	...
 		if( self::$_failure ){
 			self::Form();
@@ -482,7 +480,7 @@ class Inspector
 			}
 
 			//	...
-			if( self::tables($DB, $database_name, $database['tables'], $_result) ){
+			if(!self::tables($DB, $database_name, $database['tables'], $_result) ){
 				self::$_failure = true;
 			};
 		}
@@ -691,7 +689,7 @@ class Inspector
 	 * @param	&array		 $_result
 	 * @return	 boolean	 $result
 	 */
-	static function Indexes($DB, $database, $table, $indexes, &$_result)
+	static function Indexes($DB, $database, $table, $_configs, &$_result)
 	{
 		//	...
 		$sql  = \OP\UNIT\SQL\Show::Index($DB, $database, $table);
@@ -701,16 +699,23 @@ class Inspector
 		$success = true;
 
 		//	...
-		foreach( $indexes as $index_name => $index ){
+		foreach( $_configs as $index_name => $index ){
 			//	...
 			$io = null;
+
+			//	...
+			if( is_array($index['column']) ){
+				$index['column'] = join(',', $index['column']);
+			}else if( is_string($index['column']) ){
+				$index['column'] = str_replace(' ', '', $index['column']);
+			};
 
 			//	...
 			switch( $type = strtolower($index['type']) ){
 				case 'primary':
 				case 'ai':
 					if( isset($real['PRIMARY']) ){
-						$io = (join(',',$real['PRIMARY']['columns'])) === str_replace(' ', '', $index['column']);
+						$io = (join(',',$real['PRIMARY']['columns'])) === $index['column'];
 					};
 					break;
 				case 'index':
@@ -728,12 +733,16 @@ class Inspector
 			};
 
 			//	...
-			$_result['indexes'][$database][$table][$index_name]['result'] = $io;
+			if( ($_result['indexes'][$database][$table][$index_name]['result'] = $io) ){
+				continue;
+			};
 
 			//	...
-			if(!$io){
-				$success = false;
-			};
+			$_result['indexes'][$database][$table][$index_name]['column'] = $index['column'];
+			$_result['indexes'][$database][$table][$index_name]['type']   = $index['type'];
+
+			//	...
+			$success = false;
 		};
 
 		//	...

@@ -21,12 +21,6 @@ $configer->Set('table', [
 //  Auto incrment id.
 $configer->Set('column', [
 	'name'    =>  'ai',
-	/*
-	'type'    => 'int',
-	'length'  =>    11,
-	'null'    => false,
-	'default' =>  null,
-	*/
 	'ai'      =>  true,
 	'comment' => 'Auto increment id.',
 ]);
@@ -53,12 +47,11 @@ $configer->Set('column', [
 
 //  Browser version.
 $configer->Set('column', [
-	'name'      => 'version',
-	'type'      => 'float',
-	'unsigned'  =>  true,
-	'null'      =>  false,
-	'comment'   => 'Reference of t_ua.ai.',
-	'reference' => 't_ua.ai'
+	'name'		 => 'version',
+	'type'		 => 'float',
+	'unsigned'	 =>  true,
+	'null'		 =>  true,
+	'comment'	 => 'Version of Browser.',
 ]);
 
 //  Timestamp.

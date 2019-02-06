@@ -10,6 +10,19 @@
  */
 /* @var $db   IF_DATABASE */
 /* @var $form IF_FORM */
+?>
+<div style="margin: 0.5em;">
+	| <a href="?">Admin</a>
+	| <a href="?selftest=1">Selftest</a>
+	|
+</div>
+<?php
+//	...
+if( $_GET['selftest'] ?? null ){
+	return self::Selftest($db);
+};
+
+//	...
 $form = include(__DIR__.'/admin.form.php');
 
 //	...
@@ -19,6 +32,11 @@ $form->Start();
 $form->Label('host');
 $form->Input('host');
 echo '<br/>';
+
+//	...
+if( $host   = $form->GetValue('host') ){
+	$record = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost($host);
+};
 
 //	...
 if( $host = $form->GetValue('host') ){

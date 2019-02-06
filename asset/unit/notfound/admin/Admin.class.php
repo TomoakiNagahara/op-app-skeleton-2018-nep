@@ -44,11 +44,6 @@ class Admin implements \IF_UNIT
 	static function Auto(\IF_DATABASE $db)
 	{
 		//	...
-		if( $_GET['selftest'] ?? null ){
-			return self::Selftest($db);
-		};
-
-		//	...
 		if(!$io = \Cookie::Get(__METHOD__) ){
 			if(!$io = self::Selftest($db) ){
 				return $io;
@@ -59,7 +54,7 @@ class Admin implements \IF_UNIT
 		\Cookie::Set(__METHOD__, true, 60*60*24);
 
 		//	...
-		include(__DIR__.'/admin.phtml');
+		return include(__DIR__.'/admin.phtml');
 	}
 
 	/** Form
@@ -67,7 +62,24 @@ class Admin implements \IF_UNIT
 	 */
 	static function Form()
 	{
-		return include(__DIR__.'/admin.form.php');
+		/* @var $form \IF_FORM */
+		static $form;
+
+		//	...
+		if(!$form ){
+			$form = \Unit::Instantiate('Form');
+			$form->Config(__DIR__.'/config.form.php');
+
+			//	...
+			if( \Env::isAdmin() ){
+				if(!$form->Test() ){
+					D('$form->Test() was failed.');
+				};
+			};
+		};
+
+		//	...
+		return $form;
 	}
 
 	/** Will execute automatically of Selftest.
@@ -83,6 +95,11 @@ class Admin implements \IF_UNIT
 
 		//	...
 		return NOTFOUND\Selftest::Auto($db);
+	}
+
+	static function GetRecordAtHost($host)
+	{
+
 	}
 
 	/** For developers.

@@ -421,7 +421,6 @@ class Builder
 		foreach( $results as $user => $result ){
 			//	...
 			if( $result['privilege'] ?? null ){
-				D('privilege is null', $result);
 				continue;
 			};
 
@@ -456,61 +455,11 @@ class Builder
 
 							//	...
 							$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB);
-							$io = $DB->Query($qu);
+							$DB->Query($qu);
 						};
-					};
-				};
-
-				continue;
-
-			};
-
-
-
-
-			//	...
-			continue;
-
-			D($user, $result, $configs);
-
-			continue;
-
-			//	...
-			foreach( $result['privileges'] as $database => $tables ){
-				foreach( $tables as $table => $privileges ){
-					//	...
-					if( is_string($privileges) ){
-						$privileges = explode(',', $privileges);
-					};
-
-					//	...
-					foreach( $privileges as $privilege => $fields ){
-						//	...
-						if( $fields !== '*' ){
-							D('Un support each fields yet.', $fields);
-							continue;
-						}
-
-						//	...
-						$config = [];
-						$config['host']      = $host;
-						$config['user']      = $user;
-						$config['database']  = $database;
-						$config['table']     = $table;
-						$config['privileges']= $privilege;
-
-						//	...
-						if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
-							throw new \Exception("Failed: $qu");
-						}
-
-						//	...
-						if(!$io = $DB->Query($qu) ){
-							throw new \Exception("Failed: $qu ($io)");
-						}
-					}
-				}
-			}
-		}
+					}; // table names
+				}; // privileges
+			}; // tables
+		}; // users
 	}
 }
