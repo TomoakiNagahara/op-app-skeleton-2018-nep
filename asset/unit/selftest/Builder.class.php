@@ -285,7 +285,7 @@ class Builder
 				//	...
 				foreach( $table['indexes'] as $index_name => $config ){
 					//	...
-					if( $_results['indexes'][$database_name][$table_name][$index_name]['result'] ){
+					if( $_results['indexes'][$database_name][$table_name][$index_name]['result'] ?? null ){
 						continue;
 					}
 

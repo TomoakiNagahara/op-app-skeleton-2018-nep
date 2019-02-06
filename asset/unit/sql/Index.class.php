@@ -104,6 +104,7 @@ class Index
 	{
 		//	...
 		switch( $key = strtoupper($index_key_type) ){
+			case 'AI':
 			case 'PRI':
 			case 'PKEY':
 			case 'PRIMARY':

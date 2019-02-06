@@ -10,6 +10,7 @@
  */
 //	...
 include('NotFound.class.php');
+include('Common.class.php');
 
 //	...
 return true;

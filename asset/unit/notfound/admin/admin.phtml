@@ -11,6 +11,23 @@
 /* @var $db   IF_DATABASE */
 /* @var $form IF_FORM */
 ?>
+<style>
+body.body label:after {
+	content: "\A" ;
+	white-space: pre ;
+}
+
+#control-panel {
+	text-align: left;
+}
+
+#control-panel ,
+#control-panel table,
+#control-panel th,
+#control-panel td {
+	_border: 1px solid black;
+}
+</style>
 <div style="margin: 0.5em;">
 	| <a href="?">Admin</a>
 	| <a href="?selftest=1">Selftest</a>
@@ -19,90 +36,48 @@
 <?php
 //	...
 if( $_GET['selftest'] ?? null ){
-	return self::Selftest($db);
+	return \OP\UNIT\NOTFOUND\Selftest::Auto();
 };
 
 //	...
-$form->Start();
-
-//	...
-$form->Label('host');
-$form->Input('host');
-echo '<br/>';
-
-//	...
-if( $host   = $form->GetValue('host') ){
-	$record = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost($host);
+if( $host    = $form->GetValue('host') ){
+	$records = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost($host);
+	$query   = http_build_query(array_diff_key($_GET,['uri'=>null]));
 };
+?>
+<?php $form->Start() ?>
+<div id="control-panel">
+	<!-- Host -->
+	<table>
+		<tr>
+			<th>
+				<?php $form->Label('host') ?>
+			</th>
+			<td>
+				<?php $form->Input('host') ?>
+			</td>
+		</tr>
+	</table>
 
-//	...
-$form->Input('submit');
+	<!-- URI -->
+	<table>
+		<?php foreach( ($records ?? []) as $record ): ?>
+		<tr>
+			<td><?= $record['count'] ?></td>
+			<td>
+				<a href="<?= "?{$query}&uri={$record['uri_ai']}" ?>">
+					<?= $record['uri'] ?>
+				</a>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+	<?php $form->Input('submit') ?>
+</div>
+<?php $form->Finish() ?>
 
-//	...
-$form->Finish();
-
-//	...
-return;
-
-//	...
-if( $host = $form->GetValue('host') ){
-	//	...
-	$hash = \OP\UNIT\NotFound::Hash($host);
-	$ai   = $db->Quick(" ai <- t_host.hash = $hash ", ['limit'=>1]);
-}
-
-if( $ai ?? null ){
-	//	...
-	$config = [];
-	$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';
-	$config['limit'] = 100;
-	$config['order'] = 'sum desc';
-	$config['group'] = 't_notfound.uri';
-	$config['where'][] = "host = $ai";
-	$config['field'][] = "t_notfound.ai  as ai     ";
-	$config['field'][] = "t_notfound.uri as uri_ai ";
-//	$config['field'][] = "t_notfound.ua  as ua_ai  ";
-	$config['field'][] = "t_uri.uri      as uri    ";
-//	$config['field'][] = "t_ua.ua        as ua     ";
-	$config['field'][] = "sum(t_notfound.count) as sum ";
-
-	//	...
-	if( $records = $db->Select($config) ){
-		//	...
-		$name  = 'uri';
-		$input = [];
-		$input['name'] = $name;
-		$input['type'] = 'radio';
-
-		//	...
-		foreach( $records as $record ){
-			$option = [];
-			$option['value'] = $record['uri_ai'];
-			$option['label'] = $record['uri'] . " ({$record['sum']})";
-			$input['option'][] = $option;
-		};
-
-		//	...
-		$form->SetInput($input);
-		$form->Input($name);
-	};
-};
-
-
-
-echo '<hr/>';
-
-D($records ?? null);
-
-//	...
+<?php
 if( $_GET['debug'] ?? null ){
 	$form->Help();
 	$form->Debug();
 };
-?>
-<style>
-body.body label:after {
-	content: "\A" ;
-	white-space: pre ;
-}
-</style>

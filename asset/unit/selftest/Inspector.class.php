@@ -330,6 +330,7 @@ class Inspector
 
 			//	Check user exist.
 			if(!$result['exist'] = isset($lists[$key]) ){
+				self::$_failure = true;
 				continue;
 			};
 
@@ -353,11 +354,11 @@ class Inspector
 			//	...
 			$result['result'] = true;
 
-			//	...
+			//	for Eclipse.
 			if( false ){
 				D($result);
 			};
-		}
+		};
 	}
 
 	/** Check privilege.

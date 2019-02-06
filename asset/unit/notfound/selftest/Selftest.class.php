@@ -39,7 +39,7 @@ class Selftest implements \IF_UNIT
 	/** Will execute automatically of Selftest.
 	 *
 	 */
-	static function Auto(\IF_DATABASE $db)
+	static function Auto()
 	{
 		//	...
 		if(!\Unit::Load('selftest') ){

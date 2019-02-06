@@ -36,104 +36,37 @@ class NotFound implements \IF_UNIT
 	 */
 	static private $_debug;
 
-	/** Get configuration.
-	 *
-	 * @return string|number|boolean|array|object
-	 */
-	static private function _Config()
-	{
-		//	...
-		$config = \Env::Get(__CLASS__);
-
-		//	...
-		if( empty($config) ){
-			//	...
-			foreach( $config = include(__DIR__.'/config.db.php') as $key => $val ){
-				//	If not set.
-				if(!isset($config[$key]) ){
-					//	Set default value.
-					$config[$key] = $val;
-				};
-			};
-		};
-
-		//	...
-		\Env::Set(__CLASS__, $config);
-
-		//	...
-		return $config;
-	}
-
-	/** Get IF_DATABASE object.
-	 *
-	 * @return \IF_DATABASE
-	 */
-	static private function _DB()
-	{
-		//	...
-		static $_DB;
-
-		//	...
-		if(!$_DB ){
-			$_DB = \Unit::Instantiate('Database');
-			$_DB->Connect( self::_Config() );
-		};
-
-		//	...
-		return $_DB->isConnect() ? $_DB: false;
-	}
-
 	/** Will execute automatically.
 	 *
 	 */
 	static function Auto()
 	{
 		//	...
+		if( $DB = NOTFOUND\Common::DB() ){
+			$host = self::_Host( $DB );
+			$uri  = self::_URI(  $DB );
+			$ua   = self::_UA(   $DB );
+					self::_NotFound( $DB, $host, $uri, $ua );
+		};
+	}
+
+	/** Host name
+	 *
+	 * @param	\IF_DATABASE $DB
+	 * @return	 int		 $ai
+	 */
+	static private function _Host( \IF_DATABASE $DB ):int
+	{
+		//	...
 		$host  = $_SERVER['SERVER_NAME'];
 	//	$port  = $_SERVER['SERVER_PORT'];
-		$uri   = $_SERVER['REQUEST_URI'];
-		$parse = parse_url($uri);
-		$path  = $parse['path'];
-	//	$query = $parse['query'];
-		$ua    = $_SERVER['HTTP_USER_AGENT'];
-
-		//	...
-		$host = self::_Host($host);
-		$uri  = self::_URI($path);
-		$ua   = self::_UA($ua);
-		self::_NotFound($host, $uri, $ua);
-	}
-
-	/** Generate common hash.
-	 *
-	 * @param	 string		 $str
-	 * @return	 string		 $hash
-	 */
-	static function Hash(string $str):string
-	{
-		return Hasha1($str, 10, '');
-	}
-
-	/** Get host name auto increment id.
-	 *
-	 * @param	 string	 $host
-	 * @return	 int	 $ai
-	 */
-	static private function _Host(string $host):int
-	{
-		//	...
-		if(!$db = self::_DB() ){
-			return;
-		};
 
 		//	...
 		$table = 't_host';
+		$hash  = NOTFOUND\Common::Hash($host);
 
 		//	...
-		$hash = self::Hash($host);
-
-		//	...
-		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
+		if( $ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	Exists
 		}else{
 			//	...
@@ -143,69 +76,64 @@ class NotFound implements \IF_UNIT
 			$config['set']['host'] = $host;
 
 			//	...
-			$ai = $db->Insert($config);
+			$ai = $DB->Insert($config);
 		};
 
 		//	...
 		return $ai;
 	}
 
-	/** Get URI auto increment id.
+	/** URI
 	 *
-	 * @param	 string	 $host
-	 * @return	 int	 $ai
+	 * @param	\IF_DATABASE $DB
+	 * @return	 int		 $ai
 	 */
-	static private function _URI(string $uri):int
+	static private function _URI( \IF_DATABASE $DB ):int
 	{
 		//	...
-		if(!$db = self::_DB() ){
-			return;
-		};
+		$uri   = $_SERVER['REQUEST_URI'];
+		$parse = parse_url($uri);
+		$path  = $parse['path'];
+	//	$query = $parse['query'];
 
 		//	...
 		$table = 't_uri';
+		$hash  = NOTFOUND\Common::Hash($path);
 
 		//	...
-		$hash = $hash = self::Hash($uri);
-
-		//	...
-		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
+		if( $ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	Exists
 		}else{
 			//	...
 			$config = [];
 			$config['table'] = $table;
 			$config['set']['hash'] = $hash;
-			$config['set']['uri']  = $uri;
+			$config['set']['uri']  = $path;
 
 			//	...
-			$ai = $db->Insert($config);
+			$ai = $DB->Insert($config);
 		};
 
 		//	...
 		return $ai;
 	}
 
-	/** Get user agent auto increment id.
+	/** User agent
 	 *
-	 * @param	 string	 $host
-	 * @return	 int	 $ai
+	 * @param	\IF_DATABASE $DB
+	 * @return	 int		 $ai
 	 */
-	static private function _UA(string $ua):int
+	static private function _UA( \IF_DATABASE $DB ):int
 	{
 		//	...
-		if(!$db = self::_DB() ){
-			return;
-		};
+		$ua    = $_SERVER['HTTP_USER_AGENT'];
 
 		//	...
 		$table = 't_ua';
+		$hash  = NOTFOUND\Common::Hash($ua);
 
 		//	...
-		$hash = $hash = self::Hash($ua);
-
-		//	...
-		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
+		if( $ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	Exists
 		}else{
 			//	...
@@ -215,19 +143,20 @@ class NotFound implements \IF_UNIT
 			$config['set']['ua']   = $ua;
 
 			//	...
-			$ai = $db->Insert($config);
+			$ai = $DB->Insert($config);
 		};
 
 		//	...
 		return $ai;
 	}
 
-	/** Get OS auto increment id.
+	/** OS
 	 *
-	 * @param	 string	 $host
-	 * @return	 int	 $ai
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $ua
+	 * @return	 int		 $ai
 	 */
-	static private function _OS($ua)
+	static private function _OS( \IF_DATABASE $DB, string $ua ):int
 	{
 		//	...
 		$result = null;
@@ -241,12 +170,13 @@ class NotFound implements \IF_UNIT
 		return $result;
 	}
 
-	/** Get Browser auto increment id.
+	/** Browser
 	 *
-	 * @param	 string	 $host
-	 * @return	 int	 $ai
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $ua
+	 * @return	 int		 $ai
 	 */
-	static private function _Browser($ua)
+	static private function _Browser(  \IF_DATABASE $DB, string $ua ):int
 	{
 		//	...
 		$result = null;
@@ -272,18 +202,16 @@ class NotFound implements \IF_UNIT
 		return $result;
 	}
 
-	/** Count of notfound record.
+	/** NotFound
 	 *
-	 * @param	 string	 $host
-	 * @return	 int	 $ai
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $host
+	 * @param	 string		 $uri
+	 * @param	 string		 $ua
+	 * @return	 int		 $count
 	 */
-	static private function _NotFound(int $host, int $uri, int $ua)
+	static private function _NotFound( \IF_DATABASE $DB, int $host, int $uri, int $ua ):int
 	{
-		//	...
-		if(!$db = self::_DB() ){
-			return;
-		};
-
 		//	...
 		$table = 't_notfound';
 
@@ -296,7 +224,7 @@ class NotFound implements \IF_UNIT
 		$config['limit'] = 1;
 
 		//	...
-		$count = ( $record = $db->Select($config) ) ? $record['count']: 0;
+		$count = ( $record = $DB->Select($config) ) ? $record['count']: 0;
 		$count++;
 
 		//	...
@@ -308,13 +236,13 @@ class NotFound implements \IF_UNIT
 			unset($config['limit']);
 
 			//	...
-			$db->Insert($config);
+			$DB->Insert($config);
 		}else{
 			//	update
 			$config['set'][] = "count = $count";
 
 			//	...
-			$db->Update($config);
+			$DB->Update($config);
 		};
 
 		//	...
@@ -327,9 +255,20 @@ class NotFound implements \IF_UNIT
 	static function Admin()
 	{
 		//	...
-		if( $db = self::_DB() ){
-			include(__DIR__.'/admin/Admin.class.php');
-			NOTFOUND\Admin::Auto($db);
+		if( $db = NOTFOUND\Common::DB() ){
+			//	...
+			if( include(__DIR__.'/admin/Admin.class.php') ){
+				NOTFOUND\Admin::Auto($db);
+			};
+		}else{
+			//	Throw away connection error notice.
+			\Notice::Pop();
+
+			//	...
+			if( include(__DIR__.'/selftest/Selftest.class.php') ){
+				Html('Connection was failed', '.error');
+				NOTFOUND\Selftest::Auto($db);
+			};
 		};
 	}
 
