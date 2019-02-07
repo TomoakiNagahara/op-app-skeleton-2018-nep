@@ -135,12 +135,41 @@ class NotFound implements \IF_UNIT
 		//	...
 		if( $ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	Exists
+			$record = $DB->Quick(" {$table}.ai = {$ai} ", ['limit'=>1]);
+
+			//	...
+			if(!$record['os'] ){
+				if( $os = self::_OS($ai) ){
+					//	...
+					$config = [];
+					$config['table'] = $table;
+					$config['limit'] = 1;
+					$config['set'][] = "   os = $os ";
+					$config['where'][] = " ai = $ai ";
+					$DB->Update($config);
+				};
+			};
+
+			//	...
+			if(!$record['browser'] ){
+				if( $browser = self::_Browser($ai) ){
+					//	...
+					$config = [];
+					$config['table'] = $table;
+					$config['limit'] = 1;
+					$config['set'][] = " browser = $browser ";
+					$config['where'][] = " ai = $ai ";
+					$DB->Update($config);
+				};
+			};
 		}else{
 			//	...
 			$config = [];
 			$config['table'] = $table;
-			$config['set']['hash'] = $hash;
-			$config['set']['ua']   = $ua;
+			$config['set']['hash']    = $hash;
+			$config['set']['ua']      = $ua;
+			$config['set']['os']      = self::_OS($DB);
+			$config['set']['browser'] = self::_Browser($DB);
 
 			//	...
 			$ai = $DB->Insert($config);
@@ -152,34 +181,61 @@ class NotFound implements \IF_UNIT
 
 	/** OS
 	 *
-	 * @param	\IF_DATABASE $DB
-	 * @param	 string		 $ua
-	 * @return	 int		 $ai
+	 * @param	 integer	 $ua_ai
+	 * @return	 int|null	 $ai
 	 */
-	static private function _OS( \IF_DATABASE $DB, string $ua ):int
+	static private function _OS( $ua_ai )
 	{
 		//	...
-		$result = null;
+		$table = 't_ua_os';
 
 		//	...
-		foreach( ['Macintosh','Windows','Linux','BSD','iOS','Android'] as $name ){
-			D($name);
+		$ua = NOTFOUND\Common::DB()->Quick(" ua <- t_ua.ai = {$ua_ai} ", ['limit'=>1]);
+
+		//	...
+		$ai = NOTFOUND\Common::DB()->Quick(" ai <- {$table}.ua = {$ua_ai} ", ['limit'=>1]);
+
+		//	...
+		if( $ai ){ return $ai; };
+
+		//	...
+		foreach( ['Mac','Win','Linux','BSD','iOS','Android'] as $os ){
+			//	...
+			if(!preg_match("/$os/", $ua) ){
+				continue;
+			};
+
+			//	...
+			$config = [];
+			$config['table'] = $table;
+			$config['set'][] = "ua = $ua_ai";
+			$config['set'][] = "os = $os";
+		//	$config['update'] ="os";
+			$ai = NOTFOUND\Common::DB()->Insert($config);
 		};
 
 		//	...
-		return $result;
+		return $ai ?? null;
 	}
 
 	/** Browser
 	 *
-	 * @param	\IF_DATABASE $DB
-	 * @param	 string		 $ua
-	 * @return	 int		 $ai
+	 * @param	 integer	 $ua_ai
+	 * @return	 int|null	 $ai
 	 */
-	static private function _Browser(  \IF_DATABASE $DB, string $ua ):int
+	static private function _Browser( $ua_ai )
 	{
 		//	...
-		$result = null;
+		$table = 't_ua_browser';
+
+		//	...
+		$ua = NOTFOUND\Common::DB()->Quick(" ua <- t_ua.ai = {$ua_ai} ", ['limit'=>1]);
+
+		//	...
+		$ai = NOTFOUND\Common::DB()->Quick(" ai <- {$table}.ua = {$ua_ai} ", ['limit'=>1]);
+
+		//	...
+		if( $ai ){ return $ai; };
 
 		//	...
 		foreach( ['Firefox','Chrome','Safari'] as $name ){
@@ -190,8 +246,12 @@ class NotFound implements \IF_UNIT
 				list($v1, $v2) = explode('.', substr($ua, $pos + $len +1 ));
 
 				//	...
-				$result['name']    = strtolower($name);
-				$result['version'] = "{$v1}.{$v2}";
+				$config = [];
+				$config['table'] = $table;
+				$config['set']['ua'] = $ua_ai;
+				$config['set']['browser'] = $name;
+				$config['set']['version'] = "{$v1}.{$v2}";
+				$ai = NOTFOUND\Common::DB()->Insert($config);
 
 				//	...
 				break;
@@ -199,7 +259,7 @@ class NotFound implements \IF_UNIT
 		};
 
 		//	...
-		return $result;
+		return $ai ?? null;
 	}
 
 	/** NotFound

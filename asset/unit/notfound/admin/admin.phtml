@@ -78,7 +78,8 @@ $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 		</tr>
 		<?php endforeach; ?>
 	</table>
-	<!-- URI -->
+
+	<!-- UA -->
 	<table>
 		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtURI() as $record ): ?>
 		<?php d($record); ?>

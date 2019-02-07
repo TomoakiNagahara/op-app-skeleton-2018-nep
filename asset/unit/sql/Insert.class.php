@@ -77,18 +77,38 @@ class Insert
 
 		//	ON DUPLICATE KEY UPDATE
 		if( $update = $args['update'] ?? null ){
+			//	...
 			if(!is_string($update) ){
 				\Notice::Set('"ON DUPLICATE KEY UPDATE" is not string. (Please set of field name)');
 				return false;
 			}
+
+			//	...
 			$dml = [];
-			$dml['table'] = $args['table']; // For error message.
+			$dml['table'] = $args['table'];
+
+			//	...
+			if( isset($args['set'][0]) ){
+				$temp = [];
+				foreach( $args['set'] as $str ){
+					$pos = strpos($str, '=');
+					$key = substr($str, 0, $pos);
+					$val = substr($str, $pos+1);
+					$temp[trim($key)] = trim($val);
+				};
+			}else{
+				$set = $args['set'];
+			};
+
+			//	...
 			foreach( explode(',', $update) as $key ){
 				$key = trim($key);
-				$dml['set'][$key] = $args['set'][$key];
-			}
+				$dml['set'][$key] = $temp[$key];
+			};
+
+			//	...
 			$update = "ON DUPLICATE KEY UPDATE " . DML::_Set($dml, $db);
-		}
+		};
 
 		//	...
 		return "INSERT INTO {$table}{$fields}{$values}{$set} {$update}";

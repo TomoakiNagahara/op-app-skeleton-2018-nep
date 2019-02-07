@@ -282,6 +282,8 @@ class QQL
 			if( count($record) === 0 ){
 				//	Empty.
 				$record = null;
+			}else if( $field === '*' ){
+				//	No adjust.
 			}else{
 				//	Has value.
 				$record = array_shift($record);

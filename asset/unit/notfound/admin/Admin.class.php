@@ -155,7 +155,7 @@ class Admin implements \IF_UNIT
 
 		//	...
 		$config = [];
-		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';
+		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai, t_ua.os <= t_ua_os.ai';
 		$config['limit'] = 100;
 	//	$config['field'][] = "sum(t_notfound.count) as count";
 		$config['where'][] = "t_uri.ai = $uri";
