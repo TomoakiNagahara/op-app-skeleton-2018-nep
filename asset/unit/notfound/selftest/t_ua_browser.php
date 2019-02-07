@@ -18,13 +18,6 @@ $configer->Set('table', [
 	'comment' => 'Stack each host name.',
 ]);
 
-//  Auto incrment id.
-$configer->Set('column', [
-	'name'    =>  'ai',
-	'ai'      =>  true,
-	'comment' => 'Auto increment id.',
-]);
-
 //  Reference of t_ua.ai.
 $configer->Set('column', [
 	'name'      => 'ua',
@@ -32,7 +25,8 @@ $configer->Set('column', [
 	'unsigned'  =>  true,
 	'null'      =>  false,
 	'comment'   => 'Reference of t_ua.ai.',
-	'reference' => 't_ua.ai'
+	'reference' => 't_ua.ai',
+	'unique'    =>  true,
 ]);
 
 //  Browser name.
@@ -59,12 +53,4 @@ $configer->Set('column', [
 	'name'    => 'timestamp',
 	'type'    => 'timestamp',
 	'comment' => 'On update current timestamp.',
-]);
-
-//  Auto incrment id.
-$configer->Set('index', [
-	'name'    => 'ai',
-	'type'    => 'ai',
-	'column'  => 'ai',
-	'comment' => 'auto incrment',
 ]);

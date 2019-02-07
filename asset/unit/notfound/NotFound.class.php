@@ -137,6 +137,7 @@ class NotFound implements \IF_UNIT
 			//	Exists
 			$record = $DB->Quick(" {$table}.ai = {$ai} ", ['limit'=>1]);
 
+			/*
 			//	...
 			if(!$record['os'] ){
 				if( $os = self::_OS($ai) ){
@@ -145,7 +146,7 @@ class NotFound implements \IF_UNIT
 					$config['table'] = $table;
 					$config['limit'] = 1;
 					$config['set'][] = "   os = $os ";
-					$config['where'][] = " ai = $ai ";
+					$config['where'][] = " ua = $ai ";
 					$DB->Update($config);
 				};
 			};
@@ -158,10 +159,11 @@ class NotFound implements \IF_UNIT
 					$config['table'] = $table;
 					$config['limit'] = 1;
 					$config['set'][] = " browser = $browser ";
-					$config['where'][] = " ai = $ai ";
+					$config['where'][] = " ua = $ai ";
 					$DB->Update($config);
 				};
 			};
+			*/
 		}else{
 			//	...
 			$config = [];
@@ -193,10 +195,10 @@ class NotFound implements \IF_UNIT
 		$ua = NOTFOUND\Common::DB()->Quick(" ua <- t_ua.ai = {$ua_ai} ", ['limit'=>1]);
 
 		//	...
-		$ai = NOTFOUND\Common::DB()->Quick(" ai <- {$table}.ua = {$ua_ai} ", ['limit'=>1]);
+		$os = NOTFOUND\Common::DB()->Quick(" os <- {$table}.ua = {$ua_ai} ", ['limit'=>1]);
 
 		//	...
-		if( $ai ){ return $ai; };
+		if( $os ){ return; };
 
 		//	...
 		foreach( ['Mac','Win','Linux','BSD','iOS','Android'] as $os ){
@@ -210,12 +212,11 @@ class NotFound implements \IF_UNIT
 			$config['table'] = $table;
 			$config['set'][] = "ua = $ua_ai";
 			$config['set'][] = "os = $os";
-		//	$config['update'] ="os";
-			$ai = NOTFOUND\Common::DB()->Insert($config);
+			NOTFOUND\Common::DB()->Insert($config);
 		};
 
 		//	...
-		return $ai ?? null;
+		return $os;
 	}
 
 	/** Browser
@@ -232,10 +233,10 @@ class NotFound implements \IF_UNIT
 		$ua = NOTFOUND\Common::DB()->Quick(" ua <- t_ua.ai = {$ua_ai} ", ['limit'=>1]);
 
 		//	...
-		$ai = NOTFOUND\Common::DB()->Quick(" ai <- {$table}.ua = {$ua_ai} ", ['limit'=>1]);
+		$browser = NOTFOUND\Common::DB()->Quick(" browser <- {$table}.ua = {$ua_ai} ", ['limit'=>1]);
 
 		//	...
-		if( $ai ){ return $ai; };
+		if( $browser ){ return $browser; };
 
 		//	...
 		foreach( ['Firefox','Chrome','Safari'] as $name ){
@@ -251,7 +252,7 @@ class NotFound implements \IF_UNIT
 				$config['set']['ua'] = $ua_ai;
 				$config['set']['browser'] = $name;
 				$config['set']['version'] = "{$v1}.{$v2}";
-				$ai = NOTFOUND\Common::DB()->Insert($config);
+				NOTFOUND\Common::DB()->Insert($config);
 
 				//	...
 				break;
@@ -259,7 +260,7 @@ class NotFound implements \IF_UNIT
 		};
 
 		//	...
-		return $ai ?? null;
+		return $browser;
 	}
 
 	/** NotFound
