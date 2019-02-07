@@ -98,12 +98,21 @@ class Admin implements \IF_UNIT
 		return Selftest::Auto($db);
 	}
 
-	static function GetRecordAtHost($host)
+	/** Get t_notfound record at host ai.
+	 *
+	 * @param	 string		 $host
+	 * @return	 array		 $record
+	 */
+	static function GetRecordAtHost():array
 	{
 		//	...
-		$hash = Common::Hash($host);
-		$DB   = Common::DB();
-		$ai   = $DB->Quick(" ai <- t_host.hash = $hash ", ['limit'=>1]);
+		$form    = self::Form();
+		$host    = $form->GetValue('host');
+		$date_st = $form->GetValue('date-st');
+		$date_en = $form->GetValue('date-en');
+		$hash    = Common::Hash($host);
+		$DB      = Common::DB();
+		$ai      = $DB->Quick(" ai <- t_host.hash = $hash ", ['limit'=>1]);
 
 		//	...
 		$config = [];
@@ -111,13 +120,21 @@ class Admin implements \IF_UNIT
 		$config['limit'] = 100;
 		$config['order'] = 'count desc';
 		$config['group'] = 't_notfound.uri';
-		$config['where'][] = "host = $ai";
 		$config['field'][] = "t_notfound.ai  as ai     ";
 		$config['field'][] = "t_notfound.uri as uri_ai ";
 	//	$config['field'][] = "t_notfound.ua  as ua_ai  ";
 		$config['field'][] = "t_uri.uri      as uri    ";
 	//	$config['field'][] = "t_ua.ua        as ua     ";
 		$config['field'][] = "sum(t_notfound.count) as count ";
+		$config['field'][] = "t_notfound.timestamp  as timestamp ";
+		$config['where'][] = "host = $ai";
+		if( $date_st ){ $config['where'][] = "t_notfound.timestamp >= $date_st"; };
+		if( $date_en ){ $config['where'][] = "t_notfound.timestamp <= $date_en"; };
+
+		//	...
+		if( \Env::isAdmin() ){
+			self::$_debug['config'][] = $config;
+		};
 
 		//	...
 		return $DB->Select($config);

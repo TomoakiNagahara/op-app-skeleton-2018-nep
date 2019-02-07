@@ -20,13 +20,28 @@ $input['label'] = 'Host';
 $input['option'][] = '';
 $input['option'][] = 'localhost';
 $form['input'][] = $input;
+//	...
+$input = [];
+$input['name']  = 'date-st';
+$input['type']  = 'date';
+$input['label'] = 'date-st';
+$input['value'] = Time::Date('-30 days');
+$form['input'][] = $input;
+
+//	...
+$input = [];
+$input['name']  = 'date-en';
+$input['type']  = 'date';
+$input['label'] = 'date-en';
+$input['value'] = Time::Date();
+$form['input'][] = $input;
 
 //	...
 $input = [];
 $input['name']  = 'submit';
 $input['type']  = 'submit';
 $input['label'] = 'Submit';
-$input['value'] = ' Submit ';
+$input['value'] = 'Submit';
 $form['input'][] = $input;
 
 //	...

@@ -104,7 +104,9 @@ class Select
 			if( $pos1 = strpos($field, '(') and $pos2 = strpos($field, ')') ){
 				$func = substr($field,       0,         $pos1);
 				$field= substr($field, $pos1+1, $pos2-$pos1-1);
-			};
+			}else{
+				$func = null;
+			}
 
 			//	If has table name.
 			if( strpos($field, '.') ){
@@ -119,7 +121,7 @@ class Select
 			};
 
 			//	If has function.
-			if( isset($func) ){
+			if( $func ){
 				$func  = strtoupper($func);
 				$field = "{$func}($field)";
 			};

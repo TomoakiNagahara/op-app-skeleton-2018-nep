@@ -33,6 +33,15 @@ body.body form.OP textarea {
 	*/
 }
 
+body.body form.OP input[type="date"] {
+	width: 10em;
+}
+
+body.body form.OP select,
+body.body form.OP option {
+	font-size: inherit;
+}
+
 body.body form.OP textarea {
 	height: 4.6em;
 }

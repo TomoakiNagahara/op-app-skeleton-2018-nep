@@ -40,8 +40,8 @@ if( $_GET['selftest'] ?? null ){
 };
 
 //	...
-if( $host    = $form->GetValue('host') ){
-	$records = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost($host);
+if( $form->GetValue('host') ){
+	$records = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost();
 	$query   = http_build_query(array_diff_key($_GET,['uri'=>null]));
 };
 ?>
@@ -50,11 +50,17 @@ if( $host    = $form->GetValue('host') ){
 	<!-- Host -->
 	<table>
 		<tr>
-			<th>
+			<th class="right">
 				<?php $form->Label('host') ?>
 			</th>
 			<td>
 				<?php $form->Input('host') ?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2>
+				<?php $form->Input('date-st') ?>
+				<?php $form->Input('date-en') ?>
 			</td>
 		</tr>
 	</table>
@@ -63,11 +69,14 @@ if( $host    = $form->GetValue('host') ){
 	<table>
 		<?php foreach( ($records ?? []) as $record ): ?>
 		<tr>
-			<td><?= $record['count'] ?></td>
+			<td class="right"><?= $record['count'] ?></td>
 			<td>
 				<a href="<?= "?{$query}&uri={$record['uri_ai']}" ?>">
 					<?= $record['uri'] ?>
 				</a>
+			</td>
+			<td>
+				<?= $record['timestamp'] ?>
 			</td>
 		</tr>
 		<?php endforeach; ?>
@@ -80,4 +89,5 @@ if( $host    = $form->GetValue('host') ){
 if( $_GET['debug'] ?? null ){
 	$form->Help();
 	$form->Debug();
+	\OP\UNIT\NOTFOUND\Common::DB()->Debug();
 };
