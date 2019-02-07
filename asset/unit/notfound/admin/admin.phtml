@@ -40,10 +40,7 @@ if( $_GET['selftest'] ?? null ){
 };
 
 //	...
-if( $form->GetValue('host') ){
-	$records = \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost();
-	$query   = http_build_query(array_diff_key($_GET,['uri'=>null]));
-};
+$query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 ?>
 <?php $form->Start() ?>
 <div id="control-panel">
@@ -67,7 +64,7 @@ if( $form->GetValue('host') ){
 
 	<!-- URI -->
 	<table>
-		<?php foreach( ($records ?? []) as $record ): ?>
+		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost() as $record ): ?>
 		<tr>
 			<td class="right"><?= $record['count'] ?></td>
 			<td>
@@ -79,6 +76,12 @@ if( $form->GetValue('host') ){
 				<?= $record['timestamp'] ?>
 			</td>
 		</tr>
+		<?php endforeach; ?>
+	</table>
+	<!-- URI -->
+	<table>
+		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtURI() as $record ): ?>
+		<?php d($record); ?>
 		<?php endforeach; ?>
 	</table>
 	<?php $form->Input('submit') ?>

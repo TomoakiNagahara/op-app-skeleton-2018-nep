@@ -98,9 +98,8 @@ class Admin implements \IF_UNIT
 		return Selftest::Auto($db);
 	}
 
-	/** Get t_notfound record at host ai.
+	/** Get t_notfound record at host.
 	 *
-	 * @param	 string		 $host
 	 * @return	 array		 $record
 	 */
 	static function GetRecordAtHost():array
@@ -115,6 +114,11 @@ class Admin implements \IF_UNIT
 		$ai      = $DB->Quick(" ai <- t_host.hash = $hash ", ['limit'=>1]);
 
 		//	...
+		if(!$ai ){
+			return [];
+		};
+
+		//	...
 		$config = [];
 		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';
 		$config['limit'] = 100;
@@ -125,7 +129,7 @@ class Admin implements \IF_UNIT
 	//	$config['field'][] = "t_notfound.ua  as ua_ai  ";
 		$config['field'][] = "t_uri.uri      as uri    ";
 	//	$config['field'][] = "t_ua.ua        as ua     ";
-		$config['field'][] = "sum(t_notfound.count) as count ";
+		$config['field'][] = "sum(t_notfound.count) as count     ";
 		$config['field'][] = "t_notfound.timestamp  as timestamp ";
 		$config['where'][] = "host = $ai";
 		if( $date_st ){ $config['where'][] = "t_notfound.timestamp >= $date_st"; };
@@ -138,6 +142,26 @@ class Admin implements \IF_UNIT
 
 		//	...
 		return $DB->Select($config);
+	}
+
+	/** Get t_uri record at uri.
+	 *
+	 * @return	 array		 $record
+	 */
+	static function GetRecordAtURI():array
+	{
+		//	...
+		$uri = $_GET['uri'] ?? null;
+
+		//	...
+		$config = [];
+		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai';
+		$config['limit'] = 100;
+	//	$config['field'][] = "sum(t_notfound.count) as count";
+		$config['where'][] = "t_uri.ai = $uri";
+
+		//	...
+		return Common::DB()->Select($config);
 	}
 
 	/** For developers.

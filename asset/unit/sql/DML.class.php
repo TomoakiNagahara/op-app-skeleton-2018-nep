@@ -468,6 +468,7 @@ class DML
 		//	...
 		if(!isset($args['limit']) ){
 			\Notice::Set("Has not been set limit. ({$args['table']})");
+			return null;
 		};
 
 		//	...
