@@ -279,11 +279,11 @@ class Builder
 	static function Index($_configs, &$_results, $DB)
 	{
 		//	...
-		foreach( $_configs['databases'] as $database_name => $database ){
+		foreach( $_configs['databases']    ?? [] as $database_name => $database ){
 			//	...
-			foreach( $database['tables'] as $table_name => $table ){
+			foreach( $database['tables']   ?? [] as $table_name => $table ){
 				//	...
-				foreach( $table['indexes'] as $index_name => $config ){
+				foreach( $table['indexes'] ?? [] as $index_name => $config ){
 					//	...
 					if( $_results['indexes'][$database_name][$table_name][$index_name]['result'] ?? null ){
 						continue;

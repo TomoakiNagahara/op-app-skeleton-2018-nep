@@ -21,12 +21,6 @@ $configer->Set('table', [
 //  Auto incrment id.
 $configer->Set('column', [
 	'name'    =>  'ai',
-	/*
-	'type'    => 'int',
-	'length'  =>    11,
-	'null'    => false,
-	'default' =>  null,
-	*/
 	'ai'      =>  true,
 	'comment' => 'Auto increment id.',
 ]);
@@ -48,7 +42,7 @@ $configer->Set('column', [
 	'type'    => 'text',
 	'null'    =>  false,
 	'collate' => 'ascii_general_ci',
-	'comment' => 'host name.',
+	'comment' => 'User agent.',
 ]);
 
 //  Timestamp.

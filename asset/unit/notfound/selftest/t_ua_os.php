@@ -26,7 +26,7 @@ $configer->Set('column', [
 	'null'		 =>  false,
 	'comment'	 => 'Reference of t_ua.ai.',
 	'reference'	 => 't_ua.ai',
-	'unique'     =>  true,
+	'unique'	 =>  true,
 ]);
 
 //  OS.

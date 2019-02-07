@@ -87,7 +87,7 @@ class Admin implements \IF_UNIT
 	 *
 	 * @return boolean
 	 */
-	static function Selftest(\IF_DATABASE $db)
+	static function Selftest()
 	{
 		//	...
 		if(!include(__DIR__.'/../selftest/Selftest.class.php') ){
@@ -95,7 +95,7 @@ class Admin implements \IF_UNIT
 		}
 
 		//	...
-		return Selftest::Auto($db);
+		return Selftest::Auto();
 	}
 
 	/** Get t_notfound record at host.
@@ -151,11 +151,13 @@ class Admin implements \IF_UNIT
 	static function GetRecordAtURI():array
 	{
 		//	...
-		$uri = $_GET['uri'] ?? null;
+		if(!$uri = $_GET['uri'] ?? null ){
+			return [];
+		};
 
 		//	...
 		$config = [];
-		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai, t_ua.os <= t_ua_os.ai <= t_ua.browser <= t_ua_browser.ai ';
+		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai, t_ua.ai <= t_ua_os.ua <= t_ua.ai <= t_ua_browser.ua ';
 		$config['limit'] = 100;
 	//	$config['field'][] = "sum(t_notfound.count) as count";
 		$config['where'][] = "t_uri.ai = $uri";
