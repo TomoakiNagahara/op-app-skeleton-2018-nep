@@ -70,6 +70,7 @@ class Html
 		//	...
 		if( $tag === 'a' ){
 			$attr = ' href="' . $string . '"';
+			$attr = ' rel="noopener noreferrer"';
 		}
 
 		//	...
