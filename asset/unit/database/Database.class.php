@@ -445,13 +445,20 @@ class Database implements \IF_DATABASE, \IF_UNIT
 			case 'select':
 				$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 				if( strpos($query.' ', ' LIMIT 1 ') and $result ){
+					/*
+					if( count($result[0]) === 1 ){
+						foreach( $result[0] as $result ){
+							//	...
+						};
+					}
+					*/
 					$result = $result[0];
 				}
 				break;
 
 			case 'count':
 				$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-				$result = $result[0]['COUNT(*)'];
+				$result = $result[0]['COUNT(*)'] ?? null;
 				break;
 
 			case 'insert':

@@ -42,7 +42,8 @@ $configer->Set('column', [
 //  Browser version.
 $configer->Set('column', [
 	'name'		 => 'version',
-	'type'		 => 'float',
+	'type'		 => 'decimal',
+	'length'	 => '5, 2',
 	'unsigned'	 =>  true,
 	'null'		 =>  true,
 	'comment'	 => 'Version of Browser.',

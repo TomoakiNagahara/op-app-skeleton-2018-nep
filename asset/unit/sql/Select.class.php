@@ -36,7 +36,7 @@ class Select
 	 * @param	\IF_DATABASE $db
 	 * @return	 string		 $sql
 	 */
-	static function Get($args, $db=null)
+	static function Get(&$args, $db=null)
 	{
 		//	...
 		if(!$db){
@@ -90,10 +90,15 @@ class Select
 	 * @param	\IF_DATABASE $db
 	 * @return	 string		 $sql
 	 */
-	static private function _Field(array $args, \IF_DATABASE $db)
+	static private function _Field(array &$args, \IF_DATABASE $db)
 	{
 		//	...
 		$join = null;
+
+		//	...
+		if( is_string($args['field'] ?? null) ){
+			$args['field'] = explode(',', $args['field']);
+		}
 
 		//	...
 		foreach( $args['field'] ?? [] as $field ){

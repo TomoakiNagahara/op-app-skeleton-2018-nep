@@ -42,7 +42,7 @@ class Common
 		//	...
 		if( empty($config) ){
 			//	...
-			foreach( $config = include(__DIR__.'/config.db.php') as $key => $val ){
+			foreach( $config = include(__DIR__.'/config/db.php') as $key => $val ){
 				//	If not set.
 				if(!isset($config[$key]) ){
 					//	Set default value.
