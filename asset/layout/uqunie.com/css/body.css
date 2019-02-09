@@ -1,0 +1,17 @@
+/**
+ * op-layout-uqunie.com:/css/body.css
+ *
+ * @creation  2017-06-29
+ * @version   1.0
+ * @package   op-layout-uqunie.com
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body {
+	margin:  0;
+	padding: 0;
+	background-color: #B0CBDC;
+	background-image: url(/img/body-background.png);
+	color: white;
+}

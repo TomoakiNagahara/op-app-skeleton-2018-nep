@@ -1,0 +1,41 @@
+/**
+ * op-layout-uqunie.com:/css/color.css
+ *
+ * @creation  2017-08-24
+ * @version   1.0
+ * @package   op-layout-uqunie.com
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+body.body a {
+	color: #d0e0ff;
+}
+
+body.body a:hover {
+	color: #f0f0ff;
+}
+
+body.body .red {
+	color: #ffcfcf;
+}
+
+body.body .pink {
+	color: #ffcfcf;
+}
+
+body.body .orange {
+	color: #ffc010;
+}
+
+body.body .yellow {
+	color: #fef010;
+}
+
+body.body .blue {
+	color: #c0c0ff;
+}
+
+body.body .right-blue {
+	color: #d0e0ff;
+}
