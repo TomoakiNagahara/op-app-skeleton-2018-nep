@@ -55,7 +55,7 @@ $rewrite_base = substr($_OP[APP_ROOT], strlen($_SERVER['DOCUMENT_ROOT']));
 						Change the value of "RewriteEngine" from "Off" to "On".
 					</p>
 				</li>
-				<?php if( $rewrite_base !== '/' ): ?>
+				<?php if( $rewrite_base and $rewrite_base !== '/' ): ?>
 				<li>
 					<p>
 						Look for line 41.<br/>
