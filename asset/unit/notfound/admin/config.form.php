@@ -18,8 +18,21 @@ $input['name']  = 'host';
 $input['type']  = 'select';
 $input['label'] = 'Host';
 $input['option'][] = '';
-$input['option'][] = 'localhost';
+
+//	...
+$config = [];
+$config['table'] = 't_notfound.host = t_host.ai';
+$config['limit'] = 100;
+$config['group'] = 't_notfound.host';
+$config['field'][] = ' t_host.host as host ';
+$config['where'][] = ' t_host.timestamp not null ';
+foreach( \OP\UNIT\NOTFOUND\Common::DB()->Select($config) as $record ){
+	$input['option'][] = $record['host'];
+};
+
+//	...
 $form['input'][] = $input;
+
 //	...
 $input = [];
 $input['name']  = 'date-st';
