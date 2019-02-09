@@ -18,6 +18,13 @@ $configer->Set('table', [
 	'comment' => 'Stack each host name.',
 ]);
 
+//  Auto incrment id.
+$configer->Set('column', [
+	'name'    =>  'ai',
+	'ai'      =>  true,
+	'comment' => 'Auto increment id.',
+]);
+
 //  Reference of t_ua.ai.
 $configer->Set('column', [
 	'name'      => 'ua',
@@ -33,20 +40,20 @@ $configer->Set('column', [
 $configer->Set('column', [
 	'name'    => 'browser',
 	'type'    => 'enum',
-	'length'  => 'ie, edge, chrome, firefox, safari, opera, vivaldi, other',
+	'length'  => 'ie, edge, chrome, firefox, safari, opera, vivaldi',
 	'null'    =>  true,
 	'collate' => 'ascii_general_ci',
-	'comment' => 'host name.',
+	'comment' => 'browser name. Unknown browser is null.',
 ]);
 
 //  Browser version.
 $configer->Set('column', [
 	'name'		 => 'version',
 	'type'		 => 'decimal',
-	'length'	 => '5, 2',
+	'length'	 => '5,2',
 	'unsigned'	 =>  true,
 	'null'		 =>  true,
-	'comment'	 => 'Version of Browser.',
+	'comment'	 => 'Browser version.',
 ]);
 
 //  Timestamp.

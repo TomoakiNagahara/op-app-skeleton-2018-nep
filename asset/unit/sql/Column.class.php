@@ -41,7 +41,7 @@ class Column
 		if( 'auto_increment' === strtolower(ifset($config['extra'])) ){
 			//	First, AI is must be exists PKEY. But, not create yet. (Contradiction of SQL)
 			//	AI is to modify column after create column and PKEY index.
-			unset($config['extra']);
+		//	unset($config['extra']);
 		}
 
 		//	...
@@ -102,6 +102,7 @@ class Column
 	 */
 	static private function _Generate_MySQL($database, $table, $field, $config, $DB, $verb)
 	{
+		//	...
 		$database = $DB->Quote($database);
 		$table    = $DB->Quote($table);
 		$field    = $DB->Quote($field);
@@ -130,7 +131,11 @@ class Column
 		}
 
 		//	...
-		return "ALTER TABLE $database.$table $verb $common $first $after $index";
+	//	$pkey  = ($config['key'] === 'pri') ? ", ADD PRIMARY KEY ({$field})": null;
+		$extra = ($config['extra'] ?? null) ?   strtoupper($config['extra']): null;
+
+		//	...
+		return "ALTER TABLE $database.$table $verb $common $extra $first $after $index";
 	}
 
 	/** Generate Alter PostgreSQL.
@@ -474,10 +479,11 @@ class Column
 	 *
 	 * @param	 array		 $config
 	 * @param	\IF_DATABASE $db
+	 * @param	 string		 $verb
 	 * @throws	\Exception
 	 * @return	 NULL|string
 	 */
-	static function Index($config, $db)
+	static function Index($config, $db, $verb)
 	{
 		//	...
 		if( empty($config['key']) ){
@@ -494,6 +500,11 @@ class Column
 
 		//	...
 		$key = Index::Type($config['key'], $config['type']);
+
+		//	...
+		if( $key === 'PRIMARY KEY' and $verb === 'ADD' ){
+			$key = ", ADD PRIMARY KEY";
+		};
 
 		//	...
 		return "$key($field)";

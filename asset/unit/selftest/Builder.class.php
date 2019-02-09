@@ -188,10 +188,10 @@ class Builder
 	 * @param array $result
 	 * @param \OP\UNIT\DB $DB
 	 */
-	static function Field($config, &$result, $_db)
+	static function Field($configs, &$results, $_db)
 	{
 		//	...
-		foreach( ifset($result['fields'], []) as $database => $tables ){
+		foreach( ifset($results['fields'], []) as $database => $tables ){
 			//	...
 			foreach( $tables as $table => $columns ){
 				//	...
@@ -199,9 +199,9 @@ class Builder
 				$after = null;
 
 				//	...
-				foreach( $columns as $name => $column ){
+				foreach( $columns as $field => $column ){
 					//	...
-					$conf = $config['databases'][$database]['tables'][$table]['columns'][$name];
+					$conf = $configs['databases'][$database]['tables'][$table]['columns'][$field];
 
 					//	...
 					if( $first ){
@@ -212,22 +212,29 @@ class Builder
 					}
 
 					//	...
-					$after = $name;
+					$after = $field;
 
 					//	Create new column.
 					if(!$column['result'] ){
 						//	...
-						if(!$sql = \OP\UNIT\SQL\Column::Create($database, $table, $name, $conf, $_db) ){
-							throw new \Exception("Failed: $sql");
+						$sql = \OP\UNIT\SQL\Column::Create($database, $table, $field, $conf, $_db);
+
+						//	...
+						if(!$_db->Query($sql, 'alter') ){
+							continue;
 						}
 
-						if(!$io  = $_db->Query($sql, 'alter')){
-							throw new \Exception("Failed: $io");
-						}
-					}
-				}
-			}
-		}
+						//	...
+						if( $conf['extra'] !== 'auto_increment' ){
+							continue;
+						};
+
+						//	Touch primary key index result.
+						$results['indexes'][$database][$table][$field]['result'] = true;
+					};
+				};
+			};
+		};
 	}
 
 	/** Modify exist column.

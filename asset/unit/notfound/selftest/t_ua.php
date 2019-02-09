@@ -45,6 +45,28 @@ $configer->Set('column', [
 	'comment' => 'User agent.',
 ]);
 
+//  Reference of t_ua_os.ai.
+$configer->Set('column', [
+	'name'		 => 'os',
+	'type'		 => 'int',
+	'unsigned'	 =>  true,
+	'null'		 =>  true,
+	'comment'	 => 'Reference of t_ua_os.ai.',
+	'reference'	 => 't_ua_os.ai',
+	'unique'	 =>  true,
+]);
+
+//  Reference of t_ua_os.ai.
+$configer->Set('column', [
+	'name'		 => 'browser',
+	'type'		 => 'int',
+	'unsigned'	 =>  true,
+	'null'		 =>  true,
+	'comment'	 => 'Reference of t_ua_browser.ai.',
+	'reference'	 => 't_ua_browser.ai',
+	'unique'	 =>  true,
+]);
+
 //  Timestamp.
 $configer->Set('column', [
 	'name'    => 'timestamp',

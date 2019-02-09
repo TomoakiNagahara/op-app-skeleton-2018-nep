@@ -113,17 +113,8 @@ class Select
 				$func = null;
 			}
 
-			//	If has table name.
-			if( strpos($field, '.') ){
-				//	Has table name.
-				list($table, $field) = explode('.', $field);
-				$table = $db->Quote(trim($table));
-				$field = $db->Quote(trim($field));
-				$field = "{$table}.{$field}";
-			}else{
-				//	Field name only.
-				$field = $db->Quote(trim($field));
-			};
+			//	Correspond include table name or multi field name.
+			$field = self::_Field_Escape($field, $db);
 
 			//	If has function.
 			if( $func ){
@@ -142,6 +133,39 @@ class Select
 
 		//	...
 		return count($join) ? join(', ', $join): null;
+	}
+
+	static private function _Field_Escape(string $field, \IF_DATABASE $db)
+	{
+		//	...
+		$join = [];
+
+		//	...
+		foreach( explode(',', $field) as $field ){
+			//	...
+			$field = trim($field);
+
+			//	If has table name.
+			if( strpos($field, '.') ){
+				//	Has table name.
+				list($table, $field) = explode('.', $field);
+				$table = $db->Quote(trim($table));
+				$field = $db->Quote(trim($field));
+				$field = "{$table}.{$field}";
+			}else if( $field === "' '" or $field === '" "' ){
+				//	Use concat function.
+				$field = "' '";
+			}else{
+				//	Field name only.
+				$field = $db->Quote(trim($field));
+			};
+
+			//	...
+			$join[] = $field;
+		};
+
+		//	...
+		return join(', ', $join);
 	}
 
 	/** Get column condition.

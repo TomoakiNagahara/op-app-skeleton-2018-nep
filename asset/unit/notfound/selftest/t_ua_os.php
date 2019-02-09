@@ -18,6 +18,13 @@ $configer->Set('table', [
 	'comment'	 => 'Stack each host name.',
 ]);
 
+//  Auto incrment id.
+$configer->Set('column', [
+	'name'    =>  'ai',
+	'ai'      =>  true,
+	'comment' => 'Auto increment id.',
+]);
+
 //  Reference of t_ua.ai.
 $configer->Set('column', [
 	'name'		 => 'ua',
@@ -36,17 +43,17 @@ $configer->Set('column', [
 	'length'	 => 'win, mac, linux, bsd, ios, android',
 	'null'		 =>  true,
 	'collate'	 => 'ascii_general_ci',
-	'comment'	 => 'OS Name. Unknown OS is null.',
+	'comment'	 => 'OS name. Unknown OS is null.',
 ]);
 
 //  OS version.
 $configer->Set('column', [
 	'name'		 => 'version',
 	'type'		 => 'decimal',
-	'length'	 => '5, 2',
+	'length'	 => '5,2',
 	'unsigned'	 =>  true,
 	'null'		 =>  true,
-	'comment'	 => 'Version of OS.',
+	'comment'	 => 'OS version.',
 ]);
 
 //  Timestamp.

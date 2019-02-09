@@ -30,12 +30,6 @@ class Selftest implements \IF_UNIT
 	 */
 	use \OP_CORE;
 
-	/** Debug.
-	 *
-	 * @var array
-	 */
-	static private $_debug;
-
 	/** Will execute automatically of Selftest.
 	 *
 	 */
@@ -53,7 +47,7 @@ class Selftest implements \IF_UNIT
 
 		//	...
 		if( $config = $_GET['debug'] ?? null ){
-			self::Debug($config, $selftest ?? null);
+			$selftest->Debug($config);
 		};
 
 		//	...
@@ -80,6 +74,6 @@ class Selftest implements \IF_UNIT
 	 */
 	function Debug($topic=null, $selftest=null)
 	{
-		D( self::$_debug, $selftest->Debug() );
+
 	}
 }

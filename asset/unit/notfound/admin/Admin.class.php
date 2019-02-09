@@ -132,8 +132,8 @@ class Admin implements \IF_UNIT
 		$config['field'][] = "sum(t_notfound.count) as count     ";
 		$config['field'][] = "t_notfound.timestamp  as timestamp ";
 		$config['where'][] = "host = $ai";
-		if( $date_st ){ $config['where'][] = "t_notfound.timestamp >= $date_st"; };
-		if( $date_en ){ $config['where'][] = "t_notfound.timestamp <= $date_en"; };
+		if( $date_st ){ $config['where'][] = "t_notfound.timestamp >= $date_st 00:00:00"; };
+		if( $date_en ){ $config['where'][] = "t_notfound.timestamp <= $date_en 23:59:60"; }; // 60 is Leap seconds.
 
 		//	...
 		if( \Env::isAdmin() ){
@@ -157,10 +157,23 @@ class Admin implements \IF_UNIT
 
 		//	...
 		$config = [];
-		$config['table'] = 't_notfound.uri <= t_uri.ai, t_notfound.ua <= t_ua.ai, t_ua.ai <= t_ua_os.ua <= t_ua.ai <= t_ua_browser.ua ';
 		$config['limit'] = 100;
-	//	$config['field'][] = "sum(t_notfound.count) as count";
-		$config['where'][] = "t_uri.ai = $uri";
+		$config['order'] = 'count desc';
+		$config['where'][] = "t_notfound.uri = $uri";
+
+		//	...
+		$config['table'] = '  t_notfound.uri <= t_uri.ai'
+						 . ', t_notfound.ua  <= t_ua.ai'
+						 . ', t_ua.os        <= t_ua_os.ai'
+						 . ', t_ua.browser   <= t_ua_browser.ai';
+		//	...
+		 $config['field'][] = 't_notfound.count     as count';
+		 $config['field'][] = 't_ua_os.os           as os';
+		 $config['field'][] = 't_ua_os.version      as os_version';
+		 $config['field'][] = 't_ua_browser.browser as browser';
+		 $config['field'][] = 't_ua_browser.version as browser_version';
+		 $config['field'][] = 'concat(t_ua_os.os, " ", t_ua_os.version) as OS';
+		 $config['field'][] = 'concat(t_ua_browser.browser, " ", t_ua_browser.version) as Browser';
 
 		//	...
 		return Common::DB()->Select($config);

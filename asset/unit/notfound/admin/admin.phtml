@@ -27,6 +27,15 @@ body.body label:after {
 #control-panel td {
 	_border: 1px solid black;
 }
+
+#control-panel td:first-child {
+	text-align: right;
+}
+
+#control-panel td:last-child {
+	text-align: right;
+}
+
 </style>
 <div style="margin: 0.5em;">
 	| <a href="?">Admin</a>
@@ -45,28 +54,16 @@ $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 <?php $form->Start() ?>
 <div id="control-panel">
 	<!-- Host -->
-	<table>
-		<tr>
-			<th class="right">
-				<?php $form->Label('host') ?>
-			</th>
-			<td>
-				<?php $form->Input('host') ?>
-			</td>
-		</tr>
-		<tr>
-			<td colspan=2>
-				<?php $form->Input('date-st') ?>
-				<?php $form->Input('date-en') ?>
-			</td>
-		</tr>
-	</table>
+	<?php $form->Label('host') ?>
+	<?php $form->Input('host') ?><br/>
+	<?php $form->Input('date-st') ?>
+	<?php $form->Input('date-en') ?>
 
 	<!-- URI -->
 	<table>
 		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost() as $record ): ?>
 		<tr>
-			<td class="right"><?= $record['count'] ?></td>
+			<td><?= $record['count'] ?></td>
 			<td>
 				<a href="<?= "?{$query}&uri={$record['uri_ai']}" ?>">
 					<?= $record['uri'] ?>
@@ -82,7 +79,13 @@ $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 	<!-- UA -->
 	<table>
 		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtURI() as $record ): ?>
-		<?php d($record); ?>
+		<tr>
+			<td><?= $record['count'] ?></td>
+			<td><?= ucfirst($record['os'])?></td>
+			<td><?= $record['os_version'] ?></td>
+			<td><?= ucfirst($record['browser']) ?></td>
+			<td><?= $record['browser_version'] ?></td>
+		</tr>
 		<?php endforeach; ?>
 	</table>
 	<?php $form->Input('submit') ?>
