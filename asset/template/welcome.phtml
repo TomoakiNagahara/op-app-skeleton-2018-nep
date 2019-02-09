@@ -47,17 +47,26 @@
 			$links[$file] = true;
 		};
 	};
+
+	//	...
+	$keys = ['test','reference','admin'];
+
 	?>
-	<?php if( count($links) !== 2 ): ?>
+	<?php if( count($links) !== count($keys) ): ?>
 	<hr style="clear:both;" />
 	<section>
 		<?php
 		$asset_root = (ConvertPath('app:/asset/') === ConvertPath('asset:/')) ? './asset/':ConvertPath('asset:/');
 		?>
 		<h2>Example</h2>
-<code>cd <?= $app_root . "\n" ?>
-<?php if( empty($links['test'])      ): ?>ln -s <?= $asset_root.'test' ?> _testcase<br/><?php endif; ?>
-<?php if( empty($links['reference']) ): ?>ln -s <?= $asset_root.'reference' ?> _reference<?php endif; ?></code>
+<code>
+cd <?= $app_root . "\n" ?>
+<?php foreach( $keys as $key ): ?>
+<?php if( empty($links[$key])): ?>
+ln -s <?= $asset_root.$key?> _<?= $key ?><br/>
+<?php endif; ?>
+<?php endforeach; ?>
+</code>
 	</section>
 	<?php else: ?>
 		<hr/>
