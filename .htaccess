@@ -30,7 +30,7 @@ Options +FollowSymLinks +ExecCGI -Indexes
 	RewriteEngine On
 
 	# This is base directory (It is app root.)
-	RewriteBase /op-app-skeleton-2018-nep/
+	RewriteBase /
 
 	# If file does not exists.
 	RewriteCond  %{REQUEST_FILENAME} !-f
