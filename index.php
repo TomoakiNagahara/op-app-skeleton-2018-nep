@@ -26,7 +26,7 @@ if( empty($args) ){
 	//	Access is top page.
 	//	Welcome page is sample page
 	//	 --> ./asset/template/welcome.phtml
-	App::Template('welcome.phtml');
+	App::Template('index.phtml');
 }else{
 	//	Change http status code.
 	http_response_code(404);
