@@ -2,10 +2,40 @@
 /**
  * app-skeleton-2018-nep:/asset/template/google-analytics.phtml
  *
- * @creation  2018-04-12
+ * @creation  2017-11-28
  * @version   1.0
  * @package   app-skeleton
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	...
+if(!$tracking_id = \Env::Get('google-analytics-tracking-id') ){
+	echo '<!-- Google analytics tracking id is empty. -->'.PHP_EOL;
+	return;
+};
+
+//	...
+if( Env::isLocalhost() ){
+	echo '<!-- Google analytics tracking is skipped. (localhost) -->'.PHP_EOL;
+	return;
+}
 ?>
+<!-- Google analytics -->
+<script>
+	/* prepare */
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	/* execute */
+	ga('create','<?= $tracking_id ?>','auto');
+	ga('send','pageview');
+
+	/* user traccking */
+	<? if( method_exists('App','UserID') ): ?>
+		<? if( $user_id = App::UserID() ): ?>
+			ga('set','&uid','<?= $user_id ?>');
+		<? endif; ?>
+	<? endif; ?>
+</script>
