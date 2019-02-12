@@ -8,20 +8,22 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+/* @var $form \IF_FORM */
+$form = \Unit::Instantiate('Form');
+$form->Config(__DIR__.'/config.form.php');
+
 //	...
 $build = OP\UNIT\NEWWORLD\Template::Args('build');
 ?>
 <section id="UNIT_SELFTEST">
-	<form action="" method="post" class="OP">
+	<?php $form->Start() ?>
 		<div role="table">
 			<div>
 				<div>
 					Product
 				</div>
 				<div>
-					<select name="prod">
-						<option>mysql</option>
-					</select>
+					<?php $form->Input('prod') ?>
 				</div>
 			</div>
 			<div>
@@ -29,7 +31,7 @@ $build = OP\UNIT\NEWWORLD\Template::Args('build');
 					Host
 				</div>
 				<div>
-					<input type="text" name="host" value="localhost" />
+					<?= $form->Input('host') ?>
 				</div>
 			</div>
 			<div>
@@ -37,7 +39,7 @@ $build = OP\UNIT\NEWWORLD\Template::Args('build');
 					Port
 				</div>
 				<div>
-					<input type="text" name="port" value="3306" />
+					<?php $form->Input('port') ?>
 				</div>
 			</div>
 			<div>
@@ -45,7 +47,7 @@ $build = OP\UNIT\NEWWORLD\Template::Args('build');
 					User
 				</div>
 				<div>
-					<input type="text" name="user" value="root" />
+					<?php $form->Input('user') ?>
 				</div>
 			</div>
 			<div>
@@ -53,7 +55,7 @@ $build = OP\UNIT\NEWWORLD\Template::Args('build');
 					Password
 				</div>
 				<div>
-					<input type="password" name="password" value="" />
+					<?php $form->Input('password') ?>
 				</div>
 			</div>
 			<div>
@@ -61,7 +63,7 @@ $build = OP\UNIT\NEWWORLD\Template::Args('build');
 					Charset
 				</div>
 				<div>
-					<input type="text" name="charset" value="utf8" />
+					<?php $form->Input('charset') ?>
 				</div>
 			</div>
 			<? if( \OP\UNIT\SELFTEST\Inspector::Failed() ): ?>
@@ -84,5 +86,5 @@ $build = OP\UNIT\NEWWORLD\Template::Args('build');
 				</div>
 			</div>
 		</div>
-	</form>
+	<?php $form->Finish() ?>
 </section>

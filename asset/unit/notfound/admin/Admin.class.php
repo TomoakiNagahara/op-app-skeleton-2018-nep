@@ -90,7 +90,7 @@ class Admin implements \IF_UNIT
 	static function Selftest()
 	{
 		//	...
-		if(!include(__DIR__.'/../selftest/Selftest.class.php') ){
+		if(!include_once(__DIR__.'/../selftest/Selftest.class.php') ){
 			return false;
 		}
 
