@@ -9,11 +9,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-global $_OP;
-
-//	Calc rewrite base directory.
-$rewrite_base = substr($_OP[APP_ROOT], strlen($_SERVER['DOCUMENT_ROOT']));
-
+$rewrite_base = $_SERVER['REQUEST_URI'];
 ?>
 <h1>How to boot the onepiece-framework at the Apache web server.</h1>
 <ol>
@@ -23,14 +19,14 @@ $rewrite_base = substr($_OP[APP_ROOT], strlen($_SERVER['DOCUMENT_ROOT']));
 	</li>
 	<li>
 		<p>
-			Look for line 38.<br/>
+			Look for line 30.<br/>
 			Change the value of "RewriteEngine" from "Off" to "On".
 		</p>
 	</li>
 	<?php if( $rewrite_base !== '/' ): ?>
 	<li>
 		<p>
-			Look for line 41.<br/>
+			Look for line 33.<br/>
 			Change the value of "RewriteBase" from "/" to "<?= $rewrite_base ?>".
 		</p>
 	</li>
