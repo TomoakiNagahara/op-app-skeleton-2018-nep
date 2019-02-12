@@ -8,12 +8,6 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-//	...
-global $_OP;
-
-//	Calc rewrite base directory.
-$rewrite_base = substr($_OP[APP_ROOT], strlen($_SERVER['DOCUMENT_ROOT']));
-
 ?>
 <!doctype html>
 <html>
