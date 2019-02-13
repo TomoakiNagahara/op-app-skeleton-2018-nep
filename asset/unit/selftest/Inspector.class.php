@@ -827,7 +827,11 @@ class Inspector
 	static function Result()
 	{
 		//	...
-		Json(self::$_result, '#OP_SELFTEST');
+		if( self::$_result ){
+			Json(self::$_result, '#OP_SELFTEST');
+		}else{
+			D('Inspection has not been execute.');
+		};
 
 		//	...
 		\App::WebPack(__DIR__.'/result.js');

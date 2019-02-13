@@ -335,11 +335,11 @@ D($m);
 			};
 		}else{
 			//	Throw away connection error notice.
-			\Notice::Pop();
+			$notice = \Notice::Pop();
+			D($notice);
 
 			//	...
 			if( include(__DIR__.'/selftest/Selftest.class.php') ){
-				Html('Connection was failed', '.error');
 				NOTFOUND\Selftest::Auto($db);
 			};
 		};

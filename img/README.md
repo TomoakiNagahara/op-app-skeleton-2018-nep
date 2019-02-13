@@ -1,4 +1,4 @@
 Image controller
 ===
 
-If file has not exists, search from layout img directory.
+If requested file has not exists, Search from img directory inside layout directory.
