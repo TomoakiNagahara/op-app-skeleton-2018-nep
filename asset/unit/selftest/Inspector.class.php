@@ -271,6 +271,7 @@ class Inspector
 	{
 		//	...
 		if(!\Unit::Load('SQL') ){
+			self::$_failure = true;
 			return false;
 		}
 
@@ -279,7 +280,8 @@ class Inspector
 
 		//	...
 		if(!isset($config[$dsn]) ){
-			self::Error("Unmatch DSN. ($dsn)");
+			self::Error("This DSN is not defined in config. ($dsn)");
+			self::$_failure = true;
 			return false;
 		}
 
@@ -288,6 +290,9 @@ class Inspector
 
 		//	...
 		self::Structures($config[$dsn], $DB);
+
+		//	...
+		return !self::$_failure;
 	}
 
 	/** Check connection of users.
@@ -830,7 +835,7 @@ class Inspector
 		if( self::$_result ){
 			Json(self::$_result, '#OP_SELFTEST');
 		}else{
-			D('Inspection has not been execute.');
+			self::Error('Inspection has not been execute.');
 		};
 
 		//	...
@@ -848,6 +853,15 @@ class Inspector
 	 */
 	static function Debug()
 	{
-		D('self::$_result', self::$_result);
+		//	...
+		while( $error = self::Error() ){
+			$debug['Error'][] = $error;
+		};
+
+		//	...
+		$debug['result'] = self::$_result;
+
+		//	...
+		D( $debug );
 	}
 }

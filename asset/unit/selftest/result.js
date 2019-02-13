@@ -10,8 +10,16 @@
 //	...
 setTimeout(function(){
 	//	...
+	var text = null;
 	var area = document.querySelector('#OP_SELFTEST');
-	var text = area.innerText;
+	if( area ){
+		text = area.innerText;
+	};
+
+	//	...
+	if(!text ){
+		return;
+	};
 
 	//	...
 	area.innerText = '';

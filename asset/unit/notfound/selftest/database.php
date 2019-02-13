@@ -9,17 +9,19 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 /* @var $configer \OP\UNIT\SELFTEST\Configer */
+//	...
+$config = Env::Get('notfound');
 
 //  DSN configuration.
 $configer->DSN([
-	'host'     => 'localhost',
-	'product'  => 'mysql',
-	'port'     => '3306',
+	'host'     => $config['host'] ?? 'localhost',
+	'product'  => $config['prod'] ?? 'mysql',
+	'port'     => $config['port'] ?? '3306',
 ]);
 
 //  Database configuration.
 $configer->Database([
-	'name'     => 'onepiece',
-	'charset'  => 'utf8',
-	'collate'  => 'utf8mb4_general_ci',
+	'name'     => $config['database'] ?? 'onepiece',
+	'charset'  => $config['charset']  ?? 'utf8',
+	'collate'  => $config['collate']  ?? 'utf8mb4_general_ci',
 ]);

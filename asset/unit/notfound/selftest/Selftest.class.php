@@ -43,12 +43,11 @@ class Selftest implements \IF_UNIT
 		/* @var $selftest \OP\UNIT\Selftest */
 		if( $io = $selftest = \Unit::Instantiate('Selftest') ){
 			$io = $selftest->Auto(__DIR__.'/config.php');
-			D($io);
 		};
 
 		//	...
-		if( ($io === false) or ($config = $_GET['debug'] ?? null) ){
-			$selftest->Debug($config);
+		if( ($io === false) or ($_GET['debug'] ?? null) ){
+			$selftest->Debug($_GET['debug'] ?? '');
 		};
 
 		//	...
