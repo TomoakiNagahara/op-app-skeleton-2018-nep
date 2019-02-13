@@ -327,25 +327,8 @@ D($m);
 	 */
 	static function Admin()
 	{
-		//	...
-		if( $db = NOTFOUND\Common::DB() ){
-			//	...
-			if( include(__DIR__.'/admin/Admin.class.php') ){
-				NOTFOUND\Admin::Auto($db);
-			};
-		}else{
-			//	Throw away connection error notice.
-			$notice = \Notice::Pop();
-
-			//	...
-			D($notice['message']);
-			D(\Env::Get('notfound'));
-
-			//	...
-			if( include(__DIR__.'/selftest/Selftest.class.php') ){
-				NOTFOUND\Selftest::Auto($db);
-			};
-		};
+		include_once(__DIR__.'/admin/Admin.class.php');
+		NOTFOUND\Admin::Auto();
 	}
 
 	/** For developers.

@@ -39,8 +39,26 @@ class Admin implements \IF_UNIT
 	/** Will execute automatically of Admin.
 	 *
 	 */
-	static function Auto(\IF_DATABASE $db)
+	static function Auto()
 	{
+		//	...
+		if(!$db = Common::DB() ){
+			//	Throw away connection error notice.
+			$notice = \Notice::Pop();
+
+			//	...
+			D($notice['message']);
+			D(\Env::Get('notfound'));
+
+			//	...
+			if( include(__DIR__.'/../selftest/Selftest.class.php') ){
+				Selftest::Auto($db);
+			};
+
+			//	...
+			return;
+		};
+
 		//	...
 		if(!$io = \Cookie::Get(__METHOD__) ){
 			if(!$io = self::Selftest($db) ){
