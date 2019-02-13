@@ -46,7 +46,7 @@ class Selftest implements \IF_UNIT
 		};
 
 		//	...
-		if( $config = $_GET['debug'] ?? null ){
+		if( ($io === false) or ($config = $_GET['debug'] ?? null) ){
 			$selftest->Debug($config);
 		};
 

@@ -12,10 +12,7 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-$config = [];
-
-//	Database source name.
-$config = [
+$temp = [
 	'prod'     => 'mysql',
 	'host'     => 'localhost',
 	'user'     => 'notfound',
@@ -24,4 +21,8 @@ $config = [
 ];
 
 //	...
-return $config;
+foreach( $temp as $key => $val ){
+	if(!isset($config[$key]) ){
+		$config[$key] = $val;
+	};
+};

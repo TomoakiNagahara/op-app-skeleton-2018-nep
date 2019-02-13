@@ -336,7 +336,10 @@ D($m);
 		}else{
 			//	Throw away connection error notice.
 			$notice = \Notice::Pop();
-			D($notice);
+
+			//	...
+			D($notice['message']);
+			D(\Env::Get('notfound'));
 
 			//	...
 			if( include(__DIR__.'/selftest/Selftest.class.php') ){

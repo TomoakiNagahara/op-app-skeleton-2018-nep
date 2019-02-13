@@ -30,6 +30,35 @@ class Common
 	 */
 	use \OP_CORE;
 
+	static function DSN($dsn)
+	{
+		//	...
+		if( $config = parse_url($dsn) ){
+			$config['prod']		 = $config['scheme'] ?? null;
+			$config['password']	 = $config['pass'];
+
+			//	...
+			if( empty($config['port']) ){
+				$config['port']	 = '3306';
+			};
+
+			//	...
+			if( isset($config['query']) ){
+				parse_str($config['query'], $query);
+				foreach( $query as $key => $val ){
+					$config[$key] = $val;
+				};
+			};
+		};
+
+		//	...
+		unset($config['scheme']);
+		unset($config['pass']);
+
+		//	...
+		return $config;
+	}
+
 	/** Get configuration.
 	 *
 	 * @return string|number|boolean|array|object
@@ -37,22 +66,24 @@ class Common
 	static private function _Config()
 	{
 		//	...
-		$config = \Env::Get(__CLASS__);
+		static $config;
 
 		//	...
-		if( empty($config) ){
+		if(!$config ){
 			//	...
-			foreach( $config = include(__DIR__.'/config/db.php') as $key => $val ){
-				//	If not set.
-				if(!isset($config[$key]) ){
-					//	Set default value.
-					$config[$key] = $val;
-				};
-			};
-		};
+			$config = \Env::Get('notfound');
 
-		//	...
-		\Env::Set(__CLASS__, $config);
+			//	...
+			if( $dsn = $config['dsn'] ?? null ){
+				$config = self::DSN($dsn);
+			};
+
+			//	...
+			include(__DIR__.'/config/db.php');
+
+			//	...
+			\Env::Set('notfound', $config);
+		};
 
 		//	...
 		return $config;
