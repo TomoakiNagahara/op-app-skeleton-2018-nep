@@ -52,7 +52,7 @@ if( $_GET['selftest'] ?? null ){
 $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 ?>
 <?php $form->Start() ?>
-<div id="control-panel">
+<div id="control-panel" style="border:1px solid black; margin: 1em; padding: 1em;">
 	<!-- Host -->
 	<?php $form->Label('host') ?>
 	<?php $form->Input('host') ?><br/>

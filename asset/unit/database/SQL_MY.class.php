@@ -137,6 +137,7 @@ class MYSQL
 			$option   = self::Option($config);
 			$user     = $config['user']     ?? null;
 			$password = $config['password'] ?? null;
+			$database = $config['database'] ?? null;
 
 			//	...
 			return new \PDO($dsn, $user, $password, $option);

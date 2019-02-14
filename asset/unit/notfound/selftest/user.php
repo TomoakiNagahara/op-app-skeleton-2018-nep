@@ -12,6 +12,7 @@
 
 //  User configuration.
 $configer->User([
+	'host'     =>  gethostname(),
 	'name'     => 'notfound',
 	'password' => 'password',
 	'charset'  => 'utf8',

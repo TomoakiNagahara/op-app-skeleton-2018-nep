@@ -17,6 +17,7 @@ $input = [];
 $input['name']  = 'host';
 $input['type']  = 'select';
 $input['label'] = 'Host';
+$input['required'] = true;
 $input['option'][] = '';
 
 //	...
@@ -39,6 +40,7 @@ $input['name']  = 'date-st';
 $input['type']  = 'date';
 $input['label'] = 'date-st';
 $input['value'] = Time::Date('-30 days');
+$input['required'] = true;
 $form['input'][] = $input;
 
 //	...
@@ -47,6 +49,7 @@ $input['name']  = 'date-en';
 $input['type']  = 'date';
 $input['label'] = 'date-en';
 $input['value'] = Time::Date();
+$input['required'] = true;
 $form['input'][] = $input;
 
 //	...

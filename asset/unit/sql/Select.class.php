@@ -93,7 +93,7 @@ class Select
 	static private function _Field(array &$args, \IF_DATABASE $db)
 	{
 		//	...
-		$join = null;
+		$join = [];
 
 		//	...
 		if( is_string($args['field'] ?? null) ){

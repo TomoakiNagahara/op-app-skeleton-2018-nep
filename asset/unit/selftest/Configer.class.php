@@ -163,14 +163,16 @@ class Configer
 		$dsn = self::Dsn();
 
 		//	...
+		$host = $config['host'] ?? null;
 		$user = $config['user'] ?? $config['name'] ?? null;
 
 		//	...
-		if(!$user ){
-			throw new \Exception('Has not been set user name.');
+		if( !$host or !$user ){
+			throw new \Exception("Has not been set user name or host name. ({$user}@{$host})");
 		}
 
 		//	...
+		self::$_config[$dsn]['users'][$user]['host']     = $host;
 		self::$_config[$dsn]['users'][$user]['name']     = $user;
 		self::$_config[$dsn]['users'][$user]['password'] = $config['password'] ?? null;
 		self::$_config[$dsn]['users'][$user]['charset']  = $config['charset']  ?? 'utf8';

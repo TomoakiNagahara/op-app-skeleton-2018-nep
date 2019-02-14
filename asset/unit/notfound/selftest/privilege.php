@@ -12,12 +12,14 @@
 
 //  Privilege configuration.
 $configer->Privilege([
+	'host'     =>  gethostname(),
 	'user'     => 'notfound',
 	'database' => 'onepiece',
 	'table'    => 't_host, t_uri, t_ua, t_ua_os, t_ua_browser, t_notfound',
 	'privilege'=> 'insert, select, update, delete',
 	'column'   => '*',
 ]);
+
 /*
 $configer->Privilege([
 	'user'     => 'notfound-insert',

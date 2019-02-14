@@ -322,7 +322,17 @@ class Inspector
 		//	...
 		foreach( $configs['users'] as $user_name => $user ){
 			//	...
-			$key = $user_name.'@'.$host;
+			$name = $user['name'] ?? null;
+			$host = $user['host'] ?? null;
+
+			//	...
+			if( !$host or !$name ){
+				throw new \Exception("Has not been set user name or host name. ({$name}@{$host})");
+				return;
+			};
+
+			//	...
+			$key = $name.'@'.$host;
 
 			//	...
 			$result = &self::$_result[$dsn]['users'][$user_name];

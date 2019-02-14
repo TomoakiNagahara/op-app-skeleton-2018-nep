@@ -483,7 +483,7 @@ class Column
 	 * @throws	\Exception
 	 * @return	 NULL|string
 	 */
-	static function Index($config, $db, $verb)
+	static function Index($config, $db, $verb=null)
 	{
 		//	...
 		if( empty($config['key']) ){

@@ -34,8 +34,13 @@ class Common
 	{
 		//	...
 		if( $config = parse_url($dsn) ){
+			//	...
 			$config['prod']		 = $config['scheme'] ?? null;
-			$config['password']	 = $config['pass'];
+
+			//	...
+			if( $config['pass'] ?? null ){
+				$config['password'] = $config['pass'];
+			};
 
 			//	...
 			if( empty($config['port']) ){
@@ -65,23 +70,19 @@ class Common
 	 */
 	static private function _Config()
 	{
-		//	...
-		static $config;
+		//	Get config from Env.
+		if(!$config = \Env::Get('notfound') ){
+			$this->Help('config');
+			return;
+		};
 
-		//	...
-		if(!$config ){
-			//	...
-			$config = \Env::Get('notfound');
+		//	If given DSN.
+		if( $dsn = $config['dsn'] ?? null ){
+			//	Parse DSN.
+			$config = array_merge(self::DSN($dsn), $config);
+			$config['dsn'] = null;
 
-			//	...
-			if( $dsn = $config['dsn'] ?? null ){
-				$config = self::DSN($dsn);
-			};
-
-			//	...
-			include(__DIR__.'/config/db.php');
-
-			//	...
+			//	Save parse result.
 			\Env::Set('notfound', $config);
 		};
 
