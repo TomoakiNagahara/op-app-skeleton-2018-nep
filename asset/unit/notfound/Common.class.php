@@ -30,6 +30,11 @@ class Common
 	 */
 	use \OP_CORE;
 
+	/** Parse config from DSN format.
+	 *
+	 * @param	 string		 $dsn
+	 * @return	 array		 $config
+	 */
 	static function DSN($dsn)
 	{
 		//	...
@@ -49,6 +54,7 @@ class Common
 
 			//	...
 			if( isset($config['query']) ){
+				$query = [];
 				parse_str($config['query'], $query);
 				foreach( $query as $key => $val ){
 					$config[$key] = $val;
@@ -66,13 +72,13 @@ class Common
 
 	/** Get configuration.
 	 *
-	 * @return string|number|boolean|array|object
+	 * @return	 array		 $config
 	 */
 	static private function _Config()
 	{
 		//	Get config from Env.
 		if(!$config = \Env::Get('notfound') ){
-			$this->Help('config');
+		//	$this->Unit('notfound')->Help('config');
 			return;
 		};
 
