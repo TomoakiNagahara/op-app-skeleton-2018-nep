@@ -10,9 +10,16 @@
  */
 /* @var $configer \OP\UNIT\SELFTEST\Configer */
 
+//	...
+if( $_SERVER['SERVER_ADDR'] === '127.0.0.1' or $_SERVER['SERVER_ADDR'] === '::1' ){
+	$host = 'localhost';
+}else{
+	$host = $_SERVER['SERVER_ADDR'];
+};
+
 //  User configuration.
 $configer->User([
-	'host'     =>  gethostname(),
+	'host'     =>  $host,
 	'name'     => 'notfound',
 	'password' => 'password',
 	'charset'  => 'utf8',

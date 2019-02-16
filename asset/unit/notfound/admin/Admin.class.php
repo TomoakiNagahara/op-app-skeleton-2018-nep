@@ -126,19 +126,12 @@ class Admin implements \IF_UNIT
 		$form    = self::Form();
 
 		//	...
-		if(!$form->Validate()){
-			D('validate is failed.');
-			return [];
-		};
-
-		//	...
 		$host    = $form->GetValue('host');
 		$date_st = $form->GetValue('date-st');
 		$date_en = $form->GetValue('date-en');
 
 		//	...
 		if(!$host){
-			D('empty host name');
 			return [];
 		};
 

@@ -12,6 +12,6 @@ body.body {
 	margin:  0;
 	padding: 0;
 	background-color: #B0CBDC;
-	background-image: url(/img/body-background.png);
+	background-image: url(<?= ConvertURL('app:/img/body-background.png') ?>);
 	color: white;
 }

@@ -10,9 +10,16 @@
  */
 /* @var $configer \OP\UNIT\SELFTEST\Configer */
 
+//	...
+if( $_SERVER['SERVER_ADDR'] === '127.0.0.1' or $_SERVER['SERVER_ADDR'] === '::1' ){
+	$host = 'localhost';
+}else{
+	$host = $_SERVER['SERVER_ADDR'];
+};
+
 //  Privilege configuration.
 $configer->Privilege([
-	'host'     =>  gethostname(),
+	'host'     =>  $host,
 	'user'     => 'notfound',
 	'database' => 'onepiece',
 	'table'    => 't_host, t_uri, t_ua, t_ua_os, t_ua_browser, t_notfound',

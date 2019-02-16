@@ -15,11 +15,11 @@ Time::Timezone('Asia/Tokyo');
 //	Layout settigs.
 OP\UNIT\NEWWORLD\Layout::Directory(__DIR__.'/layout/');
 OP\UNIT\NEWWORLD\Layout::Execute(true);
-OP\UNIT\NEWWORLD\Layout::Name('uqunie.com');
+OP\UNIT\NEWWORLD\Layout::Name('white');
 Env::Set('layout', [
 	'directory' =>  __DIR__.'/template/',
 	'execute'   =>  true,
-	'name'      => 'uqunie.com'
+	'name'      => 'white'
 ]);
 
 //	Template settings.
