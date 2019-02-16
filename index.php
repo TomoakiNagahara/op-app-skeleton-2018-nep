@@ -24,9 +24,8 @@ $args = App::Args();
 //	Does if has arguments?
 if( empty($args) ){
 	//	Access is top page.
-	//	Welcome page is sample page
-	//	 --> ./asset/template/welcome.phtml
-	App::Template('index.phtml');
+	//	Welcome page is asset:/template/welcome.phtml.
+	App::Template('welcome.phtml');
 }else{
 	//	Change http status code.
 	http_response_code(404);
