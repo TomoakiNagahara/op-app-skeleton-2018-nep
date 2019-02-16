@@ -32,7 +32,7 @@ $configer->Set('column', [
 	'length'  =>     10,
 	'null'    =>  false,
 	'collate' => 'ascii_general_ci',
-	'comment' => 'Hash by host name.',
+	'comment' => 'Hash by user agent.',
 	'unique'  =>   true,
 ]);
 
