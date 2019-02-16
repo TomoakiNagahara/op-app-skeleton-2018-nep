@@ -12,7 +12,7 @@
 //	Time
 Time::Timezone('Asia/Tokyo');
 
-//	Layout settigs.
+//	Layout
 OP\UNIT\NEWWORLD\Layout::Directory(__DIR__.'/layout/');
 OP\UNIT\NEWWORLD\Layout::Execute(true);
 OP\UNIT\NEWWORLD\Layout::Name('white');
@@ -22,15 +22,20 @@ Env::Set('layout', [
 	'name'      => 'white'
 ]);
 
-//	Template settings.
+//	Template
 OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template/');
 Env::Set('template', [
 	'directory'=>__DIR__.'/template/'
 ]);
 
-//	Cache settings.
+//	Cache
 Env::Set('cache', [
 	'directory'=>__DIR__.'/.cache/'
+]);
+
+//	Unit of NotFound
+Env::Set('notfound', [
+	'dsn' => 'mysql://notfound:password@localhost:3306?database=onepiece&charset=utf8'
 ]);
 
 //	Application settings.

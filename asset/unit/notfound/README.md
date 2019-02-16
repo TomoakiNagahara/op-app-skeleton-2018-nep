@@ -9,10 +9,9 @@ Unit of NotFound
 
 ```config.php
 <?php
-$config = [
-  'dsn' => 'mysql://notfound:password@localhost:3306?database=onepiece&charset=utf8'
-];
-$this->Env()->Set($config);
+$this->Env()->Set('notfound', [
+    'dsn' => 'mysql://notfound:password@localhost:3306?database=onepiece&charset=utf8',
+]);
 ```
 
 # Usage
