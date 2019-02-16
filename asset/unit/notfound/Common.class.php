@@ -78,13 +78,8 @@ class Common
 	{
 		//	Get config from Env.
 		if(!$config = \Env::Get('notfound') ){
-<<<<<<< HEAD
 		//	$this->Unit('notfound')->Help('Setup');
 			throw new \Exception("See README.md at Setup section.");
-=======
-		//	$this->Unit('notfound')->Help('config');
-			throw new \Exception("Please set Env::Set('notfound', \$config).");
->>>>>>> wip
 		};
 
 		//	If given DSN.
