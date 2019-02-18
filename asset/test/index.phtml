@@ -30,6 +30,11 @@ $file = \OP\UNIT\NEWWORLD\Template::Args('file');
 		//	...
 		Html( ConvertPath('testcase:/') );
 		Html( ConvertURL('testcase:/')  );
+	}
+
+	//	...
+	if( $_GET['phpinfo'] ?? null ){
+		phpinfo();
 	};
 	?>
 </section>
