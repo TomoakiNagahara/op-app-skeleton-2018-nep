@@ -59,4 +59,4 @@ App::Layout(false);
 Env::Mime($mime);
 
 //	Load image file.
-include($path);
+echo file_get_contents($path);
