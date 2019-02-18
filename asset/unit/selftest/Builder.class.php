@@ -64,8 +64,8 @@ class Builder
 			self::Index   ($config, $result, $DB);
 
 			//	...
-			self::User($configs[$dsn]['users'], $result['users'], $DB);
-			self::Grant($result['users'], $DB);
+			self::User( $configs[$dsn]['users'], $result['users'], $DB);
+			self::Grant($configs[$dsn]['users'], $result['users'], $DB);
 		} catch ( \Throwable $e ){
 			\Notice::Set($e);
 		}
@@ -156,12 +156,16 @@ class Builder
 		//	...
 		foreach( $result['tables'] as $database => $tables ){
 			foreach( $tables as $table => $temp ){
-				if( $temp['result'] ){
+				if( $temp['result'] ?? null ){
 					continue;
 				}
 
 				//	...
-				$args = $configs['databases'][$database]['tables'][$table];
+				if(!$args = $configs['databases'][$database]['tables'][$table] ?? null ){
+					continue;
+				};
+
+				//	...
 				$args['database'] = $database;
 				$args['table']    = $table;
 
@@ -184,10 +188,10 @@ class Builder
 	 * @param array $result
 	 * @param \OP\UNIT\DB $DB
 	 */
-	static function Field($config, &$result, $_db)
+	static function Field($configs, &$results, $_db)
 	{
 		//	...
-		foreach( ifset($result['fields'], []) as $database => $tables ){
+		foreach( ifset($results['fields'], []) as $database => $tables ){
 			//	...
 			foreach( $tables as $table => $columns ){
 				//	...
@@ -195,9 +199,9 @@ class Builder
 				$after = null;
 
 				//	...
-				foreach( $columns as $name => $column ){
+				foreach( $columns as $field => $column ){
 					//	...
-					$conf = $config['databases'][$database]['tables'][$table]['columns'][$name];
+					$conf = $configs['databases'][$database]['tables'][$table]['columns'][$field];
 
 					//	...
 					if( $first ){
@@ -208,22 +212,29 @@ class Builder
 					}
 
 					//	...
-					$after = $name;
+					$after = $field;
 
 					//	Create new column.
 					if(!$column['result'] ){
 						//	...
-						if(!$sql = \OP\UNIT\SQL\Column::Create($database, $table, $name, $conf, $_db) ){
-							throw new \Exception("Failed: $sql");
+						$sql = \OP\UNIT\SQL\Column::Create($database, $table, $field, $conf, $_db);
+
+						//	...
+						if(!$_db->Query($sql, 'alter') ){
+							continue;
 						}
 
-						if(!$io  = $_db->Query($sql, 'alter')){
-							throw new \Exception("Failed: $io");
-						}
-					}
-				}
-			}
-		}
+						//	...
+						if( $conf['extra'] !== 'auto_increment' ){
+							continue;
+						};
+
+						//	Touch primary key index result.
+						$results['indexes'][$database][$table][$field]['result'] = true;
+					};
+				};
+			};
+		};
 	}
 
 	/** Modify exist column.
@@ -254,9 +265,9 @@ class Builder
 						$io  = $_db->Query($sql, 'alter');
 
 						//	...
-						if(!$io ){
-							throw new \Exception("Failed: $field ($io)");
-						}
+						if( false ){
+							D($field, $io);
+						};
 
 						//	...
 						break;
@@ -272,41 +283,27 @@ class Builder
 	 * @param array $result
 	 * @param \OP\UNIT\DB $DB
 	 */
-	static function Index($config, &$result, $DB)
+	static function Index($_configs, &$_results, $DB)
 	{
 		//	...
-		foreach( ifset($result['indexes'], []) as $database => $tables ){
+		foreach( $_configs['databases']    ?? [] as $database_name => $database ){
 			//	...
-			$database = $DB->Quote($database);
-
-			//	...
-			foreach( $tables as $table => $indexes ){
+			foreach( $database['tables']   ?? [] as $table_name => $table ){
 				//	...
-				$table = $DB->Quote($table);
-
-				//	...
-				foreach( $indexes as $column => $index ){
+				foreach( $table['indexes'] ?? [] as $index_name => $config ){
 					//	...
-					$column = $DB->Quote($column);
-
-					//	...
-					$index = $index === 'uni' ? 'UNIQUE': 'INDEX';
-
-					//	...
-					$modifier = 'ADD';
-
-					//	...
-					if(!$sql = "ALTER TABLE {$database}.{$table} {$modifier} $index($column)" ){
-						throw new \Exception("Failed: $sql");
+					if( $_results['indexes'][$database_name][$table_name][$index_name]['result'] ?? null ){
+						continue;
 					}
 
 					//	...
-					if(!$io  = $DB->Query($sql, 'alter') ){
-						throw new \Exception("Failed: $io");
-					}
-				}
-			}
-		}
+					$config['database'] = $database_name;
+					$config['table']    = $table_name;
+					$sql = \OP\UNIT\SQL\Index::Create($DB, $config);
+					$DB->Query($sql, 'alter');
+				};
+			};
+		};
 	}
 
 	/** Build user.
@@ -318,10 +315,10 @@ class Builder
 	static function User($configs, $results, $DB)
 	{
 		//	...
-		$host = $DB->Config()['host'];
-
-		//	...
 		foreach( $results as $user => $result ){
+			//	...
+			$host = $configs[$user]['host'];
+
 			//	...
 			$config = [];
 			$config['host'] = $host;
@@ -336,7 +333,7 @@ class Builder
 
 				//	...
 				if(!$io = $DB->Query($qu) ){
-					throw new \Exception("Failed: $qu ($io)");
+					throw new \Exception("Failed: $qu");
 				};
 			};
 
@@ -375,36 +372,6 @@ class Builder
 				if(!$io = $DB->Query($qu) ){
 					throw new \Exception("Failed: $qu ($io)");
 				};
-
-				//	...
-				if( empty($configs[$user]['privilege']) ){
-					$configs[$user]['privilege'] = [];
-				};
-
-				//	...
-				foreach( $configs[$user]['privilege'] as $database => $tables ){
-					foreach( $tables as $table => $privileges ){
-						foreach( $privileges as $privilege => $column ){
-							$config = [];
-							$config['host']      = $host;
-							$config['user']      = $user;
-							$config['database']  = $database;
-							$config['table']     = $table;
-							$config['privileges']= $privilege;
-							$config['column']    = $column;
-
-							//	...
-							if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
-								throw new \Exception("Failed: $qu");
-							};
-
-							//	...
-							if(!$io = $DB->Query($qu) ){
-								throw new \Exception("Failed: $qu ($io)");
-							};
-						};
-					};
-				};
 			};
 
 			/**
@@ -420,59 +387,54 @@ class Builder
 	 * @param	 array			 $result
 	 * @param	\IF_DATABASE	 $DB
 	 */
-	static function Grant($results, $DB)
+	static function Grant($configs, $results, $DB)
 	{
 		//	...
 		foreach( $results as $user => $result ){
 			//	...
-			if( ifset($result['privileges']) === true ){
+			if( $result['privilege'] ?? null ){
 				continue;
-			}
+			};
 
 			//	...
-			$host = $DB->Config()['host'];
+			$host = $configs[$user]['host'];
 
 			//	...
-			if( empty($result['privileges']) ){
-				continue;
-			}
+			foreach( $configs[$user]['privilege'] as $database => $tables ){
 
-			//	...
-			foreach( $result['privileges'] as $database => $tables ){
-				foreach( $tables as $table => $privileges ){
-					//	...
-					if( is_string($privileges) ){
-						$privileges = explode(',', $privileges);
-					};
+				//	...
+				$sql        = \OP\UNIT\SQL\Show::Table($DB, $database);
+				$table_list = $DB->Query($sql);
+
+				//	...
+				foreach( $tables as $table_names => $privileges ){
 
 					//	...
-					foreach( $privileges as $privilege => $fields ){
+					foreach( explode(',', str_replace(' ', '', $table_names )) as $table_name ){
+
 						//	...
-						if( $fields !== '*' ){
-							D('Un support each fields yet.', $fields);
+						if( array_search($table_name, $table_list) === false ){
 							continue;
-						}
+						};
 
 						//	...
-						$config = [];
-						$config['host']      = $host;
-						$config['user']      = $user;
-						$config['database']  = $database;
-						$config['table']     = $table;
-						$config['privileges']= $privilege;
+						foreach( $privileges as $privilege => $column ){
+							//	...
+							$config = [];
+							$config['host']      = $host;
+							$config['user']      = $user;
+							$config['database']  = $database;
+							$config['table']     = $table_name;
+							$config['privileges']= $privilege;
+							$config['field']     = $column;
 
-						//	...
-						if(!$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB) ){
-							throw new \Exception("Failed: $qu");
-						}
-
-						//	...
-						if(!$io = $DB->Query($qu) ){
-							throw new \Exception("Failed: $qu ($io)");
-						}
-					}
-				}
-			}
-		}
+							//	...
+							$qu = \OP\UNIT\SQL\Grant::Privilege($config, $DB);
+							$DB->Query($qu);
+						};
+					}; // table names
+				}; // privileges
+			}; // tables
+		}; // users
 	}
 }

@@ -23,7 +23,7 @@ namespace OP\UNIT;
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
-class Selftest
+class Selftest implements \IF_UNIT
 {
 	/** trait
 	 *
@@ -51,16 +51,9 @@ class Selftest
 		};
 
 		//	...
-		$io = \OP\UNIT\SELFTEST\Inspector::Auto($config, $db);
+		\OP\UNIT\SELFTEST\Inspector::Auto($config, $db);
 
-		//	...
-		if(!$io ){
-			/*
-			include(__DIR__.'/form.phtml');
-			*/
-		}
-
-		//	...
+		//	Internal notice.
 		echo '<ol class="error">';
 		foreach( self::Error() as $error ){
 			Html($error, 'li');
@@ -69,6 +62,9 @@ class Selftest
 
 		//	...
 		\OP\UNIT\SELFTEST\Inspector::Result();
+
+		//	...
+		return !\OP\UNIT\SELFTEST\Inspector::Failed();
 	}
 
 	/** Get the unit of Database.
@@ -88,8 +84,13 @@ class Selftest
 		};
 
 		//	...
+		if(!$config['prod'] ){
+			return false;
+		};
+
+		//	...
 		if(!$db->Connect($config) ){
-			return;
+			return false;
 		};
 
 		//	...
@@ -162,5 +163,18 @@ class Selftest
 		//	D( \OP\UNIT\SELFTEST\Inspector::Error() );
 			return $_errors;
 		}
+	}
+
+	function Help($config=null)
+	{
+		$readme = file_get_contents(__DIR__.'/README.md');
+		echo '<dir class="border">';
+		echo nl2br($readme);
+		echo '</dir>';
+	}
+
+	function Debug($config=null)
+	{
+		\OP\UNIT\SELFTEST\Inspector::Debug();
 	}
 }

@@ -10,14 +10,16 @@ Only this.
 $selftest = Unit::Instantiate('Selftest');
 
 //  Automatically do self test by configuration file.
-$selftest->Auto('database-config.json');
+$selftest->Auto('config.selftest.php');
 ```
 
 ## How to generate configuration file.
 
 ```
+<?php
 //  Instantiate self-test configuration generator.
-$configer = \OP\UNIT\Selftest::Configer();
+/* @var $configer \OP\UNIT\SELFTEST\Configer */
+$configer = Unit::Instantiate('Selftest')->Configer();
 
 //  DSN configuration.
 $configer->DSN([
@@ -33,13 +35,6 @@ $configer->User([
   'charset'  => 'utf8',
 ]);
 
-//  Database configuration.
-$configer->Database([
-  'name'     => 'testcase',
-  'charset'  => 'utf8',
-  'collate'  => 'utf8mb4_general_ci',
-]);
-
 //  Privilege configuration.
 $configer->Privilege([
   'user'     => 'testcase-user',
@@ -47,6 +42,13 @@ $configer->Privilege([
   'table'    => '*',
   'privilege'=> 'insert, select, update, delete',
   'column'   => '*',
+]);
+
+//  Database configuration.
+$configer->Database([
+  'name'     => 'testcase',
+  'charset'  => 'utf8',
+  'collate'  => 'utf8mb4_general_ci',
 ]);
 
 //  Add table configuration.
@@ -61,20 +63,28 @@ $configer->Set('table', [
 
 //  Add auto incrment id column configuration.
 $configer->Set('column', [
-  'name'    =>  'id',
+  'name'    =>  'ai',
+  /* Automatically
   'type'    => 'int',
-  'length'  =>    11,
+  'length'  =>    10,
   'null'    => false,
   'default' =>  null,
+  'unsigned'=>  true,
+  */
   'comment' => 'Auto increment id.',
+  'ai'      =>  true,
 ]);
 
-//  Add auto incrment id configuration.
-$configer->Set('index', [
-  'name'    => 'ai',
-  'type'    => 'ai',
-  'column'  => 'ai',
-  'comment' => 'auto incrment',
+//  Add type of set column configuration.
+$configer->Set('column', [
+  'name'    =>   'id',
+  'type'    => 'char',
+  'length'  =>     10,
+  'null'    =>   true,
+  'default' =>   null,
+  'collate' => 'ascii_general_ci', // Change collate.
+  'comment' => 'Unique ID.',
+  'unique'  =>   true,
 ]);
 
 //  Add type of set column configuration.
@@ -100,6 +110,21 @@ $configer->Set('column', [
   'comment' => 'Ideal for form of select or radio mono value. (Single choice)',
 ]);
 
+//  Add type of timestamp configuration.
+$configer->Set('column', [
+  'name'    => 'timestamp',
+  'type'    => 'timestamp',
+  'comment' => 'On update current timestamp.',
+]);
+
+//  Add auto incrment id configuration.
+$configer->Set('index', [
+  'name'    => 'ai',
+  'type'    => 'ai',
+  'column'  => 'ai',
+  'comment' => 'auto incrment',
+]);
+
 //  Add search index configuration.
 $configer->Set('index', [
   'name'    => 'search index',
@@ -108,6 +133,6 @@ $configer->Set('index', [
   'comment' => 'Indexed by two columns.',
 ]);
 
-//  Get selftest configuration.
-$config = $configer->Get();
+//  Return selftest configuration.
+return $configer->Get();
 ```

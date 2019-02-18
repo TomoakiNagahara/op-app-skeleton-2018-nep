@@ -10,8 +10,16 @@
 //	...
 setTimeout(function(){
 	//	...
+	var text = null;
 	var area = document.querySelector('#OP_SELFTEST');
-	var text = area.innerText;
+	if( area ){
+		text = area.innerText;
+	};
+
+	//	...
+	if(!text ){
+		return;
+	};
 
 	//	...
 	area.innerText = '';
@@ -45,6 +53,9 @@ setTimeout(function(){
 		__user(list, json[dsn]['users']);
 
 		//	...
+		__privilege(list, json[dsn]['privileges']);
+
+		//	...
 		var list = document.createElement('ul');
 		var item = document.createElement('li');
 			item.innerText = 'Databases';
@@ -60,6 +71,9 @@ setTimeout(function(){
 
 		//	...
 		__columns(list, json[dsn]['columns']);
+
+		//	...
+		__index(list, json[dsn]['indexes']);
 	}
 
 	//	...
@@ -86,6 +100,7 @@ setTimeout(function(){
 				item.appendChild(error);
 				item.appendChild(lack);
 				item.appendChild(modify);
+				item.dataset.user = user;
 				list.appendChild(item);
 
 			//	...
@@ -99,10 +114,11 @@ setTimeout(function(){
 			error.classList.add('error');
 			if(!json[user]['exist']    ){ error.classList.add('exist')    }else
 			if(!json[user]['password'] ){ error.classList.add('password') }else
-			if(!json[user]['database'] ){ error.classList.add('database') }else
-			if(!json[user]['table']    ){ error.classList.add('table')    }else
+		//	if(!json[user]['database'] ){ error.classList.add('database') }else
+		//	if(!json[user]['table']    ){ error.classList.add('table')    }else
 			if(!json[user]['privilege']){ error.classList.add('privilege')};
 
+			/*
 			//	...
 			if(!json[user]['database'] ){
 				//	...
@@ -116,7 +132,8 @@ setTimeout(function(){
 						span.innerText = database_name;
 						lack.appendChild(span);
 				};
-			}else if(!json[user]['table'] ){
+			}else
+			if(!json[user]['table'] ){
 				//	...
 				for(var database_name in json[user]['tables'] ){
 					var tables = json[user]['tables'][database_name];
@@ -131,7 +148,8 @@ setTimeout(function(){
 						};
 					};
 				};
-			}else if(!json[user]['privilege'] ){
+			}else
+			if(!json[user]['privilege'] ){
 				//	...
 				for(var database_name in json[user]['privileges'] ){
 					var tables = json[user]['privileges'][database_name];
@@ -144,6 +162,7 @@ setTimeout(function(){
 					};
 				};
 			};
+			*/
 
 			//	...
 			if( json[user]['modify'] ){
@@ -152,6 +171,52 @@ setTimeout(function(){
 			};
 		}
 	}
+	function __privilege(root, json){
+		//	...
+		var area = document.createElement('div');
+		var ol   = document.createElement('ol');
+		var p    = document.createElement('p');
+			p.innerText = 'privilege';
+			area.appendChild(p);
+			area.appendChild(ol);
+
+		//	...
+		var fail = false;
+
+		//	...
+		for(var user in json ){
+			for(var host in json[user]){
+				//	...
+				var ol = document.createElement('ol');
+
+				//	...
+				for(var table in json[user][host]){
+					var result = json[user][host][table]['result'];
+					var exist  = json[user][host][table]['exist'];
+
+					//	...
+					if( result && exist ){
+						continue;
+					};
+
+					//	...
+					var li = document.createElement('li');
+						li.innerText = table;
+					ol.appendChild(li);
+				};
+
+				//	...
+				if( ol.childElementCount ){
+					root.querySelector('[data-user="'+user+'"]').appendChild(ol);
+				};
+			};
+		};
+
+		//	...
+		if( fail ){
+			root.appendChild(fail);
+		};
+	};
 
 	//	...
 	function __database(root, json){
@@ -314,5 +379,44 @@ setTimeout(function(){
 		if( json.modify  === null || json.modify.length ){
 			modify .classList.add('empty');
 		}
+	};
+
+	//	...
+	function __index(root, json){
+		//	...
+		for(let database in json ){
+			//	..
+			for(let table in json[database] ){
+				//	...
+				for(let index in json[database][table] ){
+					let result = json[database][table][index];
+					if( result.result ){
+						continue;
+					}
+
+					//	...
+					let column = result.column;
+					let type   = result.type;
+
+					//	...
+					for(let field of column.split(',') ){
+						//	...
+						let item = document.createElement('li');
+							item.innerText = type;
+							item.classList.add('error');
+
+						//	...
+						let list = document.createElement('ul');
+							list.appendChild(item);
+
+						//	...
+						root.querySelector('[data-database="'+database+'"]')
+							.querySelector('[data-table="'+table+'"]')
+							.querySelector('[data-field="'+field+'"]')
+							.appendChild(list);
+					};
+				};
+			};
+		};
 	};
 }, 0);

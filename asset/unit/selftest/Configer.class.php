@@ -86,15 +86,32 @@ class Configer
 				};
 
 				//	...
+				if( $ai = $config['ai'] ?? null ){
+					//	...
+					$type = 'int';
+					$option['unsigned'] = true;
+				};
+
+				//	...
 				self::Column(
 					$column_name,
-					$config['type'],
+					$config['type']    ?? $type,
 					$config['length']  ?? null,
-					$config['null']    ?? null,
+					$config['null']    ?? true,
 					$config['default'] ?? null,
 					$config['comment'] ?? null,
 					$option
 				);
+
+				//	auto increment
+				if( $ai ){
+					self::Index(
+						$column_name,
+						'ai',
+						$column_name,
+						'auto incremant id'
+					);
+				};
 				break;
 
 			case 'index':
@@ -146,14 +163,16 @@ class Configer
 		$dsn = self::Dsn();
 
 		//	...
+		$host = $config['host'] ?? null;
 		$user = $config['user'] ?? $config['name'] ?? null;
 
 		//	...
-		if(!$user ){
-			throw new \Exception('Has not been set user name.');
+		if( !$host or !$user ){
+			throw new \Exception("Has not been set user name or host name. ({$user}@{$host})");
 		}
 
 		//	...
+		self::$_config[$dsn]['users'][$user]['host']     = $host;
 		self::$_config[$dsn]['users'][$user]['name']     = $user;
 		self::$_config[$dsn]['users'][$user]['password'] = $config['password'] ?? null;
 		self::$_config[$dsn]['users'][$user]['charset']  = $config['charset']  ?? 'utf8';
@@ -183,6 +202,10 @@ class Configer
 		$dsn = self::Dsn();
 
 		//	...
+		$table     = str_replace(' ', '', $table    );
+		$privilege = str_replace(' ', '', $privilege);
+
+	//	...
 		self::$_config[$dsn]['users'][$user]['privilege'][$database][$table][$privilege] = $column;
 	}
 
@@ -365,7 +388,7 @@ class Configer
 				if( $type === 'ai' or $type === 'auto_increment' ){
 					self::$_config[$dsn]['databases'][$database]['tables'][$table]['columns'][$column]['extra'] = 'auto_increment';
 				}
-				break;
+			break;
 		}
 
 		//	...
