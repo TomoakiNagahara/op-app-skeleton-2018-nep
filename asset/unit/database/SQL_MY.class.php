@@ -137,6 +137,7 @@ class MYSQL
 			$option   = self::Option($config);
 			$user     = $config['user']     ?? null;
 			$password = $config['password'] ?? null;
+			$database = $config['database'] ?? null;
 
 			//	...
 			return new \PDO($dsn, $user, $password, $option);
@@ -147,5 +148,50 @@ class MYSQL
 		}catch( \Exception $e ){
 			\Notice::Set($e->getMessage() . " ($dsn, $user, $password)");
 		};
+	}
+
+	/** Parse grant
+	 *
+	 */
+	static function Grant($records)
+	{
+		//	...
+		$result = [];
+
+		//	...
+		foreach( $records as $record ){
+			foreach( $record as $sql ){
+			//	$preg = "GRANT (.+) ON (.+)\.(.+) TO '(.+)'@'(.+)' IDENTIFIED BY PASSWORD '(.+)'";
+				$preg = "GRANT (.+) ON (.+)\.(.+) TO '(.+)'@'(.+)'";
+				$m    = null;
+				if(!preg_match("/$preg/i", $sql, $m) ){
+					\Notice::Set("Unmatch: {$preg} → {$sql}");
+				};
+
+				//	...
+				$privileges = $m[1];
+				$database   = $m[2];
+				$table      = $m[3];
+				/*
+				$user       = $m[4];
+				$host       = $m[5];
+				$password   = $m[6];
+				*/
+
+				//	...
+				$database   = trim($database, '`');
+				$table      = trim($table   , '`');
+
+				//	...
+				foreach( explode(',', $privileges.',') as $privilege ){
+					if( $privilege ){
+						$result[$database][$table][] = trim($privilege);
+					};
+				};
+			};
+		};
+
+		//	...
+		return $result;
 	}
 }

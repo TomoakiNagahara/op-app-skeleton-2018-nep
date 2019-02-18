@@ -103,25 +103,28 @@ class Database implements \IF_DATABASE, \IF_UNIT
 		//	...
 		switch( $prod = $config['prod'] ){
 			case 'mysql':
-				include(__DIR__.'/SQL_MY.class.php');
+				require_once(__DIR__.'/SQL_MY.class.php');
 				$this->_config = DATABASE\MYSQL::Config($config);
 				$this->_PDO    = DATABASE\MYSQL::Connect($config);
 				break;
 
 			case 'pgsql':
-				include(__DIR__.'/SQL_PG.class.php');
+				require_once(__DIR__.'/SQL_PG.class.php');
 				$this->_config = DATABASE\PGSQL::Config($config);
 				$this->_PDO    = DATABASE\PGSQL::Connect($config);
 				break;
 
 			case 'sqlite':
-				include(__DIR__.'/SQL_LITE.class.php');
+				require_once(__DIR__.'/SQL_LITE.class.php');
 				$this->_config = DATABASE\SQLITE::Config($config);
 				$this->_PDO    = DATABASE\SQLITE::Connect($config);
 				break;
 
 			default:
-				\Notice::Set("Has not been this product. ($prod)");
+				if( empty($prod) ){
+					$prod = 'empty';
+				};
+				\Notice::Set("Has not been support this product. ($prod)");
 		};
 
 		//	...
@@ -146,6 +149,16 @@ class Database implements \IF_DATABASE, \IF_UNIT
 	{
 		require_once(__DIR__.'/Drop.class.php');
 		return new \OP\UNIT\DATABASE\Drop($this);
+	}
+
+	/** Alter
+	 *
+	 * @return \OP\UNIT\DATABASE\Alter
+	 */
+	function Alter()
+	{
+		require_once(__DIR__.'/Alter.class.php');
+		return new \OP\UNIT\DATABASE\Alter($this);
 	}
 
 	/** Set/Get last time used database name.
@@ -432,13 +445,20 @@ class Database implements \IF_DATABASE, \IF_UNIT
 			case 'select':
 				$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
 				if( strpos($query.' ', ' LIMIT 1 ') and $result ){
+					/*
+					if( count($result[0]) === 1 ){
+						foreach( $result[0] as $result ){
+							//	...
+						};
+					}
+					*/
 					$result = $result[0];
 				}
 				break;
 
 			case 'count':
 				$result = $statement->fetchAll(\PDO::FETCH_ASSOC);
-				$result = $result[0]['COUNT(*)'];
+				$result = $result[0]['COUNT(*)'] ?? null;
 				break;
 
 			case 'insert':
