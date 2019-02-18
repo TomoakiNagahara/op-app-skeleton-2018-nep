@@ -1,0 +1,57 @@
+<?php
+/**
+ * app-skeleton-2018-nep:/asset/bootstrap/op/rewrite-apache.phtml
+ *
+ * @creation  2016-11-25
+ * @version   1.0
+ * @package   app-skeleton
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$rewrite_base = $_SERVER['REQUEST_URI'];
+
+//	...
+$i    = 0;
+$file = fopen('.htaccess', 'r');
+while( $line = fgets($file) ){
+	//	...
+	$i++;
+
+	//	...
+	if( preg_match('/RewriteEngine/', $line) ){
+		$n1 = $i;
+	};
+
+	//	...
+	if( preg_match('/RewriteBase/', $line) ){
+		$n2 = $i;
+	};
+};
+?>
+<h1>How to boot the onepiece-framework at the Apache web server.</h1>
+<ol>
+	<li>
+		<p>Please open <b>"<?= rtrim(ConvertPath('app:/'),'/') ?>/.htaccess"</b> file.</p>
+		<p><i><b>Attention!</b> This file is invisible attribute file.</i></p>
+	</li>
+	<li>
+		<p>
+			Look for line <?= $n1 ?>.<br/>
+			Change the value of "RewriteEngine" from "Off" to "On".
+		</p>
+	</li>
+	<?php if( $rewrite_base !== '/' ): ?>
+	<li>
+		<p>
+			Look for line <?= $n2 ?>.<br/>
+			Change the value of "RewriteBase" from "/" to "<?= $rewrite_base ?>".
+		</p>
+	</li>
+	<?php endif; ?>
+	<li>
+		<p>
+			Please reload this page.
+		</p>
+	</li>
+</ol>
