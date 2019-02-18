@@ -36,7 +36,7 @@ class Select
 	 * @param	\IF_DATABASE $db
 	 * @return	 string		 $sql
 	 */
-	static function Get($args, $db=null)
+	static function Get(&$args, $db=null)
 	{
 		//	...
 		if(!$db){
@@ -90,10 +90,15 @@ class Select
 	 * @param	\IF_DATABASE $db
 	 * @return	 string		 $sql
 	 */
-	static private function _Field(array $args, \IF_DATABASE $db)
+	static private function _Field(array &$args, \IF_DATABASE $db)
 	{
 		//	...
-		$join = null;
+		$join = [];
+
+		//	...
+		if( is_string($args['field'] ?? null) ){
+			$args['field'] = explode(',', $args['field']);
+		}
 
 		//	...
 		foreach( $args['field'] ?? [] as $field ){
@@ -104,22 +109,15 @@ class Select
 			if( $pos1 = strpos($field, '(') and $pos2 = strpos($field, ')') ){
 				$func = substr($field,       0,         $pos1);
 				$field= substr($field, $pos1+1, $pos2-$pos1-1);
-			};
-
-			//	If has table name.
-			if( strpos($field, '.') ){
-				//	Has table name.
-				list($table, $field) = explode('.', $field);
-				$table = $db->Quote(trim($table));
-				$field = $db->Quote(trim($field));
-				$field = "{$table}.{$field}";
 			}else{
-				//	Field name only.
-				$field = $db->Quote(trim($field));
-			};
+				$func = null;
+			}
+
+			//	Correspond include table name or multi field name.
+			$field = self::_Field_Escape($field, $db);
 
 			//	If has function.
-			if( isset($func) ){
+			if( $func ){
 				$func  = strtoupper($func);
 				$field = "{$func}($field)";
 			};
@@ -135,6 +133,39 @@ class Select
 
 		//	...
 		return count($join) ? join(', ', $join): null;
+	}
+
+	static private function _Field_Escape(string $field, \IF_DATABASE $db)
+	{
+		//	...
+		$join = [];
+
+		//	...
+		foreach( explode(',', $field) as $field ){
+			//	...
+			$field = trim($field);
+
+			//	If has table name.
+			if( strpos($field, '.') ){
+				//	Has table name.
+				list($table, $field) = explode('.', $field);
+				$table = $db->Quote(trim($table));
+				$field = $db->Quote(trim($field));
+				$field = "{$table}.{$field}";
+			}else if( $field === "' '" or $field === '" "' ){
+				//	Use concat function.
+				$field = "' '";
+			}else{
+				//	Field name only.
+				$field = $db->Quote(trim($field));
+			};
+
+			//	...
+			$join[] = $field;
+		};
+
+		//	...
+		return join(', ', $join);
 	}
 
 	/** Get column condition.

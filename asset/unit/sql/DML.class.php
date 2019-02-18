@@ -375,7 +375,7 @@ class DML
 		//	...
 		foreach($args['where'] as $str){
 			//	...
-			if(!preg_match('/(\w+)\s+([^\s]+)\s+(.+)/i', $str, $match) ){
+			if(!preg_match('/(\w+\.?\w*)\s+([^\s]+)\s+(.+)/i', $str, $match) ){
 				\Notice::Set("Does not match format. ($str)");
 				continue;
 			};
@@ -387,7 +387,14 @@ class DML
 			$crude = trim($value);
 
 			//	...
-			$field = $db->Quote($field);
+			if( strpos($field, '.') ){
+				list($table,$field) = explode('.', $field);
+				$field = $db->Quote($table) .'.'. $db->Quote($field);
+			}else{
+				$field = $db->Quote($field);
+			};
+
+			//	...
 			$value = $db->PDO()->quote($value);
 
 			//	...
@@ -461,6 +468,7 @@ class DML
 		//	...
 		if(!isset($args['limit']) ){
 			\Notice::Set("Has not been set limit. ({$args['table']})");
+			return null;
 		};
 
 		//	...

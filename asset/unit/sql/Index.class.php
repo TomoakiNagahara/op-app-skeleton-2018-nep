@@ -39,32 +39,30 @@ class Index
 	static function Create($DB, $config)
 	{
 		//	...
-		$join = [];
-
-		//	...
-		$database = ifset($config['database']);
-		$table    = ifset($config['table']   );
-		$name     = ifset($config['name']    );
-		$column   = ifset($config['column']  );
-
-		//	...
-		if( $column ){
-			$join[] = $column;
-		}
+		$database = $config['database'] ?? null;
+		$table    = $config['table']    ?? null;
+		$name     = $config['name']     ?? null;
+		$type     = $config['type']     ?? null;
+		$columns  = $config['column']   ?? $config['columns'] ?? null;
+	//	$comment  = $config['comment']  ?? null;
 
 		//	...
 		$database = $DB->Quote($database);
 		$table    = $DB->Quote($table);
 		$name     = $DB->Quote($name);
-		$type     = self::Type();
+		$type     = self::Type($type);
 
 		//	...
-		foreach( ifset($config['columns'], []) as $temp ){
-			$join[] = $temp;
+		if( is_string($columns) ){
+			$columns = explode(',', $columns);
+		};
+
+		//	...
+		$join = [];
+		foreach( $columns as $column ){
+			$join[] = $DB->Quote($column);
 		}
-
-		//	...
-		$columns = join(', ', $join);
+		$columns = join(',', $join);
 
 		//	...
 		return "ALTER TABLE $database.$table ADD $type $name ($columns)";
@@ -98,13 +96,15 @@ class Index
 
 	/** Get index type by filed type.
 	 *
-	 * @param  string $type
-	 * @param  string $key
+	 * @param  string $field_type
+	 * @param  string $index_key_type
 	 * @return string
 	 */
-	static function Type($type, $key)
+	static function Type($index_key_type, $field_type=null)
 	{
-		switch( $key = strtoupper($key) ){
+		//	...
+		switch( $key = strtoupper($index_key_type) ){
+			case 'AI':
 			case 'PRI':
 			case 'PKEY':
 			case 'PRIMARY':
@@ -118,7 +118,7 @@ class Index
 				break;
 
 			case 'MUL':
-				switch( strtolower($type) ){
+				switch( strtolower($field_type) ){
 					case 'char':
 					case 'varchar':
 					case 'text':
@@ -138,6 +138,7 @@ class Index
 				throw new \Exception("Has not been support this key. ($key)");
 		}
 
+		//	...
 		return $key;
 	}
 }
