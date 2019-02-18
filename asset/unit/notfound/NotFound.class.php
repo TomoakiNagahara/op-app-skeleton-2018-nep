@@ -130,15 +130,13 @@ class NotFound implements \IF_UNIT
 		$table = 't_ua';
 		$hash  = NOTFOUND\Common::Hash($ua);
 
-		//	...
+		//	Insert if does not exist.
 		if(!$ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	...
 			$config = [];
 			$config['table'] = $table;
 			$config['set']['hash']    = $hash;
 			$config['set']['ua']      = $ua;
-			$config['set']['os']      = self::_OS($ai);
-			$config['set']['browser'] = self::_Browser($ai);
 
 			//	...
 			$ai = $DB->Insert($config);
@@ -157,12 +155,12 @@ class NotFound implements \IF_UNIT
 
 			//	...
 			if(!$record['os'] ){
-				$config['set']['os']      = self::_OS($ai);
+				$config['set']['os']      = self::_OS($ai, $ua);
 			};
 
 			//	...
 			if(!$record['browser'] ){
-				$config['set']['browser'] = self::_Browser($ai);
+				$config['set']['browser'] = self::_Browser($ai, $ua);
 			};
 
 			//	...
@@ -176,49 +174,47 @@ class NotFound implements \IF_UNIT
 	/** OS
 	 *
 	 * @param	 integer	 $ua_ai
+	 * @param	 string		 $ua
 	 * @return	 int|null	 $ai
 	 */
-	static private function _OS( $ua_ai )
+	static private function _OS( $ua_ai, $ua )
 	{
 		//	...
 		$table = 't_ua_os';
 
-		//	...
-		if(!$ua = NOTFOUND\Common::DB()->Quick(" ua <-     t_ua.ai = {$ua_ai} ", ['limit'=>1]) ){
-			return;
-		};
-
-		//	...
+		//	Search OS name and OS version.
 		$m = [];
 		foreach( include(__DIR__.'/config/os.php') as $os => $preg ){
 			//	...
-			if(!preg_match("/$preg/", $ua, $m) ){
-				continue;
+			if( preg_match("/$preg/", $ua, $m) ){
+				//	...
+				$version = $m[1].'.'.$m[2];
+				break;
 			};
 
-			//	...
-			$version = $m[1].'.'.$m[2];
-			break;
 		};
-D($m);
-		//	...
+
+		//	If they do not match, it returns.
+		if( empty($version) ){
+			return null;
+		};
+
+		//	Select config.
 		$config = [];
 		$config['table'] = $table;
 		$config['limit'] = 1;
-		$config['field'] = 'ai';
 		$config['where'][] = "os = $os";
 		$config['where'][] = "version = $version";
 
-		//	...
-		if(!$ai = NOTFOUND\Common::DB()->Select($config)['ai'] ?? null ){
-			//	...
+		//	Insert if does not exist.
+		if( NOTFOUND\Common::DB()->Count($config) === 0 ){
 			$config = [];
 			$config['table'] = $table;
 			$config['set'][] = "ua = $ua_ai";
 			$config['set'][] = "os = $os";
 			$config['set'][] = "version = $version";
 			$ai = NOTFOUND\Common::DB()->Insert($config);
-		}
+		};
 
 		//	...
 		return $ai;
@@ -227,42 +223,39 @@ D($m);
 	/** Browser
 	 *
 	 * @param	 integer	 $ua_ai
+	 * @param	 string		 $ua
 	 * @return	 int|null	 $ai
 	 */
-	static private function _Browser( $ua_ai )
+	static private function _Browser( $ua_ai, $ua )
 	{
 		//	...
 		$table = 't_ua_browser';
 
 		//	...
-		if(!$ua = NOTFOUND\Common::DB()->Quick(" ua <-     t_ua.ai = {$ua_ai} ", ['limit'=>1]) ){
-			return;
-		};
-
-		//	...
 		$m = [];
 		foreach( include(__DIR__.'/config/browser.php') as $browser => $preg ){
 			//	...
-			if(!preg_match("/$preg/", $ua, $m) ){
-				continue;
+			if( preg_match("/$preg/", $ua, $m) ){
+				//	...
+				$version = $m[1].'.'.$m[2];
+				break;
 			};
-
-			//	...
-			$version = $m[1].'.'.$m[2];
-			break;
 		};
-D($m);
+
+		//	If they do not match, it returns.
+		if( empty($version) ){
+			return null;
+		};
+
 		//	...
 		$config = [];
 		$config['table'] = $table;
 		$config['limit'] = 1;
-		$config['field'] = 'ai';
 		$config['where'][] = "browser = $browser";
 		$config['where'][] = "version = $version";
 
-		//	...
-		if(!$ai = NOTFOUND\Common::DB()->Select($config)['ai'] ?? null ){
-			//	...
+		//	Insert if does not exist.
+		if( NOTFOUND\Common::DB()->Count($config) === 0 ){
 			$config = [];
 			$config['table'] = $table;
 			$config['set'][] = "ua = $ua_ai";

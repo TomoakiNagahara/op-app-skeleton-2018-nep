@@ -12,15 +12,16 @@
 $form = [];
 $form['name'] = 'notfound';
 
-//	...
+//	host
 $input = [];
 $input['name']  = 'host';
 $input['type']  = 'select';
 $input['label'] = 'Host';
 $input['required'] = true;
 $input['option'][] = '';
+$input['onchange'] = 'this.form.submit();';
 
-//	...
+//	host -> option
 $config = [];
 $config['table'] = 't_notfound.host = t_host.ai';
 $config['limit'] = 100;

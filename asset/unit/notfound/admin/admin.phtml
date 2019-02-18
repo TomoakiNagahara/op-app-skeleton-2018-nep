@@ -36,6 +36,31 @@ body.body label:after {
 	text-align: right;
 }
 
+#t_uri table {
+	max-width: 100%;
+}
+
+#t_uri td {
+	white-space: nowrap;
+}
+
+#t_uri td div {
+	overflow: hidden;
+	max-width: calc(100vw - 16em);
+}
+
+#t_uri td:nth-child(1) {
+
+}
+
+#t_uri td:nth-child(2) {
+
+}
+
+#t_uri td:nth-child(3) {
+
+}
+
 </style>
 <div style="margin: 0.5em;">
 	| <a href="?">Admin</a>
@@ -60,14 +85,16 @@ $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 	<?php $form->Input('date-en') ?>
 
 	<!-- URI -->
-	<table>
+	<table id="t_uri">
 		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost() as $record ): ?>
 		<tr>
 			<td><?= $record['count'] ?></td>
 			<td>
-				<a href="<?= "?{$query}&uri={$record['uri_ai']}" ?>">
-					<?= $record['uri'] ?>
-				</a>
+				<div>
+					<a href="<?= "?{$query}&uri={$record['uri_ai']}" ?>">
+						<?= urldecode($record['uri']) ?>
+					</a>
+				</div>
 			</td>
 			<td>
 				<?= $record['timestamp'] ?>

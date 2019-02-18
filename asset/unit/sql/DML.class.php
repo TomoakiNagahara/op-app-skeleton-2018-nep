@@ -175,7 +175,7 @@ class DML
 	 * @param	\IF_DATABASE $DB
 	 * @return	 string		 $sql
 	 */
-	static function _Set($args, $db)
+	static private function _Set($args, $db)
 	{
 		//	...
 		if( isset($args['set'][0]) ){
@@ -217,7 +217,7 @@ class DML
 	 * @param	\IF_DATABASE $DB
 	 * @return	 string		 $sql
 	 */
-	static function _Set0($args, $db)
+	static private function _Set0($args, $db)
 	{
 		//	...
 		$join  = [];
