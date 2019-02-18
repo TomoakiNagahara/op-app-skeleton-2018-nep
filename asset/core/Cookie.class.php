@@ -93,9 +93,27 @@ class Cookie
 		$key = self::_Key($key);
 
 		//	...
-		if( $expire === null ){
-			$expire = Time::Get() + (60*60*24*365*10);
-		}
+		$time = Time::Get();
+
+		//	...
+		switch( $type = gettype($expire) ){
+			case 'NULL':
+				$expire = $time + (60*60*24*365*10);
+				break;
+
+			case 'string':
+				$expire = strtotime($expire, $time);
+				break;
+
+			case 'integer':
+				if( $expire <  $time ){
+					$expire += $time;
+				};
+				break;
+
+			default:
+				Notice::Set("Has not been support this variable type. ($type)");
+		};
 
 		//	...
 		$path = ifset( $option['path'], '/');
