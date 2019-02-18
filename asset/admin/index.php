@@ -33,11 +33,18 @@ if(!Env::isAdmin() ){
 	};
 };
 
+//	...
+$doc  = $_SERVER['DOCUMENT_ROOT'];
+$app  = ConvertURL('app:/');
+$len  = strlen($app);
+$uri  = $_SERVER['REQUEST_URI'];
+$path = substr($uri, $len);
+$pos  = strpos($path, '/');
+$dir  = substr($path, 0, $pos);
+RootPath('admin', $doc.$app.$dir);
+
 //	Adding it makes tracking difficult.
 Cookie::Set(__FILE__, $count+1, 60*60*24*7);
-
-//	...
-_GetRootsPath('admin', __DIR__);
 
 //	...
 $args = App::Args();
@@ -49,5 +56,5 @@ $action = __DIR__.'/'.join('/',$args).'/action.php';
 if( file_exists($action) ){
 	App::Template($action);
 }else{
-	D($args, CompressPath($action) );
+	App::Template('index.phtml');
 };

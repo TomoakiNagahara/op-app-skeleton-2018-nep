@@ -52,14 +52,6 @@ function RootPath($meta=null, $path=null)
 
 	//	...
 	if( $meta and $path ){
-		/*
-		//	...
-		$temp = strtoupper($meta) . '_ROOT';
-
-		//	...
-		$_OP[$temp] = $path;
-		*/
-
 		//	...
 		if(!file_exists($path)){
 			throw new \Exception("This file path has not been exists. ($path)");
@@ -68,6 +60,11 @@ function RootPath($meta=null, $path=null)
 		//	...
 		$_root[ strtolower($meta) . ':/' ] = rtrim($path, '/').'/';
 	}
+
+	//	...
+	if( $meta and $path === null ){
+		return $_root["{$meta}:/"] ?? false;
+	};
 
 	//	...
 	return $_root;
@@ -160,6 +157,15 @@ function ConvertURL($url)
 		$result = substr($url, strlen($rewrite_base));
 
 	}else{
+		//	...
+		if( $pos  = strpos($url, ':/') ){
+			$meta = substr($url, 0, $pos);
+			$path = substr($url, $pos+2);
+			$root = RootPath($meta);
+			$result = substr( $root.$path, strlen($rewrite_base));
+		};
+
+		/*
 		//	What is this? <-- Checking if value is meta path.
 		$key = ':/';
 
@@ -173,11 +179,20 @@ function ConvertURL($url)
 			//	match
 			if( strpos($url, $key) === 0 ){
 				//	Convert
+
+
+				if( $url == 'admin:/notfound/' ){
+					D($key, $dir);
+					D($url);
+					return;
+				};
+
 				$result = ConvertURL( CompressPath($dir . substr($url, $len)) );
 				break;
 			}
 		}
 		};
+		*/
 	}
 
 	/** Add slash to URL tail.
