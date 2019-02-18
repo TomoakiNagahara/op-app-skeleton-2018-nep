@@ -9,19 +9,45 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+//	Set local host ip-address. (Using by local network.)
+Env::Set('localhost', getHostByName( getHostName() ));
+
 //	Time
 Time::Timezone('Asia/Tokyo');
 
-//	Layout settigs.
-OP\UNIT\NEWWORLD\Layout::Directory(__DIR__.'/layout');
+//	Layout
+OP\UNIT\NEWWORLD\Layout::Directory(__DIR__.'/layout/');
 OP\UNIT\NEWWORLD\Layout::Execute(true);
 OP\UNIT\NEWWORLD\Layout::Name('white');
+Env::Set('layout', [
+	'directory' =>  __DIR__.'/template/',
+	'execute'   =>  true,
+	'name'      => 'white'
+]);
 
-//	Template settings.
-OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template');
+//	Template
+OP\UNIT\NEWWORLD\Template::Directory(__DIR__.'/template/');
+Env::Set('template', [
+	'directory'=>__DIR__.'/template/'
+]);
+
+//	Cache
+Env::Set('cache', [
+	'directory'=>__DIR__.'/.cache/'
+]);
+
+//	Unit of NotFound
+Env::Set('notfound', [
+	'dsn' => 'mysql://notfound:password@localhost:3306?database=onepiece&charset=utf8'
+]);
+
+//	Cache settings.
+Env::Set('cache', [
+	'directory'=>__DIR__.'/.cache/'
+]);
 
 //	Application settings.
-App::Title('app-skeleton-2018-nep');
+App::Title('onepiece-framework');
 
 //	Overwrite headers.
 header('Server: httpd', true);
