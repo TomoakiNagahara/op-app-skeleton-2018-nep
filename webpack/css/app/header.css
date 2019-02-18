@@ -1,0 +1,18 @@
+<?php
+/**
+ * app-skeleton-webpack:/css/app/header.php
+ *
+ * @creation  2019-01-31
+ * @version   1.0
+ * @package   app-skeleton-webpack
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+
+/**
+ * @see https://qiita.com/ttiger55/items/b2423cb72668c3c98d89
+ */
+body.body .header {
+	will-change: transform;
+	position:    fixed;
+}

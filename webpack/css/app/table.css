@@ -7,3 +7,25 @@
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
+
+body.body table,
+body.body tr,
+body.body th, 
+body.body td {
+	_border: 1px solid black;
+}
+
+body.body th.left, 
+body.body td.left {
+	text-align: left;
+}
+
+body.body th.right, 
+body.body td.right {
+	text-align: right;
+}
+
+body.body th.center, 
+body.body td.center {
+	text-align: center;
+}

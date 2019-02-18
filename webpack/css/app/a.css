@@ -11,3 +11,7 @@
 body.body a {
 	color: #3170C3;
 }
+
+body.body a:hover {
+	text-decoration: underline;
+}

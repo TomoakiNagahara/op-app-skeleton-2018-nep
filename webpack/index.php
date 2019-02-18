@@ -17,7 +17,7 @@ if(!$ext = $args[0] ){
 }
 
 //	Get layout name.
-$layout = empty($_GET['layout']) ? 'white': $_GET['layout'];
+$layout = $_GET['layout'] ?? $_GET['name'] ?? null;
 
 //	Switch work by extension.
 switch( $ext ){
@@ -27,15 +27,23 @@ switch( $ext ){
 		$mime = 'text/' . ($ext === 'js' ? 'javascript': $ext);
 
 		//	...
-		$app_path    = "./{$ext}/action.php";
+		$app_path    = __DIR__."/{$ext}/action.php";
 
 		//	...
-		$layout_path = ConvertPath("layout:/");
-		$layout_path = realpath($layout_path.'../');
-		$layout_path.= "/$layout/$ext/action.php";
+		if( $layout ){
+			$layout_path = ConvertPath("layout:/../$layout/$ext/action.php");
+			$layout_path = realpath($layout_path);
+			if(!$io = file_exists($layout_path) ){
+				\Notice::Set("This file path has not been exists. ({$layout_path})");
+			};
+		};
 
 		//	...
-		$list = array_merge( include($app_path), include($layout_path) );
+		if( $io ?? null ){
+			$list = array_merge( include($app_path), include($layout_path) );
+		}else{
+			$list = include($app_path);
+		};
 
 		//	...
 		break;
