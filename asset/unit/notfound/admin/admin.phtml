@@ -1,0 +1,100 @@
+<?php
+/**
+ * unit-notfound:/index.php
+ *
+ * @creation  2019-01-30
+ * @version   1.0
+ * @package   unit-notfound
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+/* @var $db   IF_DATABASE */
+/* @var $form IF_FORM */
+?>
+<style>
+body.body label:after {
+	content: "\A" ;
+	white-space: pre ;
+}
+
+#control-panel {
+	text-align: left;
+}
+
+#control-panel ,
+#control-panel table,
+#control-panel th,
+#control-panel td {
+	_border: 1px solid black;
+}
+
+#control-panel td:first-child {
+	text-align: right;
+}
+
+#control-panel td:last-child {
+	text-align: right;
+}
+
+</style>
+<div style="margin: 0.5em;">
+	| <a href="?">Admin</a>
+	| <a href="?selftest=1">Selftest</a>
+	|
+</div>
+<?php
+//	...
+if( $_GET['selftest'] ?? null ){
+	return \OP\UNIT\NOTFOUND\Admin::Selftest();
+};
+
+//	...
+$query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
+?>
+<?php $form->Start() ?>
+<div id="control-panel" style="border:1px solid black; margin: 1em; padding: 1em;">
+	<!-- Host -->
+	<?php $form->Label('host') ?>
+	<?php $form->Input('host') ?><br/>
+	<?php $form->Input('date-st') ?>
+	<?php $form->Input('date-en') ?>
+
+	<!-- URI -->
+	<table>
+		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost() as $record ): ?>
+		<tr>
+			<td><?= $record['count'] ?></td>
+			<td>
+				<a href="<?= "?{$query}&uri={$record['uri_ai']}" ?>">
+					<?= $record['uri'] ?>
+				</a>
+			</td>
+			<td>
+				<?= $record['timestamp'] ?>
+			</td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+
+	<!-- UA -->
+	<table>
+		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtURI() as $record ): ?>
+		<tr>
+			<td><?= $record['count'] ?></td>
+			<td><?= ucfirst($record['os'])?></td>
+			<td><?= $record['os_version'] ?></td>
+			<td><?= ucfirst($record['browser']) ?></td>
+			<td><?= $record['browser_version'] ?></td>
+		</tr>
+		<?php endforeach; ?>
+	</table>
+	<?php $form->Input('submit') ?>
+</div>
+<?php $form->Finish() ?>
+
+<?php
+if( $_GET['debug'] ?? null ){
+	$form->Help();
+	$form->Debug();
+	\OP\UNIT\NOTFOUND\Common::DB()->Debug();
+};

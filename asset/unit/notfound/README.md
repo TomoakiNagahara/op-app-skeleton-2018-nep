@@ -3,9 +3,20 @@ Unit of NotFound
 
  Save of 404 error URL.
 
+# Setup
+
+ Set configuration to Env.
+
+```config.php
+<?php
+$this->Env()->Set('notfound', [
+    'dsn' => 'mysql://notfound:password@localhost:3306?database=onepiece&charset=utf8',
+]);
+```
+
 # Usage
 
- Added 404.php.
+ Add to 404.php.
 
 ```
 <?php
@@ -14,7 +25,7 @@ if( Unit::Load('NotFound') ){
 };
 ```
 
- Added admin.php
+ Add to admin.php
 
 ```
 <?php

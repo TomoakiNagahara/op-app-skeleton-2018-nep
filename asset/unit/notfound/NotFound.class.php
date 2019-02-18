@@ -19,7 +19,7 @@ namespace OP\UNIT;
  *
  * @creation  2019-01-29
  * @version   1.0
- * @package   unit-NotFound
+ * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
@@ -30,90 +30,41 @@ class NotFound implements \IF_UNIT
 	 */
 	use \OP_CORE;
 
-	static private function _Config()
-	{
-		//	...
-		$config = \Env::Get(__CLASS__);
-
-		//	...
-		foreach([
-			'prod'     => 'mysql',
-			'host'     => 'localhost',
-			'user'     => 'notfound',
-			'password' => 'password',
-			'database' => 'onepiece',
-		] as $key => $val ){
-			//	If not set.
-			if(!isset($config[$key]) ){
-				//	Set default value.
-				$config[$key] = $val;
-			};
-		};
-
-		//	...
-		\Env::Set(__CLASS__, $config);
-
-		//	...
-		return $config;
-	}
-
-	/**
+	/** Debug.
 	 *
-	 * @return \IF_DATABASE
+	 * @var array
 	 */
-	static function _DB()
-	{
-		//	...
-		static $_DB;
+	static private $_debug;
 
-		//	...
-		if(!$_DB){
-			$_DB = \Unit::Instantiate('Database');
-			$_DB->Connect( self::_Config() );
-		};
-
-		//	...
-		return $_DB->isConnect() ? $_DB: false;
-	}
-
+	/** Will execute automatically.
+	 *
+	 */
 	static function Auto()
 	{
 		//	...
-		$host  = $_SERVER['SERVER_NAME'];
-	//	$port  = $_SERVER['SERVER_PORT'];
-		$uri   = $_SERVER['REQUEST_URI'];
-		$parse = parse_url($uri);
-		$path  = $parse['path'];
-	//	$query = $parse['query'];
-		$ua    = $_SERVER['HTTP_USER_AGENT'];
-
-		//	...
-		$host = self::_Host($host);
-		$uri  = self::_URI($path);
-		$ua   = self::_UA($ua);
-		self::_NotFound($host, $uri, $ua);
-	}
-
-	static function Hash(string $str):string
-	{
-		return Hasha1($str, 10, '');
-	}
-
-	static private function _Host(string $host):int
-	{
-		//	...
-		if(!$db = self::_DB() ){
-			return;
+		if( $DB = NOTFOUND\Common::DB() ){
+			$host = self::_Host( $DB );
+			$uri  = self::_URI(  $DB );
+			$ua   = self::_UA(   $DB );
+					self::_NotFound( $DB, $host, $uri, $ua );
 		};
+	}
 
+	/** Host name
+	 *
+	 * @param	\IF_DATABASE $DB
+	 * @return	 int		 $ai
+	 */
+	static private function _Host( \IF_DATABASE $DB ):int
+	{
 		//	...
 		$table = 't_host';
+		$host  = $_SERVER['SERVER_NAME'];
+	//	$port  = $_SERVER['SERVER_PORT'];
+		$hash  = NOTFOUND\Common::Hash($host);
 
 		//	...
-		$hash = self::Hash($host);
-
-		//	...
-		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
+		if( $ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	Exists
 		}else{
 			//	...
@@ -123,122 +74,217 @@ class NotFound implements \IF_UNIT
 			$config['set']['host'] = $host;
 
 			//	...
-			$ai = $db->Insert($config);
+			$ai = $DB->Insert($config);
 		};
 
 		//	...
 		return $ai;
 	}
 
-	static private function _URI(string $uri):int
+	/** URI
+	 *
+	 * @param	\IF_DATABASE $DB
+	 * @return	 int		 $ai
+	 */
+	static private function _URI( \IF_DATABASE $DB ):int
 	{
 		//	...
-		if(!$db = self::_DB() ){
-			return;
-		};
+		$uri   = $_SERVER['REQUEST_URI'];
+		$parse = parse_url($uri);
+		$path  = $parse['path'];
+	//	$query = $parse['query'];
 
 		//	...
 		$table = 't_uri';
+		$hash  = NOTFOUND\Common::Hash($path);
 
 		//	...
-		$hash = $hash = self::Hash($uri);
-
-		//	...
-		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
+		if( $ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	Exists
 		}else{
 			//	...
 			$config = [];
 			$config['table'] = $table;
 			$config['set']['hash'] = $hash;
-			$config['set']['uri']  = $uri;
+			$config['set']['uri']  = $path;
 
 			//	...
-			$ai = $db->Insert($config);
+			$ai = $DB->Insert($config);
 		};
 
 		//	...
 		return $ai;
 	}
 
-	static private function _UA(string $ua):int
+	/** User agent
+	 *
+	 * @param	\IF_DATABASE $DB
+	 * @return	 int		 $ai
+	 */
+	static private function _UA( \IF_DATABASE $DB ):int
 	{
 		//	...
-		if(!$db = self::_DB() ){
-			return;
-		};
+		$ua    = $_SERVER['HTTP_USER_AGENT'];
 
 		//	...
 		$table = 't_ua';
+		$hash  = NOTFOUND\Common::Hash($ua);
 
 		//	...
-		$hash = $hash = self::Hash($ua);
-
-		//	...
-		if( $ai = $db->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
-			//	Exists
-		}else{
+		if(!$ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	...
 			$config = [];
 			$config['table'] = $table;
-			$config['set']['hash'] = $hash;
-			$config['set']['ua']   = $ua;
+			$config['set']['hash']    = $hash;
+			$config['set']['ua']      = $ua;
+			$config['set']['os']      = self::_OS($ai);
+			$config['set']['browser'] = self::_Browser($ai);
 
 			//	...
-			$ai = $db->Insert($config);
+			$ai = $DB->Insert($config);
+		};
+
+		//	Get t_ua record.
+		$record = $DB->Quick(" {$table}.ai = {$ai} ", ['limit'=>1]);
+
+		//	...
+		if(!$record['os'] or !$record['browser'] ){
+			//	...
+			$config = [];
+			$config['table'] = $table;
+			$config['limit'] = 1;
+			$config['where'][] = " ai = $ai ";
+
+			//	...
+			if(!$record['os'] ){
+				$config['set']['os']      = self::_OS($ai);
+			};
+
+			//	...
+			if(!$record['browser'] ){
+				$config['set']['browser'] = self::_Browser($ai);
+			};
+
+			//	...
+			$DB->Update($config);
 		};
 
 		//	...
 		return $ai;
 	}
 
-	static function _OS($ua)
+	/** OS
+	 *
+	 * @param	 integer	 $ua_ai
+	 * @return	 int|null	 $ai
+	 */
+	static private function _OS( $ua_ai )
 	{
 		//	...
-		$result = null;
+		$table = 't_ua_os';
 
 		//	...
-		foreach( ['Macintosh','Windows','Linux','BSD','iOS','Android'] as $name ){
-			D($name);
-		};
-
-		//	...
-		return $result;
-	}
-
-	static function _Browser($ua)
-	{
-		//	...
-		$result = null;
-
-		//	...
-		foreach( ['Firefox','Chrome','Safari'] as $name ){
-			if( $pos = strpos($ua, $name) ){
-				$len = strlen($name);
-
-				//	...
-				list($v1, $v2) = explode('.', substr($ua, $pos + $len +1 ));
-
-				//	...
-				$result['name']    = strtolower($name);
-				$result['version'] = "{$v1}.{$v2}";
-
-				//	...
-				break;
-			};
-		};
-
-		//	...
-		return $result;
-	}
-
-	static function _NotFound(int $host, int $uri, int $ua)
-	{
-		//	...
-		if(!$db = self::_DB() ){
+		if(!$ua = NOTFOUND\Common::DB()->Quick(" ua <-     t_ua.ai = {$ua_ai} ", ['limit'=>1]) ){
 			return;
 		};
 
+		//	...
+		$m = [];
+		foreach( include(__DIR__.'/config/os.php') as $os => $preg ){
+			//	...
+			if(!preg_match("/$preg/", $ua, $m) ){
+				continue;
+			};
+
+			//	...
+			$version = $m[1].'.'.$m[2];
+			break;
+		};
+D($m);
+		//	...
+		$config = [];
+		$config['table'] = $table;
+		$config['limit'] = 1;
+		$config['field'] = 'ai';
+		$config['where'][] = "os = $os";
+		$config['where'][] = "version = $version";
+
+		//	...
+		if(!$ai = NOTFOUND\Common::DB()->Select($config)['ai'] ?? null ){
+			//	...
+			$config = [];
+			$config['table'] = $table;
+			$config['set'][] = "ua = $ua_ai";
+			$config['set'][] = "os = $os";
+			$config['set'][] = "version = $version";
+			$ai = NOTFOUND\Common::DB()->Insert($config);
+		}
+
+		//	...
+		return $ai;
+	}
+
+	/** Browser
+	 *
+	 * @param	 integer	 $ua_ai
+	 * @return	 int|null	 $ai
+	 */
+	static private function _Browser( $ua_ai )
+	{
+		//	...
+		$table = 't_ua_browser';
+
+		//	...
+		if(!$ua = NOTFOUND\Common::DB()->Quick(" ua <-     t_ua.ai = {$ua_ai} ", ['limit'=>1]) ){
+			return;
+		};
+
+		//	...
+		$m = [];
+		foreach( include(__DIR__.'/config/browser.php') as $browser => $preg ){
+			//	...
+			if(!preg_match("/$preg/", $ua, $m) ){
+				continue;
+			};
+
+			//	...
+			$version = $m[1].'.'.$m[2];
+			break;
+		};
+D($m);
+		//	...
+		$config = [];
+		$config['table'] = $table;
+		$config['limit'] = 1;
+		$config['field'] = 'ai';
+		$config['where'][] = "browser = $browser";
+		$config['where'][] = "version = $version";
+
+		//	...
+		if(!$ai = NOTFOUND\Common::DB()->Select($config)['ai'] ?? null ){
+			//	...
+			$config = [];
+			$config['table'] = $table;
+			$config['set'][] = "ua = $ua_ai";
+			$config['set'][] = "browser = $browser";
+			$config['set'][] = "version = $version";
+			$ai = NOTFOUND\Common::DB()->Insert($config);
+		}
+
+		//	...
+		return $ai;
+	}
+
+	/** NotFound
+	 *
+	 * @param	\IF_DATABASE $DB
+	 * @param	 string		 $host
+	 * @param	 string		 $uri
+	 * @param	 string		 $ua
+	 * @return	 int		 $count
+	 */
+	static private function _NotFound( \IF_DATABASE $DB, int $host, int $uri, int $ua ):int
+	{
 		//	...
 		$table = 't_notfound';
 
@@ -251,7 +297,7 @@ class NotFound implements \IF_UNIT
 		$config['limit'] = 1;
 
 		//	...
-		$count = ( $record = $db->Select($config) ) ? $record['count']: 0;
+		$count = ( $record = $DB->Select($config) ) ? $record['count']: 0;
 		$count++;
 
 		//	...
@@ -263,24 +309,34 @@ class NotFound implements \IF_UNIT
 			unset($config['limit']);
 
 			//	...
-			$db->Insert($config);
+			$DB->Insert($config);
 		}else{
 			//	update
 			$config['set'][] = "count = $count";
 
 			//	...
-			$db->Update($config);
+			$DB->Update($config);
 		};
 
 		//	...
 		return $count;
 	}
 
+	/** Will execute automatically of Admin.
+	 *
+	 */
 	static function Admin()
 	{
-		\App::Template(__DIR__.'/admin.phtml');
+		include_once(__DIR__.'/admin/Admin.class.php');
+		NOTFOUND\Admin::Auto();
 	}
 
+	/** For developers.
+	 *
+	 *
+	 * @see \IF_UNIT::Help()
+	 * @param	 string		 $topic
+	 */
 	function Help($topic=null)
 	{
 		echo '<pre><code>';
@@ -288,8 +344,13 @@ class NotFound implements \IF_UNIT
 		echo '</code></pre>';
 	}
 
+	/** For developers.
+	 *
+	 * @see \IF_UNIT::Debug()
+	 * @param	 string		 $topic
+	 */
 	function Debug($topic=null)
 	{
-		D();
+		D( self::$_debug );
 	}
 }

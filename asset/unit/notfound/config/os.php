@@ -1,16 +1,20 @@
 <?php
 /**
- * unit-notfound:/index.php
+ * unit-notfound:/config/os.php
  *
- * @creation  2019-01-29
+ * Use from NotFound::_OS()
+ *
+ * @creation  2019-02-08
  * @version   1.0
  * @package   unit-notfound
  * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
-include('NotFound.class.php');
-include('Common.class.php');
+$configs = [];
 
 //	...
-return true;
+$configs['mac'] = 'Mac OS X (\d+)[_\.](\d+)';
+
+//	...
+return $configs;
