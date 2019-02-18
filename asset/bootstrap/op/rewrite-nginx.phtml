@@ -1,0 +1,63 @@
+<?php
+/**
+ * app-skeleton-2018-nep:/asset/bootstrap/op/rewrite-nginx.phtml
+ *
+ * @creation  2018-11-06
+ * @version   1.0
+ * @package   app-skeleton
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$name     = $_SERVER['SERVER_NAME'];
+$port     = $_SERVER['SERVER_PORT'];
+$doc_root = $_SERVER['DOCUMENT_ROOT'];
+$app_root = substr(__FILE__, 0, strpos(__FILE__, '/asset/'));
+$app_path = substr($app_root, strlen($doc_root));
+$app_name = '@app-skeleton';
+?>
+<h1 data-i18n="true">How to boot the onepiece-framework at the Nginx web server.</h1>
+<p data-i18n="true">
+	This is server directive example.<br/>
+	Please change <b style="color:red;" data-i18n="false">root</b> and <b style="color:red;" data-i18n="false">fastcgi_pass</b> according to your environment.
+</p>
+<pre><code>
+http {
+    server {
+        server_name  <?= $name ?>;
+        listen       <?= $port ?>;
+
+        #   Application root
+        location <?= $app_path ?> {
+            #   Inside location at location
+
+            #   Inaccessible pages
+            location ~ ([^\w]\.ht|/op/7/app-skeleton-2018-nep/asset/) {
+                error_page  403     @app-skeleton;
+                deny        all;
+            }
+
+            #   Directly access files
+            location ~ [png|jpe?g|jp2|heic|exr|gif|tiff|ico|js|css|pdf]$ {
+                root        <?= $doc_root ?>;
+                try_files   $uri    @app-skeleton;
+            }
+
+            #   Other pages
+            location <?= $app_path ?> {
+                try_files   null    @app-skeleton;
+            }
+        }
+
+        #   Transfer to onepiece-framework app-skeleton
+        location <?= $app_name ?> {
+            include         fastcgi.conf;
+            <span style="color:red;">root            <?= $doc_root ?>;</span>
+            <span style="color:red;">fastcgi_pass    127.0.0.1:9000;</span>
+            fastcgi_param   SCRIPT_FILENAME $document_root<?= $app_path ?>/asset/app.php;
+            fastcgi_param   PHP_VALUE       "catch_workers_output=no; display_errors=on";
+            fastcgi_param   REDIRECT_STATUS $status;
+        }
+    }
+}
+</code></pre>
