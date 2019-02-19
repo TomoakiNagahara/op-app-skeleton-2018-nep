@@ -130,7 +130,7 @@ class NotFound implements \IF_UNIT
 		$table = 't_ua';
 		$hash  = NOTFOUND\Common::Hash($ua);
 
-		//	Insert if does not exist.
+		//	Get ai, Insert if does not exist.
 		if(!$ai = $DB->Quick(" ai <- {$table}.hash = {$hash} ", ['limit'=>1]) ){
 			//	...
 			$config = [];
@@ -145,7 +145,7 @@ class NotFound implements \IF_UNIT
 		//	Get t_ua record.
 		$record = $DB->Quick(" {$table}.ai = {$ai} ", ['limit'=>1]);
 
-		//	...
+		//	If has not been set, it set.
 		if(!$record['os'] or !$record['browser'] ){
 			//	...
 			$config = [];

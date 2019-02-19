@@ -18,6 +18,7 @@ $input = [];
 $input['name']  = $name;
 $input['type']  = 'select';
 $input['label'] = 'Product';
+$input['cookie']   = true;
 $input['option'][] = 'mysql';
 $form['input'][] = $input;
 
@@ -28,6 +29,7 @@ $input['name']  = $name;
 $input['type']  = 'text';
 $input['label'] = ucfirst($name);
 $input['value'] = 'localhost';
+$input['cookie'] = true;
 $form['input'][] = $input;
 
 //	...
@@ -37,6 +39,7 @@ $input['name']  = $name;
 $input['type']  = 'text';
 $input['label'] = ucfirst($name);
 $input['value'] = '3306';
+$input['cookie'] = true;
 $form['input'][] = $input;
 
 //	...
@@ -46,6 +49,7 @@ $input['name']  = $name;
 $input['type']  = 'text';
 $input['label'] = ucfirst($name);
 $input['value'] = 'root';
+$input['cookie'] = true;
 $form['input'][] = $input;
 
 //	...
@@ -63,6 +67,7 @@ $input['name']  = $name;
 $input['type']  = 'text';
 $input['label'] = ucfirst($name);
 $input['value'] = 'utf8';
+$input['cookie'] = true;
 $form['input'][] = $input;
 
 return $form;
