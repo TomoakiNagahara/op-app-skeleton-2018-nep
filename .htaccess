@@ -27,7 +27,7 @@ Options +FollowSymLinks +ExecCGI -Indexes
 #
 <IfModule mod_rewrite.c>
 	# Rewrite to On from Off for rewrite is started.
-	RewriteEngine Off
+	RewriteEngine On
 
 	# This is base directory (It is app root.)
 	RewriteBase /
