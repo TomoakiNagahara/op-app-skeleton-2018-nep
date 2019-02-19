@@ -9,6 +9,9 @@
  * @copyright Tomoaki Nagahara All right reserved.
  */
 //	...
+$app_root = rtrim($_SERVER['DOCUMENT_ROOT'],'/') . rtrim($_SERVER['REQUEST_URI'],'/').'/';
+
+//	...
 $rewrite_base = $_SERVER['REQUEST_URI'];
 
 //	...
@@ -32,7 +35,7 @@ while( $line = fgets($file) ){
 <h1>How to boot the onepiece-framework at the Apache web server.</h1>
 <ol>
 	<li>
-		<p>Please open <b>"<?= rtrim(ConvertPath('app:/'),'/') ?>/.htaccess"</b> file.</p>
+		<p>Please open <b>"<?= $app_root ?>.htaccess"</b> file.</p>
 		<p><i><b>Attention!</b> This file is invisible attribute file.</i></p>
 	</li>
 	<li>
