@@ -1,0 +1,67 @@
+<?php
+/**
+ * op-layout-uqunie.com:/html.phtml
+ *
+ * @creation  2017-08-04
+ * @version   1.0
+ * @package   op-layout-uqunie.com
+ * @author    Tomoaki Nagahara <tomoaki.nagahara@gmail.com>
+ * @copyright Tomoaki Nagahara All right reserved.
+ */
+//	...
+$app_root = rtrim(ConvertURL('app:/'), '/');
+
+//	...
+$layout = \Env::Get('layout')['name'];
+
+//	...
+if( false ){
+	$content = null;
+};
+?>
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+		<!-- icon -->
+		<link rel="icon" type="image/vnd.microsoft.icon" href="/img/favicon.ico" />
+
+		<!-- JavaScript -->
+		<script type="text/javascript" src="<?= $app_root ?>/webpack/js/"></script>
+
+		<!-- Stylesheet -->
+		<link rel="stylesheet" type="text/css" href="<?= $app_root ?>/webpack/css/?name=<?= $layout ?>" />
+
+		<!-- Google AdSense -->
+		<?php if( $adsense_id = \Env::Get('google-adsense-id') ): ?>
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script>
+		(adsbygoogle = window.adsbygoogle || []).push({
+			google_ad_client: "<?= $adsense_id ?>",
+			enable_page_level_ads: true
+		});
+		</script>
+		<?php endif; ?>
+
+		<!-- title -->
+		<title><?= App::Title() ?></title>
+	</head>
+	<body id="body" class="body">
+		<div id="container">
+			<header>
+				<a href="/">uqunie.com</a>
+			</header>
+			<article>
+				<?= $content ?>
+			</article>
+			<footer>
+				<p>Copyright 2006 uqunie Co., Ltd. All right reserved.</p>
+				<p><a href="https://onepiece-framework.com">Powerd by onepiece-framework</a></p>
+			</footer>
+		</div>
+		<?= \App::Template('google-analytics.phtml') ?>
+	</body>
+</html>
