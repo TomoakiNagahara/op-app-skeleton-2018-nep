@@ -90,9 +90,13 @@ class NotFound implements \IF_UNIT
 	{
 		//	...
 		$uri   = $_SERVER['REQUEST_URI'];
-		$parse = parse_url($uri);
-		$path  = $parse['path'];
-	//	$query = $parse['query'];
+
+		//	...
+		if( $pos  = strpos($uri, '?') ){
+			$path = substr($uri, 0, $pos);
+		}else{
+			$path = $uri;
+		}
 
 		//	...
 		$table = 't_uri';
@@ -124,7 +128,9 @@ class NotFound implements \IF_UNIT
 	static private function _UA( \IF_DATABASE $DB ):int
 	{
 		//	...
-		$ua    = $_SERVER['HTTP_USER_AGENT'];
+		if(!$ua = ($_SERVER['HTTP_USER_AGENT'] ?? null) ){
+			return null;
+		};
 
 		//	...
 		$table = 't_ua';
