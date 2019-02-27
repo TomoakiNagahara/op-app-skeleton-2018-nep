@@ -128,9 +128,7 @@ class NotFound implements \IF_UNIT
 	static private function _UA( \IF_DATABASE $DB ):int
 	{
 		//	...
-		if(!$ua = ($_SERVER['HTTP_USER_AGENT'] ?? null) ){
-			return null;
-		};
+		$ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
 		//	...
 		$table = 't_ua';
