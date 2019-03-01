@@ -40,7 +40,7 @@ $configer->Set('column', [
 $configer->Set('column', [
 	'name'    => 'browser',
 	'type'    => 'enum',
-	'length'  => 'ie, edge, chrome, firefox, safari, opera, vivaldi, googlebot',
+	'length'  => 'ie, edge, chrome, firefox, safari, opera, vivaldi, googlebot, cfnetwork',
 	'null'    =>  true,
 	'collate' => 'ascii_general_ci',
 	'comment' => 'browser name. Unknown browser is null.',

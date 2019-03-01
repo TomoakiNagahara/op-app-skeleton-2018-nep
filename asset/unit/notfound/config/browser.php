@@ -14,12 +14,13 @@
 $configs = [];
 
 //	...
-$configs['vivaldi'] = 'Vivaldi\/(\d+)\.(\d+)';
-$configs['opera']   = 'OPR\/(\d+)\.(\d+)';
-$configs['chrome']  = 'Chrome\/(\d+)\.(\d+)';
-$configs['safari']  = 'Safari\/(\d+)\.(\d+)';
-$configs['firefox'] = 'Firefox\/(\d+)\.(\d+)';
-$configs['googlebot'] = 'Googlebot\/(\d+)\.(\d+)';
+$configs['cfnetwork']= 'CFNetwork\/(\d+)\.(\d+)';
+$configs['vivaldi']	 = 'Vivaldi\/(\d+)\.(\d+)';
+$configs['opera']	 = 'OPR\/(\d+)\.(\d+)';
+$configs['chrome']	 = 'Chrome\/(\d+)\.(\d+)';
+$configs['safari']	 = 'Safari\/(\d+)\.(\d+)';
+$configs['firefox']	 = 'Firefox\/(\d+)\.(\d+)';
+$configs['googlebot']= 'Googlebot\/(\d+)\.(\d+)';
 
 //	...
 return $configs;

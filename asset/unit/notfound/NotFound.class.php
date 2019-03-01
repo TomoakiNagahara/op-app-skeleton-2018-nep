@@ -195,7 +195,6 @@ class NotFound implements \IF_UNIT
 				$version = $m[1].'.'.$m[2];
 				break;
 			};
-
 		};
 
 		//	If they do not match, it returns.
@@ -221,7 +220,7 @@ class NotFound implements \IF_UNIT
 		};
 
 		//	...
-		return $ai;
+		return $ai ?? null;
 	}
 
 	/** Browser
@@ -269,7 +268,7 @@ class NotFound implements \IF_UNIT
 		}
 
 		//	...
-		return $ai;
+		return $ai ?? null;
 	}
 
 	/** NotFound
