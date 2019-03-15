@@ -15,6 +15,11 @@
  */
 namespace OP\UNIT;
 
+/** Used class
+ *
+ */
+use OP\UNIT\NOTFOUND\Admin;
+
 /** NotFound
  *
  * @creation  2019-01-29
@@ -324,7 +329,7 @@ class NotFound implements \IF_UNIT
 	static function Admin()
 	{
 		include_once(__DIR__.'/admin/Admin.class.php');
-		NOTFOUND\Admin::Auto();
+		Admin::Auto();
 	}
 
 	/** For developers.

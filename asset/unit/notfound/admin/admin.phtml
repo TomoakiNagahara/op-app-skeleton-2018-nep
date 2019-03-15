@@ -10,6 +10,7 @@
  */
 /* @var $db   IF_DATABASE */
 /* @var $form IF_FORM */
+use \OP\UNIT\NOTFOUND\Admin;
 ?>
 <style>
 body.body label:after {
@@ -86,7 +87,7 @@ $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 
 	<!-- URI -->
 	<table id="t_uri">
-		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtHost() as $record ): ?>
+		<?php foreach( Admin::GetRecordAtHost() as $record ): ?>
 		<tr>
 			<td><?= $record['count'] ?></td>
 			<td>
@@ -105,7 +106,7 @@ $query = http_build_query( array_diff_key($_GET, ['uri'=>null]) );
 
 	<!-- UA -->
 	<table>
-		<?php foreach( \OP\UNIT\NOTFOUND\Admin::GetRecordAtURI() as $record ): ?>
+		<?php foreach( Admin::GetRecordAtURI() as $record ): ?>
 		<tr>
 			<td><?= $record['count'] ?></td>
 			<td><?= ucfirst($record['os'])?></td>
