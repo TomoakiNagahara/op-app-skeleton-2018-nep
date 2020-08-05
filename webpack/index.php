@@ -32,9 +32,9 @@ switch( $ext ){
 		//	...
 		if( $layout ){
 			$layout_path = ConvertPath("layout:/../$layout/$ext/action.php");
-			$layout_path = realpath($layout_path);
-			if(!$io = file_exists($layout_path) ){
-				\Notice::Set("This file path has not been exists. ({$layout_path})");
+			$layout_real = realpath($layout_path);
+			if(!$io = file_exists($layout_real) ){
+				\Notice::Set("This file path has not been exists.\n{$layout}, {$ext}, {$layout_path}, {$layout_real}");
 			};
 		};
 
