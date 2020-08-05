@@ -15,6 +15,7 @@ $configs = [];
 
 //	...
 $configs['mac'] = 'Mac OS X (\d+)[_\.](\d+)';
+$configs['ios'] = 'iPhone OS (\d+)[_\.](\d+)';
 
 //	...
 return $configs;
